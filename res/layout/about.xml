@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:background="#000000">
+	<TextView android:id="@+id/aboutText" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:textSize="20sp"
+		android:textColor="#FFFFFF" android:textStyle="bold"
+		android:text="\tPinballMap.com\n\t\tScott Wainstock\n\t\tRyan Gratzer\n\n\tArtwork\n\t\tDrew Marshall\n\n\tSpecial Thanks\n\t\tCleo, Sassy, Solomon,\n\t\tand Bawb" />
+	<ImageView android:id="@+id/sass" android:src="@drawable/sassy"
+		android:layout_below="@+id/aboutText" android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:layout_gravity="bottom" />
+</RelativeLayout>

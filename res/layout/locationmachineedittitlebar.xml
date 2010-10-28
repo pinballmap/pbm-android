@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="horizontal">
+	<TextView android:id="@+id/title" android:text=""
+		android:layout_gravity="center_vertical" android:textColor="#FFFFFF"
+		android:layout_width="250dip" android:layout_height="wrap_content" />
+	<LinearLayout android:layout_width="fill_parent"
+		android:gravity="right" android:layout_height="fill_parent">
+		<TextView android:layout_width="1dip" android:layout_height="fill_parent"
+			android:background="#B3B3B3" />
+		<Button android:id="@+id/removeMachineButton"
+			android:layout_width="48dip" android:layout_height="48dip"
+			android:background="@drawable/removebutton" android:onClick="clickHandler" />
+	</LinearLayout>
+</LinearLayout>

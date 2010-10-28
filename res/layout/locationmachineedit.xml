@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="wrap_content"
+	android:layout_height="fill_parent">
+	<TextView android:id="@+id/enterConditionHeader"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:textSize="20dip" android:text="Machine Comment: " />
+	<TableLayout android:id="@+id/conditionTable"
+		android:layout_below="@+id/enterConditionHeader" android:layout_width="fill_parent"
+		android:layout_height="270dip" android:background="#FFFFFF">
+		<TextView android:id="@+id/condition" android:layout_width="wrap_content"
+			android:layout_height="264dip" android:layout_marginLeft="3dip"
+			android:layout_marginBottom="3dip" android:layout_marginRight="3dip"
+			android:clickable="true" android:layout_marginTop="3dip"
+			android:onClick="clickHandler" android:background="#000000" />
+	</TableLayout>
+	<TextView android:id="@+id/conditionDate"
+		android:layout_below="@+id/conditionTable" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:dividerHeight="1dip" />
+</RelativeLayout>

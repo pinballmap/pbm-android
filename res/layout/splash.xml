@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<TextView android:id="@+id/greeting" android:textSize="20dip"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:paddingBottom="5dip" android:text="Select your region..." />
+	<TextView android:layout_width="fill_parent" android:id="@+id/spacer"
+		android:layout_below="@+id/greeting" android:layout_height="3dip"
+		android:background="#FFFFFF" />
+	<ListView android:id="@+id/splashRegionTable"
+		android:layout_below="@+id/spacer" android:dividerHeight="1dip"
+		android:layout_width="fill_parent" android:layout_height="wrap_content" />
+	<ImageView android:id="@+id/splash_image" android:src="@drawable/splash_image"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:scaleType="fitCenter" android:gravity="center"
+		android:visibility="invisible" />
+	<ImageView android:id="@+id/splash_image_city"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:visibility="invisible" android:gravity="center" />
+</RelativeLayout>
