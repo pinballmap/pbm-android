@@ -18,7 +18,7 @@ public class LookupByLocationList extends PBMUtil {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.lookupbylocationlist);
+		setContentView(R.layout.lookup_by_location_list);
 
 		List<Zone> primaryZones = new ArrayList<Zone>();
 		List<Zone> secondaryZones = new ArrayList<Zone>();

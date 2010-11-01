@@ -14,7 +14,7 @@
 				android:textSize="20sp" android:textColor="#000000"
 				android:editable="true" android:padding="3dip" />
 			<Button android:id="@+id/submitButton" android:layout_width="fill_parent"
-				android:textColor="#FFFFFF" android:background="@drawable/coolbutton"
+				android:textColor="#FFFFFF" android:background="@drawable/cool_button"
 				android:layout_height="fill_parent" android:text="Add"
 				android:clickable="true" android:onClick="submitHandler" />
 		</TableRow>

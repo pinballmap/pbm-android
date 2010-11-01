@@ -13,7 +13,7 @@ public class LookupByMachineList extends PBMUtil {
 	@SuppressWarnings("unchecked")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.lookupbymachinelist);
+		setContentView(R.layout.lookup_by_machine_list);
 
 		final PBMApplication app = (PBMApplication) getApplication();
 		

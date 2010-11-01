@@ -17,7 +17,7 @@ public class ConditionEdit extends PBMUtil {
 	@SuppressWarnings("static-access")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.conditionedit);
+		setContentView(R.layout.condition_edit);
 
 		Bundle extras = getIntent().getExtras();
 		location = (Location) extras.get("Location");

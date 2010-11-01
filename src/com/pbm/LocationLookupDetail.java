@@ -22,8 +22,8 @@ public class LocationLookupDetail extends PBMUtil {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.locationlookupdetail);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.maptitlebar);
+		setContentView(R.layout.location_lookup_detail);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.map_titlebar);
 
 		Bundle extras = getIntent().getExtras();
 		zone = (Zone) extras.get("Zone");

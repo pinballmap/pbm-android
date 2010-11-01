@@ -26,8 +26,8 @@ public class AddMachine extends PBMUtil {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.addmachine);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.addmachinetitlebar);
+		setContentView(R.layout.add_machine);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.add_machine_titlebar);
 
 		location = (Location) getIntent().getExtras().get("Location");
 

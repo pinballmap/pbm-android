@@ -42,8 +42,8 @@ public class CloseLocations extends PBMUtil implements LocationListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.closelocations);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.maptitlebar);
+		setContentView(R.layout.close_locations);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.map_titlebar);
 
 		TextView title = (TextView)findViewById(R.id.title);
 		title.setText("Close locations");
@@ -242,7 +242,7 @@ public class CloseLocations extends PBMUtil implements LocationListener {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ViewHolder holder;
 			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.closelocationslistview, null);
+				convertView = mInflater.inflate(R.layout.close_locations_listview, null);
 				holder = new ViewHolder();
 				holder.name = (TextView) convertView.findViewById(R.id.name);
 				holder.distance = (TextView) convertView.findViewById(R.id.distance);
