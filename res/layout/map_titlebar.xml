@@ -9,8 +9,8 @@
 		android:gravity="right" android:layout_height="fill_parent">
 		<TextView android:layout_width="1dip" android:layout_height="fill_parent"
 			android:background="#B3B3B3" />
-		<Button android:id="@+id/removeMachineButton"
+		<Button android:id="@+id/mapButton" android:layout_gravity="center"
 			android:layout_width="48dip" android:layout_height="48dip"
-			android:background="@drawable/removebutton" android:onClick="clickHandler" />
+			android:background="@drawable/map_button" android:onClick="clickHandler" />
 	</LinearLayout>
 </LinearLayout>

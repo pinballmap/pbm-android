@@ -35,7 +35,7 @@ public class DisplayOnMap extends MapActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.displayonmap);
+		setContentView(R.layout.display_on_map);
 
 		map = (MapView)findViewById(R.id.mapview);
 		map.setBuiltInZoomControls(true);

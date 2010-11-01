@@ -31,7 +31,7 @@ public class RecentScores extends PBMUtil {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.recentscores);
+		setContentView(R.layout.recent_scores);
 		table = (ListView)findViewById(R.id.recentscorestable);
 
 		showDialog(PROGRESS_DIALOG);		

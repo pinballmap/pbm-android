@@ -22,8 +22,8 @@ public class LocationMachineEdit extends PBMUtil {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.locationmachineedit);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.locationmachineedittitlebar);
+		setContentView(R.layout.location_machine_edit);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.location_machine_edit_titlebar);
 
 		location = (Location) getIntent().getExtras().get("Location");
 		machine = (Machine) getIntent().getExtras().get("Machine");

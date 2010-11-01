@@ -25,8 +25,8 @@ public class LocationDetail extends PBMUtil {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.locationdetail);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.locationdetailtitlebar);
+		setContentView(R.layout.location_detail);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.location_detail_titlebar);
 
 		machines.clear();
 

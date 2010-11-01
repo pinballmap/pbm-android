@@ -25,8 +25,8 @@ public class MachineLookupDetail extends PBMUtil {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.machinelookupdetail);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.maptitlebar);
+		setContentView(R.layout.machine_lookup_detail);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.map_titlebar);
 
 		Bundle extras = getIntent().getExtras();
 		machine = (Machine) extras.get("Machine");
