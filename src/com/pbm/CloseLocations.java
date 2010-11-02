@@ -67,7 +67,7 @@ public class CloseLocations extends PBMUtil implements LocationListener {
 	final Handler waitHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			int total = msg.getData().getInt("total");
-			progressDialog.setProgress(total);
+
 			if (total >= 100){
 				locationsForMap = new ArrayList<com.pbm.Location>();
 

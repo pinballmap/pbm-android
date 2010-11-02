@@ -61,7 +61,7 @@ public class Preferences extends PBMUtil {
 	final Handler waitHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			int total = msg.getData().getInt("total");
-			progressDialog.setProgress(total);
+
 			if (total >= 100){
 				try{
 					dismissDialog(PROGRESS_DIALOG); 
