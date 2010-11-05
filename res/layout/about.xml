@@ -5,7 +5,7 @@
 	<TextView android:id="@+id/aboutText" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:textSize="20sp"
 		android:textColor="#FFFFFF" android:textStyle="bold"
-		android:text="\tPinballMap.com\n\t\tScott Wainstock\n\t\tRyan Gratzer\n\n\tArtwork\n\t\tDrew Marshall\n\n\tSpecial Thanks\n\t\tCleo, Sassy, Solomon,\n\t\tand Bawb" />
+		android:text="\tPinballMap.com\n\t\tScott Wainstock\n\t\tRyan Gratzer\n\n\tArtwork\n\t\tDrew Marshall\n\n\tSpecial Thanks\n\t\tCleo, Sassy, Solomon,\n\t\tBawb, and Brian Hanifin" />
 	<ImageView android:id="@+id/sass" android:src="@drawable/sassy"
 		android:layout_below="@+id/aboutText" android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:layout_gravity="bottom" />
