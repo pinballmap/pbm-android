@@ -62,7 +62,7 @@ public class PBMMenu extends PBMUtil {
 		PBMApplication app = (PBMApplication) getApplication();
 		Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 		
-		if (region.motd != null && !(region.motd.equals(""))) {
+		if (region != null && region.motd != null && !(region.motd.equals(""))) {
 			Toast.makeText(getBaseContext(), region.motd, Toast.LENGTH_LONG).show();
 		}
 		
