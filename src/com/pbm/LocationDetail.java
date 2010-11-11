@@ -31,31 +31,34 @@ public class LocationDetail extends PBMUtil {
 		machines.clear();
 
 		location = (Location) getIntent().getExtras().get("Location");
-		if (location.street1 == null) {
-			PBMApplication app = (PBMApplication) getApplication();
-			location = updateLocationData(app.getLocation(location.locationNo));
-		}
-		machines = getLocationMachineData(location);
 
-		TextView title = (TextView)findViewById(R.id.title);
-		title.setText(location.name);
-
-		TextView locationName = (TextView)findViewById(R.id.locationName);
-		locationName.setText(location.name + "\n\t" + location.street1 + "\n\t" + location.city + " " + location.state + " " + location.zip + "\n\t" + location.phone);
-
-		table = (ListView)findViewById(R.id.locationDetailTable);
-		table.setOnItemClickListener(new OnItemClickListener() {
-			@SuppressWarnings("unchecked")
-			public void onItemClick(AdapterView parentView, View selectedView, int position, long id) {	
-				Intent myIntent = new Intent();
-				myIntent.putExtra("Location", location);
-				myIntent.putExtra("Machine", (Machine) parentView.getItemAtPosition(position));
-				myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
-				startActivityForResult(myIntent, QUIT_RESULT);
+		if (location != null) {
+			if (location.street1 == null) {
+				PBMApplication app = (PBMApplication) getApplication();
+				location = updateLocationData(app.getLocation(location.locationNo));
 			}
-		});
+			machines = getLocationMachineData(location);
 
-		updateTable();
+			TextView title = (TextView)findViewById(R.id.title);
+			title.setText(location.name);
+
+			TextView locationName = (TextView)findViewById(R.id.locationName);
+			locationName.setText(location.name + "\n\t" + location.street1 + "\n\t" + location.city + " " + location.state + " " + location.zip + "\n\t" + location.phone);
+
+			table = (ListView)findViewById(R.id.locationDetailTable);
+			table.setOnItemClickListener(new OnItemClickListener() {
+				@SuppressWarnings("unchecked")
+				public void onItemClick(AdapterView parentView, View selectedView, int position, long id) {	
+					Intent myIntent = new Intent();
+					myIntent.putExtra("Location", location);
+					myIntent.putExtra("Machine", (Machine) parentView.getItemAtPosition(position));
+					myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
+					startActivityForResult(myIntent, QUIT_RESULT);
+				}
+			});
+
+			updateTable();
+		}
 	}
 
 	private void updateTable() {
