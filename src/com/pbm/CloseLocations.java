@@ -76,8 +76,8 @@ public class CloseLocations extends PBMUtil implements LocationListener {
 					com.pbm.Location location = (com.pbm.Location) app.getLocationValues()[i];
 					android.location.Location mockLocation = new android.location.Location(LocationManager.GPS_PROVIDER);	
 
-					mockLocation.setLatitude(Double.parseDouble(location.lat));
-					mockLocation.setLongitude(Double.parseDouble(location.lon));
+					mockLocation.setLatitude(new Double(location.lat));
+					mockLocation.setLongitude(new Double(location.lon));
 
 					float distance = yourLocation.distanceTo(mockLocation); 
 					distance = (float) (distance * 0.000621371192);	
