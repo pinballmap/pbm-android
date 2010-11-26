@@ -195,7 +195,7 @@ public class DisplayOnMap extends MapActivity {
 		}
 
 		private int convertMapCoordinate(String coordinate) {
-			double convertedCoordinate = Double.parseDouble(coordinate);
+			double convertedCoordinate = new Double(coordinate);
 			return (int) (convertedCoordinate * 1E6);
 		}
 
