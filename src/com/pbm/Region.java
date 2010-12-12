@@ -6,13 +6,15 @@ public class Region {
 	public int regionNo;
 	public String name;
 	public String subDir;
+	public String email;
 	public String motd;
 
-	public Region(int newRegionNo, String newName, String newSubDir, String newMotd) {
+	public Region(int newRegionNo, String newName, String newSubDir, String newMotd, String newEmail) {
 	    regionNo = newRegionNo;
 	    name = newName;
 	    subDir = newSubDir;
 	    motd = newMotd;
+	    email = newEmail;
 	}
 	
 	public String toString() {

@@ -43,16 +43,14 @@ public class Events extends PBMUtil {
 		table.setAdapter(new ArrayAdapter<Spanned>(this, android.R.layout.simple_list_item_1, events));
 	}   
 
-	public void getEventData(String URL)
-	{
+	public void getEventData(String URL) {
 		Document doc = getXMLDocument(URL);
 		NodeList itemNodes = doc.getElementsByTagName("event"); 
 
 		eventLinks = new String[itemNodes.getLength()];
 		for (int i = 0; i < itemNodes.getLength(); i++) { 
 			Node itemNode = itemNodes.item(i); 
-			if (itemNode.getNodeType() == Node.ELEMENT_NODE) 
-			{            
+			if (itemNode.getNodeType() == Node.ELEMENT_NODE) {            
 				Element itemElement = (Element) itemNode;                 
 
 				String name = readDataFromXML("name", itemElement);
