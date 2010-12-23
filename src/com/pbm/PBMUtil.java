@@ -152,7 +152,7 @@ public class PBMUtil extends Activity {
 			}
 		}
 		dataName = dataName.replaceAll("%", "%25");
-		
+
 		return URLDecoder.decode(dataName);
 	}
 
@@ -204,7 +204,7 @@ public class PBMUtil extends Activity {
 
 	public static Document getXMLDocument(String URL) {
 		Document doc = null;
-		
+
 		try {
 			InputStream inputStream = OpenHttpConnection(URL);
 
@@ -228,21 +228,21 @@ public class PBMUtil extends Activity {
 
 		return doc;
 	}
-	
+
 	public static int convertPixelsToDip(int dipValue, DisplayMetrics displayMetrics) {
 		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) dipValue, displayMetrics);
 	}
-	
-	public static boolean haveInternet(Context context) {
-	    NetworkInfo info = (NetworkInfo) ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
-	    if (info == null || !info.isConnected()) {
-	        return false;
-	    }
-	    
-	    return true;
+	public static boolean haveInternet(Context context) {
+		NetworkInfo info = (NetworkInfo) ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+
+		if (info == null || !info.isConnected()) {
+			return false;
+		}
+
+		return true;
 	}
-	
+
 	public void closeWithNoInternet() {
 		new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Get some Internet, dude")
 		.setMessage("This application requires an Internet connection, sorry.")
@@ -254,7 +254,7 @@ public class PBMUtil extends Activity {
 
 		return;
 	}
-	
+
 	public static Location updateLocationData(Location location) {	
 		Document doc = getXMLDocument(PBMUtil.httpBase + "iphone.html?get_location=" + location.locationNo);
 
@@ -274,37 +274,36 @@ public class PBMUtil extends Activity {
 					location.updateAddress(street1, city, state, zip, phone);
 				} 
 			}
-			
+
 			return location;
 		}
-		
+
 		return null;
 	}
-	
+
 	public List<Machine> getLocationMachineData(Location location) {
 		List<Machine> machines = new ArrayList<Machine>();
-		Document doc = getXMLDocument(httpBase + "iphone.html?get_location=" + location.locationNo);
+		Document doc = getXMLDocument(PBMUtil.httpBase + "iphone.html?get_location=" + location.locationNo);
 
-		if (doc == null) {
-			return null; 
-		}
+		if (doc != null) {
+			NodeList itemNodes = doc.getElementsByTagName("machine"); 
+			for (int i = 0; i < itemNodes.getLength(); i++) { 
+				Node itemNode = itemNodes.item(i); 
+				if (itemNode.getNodeType() == Node.ELEMENT_NODE) {            
+					Element itemElement = (Element) itemNode;     
 
-		NodeList itemNodes = doc.getElementsByTagName("machine"); 
-		for (int i = 0; i < itemNodes.getLength(); i++) { 
-			Node itemNode = itemNodes.item(i); 
-			if (itemNode.getNodeType() == Node.ELEMENT_NODE) {            
-				Element itemElement = (Element) itemNode;     
+					String id = readDataFromXML("id", itemElement);				
+					if ((id != null)) {
+						PBMApplication app = (PBMApplication) getApplication();
+						Machine machine = app.getMachine(Integer.parseInt(id));
 
-				String id = readDataFromXML("id", itemElement);				
-				if ((id != null)) {
-					PBMApplication app = (PBMApplication) getApplication();
-					Machine machine = app.getMachine(Integer.parseInt(id));
-
-					machines.add(machine);
+						machines.add(machine);
+					}
 				}
 			}
+			return machines;
 		}
-		
-		return machines;
+
+		return null;
 	}
 }

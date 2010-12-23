@@ -62,15 +62,13 @@ public class LocationDetail extends PBMUtil {
 	}
 
 	private void updateTable() {
-		Collections.sort(machines, new Comparator<Machine>() {
-			public int compare(Machine m1, Machine m2) {
-				try {
+		try {
+			Collections.sort(machines, new Comparator<Machine>() {
+				public int compare(Machine m1, Machine m2) {
 					return m1.name.compareTo(m2.name);
-				} catch (java.lang.NullPointerException nep) {
-					return 0;
 				}
-			}
-		});
+			});
+		} catch (java.lang.NullPointerException nep) {}
 
 		table.setAdapter(new ArrayAdapter<Machine>(this, android.R.layout.simple_list_item_1, machines));
 	}
