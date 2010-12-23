@@ -278,11 +278,12 @@ public class PBMUtil extends Activity {
 			return location;
 		}
 
-		return null;
+		return location;
 	}
 
 	public List<Machine> getLocationMachineData(Location location) {
 		List<Machine> machines = new ArrayList<Machine>();
+
 		Document doc = getXMLDocument(PBMUtil.httpBase + "iphone.html?get_location=" + location.locationNo);
 
 		if (doc != null) {

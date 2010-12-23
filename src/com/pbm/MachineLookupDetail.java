@@ -47,7 +47,7 @@ public class MachineLookupDetail extends PBMUtil {
 		});
 
 		getMachineData(httpBase + "iphone.html?get_machine=" + machine.machineNo);
-
+		
 		if (locationsWithMachine != null) {
 			Arrays.sort(locationsWithMachine, new Comparator<Location>() {
 				public int compare(Location l1, Location l2) {
