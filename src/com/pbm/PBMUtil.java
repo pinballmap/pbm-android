@@ -177,7 +177,6 @@ public class PBMUtil extends Activity {
 
 	public static InputStream OpenHttpConnection(String urlString) throws IOException {
 		InputStream inputStream = null;
-		int response = -1;
 
 		URL url = new URL(urlString); 
 		URLConnection urlConnection = url.openConnection();
@@ -190,12 +189,13 @@ public class PBMUtil extends Activity {
 			httpConn.setAllowUserInteraction(false);
 			httpConn.setInstanceFollowRedirects(true);
 			httpConn.setRequestMethod("GET");
-			httpConn.connect(); 
+			
+			while (httpConn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+				httpConn.connect(); 
+			}
 
-			response = httpConn.getResponseCode();                 
-			if (response == HttpURLConnection.HTTP_OK) {
-				inputStream = httpConn.getInputStream();                                 
-			}                     
+			inputStream = httpConn.getInputStream();                                 
+			
 		} catch (Exception ex) {
 			return null;
 		}
@@ -214,6 +214,8 @@ public class PBMUtil extends Activity {
 			db = dbf.newDocumentBuilder();
 			doc = db.parse(inputStream);
 			doc.getDocumentElement().normalize();
+			
+			inputStream.close();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();            
 		} catch (NullPointerException npe) {
@@ -225,6 +227,7 @@ public class PBMUtil extends Activity {
 		} catch (java.lang.IllegalArgumentException e) {
 			return doc;
 		}
+		
 
 		return doc;
 	}

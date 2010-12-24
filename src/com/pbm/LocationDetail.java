@@ -71,7 +71,7 @@ public class LocationDetail extends PBMUtil {
 			});
 		} catch (java.lang.NullPointerException nep) {}
 
-		if(machines != null) {
+		if (machines != null) {
 			table.setAdapter(new ArrayAdapter<Machine>(this, android.R.layout.simple_list_item_1, machines));
 		}
 	}

@@ -49,11 +49,13 @@ public class MachineLookupDetail extends PBMUtil {
 		getMachineData(httpBase + "iphone.html?get_machine=" + machine.machineNo);
 		
 		if (locationsWithMachine != null) {
-			Arrays.sort(locationsWithMachine, new Comparator<Location>() {
-				public int compare(Location l1, Location l2) {
-					return l1.name.toString().compareTo(l2.name.toString());
-				}
-			});
+			try {
+				Arrays.sort(locationsWithMachine, new Comparator<Location>() {
+					public int compare(Location l1, Location l2) {
+						return l1.name.toString().compareTo(l2.name.toString());
+					}
+				});
+			} catch (java.lang.NullPointerException nep) {}
 
 			table.setAdapter(new ArrayAdapter<Location>(this, android.R.layout.simple_list_item_1, locationsWithMachine));
 		}
@@ -73,7 +75,7 @@ public class MachineLookupDetail extends PBMUtil {
 					Element itemElement = (Element) itemNode;    
 
 					String locationNo = readDataFromXML("id", itemElement);
-					
+
 					if ((locationNo != null)) {
 						locationsWithMachine[i] = app.getLocation(Integer.parseInt(locationNo));
 					}
