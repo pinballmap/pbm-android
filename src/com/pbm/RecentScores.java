@@ -39,7 +39,7 @@ public class RecentScores extends PBMUtil {
 
 	public void getLocationData(String URL) {
 		Document doc = getXMLDocument(URL);
-		
+
 		if (doc == null) {
 			return;
 		}
@@ -47,7 +47,7 @@ public class RecentScores extends PBMUtil {
 		NodeList itemNodes = doc.getElementsByTagName("item"); 
 		for (int i = 0; i < NUM_RECENT_SCORES_TO_SHOW; i++) { 
 			Node itemNode = itemNodes.item(i); 
-			if (itemNode.getNodeType() == Node.ELEMENT_NODE) {            
+			if ((itemNode != null) && (itemNode.getNodeType() == Node.ELEMENT_NODE)) {            
 				Element itemElement = (Element) itemNode;   	
 				String title = readDataFromXML("title", itemElement);
 
@@ -114,19 +114,19 @@ public class RecentScores extends PBMUtil {
 			PBMApplication app = (PBMApplication) getApplication();
 			Region region = app.getRegion(prefRegion);
 			if (region.subDir.equals("")) {
-				return "scores";
+				return "scores.rss";
 			} else {
 				return region.subDir + "_scores.rss"; 
 			}
 		}
 
 		public void run() {
-			getLocationData(httpBase + getScoreRSSName() + ".rss");
+			getLocationData(httpBase + getScoreRSSName());
 
 			Message msg = handler.obtainMessage();
-			Bundle b = new Bundle();
-			b.putInt("total", 100);
-			msg.setData(b);
+			Bundle bundle = new Bundle();
+			bundle.putInt("total", 100);
+			msg.setData(bundle);
 			handler.sendMessage(msg);
 		}
 	}

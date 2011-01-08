@@ -54,8 +54,7 @@ public class RecentlyAdded extends PBMUtil {
 		NodeList itemNodes = doc.getElementsByTagName("item"); 
 		for (int i = 0; i < NUM_ADDED_TO_SHOW; i++) { 
 			Node itemNode = itemNodes.item(i); 
-			if (itemNode.getNodeType() == Node.ELEMENT_NODE) 
-			{            
+			if ((itemNode != null) && (itemNode.getNodeType() == Node.ELEMENT_NODE)) {            
 				Element itemElement = (Element) itemNode;                 
 				String title = readDataFromXML("title", itemElement);
 				String[] splitString = (title.split(" was added to "));
