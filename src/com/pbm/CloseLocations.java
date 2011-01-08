@@ -115,7 +115,6 @@ public class CloseLocations extends PBMUtil implements LocationListener {
 
 				try{
 					dismissDialog(PROGRESS_DIALOG);
-					progressThread.interrupt();
 					progressThread.stop();
 				} catch (java.lang.IllegalArgumentException iae) {}
 			}
@@ -153,8 +152,10 @@ public class CloseLocations extends PBMUtil implements LocationListener {
 
 	public void onDestroy() {
 		super.onDestroy();
-		progressThread.stop();
-		locationManager.removeUpdates(this); 
+		try {
+			progressThread.stop();
+			locationManager.removeUpdates(this); 
+		} catch (NullPointerException npe){}
 	}
 
 	public void clickHandler(View view) {		

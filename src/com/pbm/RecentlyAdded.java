@@ -46,7 +46,7 @@ public class RecentlyAdded extends PBMUtil {
 	public void getLocationData(String URL)
 	{
 		Document doc = getXMLDocument(URL);
-		
+
 		if (doc == null) {
 			return;
 		}
@@ -77,7 +77,7 @@ public class RecentlyAdded extends PBMUtil {
 				try{
 					dismissDialog(PROGRESS_DIALOG); 
 				} catch (java.lang.IllegalArgumentException iae) {}
-				
+
 				showTable(recentAdds);
 			}
 		}
@@ -137,10 +137,14 @@ public class RecentlyAdded extends PBMUtil {
 
 			PBMApplication app = (PBMApplication) getApplication();
 			Region region = app.getRegion(prefRegion);
-			if (region.subDir.equals("")) {
-				return "locations";
-			} else {
-				return region.subDir; 
+			try {
+				if (region.subDir.equals("")) {
+					return "locations";
+				} else {
+					return region.subDir; 
+				}
+			} catch (NullPointerException npe) {
+				return "";
 			}
 		}
 
