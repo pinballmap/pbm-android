@@ -46,7 +46,7 @@ public class RecentlyAdded extends PBMUtil {
 	public void getLocationData(String URL)
 	{
 		Document doc = getXMLDocument(URL);
-		
+
 		if (doc == null) {
 			return;
 		}
@@ -54,8 +54,7 @@ public class RecentlyAdded extends PBMUtil {
 		NodeList itemNodes = doc.getElementsByTagName("item"); 
 		for (int i = 0; i < NUM_ADDED_TO_SHOW; i++) { 
 			Node itemNode = itemNodes.item(i); 
-			if (itemNode.getNodeType() == Node.ELEMENT_NODE) 
-			{            
+			if ((itemNode != null) && (itemNode.getNodeType() == Node.ELEMENT_NODE)) {            
 				Element itemElement = (Element) itemNode;                 
 				String title = readDataFromXML("title", itemElement);
 				String[] splitString = (title.split(" was added to "));
@@ -78,7 +77,7 @@ public class RecentlyAdded extends PBMUtil {
 				try{
 					dismissDialog(PROGRESS_DIALOG); 
 				} catch (java.lang.IllegalArgumentException iae) {}
-				
+
 				showTable(recentAdds);
 			}
 		}
@@ -138,10 +137,14 @@ public class RecentlyAdded extends PBMUtil {
 
 			PBMApplication app = (PBMApplication) getApplication();
 			Region region = app.getRegion(prefRegion);
-			if (region.subDir.equals("")) {
-				return "locations";
-			} else {
-				return region.subDir; 
+			try {
+				if (region.subDir.equals("")) {
+					return "locations";
+				} else {
+					return region.subDir; 
+				}
+			} catch (NullPointerException npe) {
+				return "";
 			}
 		}
 
