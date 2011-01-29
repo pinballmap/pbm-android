@@ -12,6 +12,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 public class PBMMenu extends PBMUtil {
@@ -30,32 +31,41 @@ public class PBMMenu extends PBMUtil {
 		mainMenuItems.add("Recent High Scores");
 		mainMenuItems.add("Events");
 		mainMenuItems.add("Closest Locations");
+		mainMenuItems.add("Suggest A Location");
 
 		ListView table = (ListView)findViewById(R.id.maintable);
 		table.setOnItemClickListener(new OnItemClickListener() {
 			@SuppressWarnings("unchecked")
 			public void onItemClick(AdapterView parentView, View selectedView, int position, long id) {	
 
-				Intent myIntent = new Intent();
+				Intent intent = new Intent();
+				PBMApplication app = (PBMApplication) getApplication();
+				Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 
 				switch (position) {
 				case 0: 
-					myIntent.setClassName("com.pbm", "com.pbm.LookupByMachineList"); break;
+					intent.setClassName("com.pbm", "com.pbm.LookupByMachineList"); break;
 				case 1:
-					myIntent.setClassName("com.pbm", "com.pbm.LookupByLocationList"); break;
+					intent.setClassName("com.pbm", "com.pbm.LookupByLocationList"); break;
 				case 2:
-					myIntent.setClassName("com.pbm", "com.pbm.RecentlyAdded"); break;
+					intent.setClassName("com.pbm", "com.pbm.RecentlyAdded"); break;
 				case 3:
-					myIntent.setClassName("com.pbm", "com.pbm.RecentScores"); break;
+					intent.setClassName("com.pbm", "com.pbm.RecentScores"); break;
 				case 4:
-					myIntent.setClassName("com.pbm", "com.pbm.Events"); break;
+					intent.setClassName("com.pbm", "com.pbm.Events"); break;
 				case 5:
-					myIntent.setClassName("com.pbm", "com.pbm.CloseLocations"); break;
+					intent.setClassName("com.pbm", "com.pbm.CloseLocations"); break;
+				case 6:
+					intent = new Intent(Intent.ACTION_VIEW);
+					intent.setData(Uri.parse("mailto:" + region.email + "?subject=PBM - New Location Suggestion&body=" + "Name of Location:\n\nStreet:\n\nCity:\n\nState:\n\nZip:\n\nMachines:\n"));
+					startActivity(intent);
+
+					return;
 				default:	
-					myIntent.setClassName("com.pbm", "com.pbm.LookupByMachineList"); break;
+					intent.setClassName("com.pbm", "com.pbm.LookupByMachineList"); break;
 				}
 
-				startActivityForResult(myIntent, MENU_RESULT);
+				startActivityForResult(intent, MENU_RESULT);
 			}
 		});
 		

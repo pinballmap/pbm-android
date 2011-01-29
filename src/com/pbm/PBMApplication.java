@@ -223,8 +223,9 @@ public class PBMApplication extends Application {
 				String name = PBMUtil.readDataFromXML("name", itemElement);
 				String subDir = PBMUtil.readDataFromXML("subdir", itemElement);
 				String motd = PBMUtil.readDataFromXML("motd", itemElement);
+				String email = PBMUtil.readDataFromXML("emailContact", itemElement);
 
-				addRegion(Integer.parseInt(id), new Region(Integer.parseInt(id), name, subDir, motd));
+				addRegion(Integer.parseInt(id), new Region(Integer.parseInt(id), name, subDir, motd, email));
 			}
 		}
 		return true;

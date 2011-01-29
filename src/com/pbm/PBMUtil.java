@@ -42,6 +42,7 @@ public class PBMUtil extends Activity {
 	public static final int MENU_PREFS      = 0;
 	public static final int MENU_ABOUT      = 1;
 	public static final int MENU_QUIT       = 2;
+	public static final int HTTP_RETRIES    = 5;
 	public static final String PREFS_NAME = "pbmPrefs";
 
 	public final static String holyBase = "http://portlandpinballmap.com/";
@@ -116,7 +117,7 @@ public class PBMUtil extends Activity {
 
 		try {
 			String URL = httpBase + "iphone.html?" + requestString;
-			in = OpenHttpConnection(URL);
+			in = openHttpConnection(URL);
 
 			@SuppressWarnings("unused")
 			Document doc = null;
@@ -127,6 +128,8 @@ public class PBMUtil extends Activity {
 			try {
 				db = dbf.newDocumentBuilder();
 				doc = db.parse(in);
+
+				in.close();
 			} catch (ParserConfigurationException e) {
 				e.printStackTrace();
 			} catch (SAXException e) {
@@ -175,46 +178,47 @@ public class PBMUtil extends Activity {
 		return itemAndAttribute;
 	}
 
-	public static InputStream OpenHttpConnection(String urlString) throws IOException {
-		InputStream inputStream = null;
-
+	public static InputStream openHttpConnection(String urlString) throws IOException {
 		URL url = new URL(urlString); 
-		URLConnection urlConnection = url.openConnection();
-
-		if (!(urlConnection instanceof HttpURLConnection))                     
-			throw new IOException("Not an HTTP connection");
-
 		try{
-			HttpURLConnection httpConn = (HttpURLConnection) urlConnection;
-			httpConn.setAllowUserInteraction(false);
-			httpConn.setInstanceFollowRedirects(true);
-			httpConn.setRequestMethod("GET");
-			
-			while (httpConn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-				httpConn.connect(); 
-			}
+			for (int attempt = 0; attempt < HTTP_RETRIES; attempt++) {
+				URLConnection urlConnection = url.openConnection();
 
-			inputStream = httpConn.getInputStream();                                 
-			
+				if (!(urlConnection instanceof HttpURLConnection))                     
+					throw new IOException("Not an HTTP connection");
+
+				HttpURLConnection httpConn = (HttpURLConnection) urlConnection;
+				httpConn.setAllowUserInteraction(false);
+				httpConn.setInstanceFollowRedirects(true);
+				httpConn.setRequestMethod("GET");
+
+				httpConn.connect(); 
+				InputStream inputStream = httpConn.getInputStream();                                 
+
+				if ((httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) && (inputStream != null)) {
+					return inputStream;                                 
+				}
+
+				httpConn.disconnect();
+			}
 		} catch (Exception ex) {
 			return null;
 		}
-		return inputStream;     
+		return null;     
 	}
 
 	public static Document getXMLDocument(String URL) {
 		Document doc = null;
 
 		try {
-			InputStream inputStream = OpenHttpConnection(URL);
+			InputStream inputStream = openHttpConnection(URL);
 
-			DocumentBuilder db;
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-			db = dbf.newDocumentBuilder();
+			DocumentBuilder db = dbf.newDocumentBuilder();
 			doc = db.parse(inputStream);
 			doc.getDocumentElement().normalize();
-			
+
 			inputStream.close();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();            
@@ -227,7 +231,7 @@ public class PBMUtil extends Activity {
 		} catch (java.lang.IllegalArgumentException e) {
 			return doc;
 		}
-		
+
 
 		return doc;
 	}
@@ -259,6 +263,10 @@ public class PBMUtil extends Activity {
 	}
 
 	public static Location updateLocationData(Location location) {	
+		if (location == null) {
+			return null;
+		}
+
 		Document doc = getXMLDocument(PBMUtil.httpBase + "iphone.html?get_location=" + location.locationNo);
 
 		if (doc != null) {
@@ -285,6 +293,10 @@ public class PBMUtil extends Activity {
 	}
 
 	public List<Machine> getLocationMachineData(Location location) {
+		if (location == null) {
+			return null;
+		}
+
 		List<Machine> machines = new ArrayList<Machine>();
 		Document doc = getXMLDocument(PBMUtil.httpBase + "iphone.html?get_location=" + location.locationNo);
 
