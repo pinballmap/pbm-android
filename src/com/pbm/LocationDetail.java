@@ -48,8 +48,7 @@ public class LocationDetail extends PBMUtil {
 
 			table = (ListView)findViewById(R.id.locationDetailTable);
 			table.setOnItemClickListener(new OnItemClickListener() {
-				@SuppressWarnings("unchecked")
-				public void onItemClick(AdapterView parentView, View selectedView, int position, long id) {	
+				public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
 					Intent myIntent = new Intent();
 					myIntent.putExtra("Location", location);
 					myIntent.putExtra("Machine", (Machine) parentView.getItemAtPosition(position));

@@ -1,5 +1,6 @@
 package com.pbm;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
@@ -13,13 +14,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
+@SuppressLint("HandlerLeak")
 public class Preferences extends PBMUtil {
 	private ListView table;
 	private ProgressDialog progressDialog;
 	private ProgressThread progressThread;
 
-	
-	@SuppressWarnings("unchecked")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preferences);
@@ -29,7 +29,7 @@ public class Preferences extends PBMUtil {
 		table.setTextFilterEnabled(true);
 		
 		table.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView parentView, View selectedView, int position, long id) {	
+			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
 				Region region = (Region) parentView.getItemAtPosition(position);
 				table.setEnabled(false);
 				PBMMenu.setHttpBase(holyBase + region.subDir + "/");	
@@ -51,7 +51,7 @@ public class Preferences extends PBMUtil {
 		});
 		
 		PBMApplication app = (PBMApplication) getApplication();
-		table.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, app.getRegionValues()));
+		table.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_list_item_1, app.getRegionValues()));
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {

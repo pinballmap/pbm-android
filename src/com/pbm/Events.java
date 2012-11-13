@@ -30,8 +30,7 @@ public class Events extends PBMUtil {
 		ListView table = (ListView)findViewById(R.id.eventsTable);
 		table.setFastScrollEnabled(true);
 		table.setOnItemClickListener(new OnItemClickListener() {
-			@SuppressWarnings("unchecked")
-			public void onItemClick(AdapterView parentView, View selectedView, int position, long id) {
+			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
 				Intent intent = new Intent(Intent.ACTION_VIEW);
 				Uri uri = Uri.parse(eventLinks[position]);
 				intent.setData(uri);

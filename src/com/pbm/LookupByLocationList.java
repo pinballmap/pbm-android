@@ -27,8 +27,7 @@ public class LookupByLocationList extends PBMUtil {
 
 		ListView table = (ListView)findViewById(R.id.locationLookupListTable);
 		table.setOnItemClickListener(new OnItemClickListener() {
-			@SuppressWarnings("unchecked")
-			public void onItemClick(AdapterView parentView, View selectedView, int position, long id) {	
+			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
 				Intent myIntent = new Intent();	
 				myIntent.putExtra("Zone", (Zone) parentView.getItemAtPosition(position));
 				myIntent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");

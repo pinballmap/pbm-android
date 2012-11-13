@@ -42,8 +42,7 @@ public class PBMMenu extends PBMUtil {
 
 		ListView table = (ListView)findViewById(R.id.maintable);
 		table.setOnItemClickListener(new OnItemClickListener() {
-			@SuppressWarnings("unchecked")
-			public void onItemClick(AdapterView parentView, View selectedView, int position, long id) {	
+			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
 
 				Intent intent = new Intent();
 				PBMApplication app = (PBMApplication) getApplication();
