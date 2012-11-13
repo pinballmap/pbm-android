@@ -2,6 +2,7 @@ package com.pbm;
 
 import java.net.URLEncoder;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -17,12 +18,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+@SuppressLint("HandlerLeak")
 public class AddMachine extends PBMUtil {	
 	private Location location;
 	private ProgressDialog progressDialog;
 	private ProgressThread progressThread;
 
-	@SuppressWarnings("unchecked")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
@@ -39,7 +40,7 @@ public class AddMachine extends PBMUtil {
 		table.setTextFilterEnabled(true);
 
 		table.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView parentView, View selectedView, int position, long id) {	
+			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
 				addMachine((Machine) parentView.getItemAtPosition(position));
 				setResult(REFRESH_RESULT);
 
@@ -48,7 +49,7 @@ public class AddMachine extends PBMUtil {
 		});
 
 		PBMApplication app = (PBMApplication) getApplication();		
-		table.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, app.getMachineValues()));
+		table.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_list_item_1, app.getMachineValues()));
 	}   
 
 	public void addMachine(final Machine machine) {

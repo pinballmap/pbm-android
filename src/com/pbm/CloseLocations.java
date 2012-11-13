@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.location.Location;
 
+@SuppressLint("HandlerLeak")
 public class CloseLocations extends PBMUtil implements LocationListener {
 	private ListView table;
 	private ProgressDialog progressDialog;
@@ -77,8 +79,8 @@ public class CloseLocations extends PBMUtil implements LocationListener {
 					android.location.Location mockLocation = new android.location.Location(LocationManager.GPS_PROVIDER);	
 
 					try{
-						mockLocation.setLatitude(new Double(location.lat));
-						mockLocation.setLongitude(new Double(location.lon));
+						mockLocation.setLatitude(Double.valueOf(location.lat));
+						mockLocation.setLongitude(Double.valueOf(location.lon));
 					} catch (java.lang.NumberFormatException nfe) {
 					}
 
@@ -95,8 +97,7 @@ public class CloseLocations extends PBMUtil implements LocationListener {
 				}
 
 				table.setOnItemClickListener(new OnItemClickListener() {
-					@SuppressWarnings("unchecked")
-					public void onItemClick(AdapterView parentView, View selectedView, int position, long id) {
+					public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
 						Intent myIntent = new Intent();						
 						com.pbm.Location location = locationsForMap.get(position);
 
@@ -124,8 +125,8 @@ public class CloseLocations extends PBMUtil implements LocationListener {
 	private List<com.pbm.Location> sortLocations(List<com.pbm.Location> locations) {
 		Collections.sort(locations, new Comparator<com.pbm.Location>() {
 			public int compare(com.pbm.Location l1, com.pbm.Location l2) {
-				Float distanceFromYou1 = new Float(l1.distanceFromYou);
-				Float distanceFromYou2 = new Float(l2.distanceFromYou);
+				Float distanceFromYou1 = Float.valueOf(l1.distanceFromYou);
+				Float distanceFromYou2 = Float.valueOf(l2.distanceFromYou);
 
 				return distanceFromYou1.compareTo(distanceFromYou2);
 			}

@@ -18,7 +18,6 @@ public class SplashScreen extends PBMUtil {
 	private ListView table;
 	private volatile SplashThread splashThread;
 
-	@SuppressWarnings("unchecked")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -40,7 +39,7 @@ public class SplashScreen extends PBMUtil {
 			table.setVisibility(View.VISIBLE);
 
 			table.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView parentView, View selectedView, int position, long id) {	
+				public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
 					setProgressBarIndeterminateVisibility(true);
 					Region region = (Region) parentView.getItemAtPosition(position);
 					if (! (region.subDir.equals(""))) {
@@ -56,7 +55,7 @@ public class SplashScreen extends PBMUtil {
 				}
 			});
 
-			table.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, app.getRegionValues()));
+			table.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_list_item_1, app.getRegionValues()));
 		} else {
 			Region region = app.getRegion(prefRegion);
 			setHttpBase(holyBase + region.subDir + "/");

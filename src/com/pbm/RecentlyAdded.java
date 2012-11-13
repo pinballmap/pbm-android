@@ -8,6 +8,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+@SuppressLint("HandlerLeak")
 public class RecentlyAdded extends PBMUtil {
 	private ProgressDialog progressDialog;
 	private ProgressThread progressThread;
@@ -100,8 +102,7 @@ public class RecentlyAdded extends PBMUtil {
 
 	public void showTable(List<Spanned> locations) {
 		table.setOnItemClickListener(new OnItemClickListener() {
-			@SuppressWarnings("unchecked")
-			public void onItemClick(AdapterView parentView, View selectedView, int position, long id) {	
+			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
 				Intent myIntent = new Intent();
 				Spanned spanned = (Spanned) parentView.getItemAtPosition(position);
 				String locationName = spanned.toString().split(" was added to ")[1];

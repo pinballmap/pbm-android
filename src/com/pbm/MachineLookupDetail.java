@@ -37,8 +37,7 @@ public class MachineLookupDetail extends PBMUtil {
 		ListView table = (ListView)findViewById(R.id.machineLookupDetailTable);
 		table.setFastScrollEnabled(true);
 		table.setOnItemClickListener(new OnItemClickListener() {
-			@SuppressWarnings("unchecked")
-			public void onItemClick(AdapterView parentView, View selectedView, int position, long id) {	
+			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
 				Intent myIntent = new Intent();
 				myIntent.putExtra("Location", (Location) parentView.getItemAtPosition(position));
 				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail"); 
