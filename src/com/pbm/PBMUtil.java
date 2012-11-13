@@ -45,8 +45,8 @@ public class PBMUtil extends Activity {
 	public static final int HTTP_RETRIES    = 5;
 	public static final String PREFS_NAME = "pbmPrefs";
 
-	public final static String holyBase = "http://portlandpinballmap.com/";
-	public static String httpBase = "http://portlandpinballmap.com/";
+	public final static String holyBase = "http://pinballmap.com/";
+	public static String httpBase = "http://pinballmap.com/";
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(MENU_PREFS, MENU_PREFS, MENU_PREFS, "Preferences");
