@@ -29,7 +29,6 @@ public class SplashScreen extends PBMUtil {
 		Integer prefRegion = settings.getInt("region", -1);
 		PBMApplication app = (PBMApplication) getApplication();
 
-		
 		if (!haveInternet(getBaseContext()) || !app.initializeRegions(httpBase + "iphone.html?init=2")) {
 			closeWithNoInternet();
 			return;

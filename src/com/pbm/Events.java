@@ -37,9 +37,19 @@ public class Events extends PBMUtil {
 				startActivity(intent);
 			}
 		});
-
-		getEventData(httpBase + "iphone.html?init=3");
-		table.setAdapter(new ArrayAdapter<Spanned>(this, android.R.layout.simple_list_item_1, events));
+		
+		new Thread(new Runnable() {
+	        public void run() {
+	        	getEventData(httpBase + "iphone.html?init=3");
+	        	Events.super.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						ListView table = (ListView)findViewById(R.id.eventsTable);
+						table.setAdapter(new ArrayAdapter<Spanned>(Events.this, android.R.layout.simple_list_item_1, events));
+					}
+	        	});
+	        }
+	    }).start();
 	}   
 
 	public void getEventData(String URL) {
