@@ -9,8 +9,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 
+@SuppressLint("UseSparseArrays")
 public class PBMApplication extends Application {
 	private HashMap<Integer, com.pbm.Location> locations = new HashMap<Integer, Location>();
 	private HashMap<Integer, com.pbm.Machine>  machines  = new HashMap<Integer, Machine>();
@@ -80,7 +82,7 @@ public class PBMApplication extends Application {
 			public int compare(Object o1, Object o2) {
 				Region r1 = (Region) o1;
 				Region r2 = (Region) o2;
-				return r1.name.compareTo(r2.name);
+				return r1.formalName.compareTo(r2.formalName);
 			}
 		});
 
@@ -221,11 +223,12 @@ public class PBMApplication extends Application {
 
 				String id = PBMUtil.readDataFromXML("id", itemElement);
 				String name = PBMUtil.readDataFromXML("name", itemElement);
+				String formalName = PBMUtil.readDataFromXML("formalName", itemElement);
 				String subDir = PBMUtil.readDataFromXML("subdir", itemElement);
 				String motd = PBMUtil.readDataFromXML("motd", itemElement);
 				String email = PBMUtil.readDataFromXML("emailContact", itemElement);
 
-				addRegion(Integer.parseInt(id), new Region(Integer.parseInt(id), name, subDir, motd, email));
+				addRegion(Integer.parseInt(id), new Region(Integer.parseInt(id), name, formalName, subDir, motd, email));
 			}
 		}
 		return true;
