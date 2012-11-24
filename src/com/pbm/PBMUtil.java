@@ -171,7 +171,9 @@ public class PBMUtil extends Activity {
 			textNodes = ((Node) titleElement).getChildNodes();
 			if (textNodes.item(0) != null) {
 				itemAndAttribute[0] = titleElement.getAttribute(attribute);
-				itemAndAttribute[1] = URLDecoder.decode((((Node) textNodes.item(0)).getNodeValue()));
+				String nodeValue = (((Node) textNodes.item(0)).getNodeValue());
+				nodeValue = nodeValue.replaceAll("%", "%25");
+				itemAndAttribute[1] = URLDecoder.decode(nodeValue);
 			}
 		}
 
