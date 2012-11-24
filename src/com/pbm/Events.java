@@ -32,10 +32,13 @@ public class Events extends PBMUtil {
 		table.setFastScrollEnabled(true);
 		table.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				Uri uri = Uri.parse(eventLinks[position]);
-				intent.setData(uri);
-				startActivity(intent);
+				String link = eventLinks[position];
+				if ((link != null) && !link.equals("")) {
+					Intent intent = new Intent(Intent.ACTION_VIEW);
+					Uri uri = Uri.parse(eventLinks[position]);
+					intent.setData(uri);
+					startActivity(intent);
+				}
 			}
 		});
 

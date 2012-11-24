@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-	<TextView android:id="@+id/greeting" android:textSize="20dip"
+	<TextView android:id="@+id/greeting" android:textSize="20sp"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:paddingBottom="5dip" android:text="Select your region..." />
+		android:paddingBottom="5dip" android:src="@string/select_region" />
 	<TextView android:layout_width="fill_parent" android:id="@+id/spacer"
 		android:layout_below="@+id/greeting" android:layout_height="3dip"
 		android:background="#FFFFFF" />
@@ -14,8 +14,10 @@
 	<ImageView android:id="@+id/splash_image" android:src="@drawable/splash_image"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
 		android:scaleType="fitCenter" android:gravity="center"
+		android:contentDescription="@string/splash_image_desc"
 		android:visibility="invisible" />
 	<ImageView android:id="@+id/splash_image_city"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:contentDescription="@string/splash_image_city_desc"
 		android:visibility="invisible" android:gravity="center" />
 </RelativeLayout>
