@@ -3,11 +3,8 @@ package com.pbm;
 import java.net.URLEncoder;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -21,8 +18,6 @@ import android.widget.AdapterView.OnItemClickListener;
 @SuppressLint("HandlerLeak")
 public class AddMachine extends PBMUtil {	
 	private Location location;
-	private ProgressDialog progressDialog;
-	private ProgressThread progressThread;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,11 +35,22 @@ public class AddMachine extends PBMUtil {
 		table.setTextFilterEnabled(true);
 
 		table.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
-				addMachine((Machine) parentView.getItemAtPosition(position));
-				setResult(REFRESH_RESULT);
-
-				finish();
+			public void onItemClick(final AdapterView<?> parentView, View selectedView, final int position, long id) {	
+		
+				new Thread(new Runnable() {
+					public void run() {
+						Machine machine = (Machine) parentView.getItemAtPosition(position);
+						sendOneWayRequestToServer(getAddMachineURL("", machine));
+						AddMachine.super.runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								Toast.makeText(getBaseContext(), "Thanks for adding that machine!", Toast.LENGTH_LONG).show();
+								setResult(REFRESH_RESULT);
+								AddMachine.this.finish();
+							}
+						});
+					}
+				}).start();
 			}
 		});
 
@@ -52,16 +58,32 @@ public class AddMachine extends PBMUtil {
 		table.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_list_item_1, app.getMachineValues()));
 	}   
 
-	public void addMachine(final Machine machine) {
-		Toast.makeText(getBaseContext(), "Thanks for adding that machine!", Toast.LENGTH_LONG).show();
-		sendOneWayRequestToServer(getAddMachineURL("", machine));
-	}
-
 	public void submitHandler(View view) {		
 		EditText manualName = (EditText) findViewById(R.id.manualNewMachine);
 		String manualMachineName = manualName.getText().toString();
 		if (manualMachineName.length() > 0) {
-			showDialog(PROGRESS_DIALOG);
+			final ProgressDialog dialog = new ProgressDialog(this);
+			dialog.setMessage("Reinitializing machine information");
+			dialog.show();
+
+			new Thread(new Runnable() {
+				public void run() {
+					EditText manualName = (EditText) findViewById(R.id.manualNewMachine);
+					String manualMachineName = manualName.getText().toString();
+					sendOneWayRequestToServer(getAddMachineURL(manualMachineName, null));
+
+					PBMApplication app = (PBMApplication) getApplication();
+					app.initializeMachines(httpBase + "iphone.html?init=1");
+					AddMachine.super.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							dialog.dismiss();
+							setResult(REFRESH_RESULT);
+							AddMachine.this.finish();
+						}
+					});
+				}
+			}).start();
 		}
 	}
 
@@ -75,58 +97,5 @@ public class AddMachine extends PBMUtil {
 		}
 
 		return addMachineURL;
-	}
-
-	final Handler waitHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			int total = msg.getData().getInt("total");
-			progressDialog.setProgress(total);
-			if (total >= 100){
-				try{
-					dismissDialog(PROGRESS_DIALOG); 
-
-					setResult(REFRESH_RESULT);
-					finish();
-				} catch (java.lang.IllegalArgumentException iae) {}
-			}
-		}
-	};
-
-	protected Dialog onCreateDialog(int id) { 
-		switch(id) {
-		case PROGRESS_DIALOG:
-			progressDialog = new ProgressDialog(this);
-			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			progressDialog.setMessage("Reinitializing machine information");
-			progressThread = new ProgressThread(waitHandler);
-			progressThread.start();
-
-			return progressDialog;
-		default:
-			return null;
-		}
-	}
-
-	private class ProgressThread extends Thread {
-		Handler mHandler;
-
-		ProgressThread(Handler h) {
-			mHandler = h;
-		}
-
-		public void run() {
-			EditText manualName = (EditText) findViewById(R.id.manualNewMachine);
-			String manualMachineName = manualName.getText().toString();
-			sendOneWayRequestToServer(getAddMachineURL(manualMachineName, null));
-
-			PBMApplication app = (PBMApplication) getApplication();
-			app.initializeMachines(httpBase + "iphone.html?init=1");
-
-			Message msg = mHandler.obtainMessage();
-			Bundle b = new Bundle();
-			b.putInt("total", 100);
-			msg.setData(b);
-			mHandler.sendMessage(msg);
-		}
 	}
 }

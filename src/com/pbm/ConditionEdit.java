@@ -2,6 +2,7 @@ package com.pbm;
 
 import java.net.URLEncoder;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -30,16 +31,29 @@ public class ConditionEdit extends PBMUtil {
 		inputMethodManager.toggleSoftInput(inputMethodManager.SHOW_FORCED, 0);
 	}
 
-	private void updateCondition(String condition) {
-		EditText currText = (EditText) findViewById(R.id.condition);
+	private void updateCondition(final String condition) {
+		final ProgressDialog dialog = new ProgressDialog(this);
+		dialog.setMessage("Loading...");
+		dialog.show();
+		
+		new Thread(new Runnable() {
+	        public void run() {
+	        	sendOneWayRequestToServer("condition=" + URLEncoder.encode(condition) + ";location_no=" + location.locationNo + ";machine_no=" + machine.machineNo);
+	        	ConditionEdit.super.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						dialog.dismiss();
+						Toast.makeText(getBaseContext(), "Thanks for updating that comment!", Toast.LENGTH_LONG).show();
+						
+						final EditText currText = (EditText) findViewById(R.id.condition);
+						inputMethodManager.hideSoftInputFromWindow(currText.getWindowToken(), 0);
 
-		sendOneWayRequestToServer("condition=" + URLEncoder.encode(condition) + ";location_no=" + location.locationNo + ";machine_no=" + machine.machineNo);
-
-		Toast.makeText(getBaseContext(), "Thanks for updating that comment!", Toast.LENGTH_LONG).show();
-		inputMethodManager.hideSoftInputFromWindow(currText.getWindowToken(), 0);
-
-		setResult(REFRESH_RESULT);
-		this.finish();
+						setResult(REFRESH_RESULT);
+						ConditionEdit.this.finish();
+					}
+	        	});
+	        }
+	    }).start();
 	}
 
 	public void clickHandler(View view) {		

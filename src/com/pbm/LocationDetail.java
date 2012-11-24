@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,33 +32,45 @@ public class LocationDetail extends PBMUtil {
 		machines.clear();
 
 		location = (Location) getIntent().getExtras().get("Location");
+		
+		final ProgressDialog dialog = new ProgressDialog(this);
+		dialog.setMessage("Loading...");
+		dialog.show();
 
 		if (location != null) {
-			if (location.street1 == null) {
-				PBMApplication app = (PBMApplication) getApplication();
-				location = updateLocationData(app.getLocation(location.locationNo));
-			}
+			new Thread(new Runnable() {
+				public void run() {
+					if (location.street1 == null) {
+						PBMApplication app = (PBMApplication) getApplication();
+						location = updateLocationData(app.getLocation(location.locationNo));
+					}
+							
+					machines = getLocationMachineData(location);
+					LocationDetail.super.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							TextView title = (TextView)findViewById(R.id.title);
+							title.setText(location.name);
+							TextView locationName = (TextView)findViewById(R.id.locationName);
+							locationName.setText(location.name + "\n\t" + location.street1 + "\n\t" + location.city + " " + location.state + " " + location.zip + "\n\t" + location.phone);
+							table = (ListView)findViewById(R.id.locationDetailTable);
+							table.setOnItemClickListener(new OnItemClickListener() {
+								public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
+									Intent myIntent = new Intent();
+									myIntent.putExtra("Location", location);
+									myIntent.putExtra("Machine", (Machine) parentView.getItemAtPosition(position));
+									myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
+									startActivityForResult(myIntent, QUIT_RESULT);
+								}
+							});
 
-			machines = getLocationMachineData(location);
-
-			TextView title = (TextView)findViewById(R.id.title);
-			title.setText(location.name);
-
-			TextView locationName = (TextView)findViewById(R.id.locationName);
-			locationName.setText(location.name + "\n\t" + location.street1 + "\n\t" + location.city + " " + location.state + " " + location.zip + "\n\t" + location.phone);
-
-			table = (ListView)findViewById(R.id.locationDetailTable);
-			table.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
-					Intent myIntent = new Intent();
-					myIntent.putExtra("Location", location);
-					myIntent.putExtra("Machine", (Machine) parentView.getItemAtPosition(position));
-					myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
-					startActivityForResult(myIntent, QUIT_RESULT);
+							updateTable();
+							
+							dialog.dismiss();
+						}
+					});
 				}
-			});
-
-			updateTable();
+			}).start();
 		}
 	}
 
@@ -103,7 +116,21 @@ public class LocationDetail extends PBMUtil {
 
 	public void activityRefreshResult() {
 		machines.clear();
-		machines = getLocationMachineData(location);
-		updateTable();
+		final ProgressDialog dialog = new ProgressDialog(this);
+		dialog.setMessage("Loading...");
+		dialog.show();
+				
+		new Thread(new Runnable() {
+			public void run() {
+				machines = getLocationMachineData(location);
+				LocationDetail.super.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						updateTable();
+						dialog.dismiss();
+					}
+				});
+			}
+		}).start();
 	}
 }

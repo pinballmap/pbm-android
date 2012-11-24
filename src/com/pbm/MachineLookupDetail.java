@@ -8,6 +8,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -44,20 +45,34 @@ public class MachineLookupDetail extends PBMUtil {
 				startActivityForResult(myIntent, QUIT_RESULT);    
 			}
 		});
-
-		getMachineData(httpBase + "iphone.html?get_machine=" + machine.machineNo);
 		
-		if (locationsWithMachine != null) {
-			try {
-				Arrays.sort(locationsWithMachine, new Comparator<Location>() {
-					public int compare(Location l1, Location l2) {
-						return l1.name.toString().compareTo(l2.name.toString());
-					}
-				});
-			} catch (java.lang.NullPointerException nep) {}
+		final ProgressDialog dialog = new ProgressDialog(this);
+		dialog.setMessage("Loading...");
+		dialog.show();
+		
+		new Thread(new Runnable() {
+	        public void run() {
+	        	getMachineData(httpBase + "iphone.html?get_machine=" + machine.machineNo);
+	        	MachineLookupDetail.super.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						if (locationsWithMachine != null) {
+							try {
+								Arrays.sort(locationsWithMachine, new Comparator<Location>() {
+									public int compare(Location l1, Location l2) {
+										return l1.name.toString().compareTo(l2.name.toString());
+									}
+								});
+							} catch (java.lang.NullPointerException nep) {}
 
-			table.setAdapter(new ArrayAdapter<Location>(this, android.R.layout.simple_list_item_1, locationsWithMachine));
-		}
+							ListView table = (ListView)findViewById(R.id.machineLookupDetailTable);
+							table.setAdapter(new ArrayAdapter<Location>(MachineLookupDetail.this, android.R.layout.simple_list_item_1, locationsWithMachine));
+						}
+						dialog.dismiss();
+					}
+	        	});
+	        }
+	    }).start();
 	}   
 
 	public void getMachineData(String URL) {

@@ -8,6 +8,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,13 +38,19 @@ public class Events extends PBMUtil {
 				startActivity(intent);
 			}
 		});
+
+		final ProgressDialog dialog = new ProgressDialog(this);
+		dialog.setMessage("Loading...");
+		dialog.show();
 		
 		new Thread(new Runnable() {
 	        public void run() {
+
 	        	getEventData(httpBase + "iphone.html?init=3");
 	        	Events.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
+						dialog.dismiss();
 						ListView table = (ListView)findViewById(R.id.eventsTable);
 						table.setAdapter(new ArrayAdapter<Spanned>(Events.this, android.R.layout.simple_list_item_1, events));
 					}

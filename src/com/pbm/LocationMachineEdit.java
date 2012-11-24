@@ -27,19 +27,27 @@ public class LocationMachineEdit extends PBMUtil {
 
 		location = (Location) getIntent().getExtras().get("Location");
 		machine = (Machine) getIntent().getExtras().get("Machine");
+		
+		new Thread(new Runnable() {
+	        public void run() {
+	        	getMachineData(location, machine);
+	        	LocationMachineEdit.super.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						TextView title = (TextView)findViewById(R.id.title);
+						title.setText(machine.name + " @ " + location.name);
 
-		getMachineData(location, machine);
+						TextView conditionText = (TextView)findViewById(R.id.condition);
+						conditionText.setText(machine.condition);
 
-		TextView title = (TextView)findViewById(R.id.title);
-		title.setText(machine.name + " @ " + location.name);
-
-		TextView conditionText = (TextView)findViewById(R.id.condition);
-		conditionText.setText(machine.condition);
-
-		if (machine.conditionDate != null) {
-			TextView conditionDateView = (TextView)findViewById(R.id.conditionDate);
-			conditionDateView.setText("Comment made on: " + machine.conditionDate);
-		}
+						if (machine.conditionDate != null) {
+							TextView conditionDateView = (TextView)findViewById(R.id.conditionDate);
+							conditionDateView.setText("Comment made on: " + machine.conditionDate);
+						}
+					}
+	        	});
+	        }
+	    }).start();
 	}
 
 	private void getMachineData(Location searchLocation, Machine searchMachine) {
@@ -95,11 +103,20 @@ public class LocationMachineEdit extends PBMUtil {
 
 			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					sendOneWayRequestToServer("modify_location=" + location.locationNo + ";action=remove_machine;machine_no=" + machine.machineNo);
-					Toast.makeText(getBaseContext(), "OK, machine deleted.", Toast.LENGTH_LONG).show();
-
-					setResult(REFRESH_RESULT);
-					finish();
+					new Thread(new Runnable() {
+						public void run() {
+							sendOneWayRequestToServer("modify_location=" + location.locationNo + ";action=remove_machine;machine_no=" + machine.machineNo);
+							LocationMachineEdit.super.runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									Toast.makeText(getBaseContext(), "OK, machine deleted.", Toast.LENGTH_LONG).show();
+									
+									setResult(REFRESH_RESULT);
+									LocationMachineEdit.this.finish();
+								}
+							});
+						}
+					}).start();
 				}
 			});
 
