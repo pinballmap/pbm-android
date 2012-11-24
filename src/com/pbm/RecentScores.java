@@ -10,21 +10,15 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.Html;
 import android.text.Spanned;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class RecentScores extends PBMUtil {
-	private ListView table;
-	private ProgressDialog progressDialog;
-	private ProgressThread progressThread;
 	private List<Spanned> recentScores = new ArrayList<Spanned>();
 	final private static int NUM_RECENT_SCORES_TO_SHOW = 20;	
 
@@ -32,9 +26,24 @@ public class RecentScores extends PBMUtil {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.recent_scores);
-		table = (ListView)findViewById(R.id.recentscorestable);
 
-		showDialog(PROGRESS_DIALOG);		
+		final ProgressDialog dialog = new ProgressDialog(this);
+		dialog.setMessage("Loading...");
+		dialog.show();
+
+		new Thread(new Runnable() {
+	        public void run() {
+	        	getLocationData(httpBase + getScoreRSSName());
+	        	RecentScores.super.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						dialog.dismiss();
+						ListView table = (ListView)findViewById(R.id.recentscorestable);
+						table.setAdapter(new ArrayAdapter<Spanned>(RecentScores.this, android.R.layout.simple_list_item_1, recentScores));
+					}
+	        	});
+	        }
+	    }).start();
 	}
 
 	public void getLocationData(String URL) {
@@ -67,67 +76,16 @@ public class RecentScores extends PBMUtil {
 		}
 	}
 
-	final Handler waitHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			int total = msg.getData().getInt("total");
-			progressDialog.setProgress(total);
-			if (total >= 100){
-				try{
-					dismissDialog(PROGRESS_DIALOG);
-				} catch (java.lang.IllegalArgumentException iae) {}
+	public String getScoreRSSName() {
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		Integer prefRegion = settings.getInt("region", -1);
 
-				showTable(recentScores);
-			}
-		}
-	};
-
-	public void showTable(List<Spanned> items) {
-		table.setAdapter(new ArrayAdapter<Spanned>(this, android.R.layout.simple_list_item_1, items));
-	}
-
-	protected Dialog onCreateDialog(int id) {
-		switch(id) {
-		case PROGRESS_DIALOG:
-			progressDialog = new ProgressDialog(this);
-			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			progressDialog.setMessage("Loading...");
-			progressThread = new ProgressThread(waitHandler);
-			progressThread.start();
-
-			return progressDialog;
-		default:
-			return null;
-		}
-	}
-
-	private class ProgressThread extends Thread {
-		Handler handler;
-
-		ProgressThread(Handler h) {
-			handler = h;
-		}
-
-		public String getScoreRSSName() {
-			SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-			Integer prefRegion = settings.getInt("region", -1);
-
-			PBMApplication app = (PBMApplication) getApplication();
-			Region region = app.getRegion(prefRegion);
-			if (region.subDir.equals("")) {
-				return "scores.rss";
-			} else {
-				return region.subDir + "_scores.rss"; 
-			}
-		}
-
-		public void run() {
-			getLocationData(httpBase + getScoreRSSName());
-
-			Message msg = handler.obtainMessage();
-			Bundle bundle = new Bundle();
-			bundle.putInt("total", 100);
-			msg.setData(bundle);
-			handler.sendMessage(msg);
+		PBMApplication app = (PBMApplication) getApplication();
+		Region region = app.getRegion(prefRegion);
+		if (region.subDir.equals("")) {
+			return "scores.rss";
+		} else {
+			return region.subDir + "_scores.rss"; 
 		}
 	}
 }
