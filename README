@@ -3,6 +3,10 @@ Android Application for http://pinballmap.com
 CHANGELOG
 =========
 
+version 1.08
+-fix for Android > 2.1 closest locations crash
+-better threading
+
 version 1.07
 -crash report fixes from android marketplace submissions
 -reintroduced motd and location suggestions
