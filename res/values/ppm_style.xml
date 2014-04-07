@@ -2,5 +2,6 @@
 <resources>
 	<style name="CustomTheme" parent="android:Theme">
 		<item name="android:windowTitleSize">55dip</item>
+		<item name="android:windowActionBar">false</item>
 	</style>
 </resources>

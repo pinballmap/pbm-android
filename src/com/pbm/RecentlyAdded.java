@@ -1,7 +1,9 @@
 package com.pbm;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -40,7 +42,15 @@ public class RecentlyAdded extends PBMUtil {
 
 		new Thread(new Runnable() {
 	        public void run() {
-	        	getLocationData(httpBase + getLocationRSSName() + ".rss");
+	        	try {
+					getLocationData(httpBase + getLocationRSSName() + ".rss");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				}
 	        	RecentlyAdded.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -52,9 +62,9 @@ public class RecentlyAdded extends PBMUtil {
 	    }).start();
 	}   
 
-	public void getLocationData(String URL)
+	public void getLocationData(String URL) throws UnsupportedEncodingException, InterruptedException, ExecutionException
 	{
-		Document doc = getXMLDocument(URL);
+		Document doc = new RetrieveXMLTask().execute(URL).get();
 
 		if (doc == null) {
 			return;

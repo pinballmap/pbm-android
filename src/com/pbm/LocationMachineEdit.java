@@ -1,5 +1,8 @@
 package com.pbm;
 
+import java.io.UnsupportedEncodingException;
+import java.util.concurrent.ExecutionException;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -30,7 +33,15 @@ public class LocationMachineEdit extends PBMUtil {
 		
 		new Thread(new Runnable() {
 	        public void run() {
-	        	getMachineData(location, machine);
+	        	try {
+					getMachineData(location, machine);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				}
 	        	LocationMachineEdit.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -50,8 +61,8 @@ public class LocationMachineEdit extends PBMUtil {
 	    }).start();
 	}
 
-	private void getMachineData(Location searchLocation, Machine searchMachine) {
-		Document doc = getXMLDocument(httpBase + "iphone.html?get_location=" + searchLocation.locationNo);
+	private void getMachineData(Location searchLocation, Machine searchMachine) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
+		Document doc = new RetrieveXMLTask().execute(httpBase + "iphone.html?get_location=" + searchLocation.locationNo).get();
 
 		if (doc != null) {
 			NodeList itemNodes = doc.getElementsByTagName("machine"); 

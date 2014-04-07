@@ -1,7 +1,9 @@
 package com.pbm;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +35,15 @@ public class RecentScores extends PBMUtil {
 
 		new Thread(new Runnable() {
 	        public void run() {
-	        	getLocationData(httpBase + getScoreRSSName());
+	        	try {
+					getLocationData(httpBase + getScoreRSSName());
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				}
 	        	RecentScores.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -46,8 +56,8 @@ public class RecentScores extends PBMUtil {
 	    }).start();
 	}
 
-	public void getLocationData(String URL) {
-		Document doc = getXMLDocument(URL);
+	public void getLocationData(String URL) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
+		Document doc = new RetrieveXMLTask().execute(URL).get();
 
 		if (doc == null) {
 			return;

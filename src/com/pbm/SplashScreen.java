@@ -1,9 +1,13 @@
 package com.pbm;
 
+import java.io.UnsupportedEncodingException;
+import java.util.concurrent.ExecutionException;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
@@ -29,9 +33,18 @@ public class SplashScreen extends PBMUtil {
 		Integer prefRegion = settings.getInt("region", -1);
 		PBMApplication app = (PBMApplication) getApplication();
 
-		if (!haveInternet(getBaseContext()) || !app.initializeRegions(httpBase + "iphone.html?init=2")) {
-			closeWithNoInternet();
-			return;
+		try {
+			Log.e("1", String.valueOf(haveInternet(getBaseContext())));
+			if (!haveInternet(getBaseContext()) || !app.initializeRegions(httpBase + "iphone.html?init=2")) {
+				closeWithNoInternet();
+				return;
+			}
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
 		}
 	
 		if (prefRegion == -1) {
@@ -103,6 +116,12 @@ public class SplashScreen extends PBMUtil {
 			try {
 				PBMApplication app = (PBMApplication) getApplication();
 				app.initializeData(httpBase + "iphone.html?init=1");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
 			} finally {
 				Intent myIntent = new Intent();
 				myIntent.setClassName("com.pbm", "com.pbm.PBMMenu");
