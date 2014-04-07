@@ -1,5 +1,8 @@
 package com.pbm;
 
+import java.io.UnsupportedEncodingException;
+import java.util.concurrent.ExecutionException;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -97,7 +100,15 @@ public class Preferences extends PBMUtil {
 
 		public void run() {
 			PBMApplication app = (PBMApplication) getApplication();
-			app.initializeData(httpBase + "iphone.html?init=1");
+			try {
+				app.initializeData(httpBase + "iphone.html?init=1");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
 			
 			Message msg = mHandler.obtainMessage();
 			Bundle b = new Bundle();

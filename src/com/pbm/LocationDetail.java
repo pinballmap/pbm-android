@@ -1,9 +1,11 @@
 package com.pbm;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -42,10 +44,26 @@ public class LocationDetail extends PBMUtil {
 				public void run() {
 					if (location.street1 == null) {
 						PBMApplication app = (PBMApplication) getApplication();
-						location = updateLocationData(app.getLocation(location.locationNo));
+						try {
+							location = updateLocationData(app.getLocation(location.locationNo));
+						} catch (UnsupportedEncodingException e) {
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							e.printStackTrace();
+						}
 					}
 							
-					machines = getLocationMachineData(location);
+					try {
+						machines = getLocationMachineData(location);
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					}
 					LocationDetail.super.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
@@ -122,7 +140,15 @@ public class LocationDetail extends PBMUtil {
 				
 		new Thread(new Runnable() {
 			public void run() {
-				machines = getLocationMachineData(location);
+				try {
+					machines = getLocationMachineData(location);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				}
 				LocationDetail.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {

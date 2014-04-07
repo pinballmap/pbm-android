@@ -1,8 +1,10 @@
 package com.pbm;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -115,12 +117,12 @@ public class PBMApplication extends Application {
 		return machineValues;
 	}
 	
-	public void initializeData(String URL) {
+	public void initializeData(String URL) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
 		locations.clear();
 		machines.clear();
 		zones.clear();
 
-		Document doc = PBMUtil.getXMLDocument(URL);
+		Document doc = new RetrieveXMLTask().execute(URL).get();
 		
 		if (doc == null) {
 			return;
@@ -187,8 +189,8 @@ public class PBMApplication extends Application {
 		}
 	}
 
-	public void initializeMachines(String URL) {
-		Document doc = PBMUtil.getXMLDocument(URL);
+	public void initializeMachines(String URL) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
+		Document doc = new RetrieveXMLTask().execute(URL).get();
 		
 		NodeList itemNodes = doc.getElementsByTagName("machine"); 
 		for (int i = 0; i < itemNodes.getLength(); i++) { 
@@ -207,8 +209,8 @@ public class PBMApplication extends Application {
 		}
 	}
 	
-	public boolean initializeRegions(String URL) {
-		Document doc = PBMUtil.getXMLDocument(URL);
+	public boolean initializeRegions(String URL) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
+		Document doc = new RetrieveXMLTask().execute(URL).get();
 		
 		if (doc == null) {
 			return false;

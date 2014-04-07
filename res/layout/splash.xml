@@ -2,9 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
+    
 	<TextView android:id="@+id/greeting" android:textSize="20sp"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:paddingBottom="5dip" android:src="@string/select_region" />
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:paddingBottom="5dip" android:text="@string/select_region" android:textColor="#FFFFFF"/>
 	<TextView android:layout_width="fill_parent" android:id="@+id/spacer"
 		android:layout_below="@+id/greeting" android:layout_height="3dip"
 		android:background="#FFFFFF" />

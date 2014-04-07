@@ -2,12 +2,14 @@ package com.pbm;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,6 +29,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -139,47 +142,7 @@ public class PBMUtil extends Activity {
 			e1.printStackTrace();            
 		}
 	}
-
-	protected static String readDataFromXML(String tagName, Element itemElement) {
-		String dataName = "";
-		Element titleElement = null;
-		NodeList textNodes = null;
-
-		NodeList titleNodes = (itemElement).getElementsByTagName(tagName);
-		if (titleNodes.item(0) != null) {
-			titleElement = (Element) titleNodes.item(0);
-
-			textNodes = ((Node) titleElement).getChildNodes();
-			if (textNodes.item(0) != null) {
-				dataName = (((Node) textNodes.item(0)).getNodeValue());
-			}
-		}
-		dataName = dataName.replaceAll("%", "%25");
-
-		return URLDecoder.decode(dataName);
-	}
-
-	protected static String[] readDataFromXML(String tagName, Element itemElement, String attribute) {
-		String[] itemAndAttribute = new String[2];
-		Element titleElement = null;
-		NodeList textNodes = null;
-
-		NodeList titleNodes = (itemElement).getElementsByTagName(tagName);
-		if (titleNodes.item(0) != null) {
-			titleElement = (Element) titleNodes.item(0);
-
-			textNodes = ((Node) titleElement).getChildNodes();
-			if (textNodes.item(0) != null) {
-				itemAndAttribute[0] = titleElement.getAttribute(attribute);
-				String nodeValue = (((Node) textNodes.item(0)).getNodeValue());
-				nodeValue = nodeValue.replaceAll("%", "%25");
-				itemAndAttribute[1] = URLDecoder.decode(nodeValue);
-			}
-		}
-
-		return itemAndAttribute;
-	}
-
+	
 	public static InputStream openHttpConnection(String urlString) throws IOException {
 		URL url = new URL(urlString); 
 		try{
@@ -204,38 +167,50 @@ public class PBMUtil extends Activity {
 				httpConn.disconnect();
 			}
 		} catch (Exception ex) {
+			Log.e("6", ex.toString());
 			return null;
 		}
 		return null;     
 	}
 
-	public static Document getXMLDocument(String URL) {
-		Document doc = null;
+	protected static String readDataFromXML(String tagName, Element itemElement) throws UnsupportedEncodingException {
+		String dataName = "";
+		Element titleElement = null;
+		NodeList textNodes = null;
 
-		try {
-			InputStream inputStream = openHttpConnection(URL);
+		NodeList titleNodes = (itemElement).getElementsByTagName(tagName);
+		if (titleNodes.item(0) != null) {
+			titleElement = (Element) titleNodes.item(0);
 
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			textNodes = ((Node) titleElement).getChildNodes();
+			if (textNodes.item(0) != null) {
+				dataName = (((Node) textNodes.item(0)).getNodeValue());
+			}
+		}
+		dataName = dataName.replaceAll("%", "%25");
 
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			doc = db.parse(inputStream);
-			doc.getDocumentElement().normalize();
+		return URLDecoder.decode(dataName, "UTF8");
+	}
 
-			inputStream.close();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();            
-		} catch (NullPointerException npe) {
-			return doc;            
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (java.lang.IllegalArgumentException e) {
-			return doc;
+	protected static String[] readDataFromXML(String tagName, Element itemElement, String attribute) throws UnsupportedEncodingException {
+		String[] itemAndAttribute = new String[2];
+		Element titleElement = null;
+		NodeList textNodes = null;
+
+		NodeList titleNodes = (itemElement).getElementsByTagName(tagName);
+		if (titleNodes.item(0) != null) {
+			titleElement = (Element) titleNodes.item(0);
+
+			textNodes = ((Node) titleElement).getChildNodes();
+			if (textNodes.item(0) != null) {
+				itemAndAttribute[0] = titleElement.getAttribute(attribute);
+				String nodeValue = (((Node) textNodes.item(0)).getNodeValue());
+				nodeValue = nodeValue.replaceAll("%", "%25");
+				itemAndAttribute[1] = URLDecoder.decode(nodeValue, "UTF8");
+			}
 		}
 
-
-		return doc;
+		return itemAndAttribute;
 	}
 
 	public static int convertPixelsToDip(int dipValue, DisplayMetrics displayMetrics) {
@@ -243,13 +218,19 @@ public class PBMUtil extends Activity {
 	}
 
 	public static boolean haveInternet(Context context) {
-		NetworkInfo info = (NetworkInfo) ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+		boolean connected = false;
+		ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-		if (info == null || !info.isConnected()) {
-			return false;
+		if(
+			connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED || 
+			connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED
+		) {
+			connected = true;
+		} else {
+		    connected = false;
 		}
 
-		return true;
+		return connected;
 	}
 
 	public void closeWithNoInternet() {
@@ -264,12 +245,12 @@ public class PBMUtil extends Activity {
 		return;
 	}
 
-	public static Location updateLocationData(Location location) {	
+	public static Location updateLocationData(Location location) throws UnsupportedEncodingException, InterruptedException, ExecutionException {	
 		if (location == null) {
 			return null;
 		}
 
-		Document doc = getXMLDocument(PBMUtil.httpBase + "iphone.html?get_location=" + location.locationNo);
+		Document doc = new RetrieveXMLTask().execute(PBMUtil.httpBase + "iphone.html?get_location=" + location.locationNo).get();
 
 		if (doc != null) {
 			NodeList itemNodes = doc.getElementsByTagName("location"); 
@@ -294,14 +275,14 @@ public class PBMUtil extends Activity {
 		return location;
 	}
 
-	public List<Machine> getLocationMachineData(Location location) {
+	public List<Machine> getLocationMachineData(Location location) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
 		if (location == null) {
 			return null;
 		}
 
 		List<Machine> machines = new ArrayList<Machine>();
 
-		Document doc = getXMLDocument(PBMUtil.httpBase + "iphone.html?get_location=" + location.locationNo);
+		Document doc = new RetrieveXMLTask().execute(PBMUtil.httpBase + "iphone.html?get_location=" + location.locationNo).get();
 
 		if (doc != null) {
 			NodeList itemNodes = doc.getElementsByTagName("machine"); 

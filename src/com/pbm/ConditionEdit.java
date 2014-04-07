@@ -1,5 +1,6 @@
 package com.pbm;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import android.app.ProgressDialog;
@@ -38,7 +39,12 @@ public class ConditionEdit extends PBMUtil {
 		
 		new Thread(new Runnable() {
 	        public void run() {
-	        	sendOneWayRequestToServer("condition=" + URLEncoder.encode(condition) + ";location_no=" + location.locationNo + ";machine_no=" + machine.machineNo);
+	        	try {
+					sendOneWayRequestToServer("condition=" + URLEncoder.encode(condition, "UTF8") + ";location_no=" + location.locationNo + ";machine_no=" + machine.machineNo);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+
 	        	ConditionEdit.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {

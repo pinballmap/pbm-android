@@ -1,7 +1,9 @@
 package com.pbm;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -49,7 +51,15 @@ public class Events extends PBMUtil {
 		new Thread(new Runnable() {
 	        public void run() {
 
-	        	getEventData(httpBase + "iphone.html?init=3");
+	        	try {
+					getEventData(httpBase + "iphone.html?init=3");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				}
 	        	Events.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -62,8 +72,9 @@ public class Events extends PBMUtil {
 	    }).start();
 	}   
 
-	public void getEventData(String URL) {
-		Document doc = getXMLDocument(URL);
+	public void getEventData(String URL) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
+		Document doc = new RetrieveXMLTask().execute(URL).get();
+
 		NodeList itemNodes = doc.getElementsByTagName("event"); 
 
 		eventLinks = new String[itemNodes.getLength()];

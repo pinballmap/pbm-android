@@ -1,7 +1,9 @@
 package com.pbm;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.concurrent.ExecutionException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -52,7 +54,15 @@ public class MachineLookupDetail extends PBMUtil {
 		
 		new Thread(new Runnable() {
 	        public void run() {
-	        	getMachineData(httpBase + "iphone.html?get_machine=" + machine.machineNo);
+	        	try {
+					getMachineData(httpBase + "iphone.html?get_machine=" + machine.machineNo);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 	        	MachineLookupDetail.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -75,8 +85,8 @@ public class MachineLookupDetail extends PBMUtil {
 	    }).start();
 	}   
 
-	public void getMachineData(String URL) {
-		Document doc = getXMLDocument(URL);
+	public void getMachineData(String URL) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
+		Document doc = new RetrieveXMLTask().execute(URL).get();
 		PBMApplication app = (PBMApplication) getApplication();
 
 		if (doc != null) {

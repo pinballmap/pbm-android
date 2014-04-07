@@ -1,17 +1,18 @@
 package com.pbm;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.concurrent.ExecutionException;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -21,14 +22,9 @@ public class AddMachine extends PBMUtil {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.add_machine);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.add_machine_titlebar);
 
 		location = (Location) getIntent().getExtras().get("Location");
-
-		TextView title = (TextView)findViewById(R.id.title);
-		title.setText("Add machine to " + location.name);
 
 		ListView table = (ListView)findViewById(R.id.addMachineTable);
 		table.setFastScrollEnabled(true);
@@ -40,9 +36,12 @@ public class AddMachine extends PBMUtil {
 				new Thread(new Runnable() {
 					public void run() {
 						Machine machine = (Machine) parentView.getItemAtPosition(position);
-						sendOneWayRequestToServer(getAddMachineURL("", machine));
+						try {
+							sendOneWayRequestToServer(getAddMachineURL("", machine));
+						} catch (UnsupportedEncodingException e) {
+							e.printStackTrace();
+						}
 						AddMachine.super.runOnUiThread(new Runnable() {
-							@Override
 							public void run() {
 								Toast.makeText(getBaseContext(), "Thanks for adding that machine!", Toast.LENGTH_LONG).show();
 								setResult(REFRESH_RESULT);
@@ -70,12 +69,23 @@ public class AddMachine extends PBMUtil {
 				public void run() {
 					EditText manualName = (EditText) findViewById(R.id.manualNewMachine);
 					String manualMachineName = manualName.getText().toString();
-					sendOneWayRequestToServer(getAddMachineURL(manualMachineName, null));
+					try {
+						sendOneWayRequestToServer(getAddMachineURL(manualMachineName, null));
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
 
 					PBMApplication app = (PBMApplication) getApplication();
-					app.initializeMachines(httpBase + "iphone.html?init=1");
+					try {
+						app.initializeMachines(httpBase + "iphone.html?init=1");
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					}
 					AddMachine.super.runOnUiThread(new Runnable() {
-						@Override
 						public void run() {
 							dialog.dismiss();
 							setResult(REFRESH_RESULT);
@@ -87,11 +97,11 @@ public class AddMachine extends PBMUtil {
 		}
 	}
 
-	private String getAddMachineURL(String manualMachineName, Machine machine) {
+	private String getAddMachineURL(String manualMachineName, Machine machine) throws UnsupportedEncodingException {
 		String addMachineURL = "modify_location=" + location.locationNo + ";action=add_machine";
 
 		if (manualMachineName.length() > 0) {
-			addMachineURL += ";machine_name=" + URLEncoder.encode(manualMachineName);
+			addMachineURL += ";machine_name=" + URLEncoder.encode(manualMachineName, "UTF8");
 		} else {
 			addMachineURL += ";machine_no=" + machine.machineNo;
 		}

@@ -1,24 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
 	<TextView android:id="@+id/addNewText" android:layout_width="wrap_content"
-		android:text="Enter the machine name in the box below, or select it from the list..."
+		android:text="@string/enter_machine"
 		android:textStyle="italic" android:textSize="12sp"
 		android:layout_height="wrap_content" />
-	<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="fill_parent" android:layout_height="70dip">
-		<TableRow>
-			<EditText android:id="@+id/manualNewMachine"
-				android:layout_width="230dip" android:layout_height="wrap_content"
-				android:textSize="20sp" android:textColor="#000000"
-				android:editable="true" android:padding="3dip" />
-			<Button android:id="@+id/submitButton" android:layout_width="fill_parent"
-				android:textColor="#FFFFFF" android:background="@drawable/cool_button"
-				android:layout_height="fill_parent" android:text="Add"
-				android:clickable="true" android:onClick="submitHandler" />
-		</TableRow>
-	</TableLayout>
+
+	<EditText
+	    android:id="@+id/manualNewMachine"
+	    android:layout_width="230dip"
+	    android:layout_height="wrap_content"
+	    android:inputType="text"
+	    android:labelFor="@id/manualNewMachine"
+	    android:padding="3dip"
+	    android:textColor="#FFFFFF"
+	    android:textSize="20sp" />
+
+	<Button
+	    android:id="@+id/submitButton"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:background="@drawable/cool_button"
+	    android:clickable="true"
+	    android:onClick="submitHandler"
+	    android:text="@string/add_machine"
+	    android:textColor="#FFFFFF" />
+
 	<TextView android:layout_width="fill_parent" android:id="@+id/spacer"
 		android:layout_height="3dip" android:background="#FFFFFF" />
 	<ListView android:id="@+id/addMachineTable"
