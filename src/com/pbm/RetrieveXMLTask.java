@@ -11,7 +11,6 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 public class RetrieveXMLTask extends AsyncTask<String, Void, Document> {
 
@@ -29,19 +28,14 @@ public class RetrieveXMLTask extends AsyncTask<String, Void, Document> {
 
 			inputStream.close();
 		} catch (IOException ioe) {
-			Log.e("1", ioe.toString());
 			ioe.printStackTrace();            
 		} catch (NullPointerException npe) {
-			Log.e("2", npe.toString());
 			return doc;            
 		} catch (ParserConfigurationException e) {
-			Log.e("3", e.toString());
 			e.printStackTrace();
 		} catch (SAXException e) {
-			Log.e("4", e.toString());
 			e.printStackTrace();
 		} catch (java.lang.IllegalArgumentException e) {
-			Log.e("5", e.toString());
 			return doc;
 		}
 

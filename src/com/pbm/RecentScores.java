@@ -76,8 +76,6 @@ public class RecentScores extends PBMUtil {
 					title = locationName + "<br />" + 
 					matcher.group(2) + " with " + matcher.group(3) + " by <b>" + matcher.group(4) + "</b>" + 
 					"<br /><small>" + matcher.group(5) + "</small>";
-				} else {
-					//Log.i("new high score", title);
 				}
 
 				Spanned titleSpanned = Html.fromHtml(title);

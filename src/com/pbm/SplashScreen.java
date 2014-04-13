@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
@@ -34,7 +33,6 @@ public class SplashScreen extends PBMUtil {
 		PBMApplication app = (PBMApplication) getApplication();
 
 		try {
-			Log.e("1", String.valueOf(haveInternet(getBaseContext())));
 			if (!haveInternet(getBaseContext()) || !app.initializeRegions(httpBase + "iphone.html?init=2")) {
 				closeWithNoInternet();
 				return;

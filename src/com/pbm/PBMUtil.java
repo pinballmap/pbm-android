@@ -29,7 +29,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -167,7 +166,6 @@ public class PBMUtil extends Activity {
 				httpConn.disconnect();
 			}
 		} catch (Exception ex) {
-			Log.e("6", ex.toString());
 			return null;
 		}
 		return null;     
