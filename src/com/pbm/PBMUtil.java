@@ -21,6 +21,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -112,6 +115,12 @@ public class PBMUtil extends Activity {
 
 	public static void setHttpBase(String newBase) {
 		httpBase = newBase;
+	}
+	
+	public void logAnalyticsHit(String page) {
+		Tracker tracker = ((PBMApplication) getApplication()).getTracker();
+        tracker.setScreenName(page);
+        tracker.send(new HitBuilders.AppViewBuilder().build());
 	}
 
 	protected void sendOneWayRequestToServer(String requestString) {

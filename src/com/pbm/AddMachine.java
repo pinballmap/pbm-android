@@ -22,6 +22,8 @@ public class AddMachine extends PBMUtil {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_machine);
+		
+		logAnalyticsHit("com.pbm.AddMachine");
 
 		location = (Location) getIntent().getExtras().get("Location");
 

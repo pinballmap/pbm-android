@@ -29,6 +29,8 @@ public class RecentScores extends PBMUtil {
 
 		setContentView(R.layout.recent_scores);
 
+		logAnalyticsHit("com.pbm.RecentScores");
+
 		final ProgressDialog dialog = new ProgressDialog(this);
 		dialog.setMessage("Loading...");
 		dialog.show();

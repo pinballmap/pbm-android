@@ -30,6 +30,8 @@ public class Events extends PBMUtil {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.events);
 
+		logAnalyticsHit("com.pbm.Events");
+
 		ListView table = (ListView)findViewById(R.id.eventsTable);
 		table.setFastScrollEnabled(true);
 		table.setOnItemClickListener(new OnItemClickListener() {

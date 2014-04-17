@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <integer name="ga_sessionTimeout">300</integer>
+
+    <bool name="ga_autoActivityTracking">true</bool>
+
+    <screenName name="com.pbm.About">
+        About
+    </screenName>
+    <screenName name="com.pbm.AddMachine">
+        Add Machine
+    </screenName>
+    <screenName name="com.pbm.CloseLocations">
+        Close Locations
+    </screenName>
+    <screenName name="com.pbm.ConditionEdit">
+        Condition Edit
+    </screenName>
+    <screenName name="com.pbm.DisplayOnMap">
+        Display on Map
+    </screenName>
+    <screenName name="com.pbm.Events">
+        Events
+    </screenName>
+    <screenName name="com.pbm.LocationDetail">
+        Location Detail
+    </screenName>
+    <screenName name="com.pbm.LocationLookupDetail">
+        Location Lookup Detail
+    </screenName>
+    <screenName name="com.pbm.LocationMachineEdit">
+        Location Machine Edit
+    </screenName>
+    <screenName name="com.pbm.LookupByLocationList">
+        Lookup By Location List
+    </screenName>
+    <screenName name="com.pbm.LookupByMachineList">
+        Lookup By Machine List
+    </screenName>
+    <screenName name="com.pbm.MachineLookupDetail">
+        Machine Lookup Detail
+    </screenName>
+    <screenName name="com.pbm.Preferences">
+        Preferences
+    </screenName>
+    <screenName name="com.pbm.RecentlyAdded">
+        Recently Added
+    </screenName>
+    <screenName name="com.pbm.RecentScores">
+        Recent Scores
+    </screenName>
+
+    <string name="ga_trackingId">UA-33321299-3</string>
+</resources>

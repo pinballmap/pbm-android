@@ -36,6 +36,8 @@ public class RecentlyAdded extends PBMUtil {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.recently_added);
 
+		logAnalyticsHit("com.pbm.RecentlyAdded");
+
 		final ProgressDialog dialog = new ProgressDialog(this);
 		dialog.setMessage("Loading...");
 		dialog.show();

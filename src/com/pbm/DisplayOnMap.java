@@ -36,6 +36,8 @@ public class DisplayOnMap extends PBMUtil {
 
 		showDialog(PBMUtil.PROGRESS_DIALOG);
 		
+		logAnalyticsHit("com.pbm.DisplayOnMap");
+		
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		map.setMyLocationEnabled(true);
 		

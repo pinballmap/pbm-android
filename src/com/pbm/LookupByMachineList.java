@@ -15,6 +15,8 @@ public class LookupByMachineList extends PBMUtil {
 		setContentView(R.layout.lookup_by_machine_list);
 
 		final PBMApplication app = (PBMApplication) getApplication();
+
+		logAnalyticsHit("com.pbm.LookupByMachineList");
 		
 		ListView table = (ListView)findViewById(R.id.machineLookupListTable);
 		table.setFastScrollEnabled(true);

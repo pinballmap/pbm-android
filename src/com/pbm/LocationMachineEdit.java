@@ -27,6 +27,8 @@ public class LocationMachineEdit extends PBMUtil {
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.location_machine_edit);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.location_machine_edit_titlebar);
+		
+		logAnalyticsHit("com.pbm.LocationMachineEdit");
 
 		location = (Location) getIntent().getExtras().get("Location");
 		machine = (Machine) getIntent().getExtras().get("Machine");
