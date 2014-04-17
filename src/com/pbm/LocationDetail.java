@@ -98,7 +98,7 @@ public class LocationDetail extends PBMUtil {
 		try {
 			Collections.sort(machines, new Comparator<Machine>() {
 				public int compare(Machine m1, Machine m2) {
-					return m1.name.compareTo(m2.name);
+					return m1.name.replaceAll("^(?i)The ", "").compareTo(m2.name.replaceAll("^(?i)The ", ""));
 				}
 			});
 		} catch (java.lang.NullPointerException nep) {}
