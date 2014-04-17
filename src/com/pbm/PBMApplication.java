@@ -129,7 +129,7 @@ public class PBMApplication extends Application {
 			public int compare(Object o1, Object o2) {
 				Machine m1 = (Machine) o1;
 				Machine m2 = (Machine) o2;
-				return m1.name.compareTo(m2.name);
+				return m1.name.replaceAll("^(?i)The ", "").compareTo(m2.name.replaceAll("^(?i)The ", ""));
 			}
 		});
 
