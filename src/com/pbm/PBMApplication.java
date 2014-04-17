@@ -11,15 +11,34 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
+
 import android.annotation.SuppressLint;
 import android.app.Application;
 
 @SuppressLint("UseSparseArrays")
 public class PBMApplication extends Application {
+	public enum TrackerName {
+	    APP_TRACKER
+	}
+
 	private HashMap<Integer, com.pbm.Location> locations = new HashMap<Integer, Location>();
 	private HashMap<Integer, com.pbm.Machine>  machines  = new HashMap<Integer, Machine>();
 	private HashMap<Integer, com.pbm.Zone>     zones     = new HashMap<Integer, Zone>();
 	private HashMap<Integer, com.pbm.Region>   regions   = new HashMap<Integer, Region>();
+	
+	public HashMap<TrackerName, Tracker> mTrackers = new HashMap<TrackerName, Tracker>();
+	
+	synchronized Tracker getTracker() {
+		if (!mTrackers.containsKey(TrackerName.APP_TRACKER)) {
+			GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+		    Tracker t = analytics.newTracker(R.xml.app_tracker);
+		    mTrackers.put(TrackerName.APP_TRACKER, t);
+		}
+
+		return mTrackers.get(TrackerName.APP_TRACKER);
+	}
 
 	public void setLocations(HashMap<Integer, com.pbm.Location> locations) {
 		this.locations = locations;

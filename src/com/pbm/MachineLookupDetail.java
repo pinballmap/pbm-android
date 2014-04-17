@@ -31,6 +31,8 @@ public class MachineLookupDetail extends PBMUtil {
 		setContentView(R.layout.machine_lookup_detail);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.map_titlebar);
 
+		logAnalyticsHit("com.pbm.MachineLookupDetail");
+
 		Bundle extras = getIntent().getExtras();
 		machine = (Machine) extras.get("Machine");
 

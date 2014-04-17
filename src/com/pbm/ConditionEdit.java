@@ -24,6 +24,8 @@ public class ConditionEdit extends PBMUtil {
 		Bundle extras = getIntent().getExtras();
 		location = (Location) extras.get("Location");
 		machine = (Machine) extras.get("Machine");
+		
+		logAnalyticsHit("com.pbm.ConditionEdit");
 
 		EditText condition = (EditText)findViewById(R.id.condition);
 		condition.setText(machine.condition);

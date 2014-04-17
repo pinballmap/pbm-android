@@ -27,6 +27,8 @@ public class LocationLookupDetail extends PBMUtil {
 
 		Bundle extras = getIntent().getExtras();
 		zone = (Zone) extras.get("Zone");
+		
+		logAnalyticsHit("com.pbm.LocationLookupDetail");
 
 		TextView title = (TextView)findViewById(R.id.title);
 		title.setText(zone.name);

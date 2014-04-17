@@ -9,6 +9,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -51,6 +53,10 @@ public class CloseLocations extends FragmentActivity implements LocationListener
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.close_locations);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.map_titlebar);
+		
+		Tracker tracker = ((PBMApplication) getApplication()).getTracker();
+        tracker.setScreenName("com.pbm.CloseLocations");
+        tracker.send(new HitBuilders.AppViewBuilder().build());
 
 		TextView title = (TextView)findViewById(R.id.title);
 		title.setText("Close locations");

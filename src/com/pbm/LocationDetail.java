@@ -31,6 +31,8 @@ public class LocationDetail extends PBMUtil {
 		setContentView(R.layout.location_detail);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.location_detail_titlebar);
 
+		logAnalyticsHit("com.pbm.LocationDetail");
+
 		machines.clear();
 
 		location = (Location) getIntent().getExtras().get("Location");

@@ -26,6 +26,8 @@ public class Preferences extends PBMUtil {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preferences);
+
+		logAnalyticsHit("com.pbm.Preferences");
 		
 		table = (ListView)findViewById(R.id.preferencesRegionTable);
 		table.setFastScrollEnabled(true);
