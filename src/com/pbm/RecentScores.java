@@ -1,6 +1,7 @@
 package com.pbm;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -75,8 +76,11 @@ public class RecentScores extends PBMUtil {
 				Matcher matcher = Pattern.compile("(.*):(.*)\\,\\swith(.*)\\sby(.*)\\son\\s(.*)").matcher(title);
 				if (matcher.find()) {
 					String locationName = matcher.group(1);		
+					double score = Double.parseDouble(matcher.group(3));
+					DecimalFormat formatter = new DecimalFormat("#,###");
+
 					title = locationName + "<br />" + 
-					matcher.group(2) + " with " + matcher.group(3) + " by <b>" + matcher.group(4) + "</b>" + 
+					matcher.group(2) + " with " + formatter.format(score) + " by <b>" + matcher.group(4) + "</b>" + 
 					"<br /><small>" + matcher.group(5) + "</small>";
 				}
 
