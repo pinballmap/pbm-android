@@ -158,7 +158,7 @@ public class PBMApplication extends Application {
 	public void initializeAllMachinesList() throws UnsupportedEncodingException, InterruptedException, ExecutionException {
 		allMachines.clear();
 
-		Document doc = new RetrieveXMLTask().execute(PBMUtil.holyBase + "api/v1/machines.xml").get();
+		Document doc = new RetrieveXMLTask().execute(PBMUtil.apiPath + "machines.xml").get();
 		if (doc == null) {
 			return;
 		}

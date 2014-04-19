@@ -51,6 +51,7 @@ public class PBMUtil extends Activity {
 	public static final String PREFS_NAME = "pbmPrefs";
 
 	public final static String holyBase = "http://pinballmap.com/";
+	public final static String apiPath = holyBase + "api/v1/";
 	public static String httpBase = "http://pinballmap.com/";
 
 	public boolean onCreateOptionsMenu(Menu menu) {
