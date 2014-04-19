@@ -23,10 +23,11 @@ public class PBMApplication extends Application {
 	    APP_TRACKER
 	}
 
-	private HashMap<Integer, com.pbm.Location> locations = new HashMap<Integer, Location>();
-	private HashMap<Integer, com.pbm.Machine>  machines  = new HashMap<Integer, Machine>();
-	private HashMap<Integer, com.pbm.Zone>     zones     = new HashMap<Integer, Zone>();
-	private HashMap<Integer, com.pbm.Region>   regions   = new HashMap<Integer, Region>();
+	private HashMap<Integer, com.pbm.Location> locations   = new HashMap<Integer, Location>();
+	private HashMap<Integer, com.pbm.Machine>  allMachines = new HashMap<Integer, Machine>();
+	private HashMap<Integer, com.pbm.Machine>  machines    = new HashMap<Integer, Machine>();
+	private HashMap<Integer, com.pbm.Zone>     zones       = new HashMap<Integer, Zone>();
+	private HashMap<Integer, com.pbm.Region>   regions     = new HashMap<Integer, Region>();
 	
 	public HashMap<TrackerName, Tracker> mTrackers = new HashMap<TrackerName, Tracker>();
 	
@@ -46,8 +47,14 @@ public class PBMApplication extends Application {
 	public HashMap<Integer, com.pbm.Location> getLocations() {
 		return locations;
 	}
+	public void setAllMachines(HashMap<Integer, com.pbm.Machine> machines) {
+		this.allMachines = machines;
+	}
 	public void setMachines(HashMap<Integer, com.pbm.Machine> machines) {
 		this.machines = machines;
+	}
+	public HashMap<Integer, com.pbm.Machine> getAllMachines() {
+		return allMachines;
 	}
 	public HashMap<Integer, com.pbm.Machine> getMachines() {
 		return machines;
@@ -66,6 +73,12 @@ public class PBMApplication extends Application {
 	}
 	public Machine getMachine(Integer id) {
 		return machines.get(id);
+	}
+	public void addMachineToAllMachinesList(Integer id, Machine machine) {
+		this.allMachines.put(id, machine);
+	}
+	public Machine getMachineFromAllMachinesList(Integer id) {
+		return allMachines.get(id);
 	}
 	public Location getLocationByName(String name) {
 		Object[] locations = getLocationValues();
@@ -122,8 +135,14 @@ public class PBMApplication extends Application {
 
 		return locationValues;
 	}
-	public Object[] getMachineValues() {
-		Object[] machineValues = getMachines().values().toArray();
+	public Object[] getMachineValues(boolean displayAllMachines) {
+		Object[] machineValues;
+
+		if (displayAllMachines) {
+			machineValues = getAllMachines().values().toArray();
+		} else {
+			machineValues = getMachines().values().toArray();
+		}
 
 		Arrays.sort(machineValues, new Comparator<Object>() {
 			public int compare(Object o1, Object o2) {
@@ -136,6 +155,30 @@ public class PBMApplication extends Application {
 		return machineValues;
 	}
 	
+	public void initializeAllMachinesList() throws UnsupportedEncodingException, InterruptedException, ExecutionException {
+		allMachines.clear();
+
+		Document doc = new RetrieveXMLTask().execute(PBMUtil.holyBase + "api/v1/machines.xml").get();
+		if (doc == null) {
+			return;
+		}
+		
+		NodeList itemNodes = doc.getElementsByTagName("machine"); 
+		for (int i = 0; i < itemNodes.getLength(); i++) { 
+			Node itemNode = itemNodes.item(i); 
+			if (itemNode.getNodeType() == Node.ELEMENT_NODE) {            
+				Element itemElement = (Element) itemNode;                 
+
+				String name = PBMUtil.readDataFromXML("name", itemElement);
+				String id = PBMUtil.readDataFromXML("id", itemElement);
+
+				if ((id != null) && (name != null)) {
+					addMachineToAllMachinesList(Integer.parseInt(id), new Machine(Integer.parseInt(id), name));
+				}
+			} 
+		}
+	}
+
 	public void initializeData(String URL) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
 		locations.clear();
 		machines.clear();
