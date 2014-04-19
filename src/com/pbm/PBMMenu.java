@@ -63,7 +63,13 @@ public class PBMMenu extends PBMUtil {
 					intent.setClassName("com.pbm", "com.pbm.CloseLocations"); break;
 				case 6:
 					intent = new Intent(Intent.ACTION_VIEW);
-					intent.setData(Uri.parse("mailto:" + region.email + "?subject=PBM - New Location Suggestion&body=" + "Name of Location:\n\nStreet:\n\nCity:\n\nState:\n\nZip:\n\nMachines:\n"));
+					
+					String mailTo = "";
+					for (String address : region.emailAddresses) {
+					    mailTo += address + ",";
+					}
+
+					intent.setData(Uri.parse("mailto:" + mailTo + "?subject=PBM - New Location Suggestion&body=" + "Name of Location:\n\nStreet:\n\nCity:\n\nState:\n\nZip:\n\nMachines:\n"));
 					startActivity(intent);
 
 					return;

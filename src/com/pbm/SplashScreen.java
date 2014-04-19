@@ -33,7 +33,7 @@ public class SplashScreen extends PBMUtil {
 		PBMApplication app = (PBMApplication) getApplication();
 
 		try {
-			if (!haveInternet(getBaseContext()) || !app.initializeRegions(httpBase + "iphone.html?init=2")) {
+			if (!haveInternet(getBaseContext()) || !app.initializeRegions()) {
 				closeWithNoInternet();
 				return;
 			}
@@ -62,8 +62,8 @@ public class SplashScreen extends PBMUtil {
 				public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
 					setProgressBarIndeterminateVisibility(true);
 					Region region = (Region) parentView.getItemAtPosition(position);
-					if (! (region.subDir.equals(""))) {
-						setHttpBase(holyBase + region.subDir + "/");						
+					if (! (region.name.equals(""))) {
+						setHttpBase(holyBase + region.name + "/");						
 					}
 
 					SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
@@ -78,7 +78,7 @@ public class SplashScreen extends PBMUtil {
 			table.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_list_item_1, app.getRegionValues()));
 		} else {
 			Region region = app.getRegion(prefRegion);
-			setHttpBase(holyBase + region.subDir + "/");
+			setHttpBase(holyBase + region.name + "/");
 
 			loadSplashAndStart(region);
 		}
@@ -107,7 +107,7 @@ public class SplashScreen extends PBMUtil {
 
 	private String getCityNamePath(Region region) {
 		String cityNamePath = "com.pbm:drawable/";
-		String cityName = region.subDir;
+		String cityName = region.name;
 
 		if (cityName.equals("")) {
 			cityName = "portland_city";

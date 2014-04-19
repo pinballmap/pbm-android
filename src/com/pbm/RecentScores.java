@@ -96,10 +96,10 @@ public class RecentScores extends PBMUtil {
 
 		PBMApplication app = (PBMApplication) getApplication();
 		Region region = app.getRegion(prefRegion);
-		if (region.subDir.equals("")) {
+		if (region.name.equals("")) {
 			return "scores.rss";
 		} else {
-			return region.subDir + "_scores.rss"; 
+			return region.name + "_scores.rss"; 
 		}
 	}
 }
