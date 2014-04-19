@@ -11,6 +11,11 @@ public class Machine implements Serializable {
 	public String condition;
 	public String conditionDate;
 
+	public Machine(int newMachineNo, String newName) {
+		machineNo = newMachineNo;
+		name = newName;
+	}
+
 	public Machine(int newMachineNo, String newName, int newNumLocations) {
 		machineNo = newMachineNo;
 		name = newName;

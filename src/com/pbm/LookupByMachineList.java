@@ -23,12 +23,12 @@ public class LookupByMachineList extends PBMUtil {
 		table.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {	
 				Intent myIntent = new Intent();
-				myIntent.putExtra("Machine", (Machine) app.getMachineValues()[arg2]);
+				myIntent.putExtra("Machine", (Machine) app.getMachineValues(false)[arg2]);
 				myIntent.setClassName("com.pbm", "com.pbm.MachineLookupDetail");
 				startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
 
-		table.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_list_item_1, app.getMachineValues()));
+		table.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_list_item_1, app.getMachineValues(false)));
 	}   
 }

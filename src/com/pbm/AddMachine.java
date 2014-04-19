@@ -55,7 +55,7 @@ public class AddMachine extends PBMUtil {
 		});
 
 		PBMApplication app = (PBMApplication) getApplication();		
-		table.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_list_item_1, app.getMachineValues()));
+		table.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_list_item_1, app.getMachineValues(true)));
 	}   
 
 	public void submitHandler(View view) {		
