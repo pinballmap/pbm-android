@@ -3,6 +3,14 @@ Android Application for http://pinballmap.com
 CHANGELOG
 =========
 
+version 2.01
+-sort machine names ignoring leading "The"
+-email all region admins with location suggestions
+-list all available machines in Add Machine page
+-Google Analytics tracking
+-commas for high scores
+-new icon assets
+
 version 2.00
 -target the 4.4 sdk instead of the 2.2 one
 -move to google maps android v2
