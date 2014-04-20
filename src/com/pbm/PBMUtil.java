@@ -51,6 +51,7 @@ public class PBMUtil extends Activity {
 	public static final String PREFS_NAME = "pbmPrefs";
 
 	public final static String holyBase = "http://pinballmap.com/";
+	public final static String apiPath = holyBase + "api/v1/";
 	public static String httpBase = "http://pinballmap.com/";
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -311,5 +312,19 @@ public class PBMUtil extends Activity {
 		}
 
 		return null;
+	}
+	
+	public static List<String> readListDataFromXML(String tagName, Element itemElement) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
+		List<String> items = new ArrayList<String>();
+
+		NodeList itemNodes = (itemElement).getElementsByTagName(tagName);
+		for (int i = 0; i < itemNodes.getLength(); i++) {
+			String item = itemNodes.item(i).getTextContent();
+			item = item.replaceAll("%", "%25");
+			item = URLDecoder.decode(item, "UTF8");
+			items.add(item);
+		}
+
+		return items;
 	}
 }

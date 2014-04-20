@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import org.w3c.dom.Document;
@@ -158,7 +159,7 @@ public class PBMApplication extends Application {
 	public void initializeAllMachinesList() throws UnsupportedEncodingException, InterruptedException, ExecutionException {
 		allMachines.clear();
 
-		Document doc = new RetrieveXMLTask().execute(PBMUtil.holyBase + "api/v1/machines.xml").get();
+		Document doc = new RetrieveXMLTask().execute(PBMUtil.apiPath + "machines.xml").get();
 		if (doc == null) {
 			return;
 		}
@@ -271,8 +272,8 @@ public class PBMApplication extends Application {
 		}
 	}
 	
-	public boolean initializeRegions(String URL) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
-		Document doc = new RetrieveXMLTask().execute(URL).get();
+	public boolean initializeRegions() throws UnsupportedEncodingException, InterruptedException, ExecutionException {
+		Document doc = new RetrieveXMLTask().execute(PBMUtil.apiPath + "regions.xml").get();
 		
 		if (doc == null) {
 			return false;
@@ -287,12 +288,11 @@ public class PBMApplication extends Application {
 
 				String id = PBMUtil.readDataFromXML("id", itemElement);
 				String name = PBMUtil.readDataFromXML("name", itemElement);
-				String formalName = PBMUtil.readDataFromXML("formalName", itemElement);
-				String subDir = PBMUtil.readDataFromXML("subdir", itemElement);
+				String formalName = PBMUtil.readDataFromXML("full-name", itemElement);
 				String motd = PBMUtil.readDataFromXML("motd", itemElement);
-				String email = PBMUtil.readDataFromXML("emailContact", itemElement);
+				List<String> emailAddresses = PBMUtil.readListDataFromXML("all-admin-email-address", itemElement);
 
-				addRegion(Integer.parseInt(id), new Region(Integer.parseInt(id), name, formalName, subDir, motd, email));
+				addRegion(Integer.parseInt(id), new Region(Integer.parseInt(id), name, formalName, motd, emailAddresses));
 			}
 		}
 		return true;

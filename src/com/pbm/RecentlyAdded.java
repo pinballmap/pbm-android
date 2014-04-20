@@ -124,10 +124,10 @@ public class RecentlyAdded extends PBMUtil {
 		PBMApplication app = (PBMApplication) getApplication();
 		Region region = app.getRegion(prefRegion);
 		try {
-			if (region.subDir.equals("")) {
+			if (region.name.equals("")) {
 				return "locations";
 			} else {
-				return region.subDir; 
+				return region.name; 
 			}
 		} catch (NullPointerException npe) {
 			return "";

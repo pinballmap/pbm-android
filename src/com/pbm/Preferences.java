@@ -37,7 +37,7 @@ public class Preferences extends PBMUtil {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
 				Region region = (Region) parentView.getItemAtPosition(position);
 				table.setEnabled(false);
-				PBMMenu.setHttpBase(holyBase + region.subDir + "/");	
+				PBMMenu.setHttpBase(holyBase + region.name + "/");	
 
 				SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 				settings.edit().putInt("region", region.regionNo).commit();
