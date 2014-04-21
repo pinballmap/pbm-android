@@ -103,7 +103,6 @@ public class Preferences extends PBMUtil {
 		public void run() {
 			PBMApplication app = (PBMApplication) getApplication();
 			try {
-				app.initializeAllMachinesList();
 				app.initializeData(httpBase + "iphone.html?init=1");
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();

@@ -10,10 +10,21 @@ public class Machine implements Serializable {
 	public int numLocations;
 	public String condition;
 	public String conditionDate;
+	public boolean existsInRegion;
+
+	public Machine(String newName) {
+		name = newName;
+	}
 
 	public Machine(int newMachineNo, String newName) {
 		machineNo = newMachineNo;
 		name = newName;
+	}
+
+	public Machine(int newMachineNo, String newName, boolean newExistsInRegion) {
+		machineNo = newMachineNo;
+		name = newName;
+		existsInRegion = newExistsInRegion;
 	}
 
 	public Machine(int newMachineNo, String newName, int newNumLocations) {
@@ -30,8 +41,12 @@ public class Machine implements Serializable {
 		conditionDate = newConditionDate;
 	}
 	
-	public Machine(String newName) {
-		name = newName;
+	public void setNumLocations(int newNumLocations) {
+		numLocations = newNumLocations;
+	}
+	
+	public void setExistsInRegion(boolean newExistsInRegion) {
+		existsInRegion = newExistsInRegion;
 	}
 	
 	public String toString() {
