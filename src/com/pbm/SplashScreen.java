@@ -45,16 +45,6 @@ public class SplashScreen extends PBMUtil {
 			e.printStackTrace();
 		}
 
-		try {
-			app.initializeAllMachinesList();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
-	
 		if (prefRegion == -1) {
 			table.setVisibility(View.VISIBLE);
 
