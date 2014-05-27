@@ -5,15 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -28,8 +26,8 @@ import android.widget.AdapterView.OnItemClickListener;
 @SuppressLint("HandlerLeak")
 public class RecentlyAdded extends PBMUtil {
 	private final int NUM_ADDED_TO_SHOW = 20;
-
 	private List<Spanned> recentAdds = new ArrayList<Spanned>();
+	PBMApplication app = (PBMApplication) getApplication();
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,12 +43,14 @@ public class RecentlyAdded extends PBMUtil {
 		new Thread(new Runnable() {
 	        public void run() {
 	        	try {
-					getLocationData(httpBase + getLocationRSSName() + ".rss");
+					getLocationData();
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} catch (ExecutionException e) {
+					e.printStackTrace();
+				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 	        	RecentlyAdded.super.runOnUiThread(new Runnable() {
@@ -64,29 +64,27 @@ public class RecentlyAdded extends PBMUtil {
 	    }).start();
 	}   
 
-	public void getLocationData(String URL) throws UnsupportedEncodingException, InterruptedException, ExecutionException
-	{
-		Document doc = new RetrieveXMLTask().execute(URL).get();
+	public void getLocationData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+		String json = new RetrieveJsonTask().execute(regionBase + "locationMachineXrefs.json?limit=" + NUM_ADDED_TO_SHOW, "GET").get();
 
-		if (doc == null) {
+		if (json == null) {
 			return;
 		}
+		
+		JSONObject jsonObject = new JSONObject(json);
+		JSONArray lmxes = jsonObject.getJSONArray("location_machine_xrefs");
+		
+		for (int i = 0; i < lmxes.length(); i++) {
+			JSONObject lmx = lmxes.getJSONObject(i);
+			
+			int machineID = lmx.getInt("machine_id");
+			int locationID = lmx.getInt("location_id");
+			String createdAt = lmx.getString("created_at");
+			
+			String textToShow = "<b>" + app.getMachine(machineID).name + "</b> was added to <b>" + app.getLocation(locationID).name + "</b>";
+			textToShow += "<br /><small>Added on " + createdAt + "</small>";
 
-		NodeList itemNodes = doc.getElementsByTagName("item"); 
-		for (int i = 0; i < NUM_ADDED_TO_SHOW; i++) { 
-			Node itemNode = itemNodes.item(i); 
-			if ((itemNode != null) && (itemNode.getNodeType() == Node.ELEMENT_NODE)) {            
-				Element itemElement = (Element) itemNode;                 
-				String title = readDataFromXML("title", itemElement);
-				String[] splitString = (title.split(" was added to "));
-
-				if (splitString.length > 0) {
-					title = "<b>" + splitString[0] + "</b> was added to <b>" + splitString[1] + "</b>";
-					title += "<br /><small>" + readDataFromXML("description", itemElement) + "</small>";
-				}
-
-				recentAdds.add(Html.fromHtml(title));
-			}
+			recentAdds.add(Html.fromHtml(textToShow));
 		}
 	}
 
@@ -100,7 +98,6 @@ public class RecentlyAdded extends PBMUtil {
 				String locationName = spanned.toString().split(" was added to ")[1];
 				locationName = locationName.split("\n")[0];
 
-				PBMApplication app = (PBMApplication) getApplication();
 				Location location = app.getLocationByName(locationName);
 
 				if (location == null) {
@@ -115,22 +112,5 @@ public class RecentlyAdded extends PBMUtil {
 		});
 
 		table.setAdapter(new ArrayAdapter<Spanned>(this, android.R.layout.simple_list_item_1, locations));
-	}
-	
-	public String getLocationRSSName() {
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		Integer prefRegion = settings.getInt("region", -1);
-
-		PBMApplication app = (PBMApplication) getApplication();
-		Region region = app.getRegion(prefRegion);
-		try {
-			if (region.name.equals("")) {
-				return "locations";
-			} else {
-				return region.name; 
-			}
-		} catch (NullPointerException npe) {
-			return "";
-		}
 	}
 }

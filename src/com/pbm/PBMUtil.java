@@ -2,24 +2,9 @@ package com.pbm;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -50,11 +35,11 @@ public class PBMUtil extends Activity {
 	public static final int HTTP_RETRIES    = 5;
 	public static final String PREFS_NAME = "pbmPrefs";
 
-	public final static String holyBase = "http://10.0.1.45:3000/";
-//	public final static String holyBase = "http://pinballmap.com/";
-	public final static String apiPath = holyBase + "api/v1/";
-	public static String httpBase = "http://10.0.1.45:3000/";
-//	public static String httpBase = "http://pinballmap.com/";
+	public static String httpBase = "http://pinballmap.com/";
+	public static String apiPath = "api/v1/";
+
+	public static String regionBase = "THIS IS SET DURING APP INIT";
+	public static String regionlessBase = httpBase + apiPath;
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(MENU_PREFS, MENU_PREFS, MENU_PREFS, "Preferences");
@@ -116,8 +101,8 @@ public class PBMUtil extends Activity {
 		}
 	}
 
-	public static void setHttpBase(String newBase) {
-		httpBase = newBase;
+	public static void setRegionBase(String newBase) {
+		regionBase = newBase;
 	}
 	
 	public void logAnalyticsHit(String page) {
@@ -126,35 +111,7 @@ public class PBMUtil extends Activity {
         tracker.send(new HitBuilders.AppViewBuilder().build());
 	}
 
-	protected void sendOneWayRequestToServer(String requestString) {
-		InputStream in = null;	
-
-		try {
-			String URL = httpBase + "iphone.html?" + requestString;
-			in = openHttpConnection(URL);
-
-			@SuppressWarnings("unused")
-			Document doc = null;
-			DocumentBuilderFactory dbf = 
-				DocumentBuilderFactory.newInstance();
-			DocumentBuilder db;
-
-			try {
-				db = dbf.newDocumentBuilder();
-				doc = db.parse(in);
-
-				in.close();
-			} catch (ParserConfigurationException e) {
-				e.printStackTrace();
-			} catch (SAXException e) {
-				e.printStackTrace();
-			}        
-		} catch (IOException e1) {
-			e1.printStackTrace();            
-		}
-	}
-	
-	public static InputStream openHttpConnection(String urlString) throws IOException {
+	public static InputStream openHttpConnection(String urlString, String requestType) throws IOException {
 		URL url = new URL(urlString); 
 		try{
 			for (int attempt = 0; attempt < HTTP_RETRIES; attempt++) {
@@ -166,7 +123,7 @@ public class PBMUtil extends Activity {
 				HttpURLConnection httpConn = (HttpURLConnection) urlConnection;
 				httpConn.setAllowUserInteraction(false);
 				httpConn.setInstanceFollowRedirects(true);
-				httpConn.setRequestMethod("GET");
+				httpConn.setRequestMethod(requestType);
 
 				httpConn.connect(); 
 				InputStream inputStream = httpConn.getInputStream();                                 
@@ -181,46 +138,6 @@ public class PBMUtil extends Activity {
 			return null;
 		}
 		return null;     
-	}
-
-	protected static String readDataFromXML(String tagName, Element itemElement) throws UnsupportedEncodingException {
-		String dataName = "";
-		Element titleElement = null;
-		NodeList textNodes = null;
-
-		NodeList titleNodes = (itemElement).getElementsByTagName(tagName);
-		if (titleNodes.item(0) != null) {
-			titleElement = (Element) titleNodes.item(0);
-
-			textNodes = ((Node) titleElement).getChildNodes();
-			if (textNodes.item(0) != null) {
-				dataName = (((Node) textNodes.item(0)).getNodeValue());
-			}
-		}
-		dataName = dataName.replaceAll("%", "%25");
-
-		return URLDecoder.decode(dataName, "UTF8");
-	}
-
-	protected static String[] readDataFromXML(String tagName, Element itemElement, String attribute) throws UnsupportedEncodingException {
-		String[] itemAndAttribute = new String[2];
-		Element titleElement = null;
-		NodeList textNodes = null;
-
-		NodeList titleNodes = (itemElement).getElementsByTagName(tagName);
-		if (titleNodes.item(0) != null) {
-			titleElement = (Element) titleNodes.item(0);
-
-			textNodes = ((Node) titleElement).getChildNodes();
-			if (textNodes.item(0) != null) {
-				itemAndAttribute[0] = titleElement.getAttribute(attribute);
-				String nodeValue = (((Node) textNodes.item(0)).getNodeValue());
-				nodeValue = nodeValue.replaceAll("%", "%25");
-				itemAndAttribute[1] = URLDecoder.decode(nodeValue, "UTF8");
-			}
-		}
-
-		return itemAndAttribute;
 	}
 
 	public static int convertPixelsToDip(int dipValue, DisplayMetrics displayMetrics) {
@@ -253,80 +170,5 @@ public class PBMUtil extends Activity {
 		}).show();
 
 		return;
-	}
-
-	public static Location updateLocationData(Location location) throws UnsupportedEncodingException, InterruptedException, ExecutionException {	
-		if (location == null) {
-			return null;
-		}
-
-		Document doc = new RetrieveXMLTask().execute(PBMUtil.httpBase + "iphone.html?get_location=" + location.locationNo).get();
-
-		if (doc != null) {
-			NodeList itemNodes = doc.getElementsByTagName("location"); 
-			for (int i = 0; i < itemNodes.getLength(); i++) { 
-				Node itemNode = itemNodes.item(i); 
-				if (itemNode.getNodeType() == Node.ELEMENT_NODE) {            
-					Element itemElement = (Element) itemNode;                 
-
-					String street1 = PBMUtil.readDataFromXML("street1", itemElement);
-					String city = PBMUtil.readDataFromXML("city", itemElement);
-					String state = PBMUtil.readDataFromXML("state", itemElement);
-					String zip = PBMUtil.readDataFromXML("zip", itemElement);
-					String phone = PBMUtil.readDataFromXML("phone", itemElement);
-
-					location.updateAddress(street1, city, state, zip, phone);
-				} 
-			}
-
-			return location;
-		}
-
-		return location;
-	}
-
-	public List<Machine> getLocationMachineData(Location location) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
-		if (location == null) {
-			return null;
-		}
-
-		List<Machine> machines = new ArrayList<Machine>();
-
-		Document doc = new RetrieveXMLTask().execute(PBMUtil.httpBase + "iphone.html?get_location=" + location.locationNo).get();
-
-		if (doc != null) {
-			NodeList itemNodes = doc.getElementsByTagName("machine"); 
-			for (int i = 0; i < itemNodes.getLength(); i++) { 
-				Node itemNode = itemNodes.item(i); 
-				if (itemNode.getNodeType() == Node.ELEMENT_NODE) {            
-					Element itemElement = (Element) itemNode;     
-
-					String id = readDataFromXML("id", itemElement);				
-					if ((id != null)) {
-						PBMApplication app = (PBMApplication) getApplication();
-						Machine machine = app.getMachine(Integer.parseInt(id));
-
-						machines.add(machine);
-					}
-				}
-			}
-			return machines;
-		}
-
-		return null;
-	}
-	
-	public static List<String> readListDataFromXML(String tagName, Element itemElement) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
-		List<String> items = new ArrayList<String>();
-
-		NodeList itemNodes = (itemElement).getElementsByTagName(tagName);
-		for (int i = 0; i < itemNodes.getLength(); i++) {
-			String item = itemNodes.item(i).getTextContent();
-			item = item.replaceAll("%", "%25");
-			item = URLDecoder.decode(item, "UTF8");
-			items.add(item);
-		}
-
-		return items;
 	}
 }

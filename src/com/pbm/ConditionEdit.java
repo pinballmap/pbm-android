@@ -2,6 +2,7 @@ package com.pbm;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.concurrent.ExecutionException;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -12,8 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class ConditionEdit extends PBMUtil {
-	private Location location;
-	private Machine machine;
+	private LocationMachineXref lmx;
 	private InputMethodManager inputMethodManager;
 
 	@SuppressWarnings("static-access")
@@ -22,13 +22,12 @@ public class ConditionEdit extends PBMUtil {
 		setContentView(R.layout.condition_edit);
 
 		Bundle extras = getIntent().getExtras();
-		location = (Location) extras.get("Location");
-		machine = (Machine) extras.get("Machine");
+		lmx = (LocationMachineXref) extras.get("lmx");
 		
 		logAnalyticsHit("com.pbm.ConditionEdit");
 
 		EditText condition = (EditText)findViewById(R.id.condition);
-		condition.setText(machine.condition);
+		condition.setText(lmx.condition);
 
 		inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputMethodManager.toggleSoftInput(inputMethodManager.SHOW_FORCED, 0);
@@ -42,7 +41,11 @@ public class ConditionEdit extends PBMUtil {
 		new Thread(new Runnable() {
 	        public void run() {
 	        	try {
-					sendOneWayRequestToServer("condition=" + URLEncoder.encode(condition, "UTF8") + ";location_no=" + location.locationNo + ";machine_no=" + machine.machineNo);
+	        		new RetrieveJsonTask().execute(regionBase + "location_machine_xref.json?id=" + lmx.id + ";condition=" + URLEncoder.encode(condition, "UTF8"), "POST").get();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}

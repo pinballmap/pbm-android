@@ -9,10 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -26,10 +25,11 @@ public class PBMApplication extends Application {
 	    APP_TRACKER
 	}
 
-	private HashMap<Integer, com.pbm.Location> locations   = new HashMap<Integer, Location>();
-	private HashMap<Integer, com.pbm.Machine>  machines    = new HashMap<Integer, Machine>();
-	private HashMap<Integer, com.pbm.Zone>     zones       = new HashMap<Integer, Zone>();
-	private HashMap<Integer, com.pbm.Region>   regions     = new HashMap<Integer, Region>();
+	private HashMap<Integer, com.pbm.Location>            locations = new HashMap<Integer, Location>();
+	private HashMap<Integer, com.pbm.Machine>             machines  = new HashMap<Integer, Machine>();
+	private HashMap<Integer, com.pbm.LocationMachineXref> lmxes     = new HashMap<Integer, LocationMachineXref>();
+	private HashMap<Integer, com.pbm.Zone>                zones     = new HashMap<Integer, Zone>();
+	private HashMap<Integer, com.pbm.Region>              regions   = new HashMap<Integer, Region>();
 	
 	public HashMap<TrackerName, Tracker> mTrackers = new HashMap<TrackerName, Tracker>();
 	
@@ -58,6 +58,12 @@ public class PBMApplication extends Application {
 	public void setZones(HashMap<Integer, com.pbm.Zone> zones) {
 		this.zones = zones;
 	}
+	public HashMap<Integer, com.pbm.LocationMachineXref> getLmxes() {
+		return lmxes;
+	}
+	public void setLmxes(HashMap<Integer, com.pbm.LocationMachineXref> lmxes) {
+		this.lmxes = lmxes;
+	}
 	public HashMap<Integer, com.pbm.Zone> getZones() {
 		return zones;
 	}
@@ -67,8 +73,70 @@ public class PBMApplication extends Application {
 	public void addMachine(Integer id, Machine machine) {
 		this.machines.put(id, machine);
 	}
+	public void addLocationMachineXref(Integer id, LocationMachineXref lmx) {
+		this.lmxes.put(id, lmx);
+	}
+	public List<LocationMachineXref> getLocationMachineXrefsForLocation(Location location) {
+		List<LocationMachineXref> locationLmxes = new ArrayList<LocationMachineXref>();
+		
+		for (LocationMachineXref lmx : getLmxes().values()) {
+			if (lmx.locationID == location.id) {
+				locationLmxes.add(lmx);
+			}
+		}
+
+		return locationLmxes;
+	}
+	
+	@SuppressWarnings("null")
+	public List<Machine> getMachinesFromLmxes(List<LocationMachineXref> lmxes) {
+		List<Machine> machinesFromLmxes = null;
+		
+		for (LocationMachineXref lmx : lmxes) {
+			machinesFromLmxes.add(getMachine(lmx.machineID));
+		}
+
+		return machinesFromLmxes;
+	}
+	
+	public LocationMachineXref getLmxFromMachine(Machine machine, List<LocationMachineXref> lmxes) {
+		for (LocationMachineXref lmx : lmxes) {
+			if (lmx.machineID == machine.id) {
+				return lmx;
+			}
+		}
+
+		return null;
+	}
+
+	public LocationMachineXref getLmx(Integer id) {
+		return lmxes.get(id);
+	}
+
+	public int numMachinesForLocation(Location location) {
+		int numMachines = 0;
+		for (LocationMachineXref lmx : getLmxes().values()) {
+			if (lmx.locationID == location.id) {
+				numMachines += 1;
+			}
+		}
+		
+		return numMachines;
+	}
+	
 	public Machine getMachine(Integer id) {
 		return machines.get(id);
+	}
+	public Machine getMachineByName(String name) {
+		List<Object> machines = getMachineValues(true);
+		for (Object baseMachine : machines) {
+			Machine machine = (Machine) baseMachine;
+			if (machine.name.equalsIgnoreCase(name)) {
+				return machine;
+			}
+		}
+		
+		return null;
 	}
 	public Location getLocationByName(String name) {
 		Object[] locations = getLocationValues();
@@ -149,148 +217,146 @@ public class PBMApplication extends Application {
 
 		return machineValues;
 	}
+
+	public void initializeData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+		initializeAllMachines();
+		initializeLocations();
+		initializeZones();
+	}
 	
-	public void initializeAllMachines() throws UnsupportedEncodingException, InterruptedException, ExecutionException {
-		Document doc = new RetrieveXMLTask().execute(PBMUtil.apiPath + "machines.xml").get();
-		if (doc == null) {
+	public void initializeAllMachines() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+		machines.clear();
+
+		String json = new RetrieveJsonTask().execute(PBMUtil.regionlessBase + "machines.json", "GET").get();
+		if (json == null) {
 			return;
 		}
 		
-		NodeList itemNodes = doc.getElementsByTagName("machine"); 
-		for (int i = 0; i < itemNodes.getLength(); i++) { 
-			Node itemNode = itemNodes.item(i); 
-			if (itemNode.getNodeType() == Node.ELEMENT_NODE) {            
-				Element itemElement = (Element) itemNode;                 
-
-				String name = PBMUtil.readDataFromXML("name", itemElement);
-				String id = PBMUtil.readDataFromXML("id", itemElement);
+		JSONObject jsonObject = new JSONObject(json);
+		JSONArray machines = jsonObject.getJSONArray("machines");
+		
+		for (int i=0; i < machines.length(); i++) {
+		    try {
+		        JSONObject machine = machines.getJSONObject(i);
+		        String name = machine.getString("name");
+		        String id = machine.getString("id");
 
 				if ((id != null) && (name != null)) {
 					addMachine(Integer.parseInt(id), new Machine(Integer.parseInt(id), name, false));
 				}
-			} 
+		    } catch (JSONException e) {
+		    }
 		}
 	}
 
-	public void initializeData(String URL) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
-		locations.clear();
-		machines.clear();
+	public void initializeZones() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
 		zones.clear();
 		
-		initializeAllMachines();
-
-		Document doc = new RetrieveXMLTask().execute(URL).get();
-		
-		if (doc == null) {
+		String json = new RetrieveJsonTask().execute(PBMUtil.regionBase + "zones.json", "GET").get();
+		if (json == null) {
 			return;
 		}
 		
-		NodeList itemNodes = doc.getElementsByTagName("location"); 
-		for (int i = 0; i < itemNodes.getLength(); i++) { 
-			Node itemNode = itemNodes.item(i); 
-			if (itemNode.getNodeType() == Node.ELEMENT_NODE) { 
-				Element itemElement = (Element) itemNode;                 
+		JSONObject jsonObject = new JSONObject(json);
+		JSONArray zones = jsonObject.getJSONArray("zones");
+		
+		for (int i = 0; i < zones.length(); i++) {
+		    JSONObject zone = zones.getJSONObject(i);
 
-				String name = PBMUtil.readDataFromXML("name", itemElement);
-				String id = PBMUtil.readDataFromXML("id", itemElement);
-				String lat = PBMUtil.readDataFromXML("lat", itemElement);
-				String lon = PBMUtil.readDataFromXML("lon", itemElement);
-				String zone = PBMUtil.readDataFromXML("neighborhood", itemElement);
-				String numMachines = PBMUtil.readDataFromXML("numMachines", itemElement);
-				String zoneNo = PBMUtil.readDataFromXML("zoneNo", itemElement);
+			String name = zone.getString("name");
+			String id = zone.getString("id");
+			String shortName = zone.getString("shortName");
+			String isPrimary = zone.getString("isPrimary");
 
-				if ((id != null) && (name != null) && (lat != null) && (lon != null) && (zoneNo != null) && (zone != null) && (numMachines != null)) {
-					if(zoneNo.equals("")) {
-						zoneNo = "0";
-					}
+			if ((id != null) && (name != null) && (shortName != null) && (isPrimary != null)){
+				addZone(Integer.parseInt(id), new Zone(Integer.parseInt(id), name, shortName, Integer.parseInt(isPrimary)));
+			}
+		}
+	}
+
+	public void initializeLocations() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+		lmxes.clear();
+		locations.clear();
+
+		String json = new RetrieveJsonTask().execute(PBMUtil.regionBase + "locations.json", "GET").get();
+		if (json == null) {
+			return;
+		}
+		
+		JSONObject jsonObject = new JSONObject(json);
+		JSONArray locations = jsonObject.getJSONArray("locations");
+		
+		for (int i = 0; i < locations.length(); i++) {
+		    JSONObject location = locations.getJSONObject(i);
+		    JSONArray lmxes = jsonObject.getJSONArray("locations");
+
+			int id = location.getInt("id");
+			String name = location.getString("name");
+			String lat = location.getString("lat");
+			String lon = location.getString("lon");
+			String street = location.getString("street");
+			String city = location.getString("city");
+			String zip = location.getString("zip");
+			String phone = location.getString("phone");
+			String state = location.getString("state");
+			int zoneID = location.getInt("zone_id");
+
+			if ((name != null) && (lat != null) && (lon != null)) {
+				addLocation(
+					id,
+					new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip, phone)
+				);
+			}
+			
+			if (lmxes.length() > 0) {
+				for (int x = 0; x < lmxes.length(); x++) {
+					JSONObject lmx = lmxes.getJSONObject(x);
+
+					int lmxID = lmx.getInt("id");
+					int lmxLocationID = lmx.getInt("location_id");
+					int machineID = lmx.getInt("machine_id");
+					String condition = lmx.getString("condition");
+					String conditionDate = lmx.getString("condition_date");
 					
-					Location location = new com.pbm.Location(
-						Integer.parseInt(id), name, lat, lon, zone, Integer.parseInt(numMachines), Integer.parseInt(zoneNo), null, null, null, null, null, 0
-					);
-					addLocation(Integer.parseInt(id), location);
-				}
-			} 
-		}
-
-		itemNodes = doc.getElementsByTagName("machine"); 
-		for (int i = 0; i < itemNodes.getLength(); i++) { 
-			Node itemNode = itemNodes.item(i); 
-			if (itemNode.getNodeType() == Node.ELEMENT_NODE) {            
-				Element itemElement = (Element) itemNode;                 
-
-				String name = PBMUtil.readDataFromXML("name", itemElement);
-				String id = PBMUtil.readDataFromXML("id", itemElement);
-				String numLocations = PBMUtil.readDataFromXML("numLocations", itemElement);
-
-				if ((id != null) && (name != null) && (numLocations != null)) {
-					Machine machine = getMachine(Integer.parseInt(id));
-					machine.setNumLocations(Integer.parseInt(numLocations));
+					Machine machine = getMachine(machineID);
 					machine.setExistsInRegion(true);
+					
+					addLocationMachineXref(
+						lmxID,
+						new com.pbm.LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate)
+					);
 				}
-			} 
-		}
-
-		itemNodes = doc.getElementsByTagName("zone"); 
-		for (int i = 0; i < itemNodes.getLength(); i++) { 
-			Node itemNode = itemNodes.item(i); 
-			if (itemNode.getNodeType() == Node.ELEMENT_NODE) {            
-				Element itemElement = (Element) itemNode;  
-
-				String name = PBMUtil.readDataFromXML("name", itemElement);
-				String id = PBMUtil.readDataFromXML("id", itemElement);
-				String shortName = PBMUtil.readDataFromXML("shortName", itemElement);
-				String isPrimary = PBMUtil.readDataFromXML("isPrimary", itemElement);
-
-				if ((id != null) && (name != null) && (shortName != null) && (isPrimary != null)){
-					addZone(Integer.parseInt(id), new Zone(Integer.parseInt(id), name, shortName, Integer.parseInt(isPrimary)));
-				}
-			} 
+			}
 		}
 	}
 
-	public void initializeMachines(String URL) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
-		Document doc = new RetrieveXMLTask().execute(URL).get();
-		
-		NodeList itemNodes = doc.getElementsByTagName("machine"); 
-		for (int i = 0; i < itemNodes.getLength(); i++) { 
-			Node itemNode = itemNodes.item(i); 
-			if (itemNode.getNodeType() == Node.ELEMENT_NODE) {            
-				Element itemElement = (Element) itemNode;                 
-
-				String name = PBMUtil.readDataFromXML("name", itemElement);
-				String id = PBMUtil.readDataFromXML("id", itemElement);
-				String numLocations = PBMUtil.readDataFromXML("numLocations", itemElement);
-
-				if ((id != null) && (name != null) && (numLocations != null)) {
-					addMachine(Integer.parseInt(id), new Machine(Integer.parseInt(id), name, Integer.parseInt(numLocations)));
-				}
-			} 
-		}
-	}
-	
-	public boolean initializeRegions() throws UnsupportedEncodingException, InterruptedException, ExecutionException {
-		Document doc = new RetrieveXMLTask().execute(PBMUtil.apiPath + "regions.xml").get();
-		
-		if (doc == null) {
+	@SuppressWarnings("null")
+	public boolean initializeRegions() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+		String json = new RetrieveJsonTask().execute(PBMUtil.regionlessBase + "regions.json", "GET").get();
+		if (json == null) {
 			return false;
 		}
 		
-		NodeList itemNodes = doc.getElementsByTagName("region"); 
+		JSONObject jsonObject = new JSONObject(json);
+		JSONArray regions = jsonObject.getJSONArray("regions");
+		
+		for (int i = 0; i < regions.length(); i++) {
+		    JSONObject region = regions.getJSONObject(i);
+			String id = region.getString("id");
+			String name = region.getString("name");
+			String formalName = region.getString("full-name");
+			String motd = region.getString("motd");
 
-		for (int i = 0; i < itemNodes.getLength(); i++) { 
-			Node itemNode = itemNodes.item(i); 
-			if (itemNode.getNodeType() == Node.ELEMENT_NODE) {            
-				Element itemElement = (Element) itemNode;     
-
-				String id = PBMUtil.readDataFromXML("id", itemElement);
-				String name = PBMUtil.readDataFromXML("name", itemElement);
-				String formalName = PBMUtil.readDataFromXML("full-name", itemElement);
-				String motd = PBMUtil.readDataFromXML("motd", itemElement);
-				List<String> emailAddresses = PBMUtil.readListDataFromXML("all-admin-email-address", itemElement);
-
-				addRegion(Integer.parseInt(id), new Region(Integer.parseInt(id), name, formalName, motd, emailAddresses));
+			List<String> emailAddresses = null;
+			JSONArray jsonEmailAddresses = region.getJSONArray("all-admin-email-address");
+			for (int x = 0; x < jsonEmailAddresses.length(); x++) {
+			    emailAddresses.add(jsonEmailAddresses.getString(x));
 			}
+
+			addRegion(Integer.parseInt(id), new Region(Integer.parseInt(id), name, formalName, motd, emailAddresses));
 		}
+
 		return true;
 	}
+
 }

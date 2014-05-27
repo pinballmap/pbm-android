@@ -51,7 +51,7 @@ public class LocationLookupDetail extends PBMUtil {
 		for(Object key : locations.keySet()) {
 			Location location = locations.get(key);
 
-			if (location.zoneNo == zone.zoneNo || (zone.zoneNo == 0)) {
+			if (location.zoneID == zone.id) {
 				foundLocations.add(location);
 			}
 		}

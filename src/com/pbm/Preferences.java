@@ -3,6 +3,8 @@ package com.pbm;
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.ExecutionException;
 
+import org.json.JSONException;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -34,13 +36,14 @@ public class Preferences extends PBMUtil {
 		table.setTextFilterEnabled(true);
 		
 		table.setOnItemClickListener(new OnItemClickListener() {
+			@SuppressWarnings("deprecation")
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
 				Region region = (Region) parentView.getItemAtPosition(position);
 				table.setEnabled(false);
-				PBMMenu.setHttpBase(holyBase + region.name + "/");	
+				setRegionBase(httpBase + apiPath + "region/" + region.name + "/");						
 
 				SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-				settings.edit().putInt("region", region.regionNo).commit();
+				settings.edit().putInt("region", region.id).commit();
 
 				showDialog(PROGRESS_DIALOG);
 
@@ -64,6 +67,7 @@ public class Preferences extends PBMUtil {
 	}
 	
 	final Handler waitHandler = new Handler() {
+		@SuppressWarnings("deprecation")
 		public void handleMessage(Message msg) {
 			int total = msg.getData().getInt("total");
 
@@ -103,12 +107,14 @@ public class Preferences extends PBMUtil {
 		public void run() {
 			PBMApplication app = (PBMApplication) getApplication();
 			try {
-				app.initializeData(httpBase + "iphone.html?init=1");
+				app.initializeData();
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (ExecutionException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 			

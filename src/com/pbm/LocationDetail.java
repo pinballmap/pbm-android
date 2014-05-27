@@ -1,11 +1,9 @@
 package com.pbm;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -23,7 +21,9 @@ public class LocationDetail extends PBMUtil {
 	private ListView table;
 
 	private Location location;
+	private List<LocationMachineXref> lmxes = new ArrayList<LocationMachineXref>();
 	private List<Machine> machines = new ArrayList<Machine>();
+	PBMApplication app = (PBMApplication) getApplication();
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,7 +33,7 @@ public class LocationDetail extends PBMUtil {
 
 		logAnalyticsHit("com.pbm.LocationDetail");
 
-		machines.clear();
+		lmxes.clear();
 
 		location = (Location) getIntent().getExtras().get("Location");
 		
@@ -44,41 +44,23 @@ public class LocationDetail extends PBMUtil {
 		if (location != null) {
 			new Thread(new Runnable() {
 				public void run() {
-					if (location.street1 == null) {
-						PBMApplication app = (PBMApplication) getApplication();
-						try {
-							location = updateLocationData(app.getLocation(location.locationNo));
-						} catch (UnsupportedEncodingException e) {
-							e.printStackTrace();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						} catch (ExecutionException e) {
-							e.printStackTrace();
-						}
-					}
-							
-					try {
-						machines = getLocationMachineData(location);
-					} catch (UnsupportedEncodingException e) {
-						e.printStackTrace();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					} catch (ExecutionException e) {
-						e.printStackTrace();
-					}
+					lmxes = app.getLocationMachineXrefsForLocation(location);
+					machines = app.getMachinesFromLmxes(lmxes);
+
 					LocationDetail.super.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
 							TextView title = (TextView)findViewById(R.id.title);
 							title.setText(location.name);
 							TextView locationName = (TextView)findViewById(R.id.locationName);
-							locationName.setText(location.name + "\n\t" + location.street1 + "\n\t" + location.city + " " + location.state + " " + location.zip + "\n\t" + location.phone);
+							locationName.setText(location.name + "\n\t" + location.street + "\n\t" + location.city + " " + location.state + " " + location.zip + "\n\t" + location.phone);
 							table = (ListView)findViewById(R.id.locationDetailTable);
 							table.setOnItemClickListener(new OnItemClickListener() {
 								public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
+									Machine machine = (Machine) parentView.getItemAtPosition(position);
+
 									Intent myIntent = new Intent();
-									myIntent.putExtra("Location", location);
-									myIntent.putExtra("Machine", (Machine) parentView.getItemAtPosition(position));
+									myIntent.putExtra("lmx", app.getLmxFromMachine(machine, lmxes));
 									myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
 									startActivityForResult(myIntent, QUIT_RESULT);
 								}
@@ -125,7 +107,7 @@ public class LocationDetail extends PBMUtil {
 
 			break;
 		case R.id.navButton :
-			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + location.street1 + ", " + location.city + ", " + location.state + ", " + location.zip));
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + location.street + ", " + location.city + ", " + location.state + ", " + location.zip));
 			startActivity(intent);
 
 			break;
@@ -135,22 +117,16 @@ public class LocationDetail extends PBMUtil {
 	}
 
 	public void activityRefreshResult() {
-		machines.clear();
+		lmxes.clear();
 		final ProgressDialog dialog = new ProgressDialog(this);
 		dialog.setMessage("Loading...");
 		dialog.show();
 				
 		new Thread(new Runnable() {
 			public void run() {
-				try {
-					machines = getLocationMachineData(location);
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				}
+				lmxes = app.getLocationMachineXrefsForLocation(location);
+				machines = app.getMachinesFromLmxes(lmxes);
+
 				LocationDetail.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {

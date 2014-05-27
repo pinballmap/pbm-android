@@ -1,11 +1,10 @@
 package com.pbm;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -29,10 +28,14 @@ public class DisplayOnMap extends PBMUtil {
 	private GoogleMap map;
 	private ArrayList<Marker> markers = new ArrayList<Marker>();
 	private Location[] formattedLocations;
+	private Activity activity;
 
+	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.display_on_map);
+		
+		activity = this;
 
 		showDialog(PBMUtil.PROGRESS_DIALOG);
 		
@@ -56,6 +59,7 @@ public class DisplayOnMap extends PBMUtil {
 	}
 
 	final Handler waitHandler = new Handler() {
+		@SuppressWarnings("deprecation")
 		public void handleMessage(Message msg) {
 			int total = msg.getData().getInt("total");
 
@@ -63,7 +67,7 @@ public class DisplayOnMap extends PBMUtil {
 				formattedLocations = (Location[]) msg.getData().getSerializable("formattedLocations");
 				for(int i = 0; i < formattedLocations.length; i++) {
 					LatLng position = new LatLng(Float.valueOf(formattedLocations[i].lat), Float.valueOf(formattedLocations[i].lon));
-					Marker marker = map.addMarker(new MarkerOptions().title(formattedLocations[i].name).snippet(formattedLocations[i].numMachines + " machines").position(position));
+					Marker marker = map.addMarker(new MarkerOptions().title(formattedLocations[i].name).snippet(formattedLocations[i].numMachines(activity) + " machines").position(position));
 					
 					markers.add(marker);
 				}
@@ -138,23 +142,10 @@ public class DisplayOnMap extends PBMUtil {
 		public void run() {
 			Serializable serializedLocations = getIntent().getSerializableExtra("Locations");
 			Object[] locations = (Object[]) serializedLocations;
-			PBMApplication app = (PBMApplication) getApplication();
-			
 			Location[] formattedLocations = new Location[locations.length];
+
 			for(int i = 0; i < locations.length; i++) {
 				Location location = (Location) locations[i];
-				
-				if (location.street1 == null) {
-					try {
-						location = PBMUtil.updateLocationData(app.getLocation(location.locationNo));
-					} catch (UnsupportedEncodingException e) {
-						e.printStackTrace();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					} catch (ExecutionException e) {
-						e.printStackTrace();
-					}
-				}
 				
 				formattedLocations[i] = location;
 			}
