@@ -1,14 +1,9 @@
 package com.pbm;
 
-import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.concurrent.ExecutionException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -56,18 +51,11 @@ public class MachineLookupDetail extends PBMUtil {
 		
 		new Thread(new Runnable() {
 	        public void run() {
-	        	try {
-					getMachineData(httpBase + "iphone.html?get_machine=" + machine.machineNo);
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 	        	MachineLookupDetail.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
+						locationsWithMachine = getLocationsWithMachine(machine);
+						
 						if (locationsWithMachine != null) {
 							try {
 								Arrays.sort(locationsWithMachine, new Comparator<Location>() {
@@ -86,28 +74,18 @@ public class MachineLookupDetail extends PBMUtil {
 	        }
 	    }).start();
 	}   
-
-	public void getMachineData(String URL) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
-		Document doc = new RetrieveXMLTask().execute(URL).get();
+	
+	public Location[] getLocationsWithMachine(Machine machine) {
+		List<Location> locations = new ArrayList<Location>();
+		
 		PBMApplication app = (PBMApplication) getApplication();
-
-		if (doc != null) {
-			NodeList itemNodes = doc.getElementsByTagName("location");
-			locationsWithMachine = new Location[itemNodes.getLength()];
-			for (int i = 0; i < itemNodes.getLength(); i++) { 
-				Node itemNode = itemNodes.item(i); 
-				if (itemNode.getNodeType() == Node.ELEMENT_NODE) 
-				{            
-					Element itemElement = (Element) itemNode;    
-
-					String locationNo = readDataFromXML("id", itemElement);
-
-					if ((locationNo != null)) {
-						locationsWithMachine[i] = app.getLocation(Integer.parseInt(locationNo));
-					}
-				} 
+		for (LocationMachineXref lmx : app.getLmxes().values()) {
+			if (lmx.getMachine(this).id == machine.id){ 
+				locations.add(lmx.getLocation(this));
 			}
 		}
+		
+		return (Location[]) locations.toArray();
 	}
 
 	public void clickHandler(View view) {		

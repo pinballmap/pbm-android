@@ -5,16 +5,14 @@ import java.lang.String;
 
 public class Zone implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public int zoneNo;
-	public String name;
-	public String shortName;
-	public int isPrimary;
+	public int id, isPrimary;
+	public String name, shortName;
 
-	public Zone(int newZoneNo, String newName, String newShortName, int newIsPrimary) {
-	    zoneNo = newZoneNo;
-	    name = newName;
-	    shortName = newShortName;
-	    isPrimary = newIsPrimary;
+	public Zone(int id, String name, String shortName, int isPrimary) {
+	    this.id = id;
+	    this.name = name;
+	    this.shortName = shortName;
+	    this.isPrimary = isPrimary;
 	}
 	
 	public String toString() {

@@ -5,10 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -52,14 +51,15 @@ public class Events extends PBMUtil {
 		
 		new Thread(new Runnable() {
 	        public void run() {
-
 	        	try {
-					getEventData(httpBase + "iphone.html?init=3");
+					getEventData();
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} catch (ExecutionException e) {
+					e.printStackTrace();
+				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 	        	Events.super.runOnUiThread(new Runnable() {
@@ -74,35 +74,37 @@ public class Events extends PBMUtil {
 	    }).start();
 	}   
 
-	public void getEventData(String URL) throws UnsupportedEncodingException, InterruptedException, ExecutionException {
-		Document doc = new RetrieveXMLTask().execute(URL).get();
+	public void getEventData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+		String json = new RetrieveJsonTask().execute(regionBase + "events.json", "GET").get();
 
-		NodeList itemNodes = doc.getElementsByTagName("event"); 
+		if (json == null) {
+			return;
+		}
 
-		eventLinks = new String[itemNodes.getLength()];
-		for (int i = 0; i < itemNodes.getLength(); i++) { 
-			Node itemNode = itemNodes.item(i); 
-			if (itemNode.getNodeType() == Node.ELEMENT_NODE) {            
-				Element itemElement = (Element) itemNode;                 
+		JSONObject jsonObject = new JSONObject(json);
+		JSONArray jsonEvents = jsonObject.getJSONArray("jsonEvents");
+		
+		eventLinks = new String[jsonEvents.length()];
+		for (int i = 0; i < jsonEvents.length(); i++) {
+		    JSONObject event = jsonEvents.getJSONObject(i);
 
-				String name = readDataFromXML("name", itemElement);
-				String desc = readDataFromXML("longDesc", itemElement);
-				String link = readDataFromXML("link", itemElement);
-				String start = readDataFromXML("startDate", itemElement);
-				String end = readDataFromXML("endDate", itemElement);
+			String name = event.getString("name");
+			String longDesc = event.getString("long_desc");
+			String link = event.getString("link");
+			String startDate = event.getString("start_date");
+			String endDate = event.getString("end_date");
 
-				String eventText = "<b>" + name + "</b><br />" + desc + "<br /><small>" + start + "</small>";
-				if(!end.equals("")) {
-					eventText += " - " + "<small>" + end + "</small>";
-				}
-
-				if(!link.equals("")) {
-					eventLinks[i] = link;
-				}
-
-				Spanned eventTextSpanned = Html.fromHtml(eventText);
-				events.add(eventTextSpanned);
+			String eventText = "<b>" + name + "</b><br />" + longDesc + "<br /><small>" + startDate + "</small>";
+			if(!endDate.equals("")) {
+				eventText += " - " + "<small>" + endDate + "</small>";
 			}
+
+			if(!link.equals("")) {
+				eventLinks[i] = link;
+			}
+
+			Spanned eventTextSpanned = Html.fromHtml(eventText);
+			events.add(eventTextSpanned);
 		}
 	}
 }

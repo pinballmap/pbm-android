@@ -5,48 +5,34 @@ import java.lang.String;
 
 public class Machine implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public int machineNo;
+	public int id;
 	public String name;
 	public int numLocations;
-	public String condition;
-	public String conditionDate;
 	public boolean existsInRegion;
 
-	public Machine(String newName) {
-		name = newName;
+	public Machine(int id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 
-	public Machine(int newMachineNo, String newName) {
-		machineNo = newMachineNo;
-		name = newName;
+	public Machine(int id, String name, boolean existsInRegion) {
+		this.id = id;
+		this.name = name;
+		this.existsInRegion = existsInRegion;
 	}
 
-	public Machine(int newMachineNo, String newName, boolean newExistsInRegion) {
-		machineNo = newMachineNo;
-		name = newName;
-		existsInRegion = newExistsInRegion;
-	}
-
-	public Machine(int newMachineNo, String newName, int newNumLocations) {
-		machineNo = newMachineNo;
-		name = newName;
-		numLocations = newNumLocations;
+	public Machine(int id, String name, int numLocations) {
+		this.id = id;
+		this.name = name;
+		this.numLocations = numLocations;
 	}
 	
-	public Machine(int newMachineNo, String newName, int newNumLocations, String newCondition, String newConditionDate) {
-		machineNo = newMachineNo;
-		name = newName;
-		numLocations = newNumLocations;
-		condition = newCondition;
-		conditionDate = newConditionDate;
+	public void setNumLocations(int numLocations) {
+		this.numLocations = numLocations;
 	}
 	
-	public void setNumLocations(int newNumLocations) {
-		numLocations = newNumLocations;
-	}
-	
-	public void setExistsInRegion(boolean newExistsInRegion) {
-		existsInRegion = newExistsInRegion;
+	public void setExistsInRegion(boolean existsInRegion) {
+		this.existsInRegion = existsInRegion;
 	}
 	
 	public String toString() {

@@ -4,6 +4,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.concurrent.ExecutionException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -37,9 +40,16 @@ public class AddMachine extends PBMUtil {
 				new Thread(new Runnable() {
 					public void run() {
 						Machine machine = (Machine) parentView.getItemAtPosition(position);
+						machine.setExistsInRegion(true);
 						try {
-							sendOneWayRequestToServer(getAddMachineURL("", machine));
+							new RetrieveJsonTask().execute(getAddMachineURL("", machine), "POST").get();
 						} catch (UnsupportedEncodingException e) {
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							e.printStackTrace();
+						} catch (JSONException e) {
 							e.printStackTrace();
 						}
 						AddMachine.super.runOnUiThread(new Runnable() {
@@ -61,6 +71,7 @@ public class AddMachine extends PBMUtil {
 	public void submitHandler(View view) {		
 		EditText manualName = (EditText) findViewById(R.id.manualNewMachine);
 		String manualMachineName = manualName.getText().toString();
+
 		if (manualMachineName.length() > 0) {
 			final ProgressDialog dialog = new ProgressDialog(this);
 			dialog.setMessage("Reinitializing machine information");
@@ -70,22 +81,19 @@ public class AddMachine extends PBMUtil {
 				public void run() {
 					EditText manualName = (EditText) findViewById(R.id.manualNewMachine);
 					String manualMachineName = manualName.getText().toString();
-					try {
-						sendOneWayRequestToServer(getAddMachineURL(manualMachineName, null));
-					} catch (UnsupportedEncodingException e) {
-						e.printStackTrace();
-					}
 
-					PBMApplication app = (PBMApplication) getApplication();
 					try {
-						app.initializeMachines(httpBase + "iphone.html?init=1");
+						new RetrieveJsonTask().execute(getAddMachineURL(manualMachineName, null), "POST").get();
 					} catch (UnsupportedEncodingException e) {
 						e.printStackTrace();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					} catch (ExecutionException e) {
 						e.printStackTrace();
+					} catch (JSONException e) {
+						e.printStackTrace();
 					}
+
 					AddMachine.super.runOnUiThread(new Runnable() {
 						public void run() {
 							dialog.dismiss();
@@ -97,14 +105,39 @@ public class AddMachine extends PBMUtil {
 			}).start();
 		}
 	}
+	
+	private int getMachineIDFromMachineName(String name) throws InterruptedException, ExecutionException, JSONException {
+		PBMApplication app = (PBMApplication) getApplication();
+		int machineID = -1;
 
-	private String getAddMachineURL(String manualMachineName, Machine machine) throws UnsupportedEncodingException {
-		String addMachineURL = "modify_location=" + location.locationNo + ";action=add_machine";
-
-		if (manualMachineName.length() > 0) {
-			addMachineURL += ";machine_name=" + URLEncoder.encode(manualMachineName, "UTF8");
+		Machine machine = app.getMachineByName(name);
+		if (machine != null) {
+			machine.setExistsInRegion(true);
+			
+			machineID = machine.id;
 		} else {
-			addMachineURL += ";machine_no=" + machine.machineNo;
+			String json = new RetrieveJsonTask().execute(
+				regionBase + "machines.json?machine_name=" + name + ";location_id=" + location.id,
+				"POST"
+			).get();
+					
+			JSONObject jsonObject = new JSONObject(json);
+
+			machineID = jsonObject.getInt("id");
+			app.addMachine(machineID, new Machine(machineID, name, true));
+		}
+		
+		return machineID;
+	}
+
+	private String getAddMachineURL(String manualMachineName, Machine machine) throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+		String addMachineURL = regionBase + "location_machine_xrefs.json?location_id=" + location.id;
+
+		if (machine != null) {
+			addMachineURL += ";machine_id=" + machine.id;
+		} else {
+			int machineID = getMachineIDFromMachineName(URLEncoder.encode(manualMachineName, "UTF8"));
+			addMachineURL += ";machine_id=" + machineID;
 		}
 
 		return addMachineURL;

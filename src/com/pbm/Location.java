@@ -3,54 +3,48 @@ package com.pbm;
 import java.io.Serializable;
 import java.lang.String;
 
+import android.app.Activity;
+
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public int locationNo;
+	public int id;
 	public String name;
-	public String street1;
+	public String street;
 	public String city;
 	public String state;
 	public String zip;
 	public String phone;
 	public String lat;
 	public String lon;
-	public String zone;
-	public int zoneNo;
-	public int numMachines;
+	public int zoneID;
 	public float distanceFromYou;
 	public String milesInfo;
 
-	public Location(int nLocationNo, String nName, String nLat, String nLon, String nZone, int nNumMachines, 
-			int nZoneNo, String nStreet1, String nCity, String nState, String nZip, String nPhone, float nDistance) {
-		locationNo = nLocationNo;
-		name = nName;
-		lat = nLat;
-		lon = nLon;
-		zone = nZone;
-		zoneNo = nZoneNo;
-		numMachines = nNumMachines;
-		state = nState;
-		street1 = nStreet1;
-		city = nCity;
-		zip = nZip;
-		phone = nPhone;
-		distanceFromYou = nDistance;
+	public Location(int id, String name, String lat, String lon, int zoneID, String street, String city, String state, String zip, String phone) {
+		this.id = id;
+		this.name = name;
+		this.lat = lat;
+		this.lon = lon;
+		this.zoneID = zoneID;
+		this.state = state;
+		this.street = street;
+		this.city = city;
+		this.zip = zip;
+		this.phone = phone;
 	}
 
-	public void updateAddress(String nStreet1, String nCity, String nState, String nZip, String nPhone) {
-		street1 = nStreet1;
-		city = nCity;
-		state = nState;
-		zip = nZip;
-		phone = nPhone;
+	public void setDistance(float distance) {
+		this.distanceFromYou = distance;
 	}
 	
-	public void setDistance(float nDistance) {
-		distanceFromYou = nDistance;
+	public void setMilesInfo(String milesInfo) {
+		this.milesInfo = milesInfo;
 	}
 	
-	public void setMilesInfo(String nMilesInfo) {
-		milesInfo = nMilesInfo;
+	public int numMachines(Activity activity) {
+		PBMApplication app = (PBMApplication) activity.getApplication();
+
+		return app.numMachinesForLocation(this);
 	}
 
 	public String toString() {

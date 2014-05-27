@@ -1,13 +1,11 @@
 package com.pbm;
 
-import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -190,6 +188,7 @@ public class CloseLocations extends FragmentActivity implements LocationListener
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public void onConnected(Bundle arg0) {
 		yourLocation = locationClient.getLastLocation();
 		locationsForMap = new ArrayList<com.pbm.Location>();
@@ -221,19 +220,6 @@ public class CloseLocations extends FragmentActivity implements LocationListener
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
 				Intent myIntent = new Intent();						
 				com.pbm.Location location = locationsForMap.get(position);
-
-				if (location.street1 == null) {
-					PBMApplication app = (PBMApplication) getApplication();
-					try {
-						location = PBMUtil.updateLocationData(app.getLocation(location.locationNo));
-					} catch (UnsupportedEncodingException e) {
-						e.printStackTrace();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					} catch (ExecutionException e) {
-						e.printStackTrace();
-					}
-				}
 
 				myIntent.putExtra("Location", location);
 				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
