@@ -84,8 +84,8 @@ public class MachineLookupDetail extends PBMUtil {
 				locations.add(lmx.getLocation(this));
 			}
 		}
-		
-		return (Location[]) locations.toArray();
+
+		return locations.toArray(new Location[locations.size()]);
 	}
 
 	public void clickHandler(View view) {		

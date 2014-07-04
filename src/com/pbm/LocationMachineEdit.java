@@ -7,6 +7,7 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -39,9 +40,13 @@ public class LocationMachineEdit extends PBMUtil {
 						title.setText(machine.name + " @ " + location.name);
 
 						TextView conditionText = (TextView)findViewById(R.id.condition);
-						conditionText.setText(lmx.condition);
 
-						if (lmx.conditionDate != null) {
+						if (lmx.condition != null && !lmx.condition.isEmpty() && lmx.condition != "null") {
+							Log.e("!!!!!", "-" + lmx.condition + "-");
+							conditionText.setText(lmx.condition);
+						}
+
+						if (lmx.conditionDate != null && !lmx.conditionDate.isEmpty() && lmx.conditionDate != "null") {
 							TextView conditionDateView = (TextView)findViewById(R.id.conditionDate);
 							conditionDateView.setText("Comment made on: " + lmx.conditionDate);
 						}
@@ -70,7 +75,7 @@ public class LocationMachineEdit extends PBMUtil {
 					new Thread(new Runnable() {
 						public void run() {
 							try {
-								new RetrieveJsonTask().execute(regionlessBase + "location_machine_xref/" + Integer.toString(lmx.id) + ".json", "DELETE").get();
+								new RetrieveJsonTask().execute(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.id) + ".json", "DELETE").get();
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							} catch (ExecutionException e) {

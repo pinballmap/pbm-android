@@ -9,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,10 +44,6 @@ public class Events extends PBMUtil {
 			}
 		});
 
-		final ProgressDialog dialog = new ProgressDialog(this);
-		dialog.setMessage("Loading...");
-		dialog.show();
-		
 		new Thread(new Runnable() {
 	        public void run() {
 	        	try {
@@ -65,7 +60,6 @@ public class Events extends PBMUtil {
 	        	Events.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						dialog.dismiss();
 						ListView table = (ListView)findViewById(R.id.eventsTable);
 						table.setAdapter(new ArrayAdapter<Spanned>(Events.this, android.R.layout.simple_list_item_1, events));
 					}
@@ -82,7 +76,7 @@ public class Events extends PBMUtil {
 		}
 
 		JSONObject jsonObject = new JSONObject(json);
-		JSONArray jsonEvents = jsonObject.getJSONArray("jsonEvents");
+		JSONArray jsonEvents = jsonObject.getJSONArray("events");
 		
 		eventLinks = new String[jsonEvents.length()];
 		for (int i = 0; i < jsonEvents.length(); i++) {
@@ -90,16 +84,20 @@ public class Events extends PBMUtil {
 
 			String name = event.getString("name");
 			String longDesc = event.getString("long_desc");
-			String link = event.getString("link");
+			String link = event.getString("external_link");
 			String startDate = event.getString("start_date");
 			String endDate = event.getString("end_date");
-
+			
+			if (startDate == "null") {
+				startDate = "";
+			}
+			
 			String eventText = "<b>" + name + "</b><br />" + longDesc + "<br /><small>" + startDate + "</small>";
-			if(!endDate.equals("")) {
+			if(!endDate.equals("") && endDate != null && endDate != "null") {
 				eventText += " - " + "<small>" + endDate + "</small>";
 			}
 
-			if(!link.equals("")) {
+			if(!link.equals("") && link != null && link != "null") {
 				eventLinks[i] = link;
 			}
 

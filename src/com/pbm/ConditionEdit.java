@@ -41,7 +41,7 @@ public class ConditionEdit extends PBMUtil {
 		new Thread(new Runnable() {
 	        public void run() {
 	        	try {
-	        		new RetrieveJsonTask().execute(regionBase + "location_machine_xref.json?id=" + lmx.id + ";condition=" + URLEncoder.encode(condition, "UTF8"), "POST").get();
+	        		new RetrieveJsonTask().execute(regionlessBase + "location_machine_xrefs/" + lmx.id + ".json?condition=" + URLEncoder.encode(condition, "UTF8"), "PUT").get();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} catch (ExecutionException e) {
