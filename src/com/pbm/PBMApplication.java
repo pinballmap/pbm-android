@@ -76,28 +76,6 @@ public class PBMApplication extends Application {
 	public void addLocationMachineXref(Integer id, LocationMachineXref lmx) {
 		this.lmxes.put(id, lmx);
 	}
-	public List<LocationMachineXref> getLocationMachineXrefsForLocation(Location location) {
-		List<LocationMachineXref> locationLmxes = new ArrayList<LocationMachineXref>();
-		
-		for (LocationMachineXref lmx : getLmxes().values()) {
-			if (lmx.locationID == location.id) {
-				locationLmxes.add(lmx);
-			}
-		}
-
-		return locationLmxes;
-	}
-	
-	@SuppressWarnings("null")
-	public List<Machine> getMachinesFromLmxes(List<LocationMachineXref> lmxes) {
-		List<Machine> machinesFromLmxes = null;
-		
-		for (LocationMachineXref lmx : lmxes) {
-			machinesFromLmxes.add(getMachine(lmx.machineID));
-		}
-
-		return machinesFromLmxes;
-	}
 	
 	public LocationMachineXref getLmxFromMachine(Machine machine, List<LocationMachineXref> lmxes) {
 		for (LocationMachineXref lmx : lmxes) {
@@ -265,11 +243,10 @@ public class PBMApplication extends Application {
 
 			String name = zone.getString("name");
 			String id = zone.getString("id");
-			String shortName = zone.getString("shortName");
-			String isPrimary = zone.getString("isPrimary");
+			Boolean isPrimary = zone.getBoolean("is_primary");
 
-			if ((id != null) && (name != null) && (shortName != null) && (isPrimary != null)){
-				addZone(Integer.parseInt(id), new Zone(Integer.parseInt(id), name, shortName, Integer.parseInt(isPrimary)));
+			if ((id != null) && (name != null) && (isPrimary != null)){
+				addZone(Integer.parseInt(id), new Zone(Integer.parseInt(id), name, isPrimary ? 1 : 0));
 			}
 		}
 	}
@@ -288,8 +265,7 @@ public class PBMApplication extends Application {
 		
 		for (int i = 0; i < locations.length(); i++) {
 		    JSONObject location = locations.getJSONObject(i);
-		    JSONArray lmxes = jsonObject.getJSONArray("locations");
-
+		    
 			int id = location.getInt("id");
 			String name = location.getString("name");
 			String lat = location.getString("lat");
@@ -299,16 +275,25 @@ public class PBMApplication extends Application {
 			String zip = location.getString("zip");
 			String phone = location.getString("phone");
 			String state = location.getString("state");
-			int zoneID = location.getInt("zone_id");
 
+			int zoneID = 0;
+			if (location.has("zone_id") && location.getString("zone_id") != "null") {
+				zoneID = location.getInt("zone_id");
+			}
+			
 			if ((name != null) && (lat != null) && (lon != null)) {
 				addLocation(
 					id,
 					new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip, phone)
 				);
 			}
+
+		    JSONArray lmxes = null;
+		    if (location.has("location_machine_xrefs")) {
+		    	lmxes = location.getJSONArray("location_machine_xrefs");
+		    }
 			
-			if (lmxes.length() > 0) {
+			if (lmxes != null && lmxes.length() > 0) {
 				for (int x = 0; x < lmxes.length(); x++) {
 					JSONObject lmx = lmxes.getJSONObject(x);
 
@@ -344,13 +329,16 @@ public class PBMApplication extends Application {
 		    JSONObject region = regions.getJSONObject(i);
 			String id = region.getString("id");
 			String name = region.getString("name");
-			String formalName = region.getString("full-name");
+			String formalName = region.getString("full_name");
 			String motd = region.getString("motd");
 
 			List<String> emailAddresses = null;
-			JSONArray jsonEmailAddresses = region.getJSONArray("all-admin-email-address");
-			for (int x = 0; x < jsonEmailAddresses.length(); x++) {
-			    emailAddresses.add(jsonEmailAddresses.getString(x));
+
+			if (region.has("all_admin_email_address")) {
+				JSONArray jsonEmailAddresses = region.getJSONArray("all_admin_email_address");
+				for (int x = 0; x < jsonEmailAddresses.length(); x++) {
+				    emailAddresses.add(jsonEmailAddresses.getString(x));
+				}
 			}
 
 			addRegion(Integer.parseInt(id), new Region(Integer.parseInt(id), name, formalName, motd, emailAddresses));

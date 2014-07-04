@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,7 +22,6 @@ public class LocationDetail extends PBMUtil {
 	private Location location;
 	private List<LocationMachineXref> lmxes = new ArrayList<LocationMachineXref>();
 	private List<Machine> machines = new ArrayList<Machine>();
-	PBMApplication app = (PBMApplication) getApplication();
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,19 +35,15 @@ public class LocationDetail extends PBMUtil {
 
 		location = (Location) getIntent().getExtras().get("Location");
 		
-		final ProgressDialog dialog = new ProgressDialog(this);
-		dialog.setMessage("Loading...");
-		dialog.show();
-
 		if (location != null) {
 			new Thread(new Runnable() {
 				public void run() {
-					lmxes = app.getLocationMachineXrefsForLocation(location);
-					machines = app.getMachinesFromLmxes(lmxes);
-
 					LocationDetail.super.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
+							lmxes = location.getLmxes(LocationDetail.this);
+							machines = location.getMachines(LocationDetail.this);
+
 							TextView title = (TextView)findViewById(R.id.title);
 							title.setText(location.name);
 							TextView locationName = (TextView)findViewById(R.id.locationName);
@@ -60,6 +54,7 @@ public class LocationDetail extends PBMUtil {
 									Machine machine = (Machine) parentView.getItemAtPosition(position);
 
 									Intent myIntent = new Intent();
+									PBMApplication app = (PBMApplication) getApplication();
 									myIntent.putExtra("lmx", app.getLmxFromMachine(machine, lmxes));
 									myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
 									startActivityForResult(myIntent, QUIT_RESULT);
@@ -67,8 +62,6 @@ public class LocationDetail extends PBMUtil {
 							});
 
 							updateTable();
-							
-							dialog.dismiss();
 						}
 					});
 				}
@@ -118,20 +111,16 @@ public class LocationDetail extends PBMUtil {
 
 	public void activityRefreshResult() {
 		lmxes.clear();
-		final ProgressDialog dialog = new ProgressDialog(this);
-		dialog.setMessage("Loading...");
-		dialog.show();
-				
+
 		new Thread(new Runnable() {
 			public void run() {
-				lmxes = app.getLocationMachineXrefsForLocation(location);
-				machines = app.getMachinesFromLmxes(lmxes);
-
+				lmxes = location.getLmxes(LocationDetail.this);
+				machines = location.getMachines(LocationDetail.this);
+		
 				LocationDetail.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
 						updateTable();
-						dialog.dismiss();
 					}
 				});
 			}

@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -27,7 +26,6 @@ import android.widget.AdapterView.OnItemClickListener;
 public class RecentlyAdded extends PBMUtil {
 	private final int NUM_ADDED_TO_SHOW = 20;
 	private List<Spanned> recentAdds = new ArrayList<Spanned>();
-	PBMApplication app = (PBMApplication) getApplication();
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,10 +33,6 @@ public class RecentlyAdded extends PBMUtil {
 		setContentView(R.layout.recently_added);
 
 		logAnalyticsHit("com.pbm.RecentlyAdded");
-
-		final ProgressDialog dialog = new ProgressDialog(this);
-		dialog.setMessage("Loading...");
-		dialog.show();
 
 		new Thread(new Runnable() {
 	        public void run() {
@@ -56,7 +50,6 @@ public class RecentlyAdded extends PBMUtil {
 	        	RecentlyAdded.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						dialog.dismiss();
 						showTable(recentAdds);
 					}
 	        	});
@@ -65,7 +58,7 @@ public class RecentlyAdded extends PBMUtil {
 	}   
 
 	public void getLocationData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		String json = new RetrieveJsonTask().execute(regionBase + "locationMachineXrefs.json?limit=" + NUM_ADDED_TO_SHOW, "GET").get();
+		String json = new RetrieveJsonTask().execute(regionBase + "location_machine_xrefs.json?limit=" + NUM_ADDED_TO_SHOW, "GET").get();
 
 		if (json == null) {
 			return;
@@ -74,14 +67,15 @@ public class RecentlyAdded extends PBMUtil {
 		JSONObject jsonObject = new JSONObject(json);
 		JSONArray lmxes = jsonObject.getJSONArray("location_machine_xrefs");
 		
+		PBMApplication app = (PBMApplication) getApplication();
 		for (int i = 0; i < lmxes.length(); i++) {
-			JSONObject lmx = lmxes.getJSONObject(i);
+			JSONObject lmxJson = lmxes.getJSONObject(i);
 			
-			int machineID = lmx.getInt("machine_id");
-			int locationID = lmx.getInt("location_id");
-			String createdAt = lmx.getString("created_at");
+			int id = lmxJson.getInt("id");
+			String createdAt = lmxJson.getString("created_at").split("T")[0];
+			LocationMachineXref lmx = app.getLmx(id);
 			
-			String textToShow = "<b>" + app.getMachine(machineID).name + "</b> was added to <b>" + app.getLocation(locationID).name + "</b>";
+			String textToShow = "<b>" + lmx.getMachine(this).name + "</b> was added to <b>" + lmx.getLocation(this).name + "</b>";
 			textToShow += "<br /><small>Added on " + createdAt + "</small>";
 
 			recentAdds.add(Html.fromHtml(textToShow));
@@ -98,6 +92,7 @@ public class RecentlyAdded extends PBMUtil {
 				String locationName = spanned.toString().split(" was added to ")[1];
 				locationName = locationName.split("\n")[0];
 
+				PBMApplication app = (PBMApplication) getApplication();
 				Location location = app.getLocationByName(locationName);
 
 				if (location == null) {

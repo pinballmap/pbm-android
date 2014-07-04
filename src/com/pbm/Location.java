@@ -2,8 +2,11 @@ package com.pbm;
 
 import java.io.Serializable;
 import java.lang.String;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
+import android.util.Log;
 
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -56,4 +59,30 @@ public class Location implements Serializable {
 		
 		return name;
 	}
+	
+	public List<LocationMachineXref> getLmxes(Activity activity) {
+		List<LocationMachineXref> locationLmxes = new ArrayList<LocationMachineXref>();
+		PBMApplication app = (PBMApplication) activity.getApplication();
+		
+		for (LocationMachineXref lmx : app.getLmxes().values()) {
+			if (lmx.locationID == id) {
+				locationLmxes.add(lmx);
+			}
+		}
+
+		return locationLmxes;
+	}
+
+	public List<Machine> getMachines(Activity activity) {
+		List<Machine> machinesFromLmxes = new ArrayList<Machine>();
+		PBMApplication app = (PBMApplication) activity.getApplication();
+		
+		for (LocationMachineXref lmx : getLmxes(activity)) {
+			Log.i("!!!!!!", Integer.toString(lmx.machineID));
+			machinesFromLmxes.add(app.getMachine(lmx.machineID));
+		}
+
+		return machinesFromLmxes;
+	}
+	
 }

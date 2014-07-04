@@ -25,7 +25,7 @@ public class LookupByLocationList extends PBMUtil {
 		List<Zone> primaryZones = new ArrayList<Zone>();
 		List<Zone> secondaryZones = new ArrayList<Zone>();
 
-		primaryZones.add(new Zone(0, "All", "All", 0));
+		primaryZones.add(new Zone(0, "All", 0));
 
 		ListView table = (ListView)findViewById(R.id.locationLookupListTable);
 		table.setOnItemClickListener(new OnItemClickListener() {
