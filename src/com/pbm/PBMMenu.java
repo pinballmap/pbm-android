@@ -12,7 +12,6 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 public class PBMMenu extends PBMUtil {
@@ -45,8 +44,6 @@ public class PBMMenu extends PBMUtil {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
 
 				Intent intent = new Intent();
-				PBMApplication app = (PBMApplication) getApplication();
-				Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 
 				switch (position) {
 				case 0: 
@@ -62,17 +59,7 @@ public class PBMMenu extends PBMUtil {
 				case 5:
 					intent.setClassName("com.pbm", "com.pbm.CloseLocations"); break;
 				case 6:
-					intent = new Intent(Intent.ACTION_VIEW);
-					
-					String mailTo = "";
-					for (String address : region.emailAddresses) {
-					    mailTo += address + ",";
-					}
-
-					intent.setData(Uri.parse("mailto:" + mailTo + "?subject=PBM - New Location Suggestion&body=" + "Name of Location:\n\nStreet:\n\nCity:\n\nState:\n\nZip:\n\nMachines:\n"));
-					startActivity(intent);
-
-					return;
+					intent.setClassName("com.pbm", "com.pbm.SuggestLocation"); break;
 				default:	
 					intent.setClassName("com.pbm", "com.pbm.LookupByMachineList"); break;
 				}

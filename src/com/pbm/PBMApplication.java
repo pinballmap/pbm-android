@@ -55,6 +55,22 @@ public class PBMApplication extends Application {
 	public HashMap<Integer, com.pbm.Machine> getMachines() {
 		return machines;
 	}
+	public String[] getMachineNames() {
+		HashMap<Integer, com.pbm.Machine> machines = getMachines();
+		
+		String names[] = new String[machines.size()];
+		
+		int i = 0;
+		for (Machine machine : machines.values()) {
+			names[i] = machine.name;
+
+			i++;
+		}
+		
+		Arrays.sort(names);
+
+		return names;
+	}
 	public void setZones(HashMap<Integer, com.pbm.Zone> zones) {
 		this.zones = zones;
 	}
