@@ -71,6 +71,22 @@ public class PBMApplication extends Application {
 
 		return names;
 	}
+	public String[] getMachineNamesWithMetadata() {
+		HashMap<Integer, com.pbm.Machine> machines = getMachines();
+		
+		String names[] = new String[machines.size()];
+		
+		int i = 0;
+		for (Machine machine : machines.values()) {
+			names[i] = machine.name + " (" + machine.manufacturer + " - " + machine.year + ")";
+
+			i++;
+		}
+		
+		Arrays.sort(names);
+
+		return names;
+	}
 	public void setZones(HashMap<Integer, com.pbm.Zone> zones) {
 		this.zones = zones;
 	}
@@ -234,9 +250,11 @@ public class PBMApplication extends Application {
 		        JSONObject machine = machines.getJSONObject(i);
 		        String name = machine.getString("name");
 		        String id = machine.getString("id");
+		        String year = machine.getString("year");
+		        String manufacturer = machine.getString("manufacturer");
 
 				if ((id != null) && (name != null)) {
-					addMachine(Integer.parseInt(id), new Machine(Integer.parseInt(id), name, false));
+					addMachine(Integer.parseInt(id), new Machine(Integer.parseInt(id), name, year, manufacturer, false));
 				}
 		    } catch (JSONException e) {
 		    }

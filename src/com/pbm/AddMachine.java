@@ -124,7 +124,7 @@ public class AddMachine extends PBMUtil {
 			JSONObject jsonObject = new JSONObject(json);
 
 			machineID = jsonObject.getInt("id");
-			app.addMachine(machineID, new Machine(machineID, name, true));
+			app.addMachine(machineID, new Machine(machineID, name, null, null, true));
 		}
 		
 		return machineID;

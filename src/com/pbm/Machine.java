@@ -7,6 +7,8 @@ public class Machine implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public int id;
 	public String name;
+	public String year;
+	public String manufacturer;
 	public int numLocations;
 	public boolean existsInRegion;
 
@@ -15,9 +17,11 @@ public class Machine implements Serializable {
 		this.name = name;
 	}
 
-	public Machine(int id, String name, boolean existsInRegion) {
+	public Machine(int id, String name, String year, String manufacturer, boolean existsInRegion) {
 		this.id = id;
 		this.name = name;
+		this.year = year;
+		this.manufacturer = manufacturer;
 		this.existsInRegion = existsInRegion;
 	}
 
