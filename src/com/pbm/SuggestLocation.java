@@ -21,7 +21,7 @@ public class SuggestLocation extends PBMUtil {
 		logAnalyticsHit("com.pbm.SuggestLocation");
 		
 		PBMApplication app = (PBMApplication) getApplication();
-		String[] machineNames = app.getMachineNames();
+		String[] machineNames = app.getMachineNamesWithMetadata();
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, machineNames);
 		MultiAutoCompleteTextView mactv = (MultiAutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView1);
