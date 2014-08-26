@@ -8,18 +8,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 @SuppressLint("HandlerLeak")
-public class AddMachine extends PBMUtil {	
+public class AddMachine extends PBMUtil implements OnTaskCompleted {	
 	private Location location;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +33,13 @@ public class AddMachine extends PBMUtil {
 		table.setFastScrollEnabled(true);
 		table.setTextFilterEnabled(true);
 
+		PBMApplication app = (PBMApplication) getApplication();
+		String[] machineNames = app.getMachineNames();
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, machineNames);
+		AutoCompleteTextView actv = (AutoCompleteTextView) findViewById(R.id.manualNewMachine);
+		actv.setAdapter(adapter);
+
 		table.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(final AdapterView<?> parentView, View selectedView, final int position, long id) {	
 		
@@ -41,15 +47,15 @@ public class AddMachine extends PBMUtil {
 					public void run() {
 						Machine machine = (Machine) parentView.getItemAtPosition(position);
 						machine.setExistsInRegion(true);
+
 						try {
-							new RetrieveJsonTask().execute(getAddMachineURL("", machine), "POST").get();
-						} catch (UnsupportedEncodingException e) {
-							e.printStackTrace();
+							new RetrieveJsonTask().execute(
+								regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + machine.id,
+								"POST"
+							).get();
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						} catch (ExecutionException e) {
-							e.printStackTrace();
-						} catch (JSONException e) {
 							e.printStackTrace();
 						}
 						AddMachine.super.runOnUiThread(new Runnable() {
@@ -64,39 +70,40 @@ public class AddMachine extends PBMUtil {
 			}
 		});
 
-		PBMApplication app = (PBMApplication) getApplication();		
 		table.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_list_item_1, app.getMachineValues(true)));
 	}   
 
 	public void submitHandler(View view) {		
-		EditText manualName = (EditText) findViewById(R.id.manualNewMachine);
-		String manualMachineName = manualName.getText().toString();
+		final String manualMachineName = ((AutoCompleteTextView) findViewById(R.id.manualNewMachine)).getText().toString();
 
 		if (manualMachineName.length() > 0) {
-			final ProgressDialog dialog = new ProgressDialog(this);
-			dialog.setMessage("Reinitializing machine information");
-			dialog.show();
-
 			new Thread(new Runnable() {
 				public void run() {
-					EditText manualName = (EditText) findViewById(R.id.manualNewMachine);
-					String manualMachineName = manualName.getText().toString();
-
 					try {
-						new RetrieveJsonTask().execute(getAddMachineURL(manualMachineName, null), "POST").get();
-					} catch (UnsupportedEncodingException e) {
-						e.printStackTrace();
+						int machineID = getMachineIDFromMachineName(manualMachineName);
+						if (machineID != -1) {
+							new RetrieveJsonTask().execute(
+								regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + machineID,
+								"POST"
+							).get();
+						} else {
+							new RetrieveJsonTask(AddMachine.this).execute(
+								regionlessBase + "machines.json?machine_name=" + URLEncoder.encode(manualMachineName, "UTF8") + ";location_id=" + location.id,
+								"POST"
+							).get();
+						}
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					} catch (ExecutionException e) {
 						e.printStackTrace();
 					} catch (JSONException e) {
 						e.printStackTrace();
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
 					}
 
 					AddMachine.super.runOnUiThread(new Runnable() {
 						public void run() {
-							dialog.dismiss();
 							setResult(REFRESH_RESULT);
 							AddMachine.this.finish();
 						}
@@ -115,31 +122,22 @@ public class AddMachine extends PBMUtil {
 			machine.setExistsInRegion(true);
 			
 			machineID = machine.id;
-		} else {
-			String json = new RetrieveJsonTask().execute(
-				regionBase + "machines.json?machine_name=" + name + ";location_id=" + location.id,
-				"POST"
-			).get();
-					
-			JSONObject jsonObject = new JSONObject(json);
-
-			machineID = jsonObject.getInt("id");
-			app.addMachine(machineID, new Machine(machineID, name, null, null, true));
 		}
 		
 		return machineID;
 	}
 
-	private String getAddMachineURL(String manualMachineName, Machine machine) throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		String addMachineURL = regionBase + "location_machine_xrefs.json?location_id=" + location.id;
+	public void onTaskCompleted(String results) throws JSONException, InterruptedException, ExecutionException {
+		PBMApplication app = (PBMApplication) getApplication();
 
-		if (machine != null) {
-			addMachineURL += ";machine_id=" + machine.id;
-		} else {
-			int machineID = getMachineIDFromMachineName(URLEncoder.encode(manualMachineName, "UTF8"));
-			addMachineURL += ";machine_id=" + machineID;
-		}
+		JSONObject jsonObject = new JSONObject(results);
+		JSONObject jsonMachine = jsonObject.getJSONObject("machine");
 
-		return addMachineURL;
+		app.addMachine(jsonMachine.getInt("id"), new Machine(jsonMachine.getInt("id"), jsonMachine.getString("name"), null, null, true));
+
+		new RetrieveJsonTask().execute(
+			regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + jsonMachine.getString("id"),
+			"POST"
+		).get();
 	}
 }

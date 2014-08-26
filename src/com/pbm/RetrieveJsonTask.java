@@ -3,10 +3,21 @@ package com.pbm;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.concurrent.ExecutionException;
+
+import org.json.JSONException;
 
 import android.os.AsyncTask;
 
 public class RetrieveJsonTask extends AsyncTask<String, Void, String> {
+	
+	private OnTaskCompleted listener;
+	
+    public RetrieveJsonTask(){ }
+
+    public RetrieveJsonTask(OnTaskCompleted listener){
+        this.listener=listener;
+    }
 
 	protected String doInBackground(String... urls) {
 		String result = null;
@@ -37,4 +48,18 @@ public class RetrieveJsonTask extends AsyncTask<String, Void, String> {
 		
 		return result;
 	}
+	
+    protected void onPostExecute(String results){
+    	if (listener != null) {
+    		try {
+				listener.onTaskCompleted(results);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+    	}
+    }
 }

@@ -9,15 +9,14 @@
 		android:textStyle="italic" android:textSize="12sp"
 		android:layout_height="wrap_content" />
 
-	<EditText
+	<AutoCompleteTextView
 	    android:id="@+id/manualNewMachine"
-	    android:layout_width="230dip"
+	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:inputType="text"
-	    android:labelFor="@id/manualNewMachine"
-	    android:padding="3dip"
-	    android:textColor="#FFFFFF"
-	    android:textSize="20sp" />
+	    android:ems="10" >
+
+	    <requestFocus />
+	</AutoCompleteTextView>
 
 	<Button
 	    android:id="@+id/submitButton"
