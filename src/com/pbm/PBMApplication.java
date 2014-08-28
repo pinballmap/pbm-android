@@ -25,11 +25,12 @@ public class PBMApplication extends Application {
 	    APP_TRACKER
 	}
 
-	private HashMap<Integer, com.pbm.Location>            locations = new HashMap<Integer, Location>();
-	private HashMap<Integer, com.pbm.Machine>             machines  = new HashMap<Integer, Machine>();
-	private HashMap<Integer, com.pbm.LocationMachineXref> lmxes     = new HashMap<Integer, LocationMachineXref>();
-	private HashMap<Integer, com.pbm.Zone>                zones     = new HashMap<Integer, Zone>();
-	private HashMap<Integer, com.pbm.Region>              regions   = new HashMap<Integer, Region>();
+	private HashMap<Integer, com.pbm.Location>            locations     = new HashMap<Integer, Location>();
+	private HashMap<Integer, com.pbm.LocationType>        locationTypes = new HashMap<Integer, LocationType>();
+	private HashMap<Integer, com.pbm.Machine>             machines      = new HashMap<Integer, Machine>();
+	private HashMap<Integer, com.pbm.LocationMachineXref> lmxes         = new HashMap<Integer, LocationMachineXref>();
+	private HashMap<Integer, com.pbm.Zone>                zones         = new HashMap<Integer, Zone>();
+	private HashMap<Integer, com.pbm.Region>              regions       = new HashMap<Integer, Region>();
 	
 	public HashMap<TrackerName, Tracker> mTrackers = new HashMap<TrackerName, Tracker>();
 	
@@ -104,6 +105,15 @@ public class PBMApplication extends Application {
 	}
 	public void addMachine(Integer id, Machine machine) {
 		this.machines.put(id, machine);
+	}
+	public void addLocationType(Integer id, LocationType name) {
+		this.locationTypes.put(id, name);
+	}
+	public LocationType getLocationType(Integer id) {
+		return locationTypes.get(id);
+	}
+	public HashMap<Integer, com.pbm.LocationType> getLocationTypes() {
+		return locationTypes;
 	}
 	public void addLocationMachineXref(Integer id, LocationMachineXref lmx) {
 		this.lmxes.put(id, lmx);
@@ -231,7 +241,33 @@ public class PBMApplication extends Application {
 	public void initializeData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
 		initializeAllMachines();
 		initializeLocations();
+		initializeLocationTypes();
 		initializeZones();
+	}
+
+	public void initializeLocationTypes() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+		locationTypes.clear();
+
+		String json = new RetrieveJsonTask().execute(PBMUtil.regionlessBase + "location_types.json", "GET").get();
+		if (json == null) {
+			return;
+		}
+		
+		JSONObject jsonObject = new JSONObject(json);
+		JSONArray types = jsonObject.getJSONArray("location_types");
+		
+		for (int i=0; i < types.length(); i++) {
+		    try {
+		        JSONObject type = types.getJSONObject(i);
+		        String name = type.getString("name");
+		        String id = type.getString("id");
+
+				if ((id != null) && (name != null)) {
+					addLocationType(Integer.parseInt(id), new LocationType(Integer.parseInt(id), name));
+				}
+		    } catch (JSONException e) {
+		    }
+		}
 	}
 	
 	public void initializeAllMachines() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
@@ -314,11 +350,16 @@ public class PBMApplication extends Application {
 			if (location.has("zone_id") && location.getString("zone_id") != "null") {
 				zoneID = location.getInt("zone_id");
 			}
+
+			int locationTypeID = 0;
+			if (location.has("location_type_id") && location.getString("location_type_id") != "null") {
+				locationTypeID = location.getInt("location_type_id");
+			}
 			
 			if ((name != null) && (lat != null) && (lon != null)) {
 				addLocation(
 					id,
-					new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip, phone)
+					new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip, phone, locationTypeID)
 				);
 			}
 
