@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.util.Log;
 
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -20,10 +19,11 @@ public class Location implements Serializable {
 	public String lat;
 	public String lon;
 	public int zoneID;
+	public int locationTypeID;
 	public float distanceFromYou;
 	public String milesInfo;
 
-	public Location(int id, String name, String lat, String lon, int zoneID, String street, String city, String state, String zip, String phone) {
+	public Location(int id, String name, String lat, String lon, int zoneID, String street, String city, String state, String zip, String phone, int locationTypeID) {
 		this.id = id;
 		this.name = name;
 		this.lat = lat;
@@ -34,6 +34,7 @@ public class Location implements Serializable {
 		this.city = city;
 		this.zip = zip;
 		this.phone = phone;
+		this.locationTypeID = locationTypeID;
 	}
 
 	public void setDistance(float distance) {
@@ -78,11 +79,16 @@ public class Location implements Serializable {
 		PBMApplication app = (PBMApplication) activity.getApplication();
 		
 		for (LocationMachineXref lmx : getLmxes(activity)) {
-			Log.i("!!!!!!", Integer.toString(lmx.machineID));
 			machinesFromLmxes.add(app.getMachine(lmx.machineID));
 		}
 
 		return machinesFromLmxes;
+	}
+
+	public LocationType getLocationType(Activity activity) {
+		PBMApplication app = (PBMApplication) activity.getApplication();
+		
+		return app.getLocationType(locationTypeID);
 	}
 	
 }
