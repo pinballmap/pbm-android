@@ -47,6 +47,9 @@ public class PBMApplication extends Application {
 	public void setLocations(HashMap<Integer, com.pbm.Location> locations) {
 		this.locations = locations;
 	}
+	public void setLocation(Integer index, com.pbm.Location location) {
+		this.locations.put(index, location);
+	}
 	public HashMap<Integer, com.pbm.Location> getLocations() {
 		return locations;
 	}
@@ -96,6 +99,9 @@ public class PBMApplication extends Application {
 	}
 	public void setLmxes(HashMap<Integer, com.pbm.LocationMachineXref> lmxes) {
 		this.lmxes = lmxes;
+	}
+	public void removeLmx(LocationMachineXref lmx) {
+		this.lmxes.remove(lmx);
 	}
 	public HashMap<Integer, com.pbm.Zone> getZones() {
 		return zones;

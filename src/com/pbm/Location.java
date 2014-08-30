@@ -37,6 +37,14 @@ public class Location implements Serializable {
 		this.locationTypeID = locationTypeID;
 	}
 
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public void setLocationTypeID(int locationTypeID) {
+		this.locationTypeID = locationTypeID;
+	}
+
 	public void setDistance(float distance) {
 		this.distanceFromYou = distance;
 	}
@@ -91,4 +99,10 @@ public class Location implements Serializable {
 		return app.getLocationType(locationTypeID);
 	}
 	
+	public void removeMachine(Activity activity, LocationMachineXref lmx) {
+		PBMApplication app = (PBMApplication) activity.getApplication();
+		
+		app.removeLmx(lmx);
+	}
+
 }
