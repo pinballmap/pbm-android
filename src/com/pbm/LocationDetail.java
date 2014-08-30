@@ -36,37 +36,53 @@ public class LocationDetail extends PBMUtil {
 		location = (Location) getIntent().getExtras().get("Location");
 		
 		if (location != null) {
-			new Thread(new Runnable() {
-				public void run() {
-					LocationDetail.super.runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							lmxes = location.getLmxes(LocationDetail.this);
-							machines = location.getMachines(LocationDetail.this);
-
-							TextView title = (TextView)findViewById(R.id.title);
-							title.setText(location.name);
-							TextView locationName = (TextView)findViewById(R.id.locationName);
-							locationName.setText(location.name + "\n\t" + location.street + "\n\t" + location.city + " " + location.state + " " + location.zip + "\n\t" + location.phone);
-							table = (ListView)findViewById(R.id.locationDetailTable);
-							table.setOnItemClickListener(new OnItemClickListener() {
-								public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
-									Machine machine = (Machine) parentView.getItemAtPosition(position);
-
-									Intent myIntent = new Intent();
-									PBMApplication app = (PBMApplication) getApplication();
-									myIntent.putExtra("lmx", app.getLmxFromMachine(machine, lmxes));
-									myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
-									startActivityForResult(myIntent, QUIT_RESULT);
-								}
-							});
-
-							updateTable();
-						}
-					});
-				}
-			}).start();
+			loadLocationData();
 		}
+	}
+	
+	private void loadLocationData() {
+		new Thread(new Runnable() {
+			public void run() {
+				LocationDetail.super.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						lmxes = location.getLmxes(LocationDetail.this);
+						machines = location.getMachines(LocationDetail.this);
+		
+						TextView title = (TextView)findViewById(R.id.title);
+						title.setText(location.name);
+						TextView locationName = (TextView)findViewById(R.id.locationName);
+						
+						String locationTypeName = "";
+						LocationType locationType = location.getLocationType(LocationDetail.this);
+						if (locationType != null) {
+							locationTypeName = "\n\t(" + locationType.name + ")";
+						}
+		
+						locationName.setText(
+							location.name + "\n\t" +
+							location.street + "\n\t" + location.city + " " + location.state + " " + location.zip +
+							((location.phone == null || location.phone.equals("")) ? "" : "\n\t" + location.phone) +
+							locationTypeName
+						);
+						table = (ListView)findViewById(R.id.locationDetailTable);
+						table.setOnItemClickListener(new OnItemClickListener() {
+							public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
+								Machine machine = (Machine) parentView.getItemAtPosition(position);
+		
+								Intent myIntent = new Intent();
+								PBMApplication app = (PBMApplication) getApplication();
+								myIntent.putExtra("lmx", app.getLmxFromMachine(machine, lmxes));
+								myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
+								startActivityForResult(myIntent, QUIT_RESULT);
+							}
+						});
+		
+						updateTable();
+					}
+				});
+			}
+		}).start();
 	}
 
 	private void updateTable() {
@@ -85,6 +101,13 @@ public class LocationDetail extends PBMUtil {
 
 	public void clickHandler(View view) {		
 		switch (view.getId()) {
+		case R.id.editLocationButton :
+			Intent editIntent = new Intent();
+			editIntent.putExtra("Location", location);
+			editIntent.setClassName("com.pbm", "com.pbm.LocationEdit");
+			startActivityForResult(editIntent, QUIT_RESULT);    
+
+			break;
 		case R.id.mapButton :
 			Intent myIntent = new Intent();
 			myIntent.putExtra("Locations", new Location[] {location});
@@ -114,15 +137,12 @@ public class LocationDetail extends PBMUtil {
 
 		new Thread(new Runnable() {
 			public void run() {
+				PBMApplication app = (PBMApplication) getApplication();
+				location = app.getLocation(location.id);
 				lmxes = location.getLmxes(LocationDetail.this);
 				machines = location.getMachines(LocationDetail.this);
-		
-				LocationDetail.super.runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						updateTable();
-					}
-				});
+
+				loadLocationData();
 			}
 		}).start();
 	}
