@@ -8,13 +8,22 @@
 	<TableLayout android:id="@+id/conditionTable"
 		android:layout_below="@+id/enterConditionHeader" android:layout_width="fill_parent"
 		android:layout_height="270dip" android:background="#FFFFFF">
-		<TextView android:id="@+id/condition" android:layout_width="wrap_content"
-			android:layout_height="264dip" android:layout_marginLeft="3dip"
-			android:layout_marginBottom="3dip" android:layout_marginRight="3dip"
-			android:clickable="true" android:layout_marginTop="3dip"
-			android:onClick="clickHandler" android:background="#000000" />
+
+		<TextView
+		    android:id="@+id/condition"
+		    android:layout_width="wrap_content"
+		    android:layout_height="264dip"
+		    android:layout_marginBottom="3dip"
+		    android:layout_marginLeft="3dip"
+		    android:layout_marginRight="3dip"
+		    android:layout_marginTop="3dip"
+		    android:background="#000000"
+		    android:clickable="true"
+		    android:onClick="clickHandler"
+		    android:text="@string/blank" />
+
 	</TableLayout>
 	<TextView android:id="@+id/conditionDate"
 		android:layout_below="@+id/conditionTable" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:dividerHeight="1dip" />
+		android:layout_height="wrap_content" android:dividerHeight="1dip" android:text="@string/blank" />
 </RelativeLayout>

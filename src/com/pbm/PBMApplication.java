@@ -100,8 +100,11 @@ public class PBMApplication extends Application {
 	public void setLmxes(HashMap<Integer, com.pbm.LocationMachineXref> lmxes) {
 		this.lmxes = lmxes;
 	}
+	public void setLmx(com.pbm.LocationMachineXref lmx) {
+		this.lmxes.put(lmx.id, lmx);
+	}
 	public void removeLmx(LocationMachineXref lmx) {
-		this.lmxes.remove(lmx);
+		this.lmxes.remove(lmx.id);
 	}
 	public HashMap<Integer, com.pbm.Zone> getZones() {
 		return zones;

@@ -15,4 +15,5 @@
   	<string name="location_type">Location Type:</string>
   	<string name="edit_location_data">Edit Data At:</string>
   	<string name="phone_number">Phone Number:</string>
+  	<string name="blank"> </string>
 </resources>
