@@ -35,7 +35,8 @@ public class PBMUtil extends Activity {
 	public static final int HTTP_RETRIES    = 5;
 	public static final String PREFS_NAME = "pbmPrefs";
 
-	public static String httpBase = "http://pinballmap.com/";
+//	public static String httpBase = "http://pinballmap.com/";
+	public static String httpBase = "http://pinballmapstaging.herokuapp.com/";
 	public static String apiPath = "api/v1/";
 
 	public static String regionBase = "THIS IS SET DURING APP INIT";
