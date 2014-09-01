@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -12,7 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class LocationEdit extends PBMUtil {
+public class LocationEdit extends PBMUtil implements OnTaskCompleted {
 	private Location location;
 	EditText phone;
 	Spinner dropdown;
@@ -40,7 +43,11 @@ public class LocationEdit extends PBMUtil {
 		locationTypeNames = locationTypes.keySet().toArray(new String[locationTypes.size()]);
 		locationTypeIDs = locationTypes.values().toArray(new Integer[locationTypes.size()]);
 		phone = (EditText)findViewById(R.id.phoneNumber);
-
+		
+		loadLocationEditData();
+	}
+	
+	private void loadLocationEditData() {
 		new Thread(new Runnable() {
 	        public void run() {
 	        	LocationEdit.super.runOnUiThread(new Runnable() {
@@ -49,7 +56,7 @@ public class LocationEdit extends PBMUtil {
 						TextView title = (TextView)findViewById(R.id.locationEditTitle);
 						title.setText("Edit Data At " + location.name);
 
-						phone.setText(location.phone);
+						phone.setText((location.phone.equals("null")) ? "" : location.phone);
 
 						dropdown = (Spinner)findViewById(R.id.locationTypeSpinner);
 						ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -75,16 +82,9 @@ public class LocationEdit extends PBMUtil {
 	        	try {
 	        		String locationTypeName = (String) dropdown.getSelectedItem();
 	        		int locationTypeID = locationTypes.get(locationTypeName);
-
 	        		String phoneNumber = phone.getText().toString();
 
-	        		location.setPhone(phoneNumber);
-	        		location.setLocationTypeID(locationTypeID);
-	        			
-	        		PBMApplication app = (PBMApplication) getApplication();
-	        		app.setLocation(location.id, location);
-
-	        		new RetrieveJsonTask().execute(
+	        		new RetrieveJsonTask(LocationEdit.this).execute(
 	        			regionlessBase + "locations/" + location.id + ".json?phone=" + phoneNumber + ";location_type=" + Integer.toString(locationTypeID),
 	        			"PUT"
 	        		).get();
@@ -93,16 +93,6 @@ public class LocationEdit extends PBMUtil {
 				} catch (ExecutionException e) {
 					e.printStackTrace();
 				}
-
-	        	LocationEdit.super.runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						Toast.makeText(getBaseContext(), "Thanks for updating that location!", Toast.LENGTH_LONG).show();
-						
-						setResult(REFRESH_RESULT);
-						LocationEdit.this.finish();
-					}
-	        	});
 	        }
 	    }).start();
 	}
@@ -115,6 +105,50 @@ public class LocationEdit extends PBMUtil {
 				break;
 			default:
 				break;
+		}
+	}
+
+	public void onTaskCompleted(String results) throws JSONException, InterruptedException, ExecutionException {
+		PBMApplication app = (PBMApplication) getApplication();
+		final JSONObject jsonObject = new JSONObject(results);
+		
+		if (jsonObject.has("location")) {
+			JSONObject jsonLocation = jsonObject.getJSONObject("location");
+
+	        location.setPhone(jsonLocation.getString("phone"));
+	        location.setLocationTypeID(jsonLocation.getInt("location_type_id"));
+	        	
+	        app.setLocation(location.id, location);
+
+	        LocationEdit.super.runOnUiThread(new Runnable() {
+				public void run() {
+					Toast.makeText(getBaseContext(), "Thanks for updating that location!", Toast.LENGTH_LONG).show();
+					
+					setResult(REFRESH_RESULT);
+					LocationEdit.this.finish();
+				}
+	        });
+			
+			return;
+		}
+		
+		if (jsonObject.has("errors")) {
+	        LocationEdit.super.runOnUiThread(new Runnable() {
+				public void run() {
+					String error = null;
+					try {
+						error = jsonObject.getString("errors");
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+
+					Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
+					
+					loadLocationEditData();
+				}
+	        });
+			
+			return;
 		}
 	}
 }

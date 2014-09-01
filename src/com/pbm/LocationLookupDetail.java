@@ -18,6 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class LocationLookupDetail extends PBMUtil {
 	private Zone zone;
 	private ArrayList<Location> foundLocations = new ArrayList<Location>();
+	private ListView table;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,7 +34,7 @@ public class LocationLookupDetail extends PBMUtil {
 		TextView title = (TextView)findViewById(R.id.title);
 		title.setText(zone.name);
 
-		ListView table = (ListView)findViewById(R.id.locationLookupDetailTable);
+		table = (ListView)findViewById(R.id.locationLookupDetailTable);
 		table.setFastScrollEnabled(true);
 		table.setTextFilterEnabled(true);
 
@@ -45,6 +46,11 @@ public class LocationLookupDetail extends PBMUtil {
 				startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
+	}   
+	
+	public void loadLocationData() {
+		foundLocations.clear();
+		table.setAdapter(null);
 
 		PBMApplication app = (PBMApplication) getApplication();
 		HashMap<Integer, com.pbm.Location> locations = app.getLocations();
@@ -63,7 +69,12 @@ public class LocationLookupDetail extends PBMUtil {
 		});
 
 		table.setAdapter(new ArrayAdapter<Location>(this, android.R.layout.simple_list_item_1, foundLocations));
-	}   
+	}
+
+	public void onResume() {
+		super.onResume();
+		loadLocationData();
+	}
 
 	public void clickHandler(View view) {		
 		switch (view.getId()) {

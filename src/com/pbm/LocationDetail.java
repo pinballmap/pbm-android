@@ -62,7 +62,7 @@ public class LocationDetail extends PBMUtil {
 						locationName.setText(
 							location.name + "\n\t" +
 							location.street + "\n\t" + location.city + " " + location.state + " " + location.zip +
-							((location.phone == null || location.phone.equals("")) ? "" : "\n\t" + location.phone) +
+							((location.phone == null || location.phone.equals("") || location.phone.equals("null")) ? "" : "\n\t" + location.phone) +
 							locationTypeName
 						);
 						table = (ListView)findViewById(R.id.locationDetailTable);

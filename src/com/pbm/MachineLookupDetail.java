@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class MachineLookupDetail extends PBMUtil {
 	private Machine machine;
 	private static Location[] locationsWithMachine;
+	private	ListView table;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,7 +34,7 @@ public class MachineLookupDetail extends PBMUtil {
 		TextView title = (TextView)findViewById(R.id.title);
 		title.setText(machine.name);
 
-		ListView table = (ListView)findViewById(R.id.machineLookupDetailTable);
+		table = (ListView)findViewById(R.id.machineLookupDetailTable);
 		table.setFastScrollEnabled(true);
 		table.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
@@ -44,15 +44,16 @@ public class MachineLookupDetail extends PBMUtil {
 				startActivityForResult(myIntent, QUIT_RESULT);    
 			}
 		});
-		
-		final ProgressDialog dialog = new ProgressDialog(this);
-		dialog.setMessage("Loading...");
-		dialog.show();
-		
+
+		loadLocationData();
+	}   
+	
+	private void loadLocationData() {
+		table.setAdapter(null);
+
 		new Thread(new Runnable() {
 	        public void run() {
 	        	MachineLookupDetail.super.runOnUiThread(new Runnable() {
-					@Override
 					public void run() {
 						locationsWithMachine = getLocationsWithMachine(machine);
 						
@@ -65,15 +66,18 @@ public class MachineLookupDetail extends PBMUtil {
 								});
 							} catch (java.lang.NullPointerException nep) {}
 
-							ListView table = (ListView)findViewById(R.id.machineLookupDetailTable);
 							table.setAdapter(new ArrayAdapter<Location>(MachineLookupDetail.this, android.R.layout.simple_list_item_1, locationsWithMachine));
 						}
-						dialog.dismiss();
 					}
 	        	});
 	        }
 	    }).start();
-	}   
+	}
+
+	public void onResume() {
+		super.onResume();
+		loadLocationData();
+	}
 	
 	public Location[] getLocationsWithMachine(Machine machine) {
 		List<Location> locations = new ArrayList<Location>();
