@@ -49,7 +49,7 @@ public class AddMachine extends PBMUtil implements OnTaskCompleted {
 						machine.setExistsInRegion(true);
 
 						try {
-							new RetrieveJsonTask().execute(
+							new RetrieveJsonTask(AddMachine.this).execute(
 								regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + machine.id,
 								"POST"
 							).get();
@@ -82,7 +82,7 @@ public class AddMachine extends PBMUtil implements OnTaskCompleted {
 					try {
 						int machineID = getMachineIDFromMachineName(manualMachineName);
 						if (machineID != -1) {
-							new RetrieveJsonTask().execute(
+							new RetrieveJsonTask(AddMachine.this).execute(
 								regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + machineID,
 								"POST"
 							).get();
@@ -131,13 +131,27 @@ public class AddMachine extends PBMUtil implements OnTaskCompleted {
 		PBMApplication app = (PBMApplication) getApplication();
 
 		JSONObject jsonObject = new JSONObject(results);
-		JSONObject jsonMachine = jsonObject.getJSONObject("machine");
+		
+		if (jsonObject.has("machine")) {
+			JSONObject jsonMachine = jsonObject.getJSONObject("machine");
+			app.addMachine(jsonMachine.getInt("id"), new Machine(jsonMachine.getInt("id"), jsonMachine.getString("name"), null, null, true));
+			
+			new RetrieveJsonTask(AddMachine.this).execute(
+				regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + jsonMachine.getString("id"), "POST"
+			).get();
+			
+			return;
+		}
+		
+		if (jsonObject.has("location_machine")) {
+			JSONObject jsonLmx = jsonObject.getJSONObject("location_machine");
+			int id = jsonLmx.getInt("id");
+			int locationID = jsonLmx.getInt("location_id");
+			int machineID = jsonLmx.getInt("machine_id");
 
-		app.addMachine(jsonMachine.getInt("id"), new Machine(jsonMachine.getInt("id"), jsonMachine.getString("name"), null, null, true));
-
-		new RetrieveJsonTask().execute(
-			regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + jsonMachine.getString("id"),
-			"POST"
-		).get();
+			app.addLocationMachineXref(id, new com.pbm.LocationMachineXref(id, locationID, machineID, "", ""));
+			
+			return;
+		}
 	}
 }
