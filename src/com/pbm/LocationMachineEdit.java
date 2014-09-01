@@ -7,7 +7,6 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -31,6 +30,10 @@ public class LocationMachineEdit extends PBMUtil {
 		location = lmx.getLocation(this);
 		machine = lmx.getMachine(this);
 		
+		loadMachineView();
+	}
+	
+	public void loadMachineView() {
 		new Thread(new Runnable() {
 	        public void run() {
 	        	LocationMachineEdit.super.runOnUiThread(new Runnable() {
@@ -41,12 +44,11 @@ public class LocationMachineEdit extends PBMUtil {
 
 						TextView conditionText = (TextView)findViewById(R.id.condition);
 
-						if (lmx.condition != null && !lmx.condition.isEmpty() && lmx.condition != "null") {
-							Log.e("!!!!!", "-" + lmx.condition + "-");
+						if (lmx.condition != null && !lmx.condition.isEmpty() && !lmx.condition.equals("null")) {
 							conditionText.setText(lmx.condition);
 						}
 
-						if (lmx.conditionDate != null && !lmx.conditionDate.isEmpty() && lmx.conditionDate != "null") {
+						if (lmx.conditionDate != null && !lmx.conditionDate.isEmpty() && !lmx.conditionDate.equals("null")) {
 							TextView conditionDateView = (TextView)findViewById(R.id.conditionDate);
 							conditionDateView.setText("Comment made on: " + lmx.conditionDate);
 						}
@@ -67,7 +69,6 @@ public class LocationMachineEdit extends PBMUtil {
 			break;
 		case R.id.removeMachineButton :
 			Builder builder = new AlertDialog.Builder(this);
-
 			builder.setIcon(android.R.drawable.ic_dialog_alert).setTitle("Remove this machine?").setMessage("Are you sure?");
 
 			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -75,6 +76,7 @@ public class LocationMachineEdit extends PBMUtil {
 					new Thread(new Runnable() {
 						public void run() {
 							try {
+								location.removeMachine(LocationMachineEdit.this, lmx);
 								new RetrieveJsonTask().execute(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.id) + ".json", "DELETE").get();
 							} catch (InterruptedException e) {
 								e.printStackTrace();
@@ -83,7 +85,6 @@ public class LocationMachineEdit extends PBMUtil {
 							}
 
 							LocationMachineEdit.super.runOnUiThread(new Runnable() {
-								@Override
 								public void run() {
 									Toast.makeText(getBaseContext(), "OK, machine deleted.", Toast.LENGTH_LONG).show();
 									
@@ -104,10 +105,13 @@ public class LocationMachineEdit extends PBMUtil {
 	}
 
 	public void activityRefreshResult() {
-		Intent myIntent = new Intent();
-		myIntent.putExtra("lmx", lmx);
-		myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
-		startActivityForResult(myIntent, QUIT_RESULT);
-		this.finish();
+		LocationMachineEdit.super.runOnUiThread(new Runnable() {
+			public void run() {
+				Toast.makeText(getBaseContext(), "Thanks for updating that machine.", Toast.LENGTH_LONG).show();
+
+				setResult(REFRESH_RESULT);
+				LocationMachineEdit.this.finish();
+			}
+		});
 	}
 }
