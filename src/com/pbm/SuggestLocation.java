@@ -30,8 +30,8 @@ public class SuggestLocation extends PBMUtil {
 	}
 	
 	public void buttonOnClick(View view) throws UnsupportedEncodingException {
-		String locationName = ((MultiAutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView1)).getText().toString();
-		String machineNames = ((EditText) findViewById(R.id.nameField)).getText().toString();
+		String locationName = ((EditText) findViewById(R.id.nameField)).getText().toString();
+		String machineNames = ((MultiAutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView1)).getText().toString();
 
 		if (locationName != null && !locationName.isEmpty() && machineNames != null && !machineNames.isEmpty()) {
 			PBMApplication app = (PBMApplication) getApplication();
