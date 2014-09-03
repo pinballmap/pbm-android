@@ -75,7 +75,7 @@ public class RecentlyAdded extends PBMUtil {
 			String createdAt = lmxJson.getString("created_at").split("T")[0];
 			LocationMachineXref lmx = app.getLmx(id);
 			
-			String textToShow = "<b>" + lmx.getMachine(this).name + "</b> was added to <b>" + lmx.getLocation(this).name + "</b>";
+			String textToShow = "<b>" + lmx.getMachine(this).name + "</b> was added to <b>" + lmx.getLocation(this).name + "</b> (" + lmx.getLocation(this).city + ")";
 			textToShow += "<br /><small>Added on " + createdAt + "</small>";
 
 			recentAdds.add(Html.fromHtml(textToShow));
@@ -90,8 +90,9 @@ public class RecentlyAdded extends PBMUtil {
 				Intent myIntent = new Intent();
 				Spanned spanned = (Spanned) parentView.getItemAtPosition(position);
 				String locationName = spanned.toString().split(" was added to ")[1];
+				locationName = locationName.split(" \\(")[0];
 				locationName = locationName.split("\n")[0];
-
+				
 				PBMApplication app = (PBMApplication) getApplication();
 				Location location = app.getLocationByName(locationName);
 
