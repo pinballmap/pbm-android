@@ -354,6 +354,7 @@ public class PBMApplication extends Application {
 			String zip = location.getString("zip");
 			String phone = location.getString("phone");
 			String state = location.getString("state");
+			String website = location.getString("website");
 
 			int zoneID = 0;
 			if (location.has("zone_id") && location.getString("zone_id") != "null") {
@@ -368,7 +369,7 @@ public class PBMApplication extends Application {
 			if ((name != null) && (lat != null) && (lon != null)) {
 				addLocation(
 					id,
-					new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip, phone, locationTypeID)
+					new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip, phone, locationTypeID, website)
 				);
 			}
 
