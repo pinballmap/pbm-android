@@ -8,6 +8,7 @@ import java.util.List;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -52,6 +53,7 @@ public class LocationDetail extends PBMUtil {
 						TextView title = (TextView)findViewById(R.id.title);
 						title.setText(location.name);
 						TextView locationName = (TextView)findViewById(R.id.locationName);
+						locationName.setMovementMethod(LinkMovementMethod.getInstance());
 						
 						String locationTypeName = "";
 						LocationType locationType = location.getLocationType(LocationDetail.this);
@@ -63,6 +65,7 @@ public class LocationDetail extends PBMUtil {
 							location.name + "\n\t" +
 							location.street + "\n\t" + location.city + " " + location.state + " " + location.zip +
 							((location.phone == null || location.phone.equals("") || location.phone.equals("null")) ? "" : "\n\t" + location.phone) +
+							((location.website == null || location.website.equals("") || location.website.equals("null")) ? "" : "\n\t" + location.website) +
 							locationTypeName
 						);
 						table = (ListView)findViewById(R.id.locationDetailTable);

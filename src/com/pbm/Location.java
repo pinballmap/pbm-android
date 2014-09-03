@@ -18,12 +18,13 @@ public class Location implements Serializable {
 	public String phone;
 	public String lat;
 	public String lon;
+	public String website;
 	public int zoneID;
 	public int locationTypeID;
 	public float distanceFromYou;
 	public String milesInfo;
 
-	public Location(int id, String name, String lat, String lon, int zoneID, String street, String city, String state, String zip, String phone, int locationTypeID) {
+	public Location(int id, String name, String lat, String lon, int zoneID, String street, String city, String state, String zip, String phone, int locationTypeID, String website) {
 		this.id = id;
 		this.name = name;
 		this.lat = lat;
@@ -34,7 +35,12 @@ public class Location implements Serializable {
 		this.city = city;
 		this.zip = zip;
 		this.phone = phone;
+		this.website = website;
 		this.locationTypeID = locationTypeID;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
 	}
 
 	public void setPhone(String phone) {
