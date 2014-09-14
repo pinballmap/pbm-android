@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
-        android:text="Submit A Location To The Map"
+        android:text="@string/submit_a_location"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TableLayout
@@ -29,13 +29,15 @@
             android:gravity="top" >
 
             <TextView
-                android:id="@+id/TextView01"
-                android:text="Name"
+                android:id="@+id/nameTextView"
+                android:text="@string/name"
+                android:labelFor="@+id/nameField"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
                 android:id="@+id/nameField"
                 android:layout_marginLeft="10dp"
+                android:inputType="text"
                 android:ems="10" >
 
                 <requestFocus />
@@ -48,8 +50,9 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/textView1"
-                android:text="Street"
+                android:id="@+id/streetTextView"
+                android:text="@string/street"
+                android:labelFor="@+id/streetField"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
@@ -65,12 +68,14 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/TextView02"
-                android:text="City"
+                android:id="@+id/cityTextView"
+                android:text="@string/city"
+                android:labelFor="@+id/cityField"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
                 android:id="@+id/cityField"
+                android:inputType="text"
                 android:layout_marginLeft="10dp"
                 android:ems="10" />
         </TableRow>
@@ -81,12 +86,14 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/TextView03"
-                android:text="State"
+                android:id="@+id/stateTextView"
+                android:text="@string/state"
+                android:labelFor="@+id/stateField"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
                 android:id="@+id/stateField"
+                android:inputType="text"
                 android:layout_marginLeft="10dp"
                 android:ems="10" />
         </TableRow>
@@ -97,12 +104,14 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/textView2"
-                android:text="Zip"
+                android:id="@+id/zipTextView"
+                android:text="@string/zip"
+                android:labelFor="@+id/zipField"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
                 android:id="@+id/zipField"
+                android:inputType="text"
                 android:layout_marginLeft="10dp"
                 android:ems="10" />
         </TableRow>
@@ -113,8 +122,9 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/textView2"
-                android:text="Phone"
+                android:id="@+id/phoneTextView"
+                android:text="@string/phone"
+                android:labelFor="@+id/phoneField"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
@@ -132,12 +142,14 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/textView2"
-                android:text="Website"
+                android:id="@+id/websiteTextView"
+                android:text="@string/website"
+                android:labelFor="@+id/websiteField"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
                 android:id="@+id/websiteField"
+                android:inputType="text"
                 android:layout_marginLeft="10dp"
                 android:ems="10" />
         </TableRow>
@@ -148,25 +160,28 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/textView2"
-                android:text="Operator"
+                android:id="@+id/operatorTextView"
+                android:text="@string/operator"
+                android:labelFor="@+id/operatorField"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
                 android:id="@+id/operatorField"
                 android:layout_marginLeft="10dp"
+                android:inputType="text"
                 android:ems="10" />
         </TableRow>
     </TableLayout>
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/machinesTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
-        android:text="Machines"
+        android:labelFor="@+id/multiAutoCompleteTextView1"
+        android:text="@string/machines"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <MultiAutoCompleteTextView
@@ -188,6 +203,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:onClick="buttonOnClick"
-        android:text=" Submit " />
+        android:text="@string/submit_text" />
 
 </LinearLayout>

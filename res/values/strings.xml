@@ -7,6 +7,7 @@
     <string name="about_text">\tPinballMap.com\n\t\tScott Wainstock\n\t\tRyan Gratzer\n\n\tArtwork\n\t\tDrew Marshall\n\n\tSpecial Thanks\n\t\tCleo, Sassy, Solomon,\n\t\tBawb, and Brian Hanifin</string>
     <string name="sass_description">A beautiful kitten</string>
     <string name="enter_machine">Enter the machine name in the box below, or select it from the list..</string>
+    <string name="enter_condition">Click the box below to enter a machine description..</string>
     <string name="add_machine">Add</string>
   	<string name="submit_description">Submit button</string>
   	<string name="machine_comment">Machine Comment: </string>
@@ -16,4 +17,15 @@
   	<string name="edit_location_data">Edit Data At:</string>
   	<string name="phone_number">Phone Number:</string>
   	<string name="blank"> </string>
+  	<string name="city">City</string>
+  	<string name="name">Name</string>
+  	<string name="street">Street</string>
+  	<string name="state">State</string>
+  	<string name="phone">Phone</string>
+  	<string name="zip">Zip</string>
+  	<string name="machines">Machines</string>
+  	<string name="operator">Operator</string>
+  	<string name="website">Website</string>
+  	<string name="submit_a_location">Submit A Location To The Map</string>
+  	<string name="submit_text"> Submit </string>
 </resources>
