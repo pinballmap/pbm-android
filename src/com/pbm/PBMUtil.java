@@ -146,19 +146,14 @@ public class PBMUtil extends Activity {
 	}
 
 	public static boolean haveInternet(Context context) {
-		boolean connected = false;
 		ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-		if(
-			connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED || 
-			connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED
-		) {
-			connected = true;
-		} else {
-		    connected = false;
+		if (networkInfo == null) {
+			return false;
 		}
-
-		return connected;
+		
+		return networkInfo.isConnected();
 	}
 
 	public void closeWithNoInternet() {
