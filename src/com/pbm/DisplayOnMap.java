@@ -72,15 +72,17 @@ public class DisplayOnMap extends PBMUtil {
 					markers.add(marker);
 				}
 
-				LatLngBounds.Builder builder = new LatLngBounds.Builder();
-				for (Marker marker : markers) {
-					builder.include(marker.getPosition());
+				if (markers.size() > 0) {
+					LatLngBounds.Builder builder = new LatLngBounds.Builder();
+					for (Marker marker : markers) {
+						builder.include(marker.getPosition());
+					}
+					LatLngBounds bounds = builder.build();
+											
+					int width = getResources().getDisplayMetrics().widthPixels;
+					CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, width, 5);
+					map.animateCamera(cu);
 				}
-				LatLngBounds bounds = builder.build();
-										
-				int width = getResources().getDisplayMetrics().widthPixels;
-				CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, width, 5);
-				map.animateCamera(cu);
 				
 				try {
 					dismissDialog(PBMUtil.PROGRESS_DIALOG);
