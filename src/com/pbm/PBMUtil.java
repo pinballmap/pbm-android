@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -146,8 +147,13 @@ public class PBMUtil extends Activity {
 
 	public static boolean haveInternet(Context context) {
 		ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-		return connectivityManager.getActiveNetworkInfo() == null ? false : true;
+		if (networkInfo == null) {
+			return false;
+		}
+		
+		return networkInfo.isConnected();
 	}
 
 	public void closeWithNoInternet() {
