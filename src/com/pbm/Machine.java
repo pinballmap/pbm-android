@@ -40,6 +40,6 @@ public class Machine implements Serializable {
 	}
 	
 	public String toString() {
-		return name;
+		return name + "  (" + manufacturer + "," + year + ")";
 	}
 }
