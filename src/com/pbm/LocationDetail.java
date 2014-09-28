@@ -45,7 +45,6 @@ public class LocationDetail extends PBMUtil {
 		new Thread(new Runnable() {
 			public void run() {
 				LocationDetail.super.runOnUiThread(new Runnable() {
-					@Override
 					public void run() {
 						lmxes = location.getLmxes(LocationDetail.this);
 						machines = location.getMachines(LocationDetail.this);
@@ -53,21 +52,28 @@ public class LocationDetail extends PBMUtil {
 						TextView title = (TextView)findViewById(R.id.title);
 						title.setText(location.name);
 						TextView locationName = (TextView)findViewById(R.id.locationName);
-						locationName.setMovementMethod(LinkMovementMethod.getInstance());
 						
 						String locationTypeName = "";
 						LocationType locationType = location.getLocationType(LocationDetail.this);
 						if (locationType != null) {
-							locationTypeName = "\n\t(" + locationType.name + ")";
+							locationTypeName = "(" + locationType.name + ")";
 						}
 		
 						locationName.setText(
-							location.name + "\n\t" +
+							location.name + " " + locationTypeName + "\n\t" +
 							location.street + "\n\t" + location.city + " " + location.state + " " + location.zip +
-							((location.phone == null || location.phone.equals("") || location.phone.equals("null")) ? "" : "\n\t" + location.phone) +
-							((location.website == null || location.website.equals("") || location.website.equals("null")) ? "" : "\n\t" + location.website) +
-							locationTypeName
+							((location.phone == null || location.phone.equals("") || location.phone.equals("null")) ? "" : "\n\t" + location.phone)
 						);
+
+						TextView website = (TextView)findViewById(R.id.website);
+						if (location.website != null && !location.website.equals("") && !location.website.equals("null")) {
+							website.setVisibility(View.VISIBLE);
+							website.setMovementMethod(LinkMovementMethod.getInstance());
+							website.setText("\t" + location.website);
+						} else {
+							website.setVisibility(View.INVISIBLE);
+						}
+
 						table = (ListView)findViewById(R.id.locationDetailTable);
 						table.setOnItemClickListener(new OnItemClickListener() {
 							public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	

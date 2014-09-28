@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutionException;
 import org.json.JSONException;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class RetrieveJsonTask extends AsyncTask<String, Void, String> {
 	
@@ -27,6 +28,8 @@ public class RetrieveJsonTask extends AsyncTask<String, Void, String> {
 			try {
 				String url = urls[0];
 				String requestType = urls[1];
+				
+				Log.w("URL", url);
 				
 			    inputStream = PBMUtil.openHttpConnection(url, requestType);
 

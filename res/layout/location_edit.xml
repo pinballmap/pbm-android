@@ -48,16 +48,36 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/enterLocationTypeHeader" />
 
+    <EditText
+        android:id="@+id/editWebsite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/enterWebsiteHeader"
+        android:ems="10"
+        android:inputType="textUri"
+        android:labelFor="@+id/editWebsite" />
+
     <Button
         android:id="@+id/submitLocationEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/locationTypeSpinner"
-        android:layout_marginTop="46dp"
+        android:layout_marginBottom="85dp"
         android:background="@drawable/cool_button"
         android:onClick="clickHandler"
         android:text="@string/submit"
         android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/enterWebsiteHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/locationTypeSpinner"
+        android:layout_marginTop="18dp"
+        android:text="@string/website"
+        android:textSize="20sp" />
 
 </RelativeLayout>
