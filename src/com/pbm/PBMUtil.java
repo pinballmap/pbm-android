@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -131,12 +132,14 @@ public class PBMUtil extends Activity {
 
 				if ((httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) && (inputStream != null)) {
 					return inputStream;                                 
+				} else {
+					Log.e("HTTP RESPONSE MESSAGE:", httpConn.getResponseMessage());
 				}
 
 				httpConn.disconnect();
 			}
 		} catch (Exception ex) {
-			return null;
+			Log.e("EXCEPTION:", ex.toString());
 		}
 		return null;     
 	}
