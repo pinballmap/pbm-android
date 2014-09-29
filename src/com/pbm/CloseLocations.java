@@ -18,7 +18,6 @@ import com.google.android.gms.location.LocationListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -196,8 +195,8 @@ public class CloseLocations extends FragmentActivity implements LocationListener
 		PBMApplication app = (PBMApplication) getApplication();
 		for (int i = 0; i < app.getLocationValues().length; i++) {
 			com.pbm.Location location = (com.pbm.Location) app.getLocationValues()[i];
-			android.location.Location mockLocation = new android.location.Location(LocationManager.GPS_PROVIDER);	
-
+			android.location.Location mockLocation = new android.location.Location("");
+			
 			try{
 				mockLocation.setLatitude(Double.valueOf(location.lat));
 				mockLocation.setLongitude(Double.valueOf(location.lon));

@@ -56,7 +56,6 @@ public class LocationEdit extends PBMUtil implements OnTaskCompleted {
 		new Thread(new Runnable() {
 	        public void run() {
 	        	LocationEdit.super.runOnUiThread(new Runnable() {
-					@Override
 					public void run() {
 						TextView title = (TextView)findViewById(R.id.locationEditTitle);
 						title.setText("Edit Data At " + location.name);
