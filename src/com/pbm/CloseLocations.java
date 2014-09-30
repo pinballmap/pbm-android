@@ -1,7 +1,5 @@
 package com.pbm;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,22 +14,16 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 import android.location.Location;
 
 @SuppressLint("HandlerLeak")
@@ -83,7 +75,9 @@ public class CloseLocations extends FragmentActivity implements LocationListener
 	}
 	
 	public void showTable(List<com.pbm.Location> locations) {
-		table.setAdapter(new ClosestLocationsAdapter(this));
+		if (locations.size() > 0) {
+			table.setAdapter(new LocationListAdapter(this, locations));
+		}
 	}
 
 	public void onStart() {
@@ -139,54 +133,6 @@ public class CloseLocations extends FragmentActivity implements LocationListener
 		}
 	}
 
-	public void onProviderDisabled(String arg0) {}
-	public void onProviderEnabled(String arg0) {}
-	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {}	
-
-	private class ClosestLocationsAdapter extends BaseAdapter {
-		private LayoutInflater mInflater;
-
-		public ClosestLocationsAdapter(Context context) {
-			mInflater = LayoutInflater.from(context);
-		}
-
-		public int getCount() {
-			return locationsForMap.size();
-		}
-
-		public Object getItem(int position) {
-			return position;
-		}
-
-		public long getItemId(int position) {
-			return position;
-		}
-
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder holder;
-			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.close_locations_listview, null);
-				holder = new ViewHolder();
-				holder.name = (TextView) convertView.findViewById(R.id.name);
-				holder.distance = (TextView) convertView.findViewById(R.id.distance);
-
-				convertView.setTag(holder);
-			} else {
-				holder = (ViewHolder) convertView.getTag();
-			}
-
-			holder.name.setText(locationsForMap.get(position).name);
-			holder.distance.setText(locationsForMap.get(position).milesInfo);
-
-			return convertView;
-		}
-
-		class ViewHolder {
-			TextView name;
-			TextView distance;
-		}
-	}
-
 	public void onConnected(Bundle arg0) {
 		yourLocation = locationClient.getLastLocation();
 		locationsForMap = new ArrayList<com.pbm.Location>();
@@ -199,32 +145,14 @@ public class CloseLocations extends FragmentActivity implements LocationListener
 			distance = (float) (distance * PBMUtil.METERS_TO_MILES);	
 
 			if (distance < maxMilesFromYourLocation) {
-				NumberFormat formatter = new DecimalFormat(".00");
-				location.setMilesInfo(formatter.format(distance) + " miles");
 				location.setDistance(distance);
-
 				locationsForMap.add(location);
 			}
 		}
 
-		table.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
-				Intent myIntent = new Intent();						
-				com.pbm.Location location = locationsForMap.get(position);
-
-				myIntent.putExtra("Location", location);
-				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
-				startActivityForResult(myIntent, PBMUtil.QUIT_RESULT);
-			}
-		});
-
 		showTable(sortLocations(locationsForMap));
 	}
 
-	public void onDisconnected() { }
-	public void onLocationChanged(Location arg0) { }
-	public void onConnectionFailed(ConnectionResult arg0) { }
-	
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(PBMUtil.MENU_PREFS, PBMUtil.MENU_PREFS, PBMUtil.MENU_PREFS, "Preferences");
 		menu.add(PBMUtil.MENU_ABOUT, PBMUtil.MENU_ABOUT, PBMUtil.MENU_ABOUT, "About");
@@ -255,4 +183,11 @@ public class CloseLocations extends FragmentActivity implements LocationListener
 		}
 		return false;
 	}
+
+	public void onDisconnected() { }
+	public void onLocationChanged(Location arg0) { }
+	public void onConnectionFailed(ConnectionResult arg0) { }
+	public void onProviderDisabled(String arg0) {}
+	public void onProviderEnabled(String arg0) {}
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {}	
 }
