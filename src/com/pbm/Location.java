@@ -66,13 +66,7 @@ public class Location implements Serializable {
 	}
 
 	public String toString() {
-		if (milesInfo != null) {
-			String formattedName = name + milesInfo;
-			milesInfo = null;
-			return formattedName;
-		}
-		
-		return name;
+		return milesInfo != null ? name + " " + milesInfo : name;
 	}
 	
 	public List<LocationMachineXref> getLmxes(Activity activity) {
@@ -110,5 +104,15 @@ public class Location implements Serializable {
 		
 		app.removeLmx(lmx);
 	}
-
+	
+	public android.location.Location toAndroidLocation() {
+		android.location.Location mockLocation = new android.location.Location("");
+			
+		try{
+			mockLocation.setLatitude(Double.valueOf(lat));
+			mockLocation.setLongitude(Double.valueOf(lon));
+		} catch (java.lang.NumberFormatException nfe) {}
+		
+		return mockLocation;
+	}
 }

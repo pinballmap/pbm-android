@@ -1,13 +1,21 @@
 package com.pbm;
 
 import java.io.UnsupportedEncodingException;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -19,9 +27,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class SplashScreen extends PBMUtil {
+public class SplashScreen extends PBMUtil implements LocationListener, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener {
 	private ListView table;
+	private LocationClient locationClient;
 	private volatile SplashThread splashThread;
+	private android.location.Location yourLocation;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,6 +58,10 @@ public class SplashScreen extends PBMUtil {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		
+		if (ConnectionResult.SUCCESS == GooglePlayServicesUtil.isGooglePlayServicesAvailable(this)) {
+        	locationClient = new LocationClient(this, this, this);
+        }
 
 		if (prefRegion == -1) {
 			table.setVisibility(View.VISIBLE);
@@ -77,7 +91,7 @@ public class SplashScreen extends PBMUtil {
 			loadSplashAndStart(region);
 		}
 	}
-
+	
 	private void loadSplashAndStart(Region region) {
 		setProgressBarIndeterminateVisibility(true);
 		((TextView) findViewById(R.id.greeting)).setVisibility(View.INVISIBLE);
@@ -142,4 +156,52 @@ public class SplashScreen extends PBMUtil {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		return false;
 	}
+
+	public void onStart() {
+		super.onStart();
+		
+        if (ConnectionResult.SUCCESS == GooglePlayServicesUtil.isGooglePlayServicesAvailable(this)) {
+        	locationClient.connect();
+        }
+	}
+
+	public void onStop() {
+        if (ConnectionResult.SUCCESS == GooglePlayServicesUtil.isGooglePlayServicesAvailable(this)) {
+        	locationClient.disconnect();
+        }
+
+		super.onStop();
+	}
+
+	public void onPause() {
+        if (ConnectionResult.SUCCESS == GooglePlayServicesUtil.isGooglePlayServicesAvailable(this)) {
+        	locationClient.disconnect();
+        }
+
+		super.onPause();
+	}
+
+	public void onDestroy() {
+        if (ConnectionResult.SUCCESS == GooglePlayServicesUtil.isGooglePlayServicesAvailable(this)) {
+        	locationClient.disconnect();
+        }
+
+		super.onDestroy();
+	}
+
+	public void onConnected(Bundle arg0) {
+		if (locationClient != null) {
+			yourLocation = locationClient.getLastLocation();
+
+			SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+			SharedPreferences.Editor editor = settings.edit();
+			editor.putFloat("yourLat", (float) yourLocation.getLatitude());
+			editor.putFloat("yourLon", (float) yourLocation.getLongitude());
+			editor.commit();
+		}
+	}
+
+	public void onConnectionFailed(ConnectionResult arg0) {}
+	public void onDisconnected() {}
+	public void onLocationChanged(Location arg0) {}
 }
