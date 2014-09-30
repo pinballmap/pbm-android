@@ -1,6 +1,8 @@
 package com.pbm;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,6 +20,7 @@ import com.google.android.gms.analytics.Tracker;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.content.SharedPreferences;
 
 @SuppressLint("UseSparseArrays")
 public class PBMApplication extends Application {
@@ -367,12 +370,19 @@ public class PBMApplication extends Application {
 			}
 			
 			if ((name != null) && (lat != null) && (lon != null)) {
-				addLocation(
-					id,
-					new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip, phone, locationTypeID, website)
-				);
-			}
+				Location newLocation = new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip, phone, locationTypeID, website);
 
+				SharedPreferences settings = getSharedPreferences(PBMUtil.PREFS_NAME, 0);
+				float yourLat = settings.getFloat("yourLat", -1);
+				float yourLon = settings.getFloat("yourLon", -1);
+							
+				if (yourLat != -1 && yourLon != -1) {
+					newLocation = setMilesInfoOnNewLocation(newLocation, yourLat, yourLon);
+				}
+				
+				addLocation(id, newLocation);
+			}
+			
 		    JSONArray lmxes = null;
 		    if (location.has("location_machine_xrefs")) {
 		    	lmxes = location.getJSONArray("location_machine_xrefs");
@@ -398,6 +408,20 @@ public class PBMApplication extends Application {
 				}
 			}
 		}
+	}
+	
+	public Location setMilesInfoOnNewLocation(Location newLocation, float yourLat, float yourLon) {
+		android.location.Location yourLocation = new android.location.Location("");
+		yourLocation.setLatitude(yourLat);
+		yourLocation.setLongitude(yourLon);
+	
+		float distance = yourLocation.distanceTo(newLocation.toAndroidLocation()); 
+		distance = (float) (distance * PBMUtil.METERS_TO_MILES);	
+	
+		NumberFormat formatter = new DecimalFormat(".00");
+		newLocation.setMilesInfo(formatter.format(distance) + " miles");
+		
+		return newLocation;
 	}
 
 	@SuppressWarnings("null")

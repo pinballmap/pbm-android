@@ -35,6 +35,7 @@ public class PBMUtil extends Activity {
 	public static final int MENU_QUIT       = 2;
 	public static final int HTTP_RETRIES    = 5;
 	public static final String PREFS_NAME = "pbmPrefs";
+	public static final float METERS_TO_MILES = (float) 0.000621371192;
 
 //	public static String httpBase = "http://pinballmap.com/";
 	public static String httpBase = "http://pinballmapstaging.herokuapp.com/";

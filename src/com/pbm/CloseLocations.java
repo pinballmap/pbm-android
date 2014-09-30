@@ -187,7 +187,6 @@ public class CloseLocations extends FragmentActivity implements LocationListener
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	public void onConnected(Bundle arg0) {
 		yourLocation = locationClient.getLastLocation();
 		locationsForMap = new ArrayList<com.pbm.Location>();
@@ -195,16 +194,9 @@ public class CloseLocations extends FragmentActivity implements LocationListener
 		PBMApplication app = (PBMApplication) getApplication();
 		for (int i = 0; i < app.getLocationValues().length; i++) {
 			com.pbm.Location location = (com.pbm.Location) app.getLocationValues()[i];
-			android.location.Location mockLocation = new android.location.Location("");
-			
-			try{
-				mockLocation.setLatitude(Double.valueOf(location.lat));
-				mockLocation.setLongitude(Double.valueOf(location.lon));
-			} catch (java.lang.NumberFormatException nfe) {
-			}
 
-			float distance = yourLocation.distanceTo(mockLocation); 
-			distance = (float) (distance * 0.000621371192);	
+			float distance = yourLocation.distanceTo(location.toAndroidLocation()); 
+			distance = (float) (distance * PBMUtil.METERS_TO_MILES);	
 
 			if (distance < maxMilesFromYourLocation) {
 				NumberFormat formatter = new DecimalFormat(".00");
@@ -227,10 +219,6 @@ public class CloseLocations extends FragmentActivity implements LocationListener
 		});
 
 		showTable(sortLocations(locationsForMap));
-
-		try{
-			dismissDialog(PBMUtil.PROGRESS_DIALOG);
-		} catch (java.lang.IllegalArgumentException iae) {}
 	}
 
 	public void onDisconnected() { }
