@@ -160,7 +160,7 @@ public class PBMApplication extends Application {
 		return machines.get(id);
 	}
 	public Machine getMachineByName(String name) {
-		List<Object> machines = getMachineValues(true);
+		ArrayList<Machine> machines = getMachineValues(true);
 		for (Object baseMachine : machines) {
 			Machine machine = (Machine) baseMachine;
 			if (machine.name.equalsIgnoreCase(name)) {
@@ -225,16 +225,12 @@ public class PBMApplication extends Application {
 
 		return locationValues;
 	}
-	public List<Object> getMachineValues(boolean displayAllMachines) {
-		List<Object> machineValues = new ArrayList<Object>();
+	public ArrayList<Machine> getMachineValues(boolean displayAllMachines) {
+		ArrayList<Machine> machineValues = new ArrayList<Machine>();
 
-		if (displayAllMachines) {
-			machineValues = Arrays.asList(getMachines().values().toArray());
-		} else {
-			for (Machine machine : getMachines().values()) {
-				if (machine.existsInRegion) {
-					machineValues.add(machine);
-				}
+		for (Machine machine : getMachines().values()) {
+			if (displayAllMachines || machine.existsInRegion) {
+				machineValues.add(machine);
 			}
 		}
 		

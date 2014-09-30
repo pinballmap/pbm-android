@@ -1,12 +1,12 @@
 package com.pbm;
 
+import java.util.ArrayList;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class LookupByMachineList extends PBMUtil {
 
@@ -18,17 +18,19 @@ public class LookupByMachineList extends PBMUtil {
 
 		logAnalyticsHit("com.pbm.LookupByMachineList");
 		
+		final ArrayList<Machine> machines = app.getMachineValues(false);
 		ListView table = (ListView)findViewById(R.id.machineLookupListTable);
+		table.setAdapter(new MachineListAdapter(this, machines));
 		table.setFastScrollEnabled(true);
-		table.setOnItemClickListener(new OnItemClickListener() {
+		
+		table.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapterView, View arg1, int touchIndex, long arg3) {	
 				Intent myIntent = new Intent();
-				myIntent.putExtra("Machine", (Machine) adapterView.getItemAtPosition(touchIndex));
+				Machine machine = machines.get(touchIndex);
+				myIntent.putExtra("Machine", machine);
 				myIntent.setClassName("com.pbm", "com.pbm.MachineLookupDetail");
 				startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
-
-		table.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_list_item_1, app.getMachineValues(false)));
 	}   
 }

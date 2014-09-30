@@ -2,6 +2,7 @@ package com.pbm;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
@@ -39,13 +40,14 @@ public class AddMachine extends PBMUtil implements OnTaskCompleted {
 		ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, machineNames);
 		AutoCompleteTextView actv = (AutoCompleteTextView) findViewById(R.id.manualNewMachine);
 		actv.setAdapter(adapter);
+		final ArrayList<Machine> allMachines = app.getMachineValues(true);
 
 		table.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(final AdapterView<?> parentView, View selectedView, final int position, long id) {	
 		
 				new Thread(new Runnable() {
 					public void run() {
-						Machine machine = (Machine) parentView.getItemAtPosition(position);
+						Machine machine = allMachines.get(position);
 						machine.setExistsInRegion(true);
 
 						try {
@@ -70,7 +72,7 @@ public class AddMachine extends PBMUtil implements OnTaskCompleted {
 			}
 		});
 
-		table.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_list_item_1, app.getMachineValues(true)));
+		table.setAdapter(new MachineListAdapter(this, allMachines));
 	}   
 
 	public void submitHandler(View view) {		

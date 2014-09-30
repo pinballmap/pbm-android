@@ -12,7 +12,6 @@ import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -77,7 +76,7 @@ public class LocationDetail extends PBMUtil {
 						table = (ListView)findViewById(R.id.locationDetailTable);
 						table.setOnItemClickListener(new OnItemClickListener() {
 							public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
-								Machine machine = (Machine) parentView.getItemAtPosition(position);
+								Machine machine = machines.get(position);
 		
 								Intent myIntent = new Intent();
 								PBMApplication app = (PBMApplication) getApplication();
@@ -104,7 +103,7 @@ public class LocationDetail extends PBMUtil {
 		} catch (java.lang.NullPointerException nep) {}
 
 		if (machines != null) {
-			table.setAdapter(new ArrayAdapter<Machine>(this, android.R.layout.simple_list_item_1, machines));
+			table.setAdapter(new MachineListAdapter(this, machines));
 		}
 	}
 
