@@ -1,23 +1,19 @@
 package com.pbm;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class MachineLookupDetail extends PBMUtil {
 	private Machine machine;
-	private static Location[] locationsWithMachine;
+	private ArrayList<Location> locationsWithMachine = new ArrayList<Location>();
 	private	ListView table;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,14 +32,6 @@ public class MachineLookupDetail extends PBMUtil {
 
 		table = (ListView)findViewById(R.id.machineLookupDetailTable);
 		table.setFastScrollEnabled(true);
-		table.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
-				Intent myIntent = new Intent();
-				myIntent.putExtra("Location", (Location) parentView.getItemAtPosition(position));
-				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail"); 
-				startActivityForResult(myIntent, QUIT_RESULT);    
-			}
-		});
 
 		loadLocationData();
 	}   
@@ -59,14 +47,14 @@ public class MachineLookupDetail extends PBMUtil {
 						
 						if (locationsWithMachine != null) {
 							try {
-								Arrays.sort(locationsWithMachine, new Comparator<Location>() {
+								Collections.sort(locationsWithMachine, new Comparator<Location>() {
 									public int compare(Location l1, Location l2) {
 										return l1.name.toString().compareTo(l2.name.toString());
 									}
 								});
 							} catch (java.lang.NullPointerException nep) {}
 
-							table.setAdapter(new ArrayAdapter<Location>(MachineLookupDetail.this, android.R.layout.simple_list_item_1, locationsWithMachine));
+							table.setAdapter(new LocationListAdapter(MachineLookupDetail.this, locationsWithMachine));
 						}
 					}
 	        	});
@@ -79,8 +67,8 @@ public class MachineLookupDetail extends PBMUtil {
 		loadLocationData();
 	}
 	
-	public Location[] getLocationsWithMachine(Machine machine) {
-		List<Location> locations = new ArrayList<Location>();
+	public ArrayList<Location> getLocationsWithMachine(Machine machine) {
+		ArrayList<Location> locations = new ArrayList<Location>();
 		
 		PBMApplication app = (PBMApplication) getApplication();
 		for (LocationMachineXref lmx : app.getLmxes().values()) {
@@ -89,7 +77,7 @@ public class MachineLookupDetail extends PBMUtil {
 			}
 		}
 
-		return locations.toArray(new Location[locations.size()]);
+		return locations;
 	}
 
 	public void clickHandler(View view) {		

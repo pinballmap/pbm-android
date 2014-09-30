@@ -9,11 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class LocationLookupDetail extends PBMUtil {
 	private Zone zone;
@@ -37,15 +34,6 @@ public class LocationLookupDetail extends PBMUtil {
 		table = (ListView)findViewById(R.id.locationLookupDetailTable);
 		table.setFastScrollEnabled(true);
 		table.setTextFilterEnabled(true);
-
-		table.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
-				Intent myIntent = new Intent();
-				myIntent.putExtra("Location", (Location) parentView.getItemAtPosition(position));
-				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
-				startActivityForResult(myIntent, QUIT_RESULT);
-			}
-		});
 	}   
 	
 	public void loadLocationData() {
@@ -68,7 +56,7 @@ public class LocationLookupDetail extends PBMUtil {
 			}
 		});
 
-		table.setAdapter(new ArrayAdapter<Location>(this, android.R.layout.simple_list_item_1, foundLocations));
+		table.setAdapter(new LocationListAdapter(this, foundLocations));
 	}
 
 	public void onResume() {

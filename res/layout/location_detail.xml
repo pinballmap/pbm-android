@@ -7,7 +7,7 @@
 	    android:id="@+id/locationName"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:paddingLeft="5dip"
+	    android:paddingLeft="5sp"
 	    android:textSize="20sp" />
 
 	<TextView
