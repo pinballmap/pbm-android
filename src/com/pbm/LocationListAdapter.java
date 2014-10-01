@@ -70,8 +70,8 @@ public class LocationListAdapter extends BaseAdapter implements ListAdapter {
 	public int getItemViewType(int position) { return 0; }
 	public int getViewTypeCount() { return 1; }
 	public boolean isEmpty() { return false; }
-	public boolean areAllItemsEnabled() { return false; }
-	public boolean isEnabled(int position) { return false; }
+	public boolean areAllItemsEnabled() { return true; }
+	public boolean isEnabled(int position) { return true; }
 	public int getCount() { return locations.size(); }
 	public Object getItem(int position) { return position; }
 	public long getItemId(int position) { return position; }
