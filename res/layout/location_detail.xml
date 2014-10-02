@@ -8,6 +8,15 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:paddingLeft="5sp"
+	    android:textStyle="bold"
+	    android:textSize="20sp" />
+
+	<TextView
+	    android:id="@+id/locationMetadata"
+	    android:layout_below="@+id/locationName"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:paddingLeft="5sp"
 	    android:textSize="20sp" />
 
 	<TextView
@@ -15,7 +24,7 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:paddingLeft="5dip"
-	    android:layout_below="@+id/locationName"
+	    android:layout_below="@+id/locationMetadata"
 	    android:autoLink="web"
 	    android:linksClickable="true"
 	    android:textSize="20sp" />
