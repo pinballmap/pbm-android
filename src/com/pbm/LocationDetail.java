@@ -51,15 +51,18 @@ public class LocationDetail extends PBMUtil {
 						TextView title = (TextView)findViewById(R.id.title);
 						title.setText(location.name);
 						TextView locationName = (TextView)findViewById(R.id.locationName);
+						TextView locationMetadata = (TextView)findViewById(R.id.locationMetadata);
 						
 						String locationTypeName = "";
 						LocationType locationType = location.getLocationType(LocationDetail.this);
 						if (locationType != null) {
 							locationTypeName = "(" + locationType.name + ")";
 						}
-		
-						locationName.setText(
-							location.name + " " + locationTypeName + "\n\t" +
+
+						locationName.setText(location.name);
+						
+						locationMetadata.setText(
+							((locationTypeName == null || locationTypeName.equals("") || locationTypeName.equals("null")) ? "" : locationTypeName + "\n\t") +
 							location.street + "\n\t" + location.city + " " + location.state + " " + location.zip +
 							((location.phone == null || location.phone.equals("") || location.phone.equals("null")) ? "" : "\n\t" + location.phone)
 						);

@@ -3,5 +3,7 @@
 	<style name="CustomTheme" parent="android:Theme">
 		<item name="android:windowTitleSize">55dip</item>
 		<item name="android:windowActionBar">false</item>
+		<item name="android:background">#000000</item>
+		<item name="android:windowTitleBackgroundStyle">@android:color/black</item>
 	</style>
 </resources>
