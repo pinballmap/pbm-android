@@ -1,45 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:orientation="horizontal">
-
+	android:orientation="horizontal" android:background="@drawable/border">
 	<TextView
 	    android:id="@+id/title"
+	    android:background="@drawable/left_border"
 	    android:layout_width="120dp"
 	    android:layout_height="wrap_content"
 	    android:layout_gravity="center_vertical"
 	    android:text=""
-	    android:textColor="#FFFFFF" />
-
-	<LinearLayout android:gravity="right"
-		android:layout_width="fill_parent" android:layout_height="fill_parent">
-
-		<TextView android:layout_width="1dip" android:layout_height="fill_parent"
-		    android:background="#B3B3B3" />
-
-		<Button
-		    android:id="@+id/editLocationButton"
-		    android:layout_width="48dip"
-		    android:layout_height="48dip"
-		    android:layout_gravity="center"
-		    android:background="@drawable/edit_button"
-		    android:onClick="clickHandler" />
-
-		<TextView android:layout_width="1dip" android:layout_height="fill_parent"
-			android:background="#B3B3B3" />
-		<Button android:id="@+id/navButton" android:layout_width="48dip"
-			android:layout_height="48dip" android:background="@drawable/nav_button"
-			android:onClick="clickHandler" android:layout_gravity="center" />
-		<TextView android:layout_width="1dip" android:layout_height="fill_parent"
-			android:background="#B3B3B3" />
-		<Button android:id="@+id/addMachineButton"
-			android:layout_width="48dip" android:layout_height="48dip"
-			android:background="@drawable/add_button" android:onClick="clickHandler"
-			android:layout_gravity="center" />
-		<TextView android:layout_width="1dip" android:layout_height="fill_parent"
-			android:background="#B3B3B3" />
-		<Button android:id="@+id/mapButton" android:layout_width="48dip"
-			android:layout_height="48dip" android:background="@drawable/map_button"
-			android:layout_gravity="center" android:onClick="clickHandler" />
-	</LinearLayout>
+	    android:textColor="#FFFFFF"
+	    android:paddingLeft="5dp" />
+	<View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1" />           
+	<TextView android:layout_width="1dip" android:layout_height="fill_parent"
+	    android:background="#E4E4E4" />
+	<Button
+	    android:id="@+id/editLocationButton"
+	    android:layout_width="48dip"
+	    android:layout_height="48dip"
+	    android:layout_gravity="center"
+	    android:background="@drawable/edit_button"
+	    android:onClick="clickHandler" />
+	<TextView android:layout_width="1dip" android:layout_height="fill_parent"
+		android:background="#E4E4E4" />
+	<Button android:id="@+id/navButton" android:layout_width="48dip"
+		android:layout_height="48dip" android:background="@drawable/nav_button"
+		android:onClick="clickHandler" android:layout_gravity="center" />
+	<TextView android:layout_width="1dip" android:layout_height="fill_parent"
+		android:background="#E4E4E4" />
+	<Button android:id="@+id/addMachineButton"
+		android:layout_width="48dip" android:layout_height="48dip"
+		android:background="@drawable/add_button" android:onClick="clickHandler"
+		android:layout_gravity="center" />
+	<TextView android:layout_width="1dip" android:layout_height="fill_parent"
+		android:background="#E4E4E4" />
+	<Button android:id="@+id/mapButton" android:layout_width="48dip"
+		android:layout_height="48dip" android:background="@drawable/map_button"
+		android:layout_gravity="center" android:onClick="clickHandler" />
 </LinearLayout>

@@ -395,12 +395,15 @@ public class PBMApplication extends Application {
 					String conditionDate = lmx.getString("condition_date");
 					
 					Machine machine = getMachine(machineID);
-					machine.setExistsInRegion(true);
 					
-					addLocationMachineXref(
-						lmxID,
-						new com.pbm.LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate)
-					);
+					if (machine != null) {
+						machine.setExistsInRegion(true);
+					
+						addLocationMachineXref(
+							lmxID,
+							new com.pbm.LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate)
+						);
+					}
 				}
 			}
 		}
