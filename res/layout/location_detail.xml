@@ -7,7 +7,8 @@
 	    android:id="@+id/locationName"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:paddingLeft="5sp"
+	    android:paddingStart="5sp"
+	    android:paddingEnd="5sp"
 	    android:textStyle="bold"
 	    android:textSize="20sp" />
 
@@ -16,20 +17,20 @@
 	    android:layout_below="@+id/locationName"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:paddingLeft="5sp"
 	    android:textSize="20sp" />
 
 	<TextView
 	    android:id="@+id/website"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:paddingLeft="5dip"
+	    android:paddingStart="5dip"
+	    android:paddingEnd="0dip"
 	    android:layout_below="@+id/locationMetadata"
 	    android:autoLink="web"
 	    android:linksClickable="true"
 	    android:textSize="20sp" />
 	<TextView android:layout_width="fill_parent" android:id="@+id/spacer"
-		android:layout_below="@+id/website" android:layout_height="3dip"
+		android:layout_below="@+id/website" android:layout_height="1dip"
 		android:background="#000000" />
 	<ListView android:id="@+id/locationDetailTable" android:layout_below="@+id/spacer"
 		android:layout_width="fill_parent" android:layout_height="wrap_content" />

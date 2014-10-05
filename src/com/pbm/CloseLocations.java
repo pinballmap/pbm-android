@@ -146,27 +146,6 @@ public class CloseLocations extends PBMUtil implements LocationListener, GoogleP
 		}
 	}
 
-	public void clickHandler(View view) {		
-		switch (view.getId()) {
-		case R.id.mapButton :
-			if ((locationsForMap == null) || (locationsForMap.size() == 0)) {
-				return;
-			}
-
-			int numLocationsToDisplay = locationsForMap.size();
-			if (numLocationsToDisplay > maxNumMachinesToDisplayOnMap) {
-				numLocationsToDisplay = maxNumMachinesToDisplayOnMap - 1;
-			}
-
-			Intent myIntent = new Intent();
-			myIntent.putExtra("Locations", sortLocations(locationsForMap).subList(0, numLocationsToDisplay).toArray());
-			myIntent.setClassName("com.pbm", "com.pbm.DisplayOnMap");
-			startActivityForResult(myIntent, PBMUtil.QUIT_RESULT);
-
-			break;
-		}
-	}
-
 	public void onConnected(Bundle arg0) {
 		yourLocation = locationClient.getLastLocation();
 		locationsForMap = new ArrayList<com.pbm.Location>();
