@@ -14,6 +14,7 @@ import com.google.android.gms.location.LocationListener;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -97,6 +99,9 @@ public class SplashScreen extends PBMUtil implements LocationListener, GooglePla
 		((TextView) findViewById(R.id.greeting)).setVisibility(View.INVISIBLE);
 		((TextView) findViewById(R.id.spacer)).setVisibility(View.INVISIBLE);
 		table.setVisibility(View.INVISIBLE);
+		
+		
+		((RelativeLayout) findViewById(R.id.splash_layout)).setBackgroundColor(Color.BLACK);
 
 		ImageView splashImage = (ImageView) findViewById(R.id.splash_image);
 		splashImage.setVisibility(View.VISIBLE);

@@ -28,11 +28,9 @@
 	    android:autoLink="web"
 	    android:linksClickable="true"
 	    android:textSize="20sp" />
-
 	<TextView android:layout_width="fill_parent" android:id="@+id/spacer"
 		android:layout_below="@+id/website" android:layout_height="3dip"
-		android:background="#FFFFFF" />
-	<ListView android:id="@+id/locationDetailTable"
-		android:layout_below="@+id/spacer" android:dividerHeight="1dip"
+		android:background="#000000" />
+	<ListView android:id="@+id/locationDetailTable" android:layout_below="@+id/spacer"
 		android:layout_width="fill_parent" android:layout_height="wrap_content" />
 </RelativeLayout>

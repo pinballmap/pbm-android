@@ -6,10 +6,12 @@ import java.util.Comparator;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class MachineLookupDetail extends PBMUtil {
 	private Machine machine;
@@ -18,27 +20,39 @@ public class MachineLookupDetail extends PBMUtil {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.machine_lookup_detail);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.map_titlebar);
-
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
 		logAnalyticsHit("com.pbm.MachineLookupDetail");
 
 		Bundle extras = getIntent().getExtras();
 		machine = (Machine) extras.get("Machine");
 
-		TextView title = (TextView)findViewById(R.id.title);
-		title.setText(machine.name);
+		setTitle(machine.name);
 
 		table = (ListView)findViewById(R.id.machineLookupDetailTable);
 		table.setFastScrollEnabled(true);
+		table.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent myIntent = new Intent();						
+				com.pbm.Location location = locationsWithMachine.get(position);
+				
+				myIntent.putExtra("Location", location);
+				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
+				startActivityForResult(myIntent, PBMUtil.QUIT_RESULT);
+			}
+		});
 
 		loadLocationData();
 	}   
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.map_menu, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
 	
 	private void loadLocationData() {
-		table.setAdapter(null);
-
 		new Thread(new Runnable() {
 	        public void run() {
 	        	MachineLookupDetail.super.runOnUiThread(new Runnable() {
@@ -80,17 +94,19 @@ public class MachineLookupDetail extends PBMUtil {
 		return locations;
 	}
 
-	public void clickHandler(View view) {		
-		switch (view.getId()) {
-		case R.id.mapButton :
-			if (locationsWithMachine != null) {
-				Intent myIntent = new Intent();
-				myIntent.putExtra("Locations", locationsWithMachine);
-				myIntent.setClassName("com.pbm", "com.pbm.DisplayOnMap");
-				startActivityForResult(myIntent, QUIT_RESULT);
-			}
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.map_button :
+				if (locationsWithMachine != null) {
+					Intent myIntent = new Intent();
+					myIntent.putExtra("Locations", locationsWithMachine.toArray());
+					myIntent.setClassName("com.pbm", "com.pbm.DisplayOnMap");
+					startActivityForResult(myIntent, QUIT_RESULT);
 
-			break;
+					return true;
+				}
+	    	default:
+	    	    return super.onOptionsItemSelected(item);
 		}
 	}
 }

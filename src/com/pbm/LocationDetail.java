@@ -9,8 +9,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,10 +27,9 @@ public class LocationDetail extends PBMUtil {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.location_detail);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.location_detail_titlebar);
-
+		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+		
 		logAnalyticsHit("com.pbm.LocationDetail");
 
 		lmxes.clear();
@@ -36,8 +37,16 @@ public class LocationDetail extends PBMUtil {
 		location = (Location) getIntent().getExtras().get("Location");
 		
 		if (location != null) {
+			setTitle(location.name);
+
 			loadLocationData();
 		}
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.location_detail_menu, menu);
+	    return super.onCreateOptionsMenu(menu);
 	}
 	
 	private void loadLocationData() {
@@ -48,8 +57,6 @@ public class LocationDetail extends PBMUtil {
 						lmxes = location.getLmxes(LocationDetail.this);
 						machines = location.getMachines(LocationDetail.this);
 		
-						TextView title = (TextView)findViewById(R.id.title);
-						title.setText(location.name);
 						TextView locationName = (TextView)findViewById(R.id.locationName);
 						TextView locationMetadata = (TextView)findViewById(R.id.locationMetadata);
 						
@@ -106,40 +113,40 @@ public class LocationDetail extends PBMUtil {
 		} catch (java.lang.NullPointerException nep) {}
 
 		if (machines != null) {
-			table.setAdapter(new MachineListAdapter(this, machines));
+			table.setAdapter(new MachineListAdapter(this, machines, false));
 		}
 	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.map_button :
+				Intent myIntent = new Intent();
+				myIntent.putExtra("Locations", new Location[] {location});
+				myIntent.setClassName("com.pbm", "com.pbm.DisplayOnMap");
+				startActivityForResult(myIntent, QUIT_RESULT);
 
-	public void clickHandler(View view) {		
-		switch (view.getId()) {
-		case R.id.editLocationButton :
-			Intent editIntent = new Intent();
-			editIntent.putExtra("Location", location);
-			editIntent.setClassName("com.pbm", "com.pbm.LocationEdit");
-			startActivityForResult(editIntent, QUIT_RESULT);    
-
-			break;
-		case R.id.mapButton :
-			Intent myIntent = new Intent();
-			myIntent.putExtra("Locations", new Location[] {location});
-			myIntent.setClassName("com.pbm", "com.pbm.DisplayOnMap");
-			startActivityForResult(myIntent, QUIT_RESULT);  
-
-			break;
-		case R.id.addMachineButton :
-			Intent newMachineIntent = new Intent();
-			newMachineIntent.putExtra("Location", location);
-			newMachineIntent.setClassName("com.pbm", "com.pbm.AddMachine");
-			startActivityForResult(newMachineIntent, QUIT_RESULT);    
-
-			break;
-		case R.id.navButton :
-			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + location.street + ", " + location.city + ", " + location.state + ", " + location.zip));
-			startActivity(intent);
-
-			break;
-		default:
-			break;
+				return true;
+			case R.id.edit_button :
+				Intent editIntent = new Intent();
+				editIntent.putExtra("Location", location);
+				editIntent.setClassName("com.pbm", "com.pbm.LocationEdit");
+				startActivityForResult(editIntent, QUIT_RESULT);    
+			
+				return true;
+			case R.id.add_machine_button :
+				Intent newMachineIntent = new Intent();
+				newMachineIntent.putExtra("Location", location);
+				newMachineIntent.setClassName("com.pbm", "com.pbm.AddMachine");
+				startActivityForResult(newMachineIntent, QUIT_RESULT);    
+			
+				return true;
+			case R.id.nav_button :
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + location.street + ", " + location.city + ", " + location.state + ", " + location.zip));
+				startActivity(intent);
+			
+				return true;
+	    	default:
+	    	    return super.onOptionsItemSelected(item);
 		}
 	}
 

@@ -16,18 +16,17 @@ import com.google.android.gms.location.LocationListener;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.location.Location;
 
 @SuppressLint("HandlerLeak")
-public class CloseLocations extends FragmentActivity implements LocationListener, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener {
+public class CloseLocations extends PBMUtil implements LocationListener, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener {
 	private ListView table;
 	private android.location.Location yourLocation;
 	
@@ -38,21 +37,27 @@ public class CloseLocations extends FragmentActivity implements LocationListener
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.close_locations);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.map_titlebar);
-		
+
+		setTitle("Close locations");
+
 		Tracker tracker = ((PBMApplication) getApplication()).getTracker();
         tracker.setScreenName("com.pbm.CloseLocations");
         tracker.send(new HitBuilders.AppViewBuilder().build());
 
-		TextView title = (TextView)findViewById(R.id.title);
-		title.setText("Close locations");
-
 		table = (ListView)findViewById(R.id.closeLocationsTable);
 		table.setFastScrollEnabled(true);
 		table.setTextFilterEnabled(true);
+		table.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent myIntent = new Intent();						
+				com.pbm.Location location = locationsForMap.get(position);
+				
+				myIntent.putExtra("Location", location);
+				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
+				startActivityForResult(myIntent, PBMUtil.QUIT_RESULT);
+			}
+		});
 		
         if (ConnectionResult.SUCCESS == GooglePlayServicesUtil.isGooglePlayServicesAvailable(this)) {
         	locationClient = new LocationClient(this, this, this);
@@ -60,6 +65,12 @@ public class CloseLocations extends FragmentActivity implements LocationListener
 			Toast.makeText(getBaseContext(), "I couldn't get a fix on your position. Try again, please.", Toast.LENGTH_LONG).show();
         }
 	}   
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.map_menu, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
 
 	private List<com.pbm.Location> sortLocations(List<com.pbm.Location> locations) {
 		Collections.sort(locations, new Comparator<com.pbm.Location>() {
@@ -112,6 +123,29 @@ public class CloseLocations extends FragmentActivity implements LocationListener
 		super.onDestroy();
 	}
 
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.map_button :
+				if ((locationsForMap == null) || (locationsForMap.size() == 0)) {
+					return true;
+				}
+			
+				int numLocationsToDisplay = locationsForMap.size();
+				if (numLocationsToDisplay > maxNumMachinesToDisplayOnMap) {
+					numLocationsToDisplay = maxNumMachinesToDisplayOnMap - 1;
+				}
+			
+				Intent myIntent = new Intent();
+				myIntent.putExtra("Locations", sortLocations(locationsForMap).subList(0, numLocationsToDisplay).toArray());
+				myIntent.setClassName("com.pbm", "com.pbm.DisplayOnMap");
+				startActivityForResult(myIntent, PBMUtil.QUIT_RESULT);
+			
+				return true;
+	    	default :
+	    	    return super.onOptionsItemSelected(item);
+		}
+	}
+
 	public void clickHandler(View view) {		
 		switch (view.getId()) {
 		case R.id.mapButton :
@@ -151,37 +185,6 @@ public class CloseLocations extends FragmentActivity implements LocationListener
 		}
 
 		showTable(sortLocations(locationsForMap));
-	}
-
-	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(PBMUtil.MENU_PREFS, PBMUtil.MENU_PREFS, PBMUtil.MENU_PREFS, "Preferences");
-		menu.add(PBMUtil.MENU_ABOUT, PBMUtil.MENU_ABOUT, PBMUtil.MENU_ABOUT, "About");
-		menu.add(PBMUtil.MENU_QUIT, PBMUtil.MENU_QUIT, PBMUtil.MENU_QUIT, "Quit");
-		return true;
-	}
-
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case PBMUtil.MENU_PREFS:
-			Intent myIntent = new Intent();
-			myIntent.setClassName("com.pbm", "com.pbm.Preferences");
-			startActivityForResult(myIntent, PBMUtil.QUIT_RESULT);
-
-			return true;
-		case PBMUtil.MENU_ABOUT:
-			Intent aboutIntent = new Intent();
-			aboutIntent.setClassName("com.pbm", "com.pbm.About");
-			startActivityForResult(aboutIntent, PBMUtil.QUIT_RESULT);
-
-			return true;
-		case PBMUtil.MENU_QUIT:
-			setResult(PBMUtil.QUIT_RESULT);
-			super.finish();
-			this.finish();  
-
-			return true;
-		}
-		return false;
 	}
 
 	public void onDisconnected() { }

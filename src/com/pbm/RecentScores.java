@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -20,6 +21,7 @@ import android.widget.ListView;
 public class RecentScores extends PBMUtil {
 	private List<Spanned> recentScores = new ArrayList<Spanned>();
 	final private static int NUM_RECENT_SCORES_TO_SHOW = 20;	
+	@SuppressLint("UseSparseArrays")
 	HashMap<Integer, String> ranks = new HashMap<Integer, String>() {
 		private static final long serialVersionUID = 1L;
 	{

@@ -1,0 +1,6 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/remove_button"
+          android:icon="@drawable/remove_button"
+          android:title="@string/remove_button"
+          app:showAsAction="always" />
+</menu>

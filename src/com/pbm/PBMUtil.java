@@ -9,20 +9,20 @@ import java.net.URLConnection;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v7.app.ActionBarActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class PBMUtil extends Activity {	
+public class PBMUtil extends ActionBarActivity {	
 	public static final int MENU_RESULT     = 8;
 	public static final int QUIT_RESULT     = 42;
 	public static final int RESET_RESULT    = 23;
