@@ -2,14 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="fill_parent"
+    android:paddingLeft="5dip"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/locationEditTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/edit_location_data"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/enterConditionHeader"
@@ -65,10 +59,9 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="85dp"
-        android:background="@drawable/cool_button"
         android:onClick="clickHandler"
         android:text="@string/submit"
-        android:textColor="#FFFFFF" />
+        />
 
     <TextView
         android:id="@+id/enterWebsiteHeader"

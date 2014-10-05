@@ -72,7 +72,7 @@ public class AddMachine extends PBMUtil implements OnTaskCompleted {
 			}
 		});
 
-		table.setAdapter(new MachineListAdapter(this, allMachines));
+		table.setAdapter(new MachineListAdapter(this, allMachines, true));
 	}   
 
 	public void submitHandler(View view) {		

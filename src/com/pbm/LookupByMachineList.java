@@ -20,7 +20,7 @@ public class LookupByMachineList extends PBMUtil {
 		
 		final ArrayList<Machine> machines = app.getMachineValues(false);
 		ListView table = (ListView)findViewById(R.id.machineLookupListTable);
-		table.setAdapter(new MachineListAdapter(this, machines));
+		table.setAdapter(new MachineListAdapter(this, machines, true));
 		table.setFastScrollEnabled(true);
 		
 		table.setOnItemClickListener(new AdapterView.OnItemClickListener() {

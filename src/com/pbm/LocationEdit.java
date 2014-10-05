@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class LocationEdit extends PBMUtil implements OnTaskCompleted {
@@ -35,6 +34,7 @@ public class LocationEdit extends PBMUtil implements OnTaskCompleted {
 		logAnalyticsHit("com.pbm.LocationEdit");
 
 		location = (Location) getIntent().getExtras().get("Location");
+		setTitle("Edit Data At " + location.name);
 		
 		locationTypes = new TreeMap <String, Integer>();
 		
@@ -57,9 +57,6 @@ public class LocationEdit extends PBMUtil implements OnTaskCompleted {
 	        public void run() {
 	        	LocationEdit.super.runOnUiThread(new Runnable() {
 					public void run() {
-						TextView title = (TextView)findViewById(R.id.locationEditTitle);
-						title.setText("Edit Data At " + location.name);
-
 						phone.setText((location.phone.equals("null")) ? "" : location.phone);
 						website.setText((location.website.equals("null")) ? "" : location.website);
 

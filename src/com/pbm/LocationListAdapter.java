@@ -4,11 +4,9 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
@@ -44,17 +42,6 @@ public class LocationListAdapter extends BaseAdapter implements ListAdapter {
 		holder.distance.setText(location.milesInfo);
 		holder.numMachines.setText(Integer.toString(location.numMachines((Activity) context)));
 		
-		convertView.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				Intent myIntent = new Intent();						
-				com.pbm.Location location = locations.get(position);
-				
-				myIntent.putExtra("Location", location);
-				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
-				((Activity) context).startActivityForResult(myIntent, PBMUtil.QUIT_RESULT);
-			}
-		});
-		
 		return convertView;
 	}
 
@@ -75,5 +62,4 @@ public class LocationListAdapter extends BaseAdapter implements ListAdapter {
 	public int getCount() { return locations.size(); }
 	public Object getItem(int position) { return position; }
 	public long getItemId(int position) { return position; }
-	
 }

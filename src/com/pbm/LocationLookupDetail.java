@@ -7,10 +7,12 @@ import java.util.HashMap;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class LocationLookupDetail extends PBMUtil {
 	private Zone zone;
@@ -19,22 +21,36 @@ public class LocationLookupDetail extends PBMUtil {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.location_lookup_detail);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.map_titlebar);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Bundle extras = getIntent().getExtras();
 		zone = (Zone) extras.get("Zone");
 		
 		logAnalyticsHit("com.pbm.LocationLookupDetail");
 
-		TextView title = (TextView)findViewById(R.id.title);
-		title.setText(zone.name);
+		setTitle(zone.name);
 
 		table = (ListView)findViewById(R.id.locationLookupDetailTable);
 		table.setFastScrollEnabled(true);
 		table.setTextFilterEnabled(true);
+		table.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent myIntent = new Intent();						
+				com.pbm.Location location = foundLocations.get(position);
+				
+				myIntent.putExtra("Location", location);
+				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
+				startActivityForResult(myIntent, PBMUtil.QUIT_RESULT);
+			}
+		});
 	}   
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.map_menu, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
 	
 	public void loadLocationData() {
 		foundLocations.clear();
@@ -63,16 +79,18 @@ public class LocationLookupDetail extends PBMUtil {
 		super.onResume();
 		loadLocationData();
 	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.map_button :
+				Intent myIntent = new Intent();
+				myIntent.putExtra("Locations", foundLocations.toArray());
+				myIntent.setClassName("com.pbm", "com.pbm.DisplayOnMap");
+				startActivityForResult(myIntent, QUIT_RESULT);
 
-	public void clickHandler(View view) {		
-		switch (view.getId()) {
-		case R.id.mapButton :
-			Intent myIntent = new Intent();
-			myIntent.putExtra("Locations", foundLocations.toArray());
-			myIntent.setClassName("com.pbm", "com.pbm.DisplayOnMap");
-			startActivityForResult(myIntent, QUIT_RESULT);
-
-			break;
+				return true;
+	    	default:
+	    	    return super.onOptionsItemSelected(item);
 		}
 	}
 }

@@ -7,7 +7,7 @@
 		android:textSize="20sp" android:text="@string/enter_condition" />
 	<TableLayout android:id="@+id/conditionTable"
 		android:layout_below="@+id/enterConditionHeader" android:layout_width="fill_parent"
-		android:layout_height="270dip" android:background="#FFFFFF">
+		android:layout_height="270dip">
 
 		<TextView
 		    android:id="@+id/condition"
@@ -17,6 +17,7 @@
 		    android:layout_marginLeft="3dip"
 		    android:layout_marginRight="3dip"
 		    android:layout_marginTop="3dip"
+		    android:textColor="#ffffff"
 		    android:background="#000000"
 		    android:clickable="true"
 		    android:onClick="clickHandler"

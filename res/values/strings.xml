@@ -28,4 +28,10 @@
   	<string name="website">Website:</string>
   	<string name="submit_a_location">Submit A Location To The Map</string>
   	<string name="submit_text"> Submit </string>
+  	<string name="machine_button_desc">Click to edit machine</string>
+  	<string name="map_button">Click to show on map</string>
+  	<string name="edit_button">Click to edit location</string>
+  	<string name="nav_button">Click to show navigation directions</string>
+  	<string name="add_machine_button">Click to add a machine</string>
+  	<string name="remove_button">Click to remove machine</string>
 </resources>
