@@ -17,8 +17,8 @@
 		    android:layout_marginLeft="3dip"
 		    android:layout_marginRight="3dip"
 		    android:layout_marginTop="3dip"
-		    android:textColor="#ffffff"
-		    android:background="#000000"
+		    android:textColor="#000000"
+		    android:background="#cccccc"
 		    android:clickable="true"
 		    android:onClick="clickHandler"
 		    android:text="@string/blank" />
