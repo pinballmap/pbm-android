@@ -6,10 +6,10 @@
 		android:layout_height="wrap_content"
 		android:textSize="20sp" />
 	<ImageView android:id="@+id/machineSelectButton"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_width="32dip" android:layout_height="32dip"
         android:contentDescription="@string/machine_button_desc"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/name" android:src="@drawable/machine_icon" />
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/name" android:src="@drawable/machine_icon" />
 	<TextView android:layout_below="@+id/name" android:id="@+id/metaData"
 		android:textSize="15sp" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" />
