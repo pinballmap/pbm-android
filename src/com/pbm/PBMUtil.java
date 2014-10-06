@@ -45,7 +45,7 @@ public class PBMUtil extends ActionBarActivity {
 	public static String regionlessBase = httpBase + apiPath;
 
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(MENU_PREFS, MENU_PREFS, MENU_PREFS, "Preferences");
+		menu.add(MENU_PREFS, MENU_PREFS, MENU_PREFS, "Change Region");
 		menu.add(MENU_ABOUT, MENU_ABOUT, MENU_ABOUT, "About");
 		menu.add(MENU_QUIT, MENU_QUIT, MENU_QUIT, "Quit");
 		return true;
