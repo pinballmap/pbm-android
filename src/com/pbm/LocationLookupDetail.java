@@ -44,6 +44,8 @@ public class LocationLookupDetail extends PBMUtil {
 				startActivityForResult(myIntent, PBMUtil.QUIT_RESULT);
 			}
 		});
+
+		super.onCreate(savedInstanceState, table);
 	}   
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
