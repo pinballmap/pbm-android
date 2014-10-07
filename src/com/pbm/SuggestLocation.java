@@ -39,6 +39,8 @@ public class SuggestLocation extends PBMUtil {
 				
 			String url = regionlessBase + "locations/suggest.json?region_id=" + region.id
 					+ ";location_name=" + URLEncoder.encode(locationName, "UTF-8")
+					+ ";submitter_name=" + URLEncoder.encode(((EditText) findViewById(R.id.submitterNameField)).getText().toString(), "UTF-8")
+					+ ";submitter_email=" + URLEncoder.encode(((EditText) findViewById(R.id.submitterEmailField)).getText().toString(), "UTF-8")
 					+ ";location_street=" + URLEncoder.encode(((EditText) findViewById(R.id.streetField)).getText().toString(), "UTF-8")
 					+ ";location_city=" + URLEncoder.encode(((EditText) findViewById(R.id.cityField)).getText().toString(), "UTF-8")
 					+ ";location_state=" + URLEncoder.encode(((EditText) findViewById(R.id.stateField)).getText().toString(), "UTF-8")
