@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -32,5 +33,12 @@ public class LookupByMachineList extends PBMUtil {
 				startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
+
+		super.onCreate(savedInstanceState, table);
 	}   
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.searchable_listview_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 }
