@@ -58,6 +58,8 @@ public class CloseLocations extends PBMUtil implements LocationListener, GoogleP
 				startActivityForResult(myIntent, PBMUtil.QUIT_RESULT);
 			}
 		});
+
+		super.onCreate(savedInstanceState, table);
 		
         if (ConnectionResult.SUCCESS == GooglePlayServicesUtil.isGooglePlayServicesAvailable(this)) {
         	locationClient = new LocationClient(this, this, this);

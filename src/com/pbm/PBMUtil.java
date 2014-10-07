@@ -10,19 +10,25 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
-public class PBMUtil extends ActionBarActivity {	
+public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {	
 	public static final int MENU_RESULT     = 8;
 	public static final int QUIT_RESULT     = 42;
 	public static final int RESET_RESULT    = 23;
@@ -43,11 +49,28 @@ public class PBMUtil extends ActionBarActivity {
 
 	public static String regionBase = "THIS IS SET DURING APP INIT";
 	public static String regionlessBase = httpBase + apiPath;
+	
+	public ListView table;
+	
+	public void onCreate(Bundle savedInstanceState, ListView table) {
+		table.setTextFilterEnabled(true);
+		this.table = table;
+	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(MENU_PREFS, MENU_PREFS, MENU_PREFS, "Preferences");
+		menu.add(MENU_PREFS, MENU_PREFS, MENU_PREFS, "Change Region");
 		menu.add(MENU_ABOUT, MENU_ABOUT, MENU_ABOUT, "About");
 		menu.add(MENU_QUIT, MENU_QUIT, MENU_QUIT, "Quit");
+
+        if (menu.findItem(R.id.search) != null) {
+        	SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        	SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+ 
+        	searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        	searchView.setSubmitButtonEnabled(false);
+        	searchView.setOnQueryTextListener(this);
+        }
+
 		return true;
 	}
 
@@ -171,4 +194,18 @@ public class PBMUtil extends ActionBarActivity {
 
 		return;
 	}
+	
+	public boolean onQueryTextChange(String newText) {
+		if (TextUtils.isEmpty(newText)) {
+			table.clearTextFilter();
+	    } else {
+	        table.setFilterText(newText.toString());
+	    }
+	         
+	    return true;
+	 }
+	 
+	 public boolean onQueryTextSubmit(String query) {
+		 return false;
+	 }
 }
