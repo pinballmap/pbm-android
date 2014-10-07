@@ -44,6 +44,8 @@ public class MachineLookupDetail extends PBMUtil {
 		});
 
 		loadLocationData();
+
+		super.onCreate(savedInstanceState, table);
 	}   
 
 	public boolean onCreateOptionsMenu(Menu menu) {
