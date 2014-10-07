@@ -35,4 +35,6 @@
   	<string name="add_machine_button">Click to add a machine</string>
   	<string name="remove_button">Click to remove machine</string>
   	<string name="search_hint">Search here..</string>
+  	<string name="submitter_name">Your Name</string>
+  	<string name="submitter_email">Your Email</string>
 </resources>
