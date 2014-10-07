@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,6 +56,13 @@ public class LookupByLocationList extends PBMUtil {
 		primaryZones.addAll(secondaryZones);
 
 		table.setAdapter(new ArrayAdapter<Zone>(this, android.R.layout.simple_list_item_1, primaryZones));
+		
+		super.onCreate(savedInstanceState, table);
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.searchable_listview_menu, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	private void sort(List<Zone> zones) {
