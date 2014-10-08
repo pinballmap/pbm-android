@@ -37,7 +37,7 @@ public class LocationDetail extends PBMUtil {
 		location = (Location) getIntent().getExtras().get("Location");
 		
 		if (location != null) {
-			setTitle(location.name);
+			setTitle("");
 
 			loadLocationData();
 		}
@@ -58,29 +58,36 @@ public class LocationDetail extends PBMUtil {
 						machines = location.getMachines(LocationDetail.this);
 		
 						TextView locationName = (TextView)findViewById(R.id.locationName);
+						TextView locationType = (TextView)findViewById(R.id.locationType);
 						TextView locationMetadata = (TextView)findViewById(R.id.locationMetadata);
+						TextView locationWebsite = (TextView)findViewById(R.id.website);
 						
 						String locationTypeName = "";
-						LocationType locationType = location.getLocationType(LocationDetail.this);
-						if (locationType != null) {
-							locationTypeName = "(" + locationType.name + ")";
+						LocationType type = location.getLocationType(LocationDetail.this);
+						if (type != null) {
+							locationTypeName = "(" + type.name + ")";
 						}
 
 						locationName.setText(location.name);
 						
 						locationMetadata.setText(
-							((locationTypeName == null || locationTypeName.equals("") || locationTypeName.equals("null")) ? "" : locationTypeName + "\n\t") +
-							location.street + "\n\t" + location.city + " " + location.state + " " + location.zip +
-							((location.phone == null || location.phone.equals("") || location.phone.equals("null")) ? "" : "\n\t" + location.phone)
+							location.street + ", " + location.city + ", " + location.state + ", " + location.zip +
+							((location.phone == null || location.phone.equals("") || location.phone.equals("null")) ? "" : "\n" + location.phone)
 						);
 
-						TextView website = (TextView)findViewById(R.id.website);
-						if (location.website != null && !location.website.equals("") && !location.website.equals("null")) {
-							website.setVisibility(View.VISIBLE);
-							website.setMovementMethod(LinkMovementMethod.getInstance());
-							website.setText("\t" + location.website);
+						if (locationTypeName != null && !locationTypeName.equals("") && !locationTypeName.equals("null")) {
+							locationType.setVisibility(View.VISIBLE);
+							locationType.setText(locationTypeName);
 						} else {
-							website.setVisibility(View.INVISIBLE);
+							locationType.setVisibility(View.GONE);
+						}
+
+						if (location.website != null && !location.website.equals("") && !location.website.equals("null")) {
+							locationWebsite.setVisibility(View.VISIBLE);
+							locationWebsite.setMovementMethod(LinkMovementMethod.getInstance());
+							locationWebsite.setText(location.website);
+						} else {
+							locationWebsite.setVisibility(View.GONE);
 						}
 
 						table = (ListView)findViewById(R.id.locationDetailTable);

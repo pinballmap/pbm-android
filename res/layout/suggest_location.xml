@@ -2,14 +2,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent" android:layout_height="fill_parent">
 	<LinearLayout android:id="@+id/suggestALocationLayout"
-	    android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical" >
+	    android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" >
 	
 	    <TextView
 	        android:id="@+id/textView4"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginBottom="10dp"
-	        android:layout_marginLeft="10dp"
+	        android:layout_marginStart="10dp"
 	        android:text="@string/submit_a_location"
 	        android:textAppearance="?android:attr/textAppearanceMedium" />
 	
@@ -34,7 +34,7 @@
 	
 	            <EditText
 	                android:id="@+id/nameField"
-	                android:layout_marginLeft="10dp"
+	                android:layout_marginStart="10dp"
 	                android:inputType="text"
 	                android:ems="10" >
 	
@@ -55,7 +55,7 @@
 	
 	            <EditText
 	                android:id="@+id/streetField"
-	                android:layout_marginLeft="10dp"
+	                android:layout_marginStart="10dp"
 	                android:ems="10"
 	                android:inputType="textPostalAddress" />
 	        </TableRow>
@@ -74,7 +74,7 @@
 	            <EditText
 	                android:id="@+id/cityField"
 	                android:inputType="text"
-	                android:layout_marginLeft="10dp"
+	                android:layout_marginStart="10dp"
 	                android:ems="10" />
 	        </TableRow>
 	
@@ -92,7 +92,7 @@
 	            <EditText
 	                android:id="@+id/stateField"
 	                android:inputType="text"
-	                android:layout_marginLeft="10dp"
+	                android:layout_marginStart="10dp"
 	                android:ems="10" />
 	        </TableRow>
 	
@@ -110,7 +110,7 @@
 	            <EditText
 	                android:id="@+id/zipField"
 	                android:inputType="text"
-	                android:layout_marginLeft="10dp"
+	                android:layout_marginStart="10dp"
 	                android:ems="10" />
 	        </TableRow>
 	
@@ -129,7 +129,7 @@
 	                android:id="@+id/phoneField"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:layout_marginLeft="10dp"
+	                android:layout_marginStart="10dp"
 	                android:ems="10"
 	                android:inputType="phone" />
 	        </TableRow>
@@ -148,7 +148,7 @@
 	            <EditText
 	                android:id="@+id/websiteField"
 	                android:inputType="text"
-	                android:layout_marginLeft="10dp"
+	                android:layout_marginStart="10dp"
 	                android:ems="10" />
 	        </TableRow>
 	
@@ -165,7 +165,7 @@
 	
 	            <EditText
 	                android:id="@+id/operatorField"
-	                android:layout_marginLeft="10dp"
+	                android:layout_marginStart="10dp"
 	                android:inputType="text"
 	                android:ems="10" />
 	        </TableRow>
@@ -182,7 +182,7 @@
 	
 	            <EditText
 	                android:id="@+id/submitterNameField"
-	                android:layout_marginLeft="10dp"
+	                android:layout_marginStart="10dp"
 	                android:inputType="text"
 	                android:ems="10" />
 	        </TableRow>
@@ -199,8 +199,8 @@
 	
 	            <EditText
 	                android:id="@+id/submitterEmailField"
-	                android:layout_marginLeft="10dp"
-	                android:inputType="text"
+	                android:layout_marginStart="10dp"
+	                android:inputType="textEmailAddress"
 	                android:ems="10" />
 	        </TableRow>
 	    </TableLayout>
@@ -210,7 +210,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginBottom="10dp"
-	        android:layout_marginLeft="10dp"
+	        android:layout_marginStart="10dp"
 	        android:layout_marginTop="20dp"
 	        android:labelFor="@+id/multiAutoCompleteTextView1"
 	        android:text="@string/machines"
@@ -230,7 +230,7 @@
 	        android:id="@+id/button1"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="10dp"
+	        android:layout_marginStart="10dp"
 	        android:layout_marginTop="10dp"
 	        android:onClick="buttonOnClick"
 	        android:text="@string/submit_text" />
