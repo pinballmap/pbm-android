@@ -9,20 +9,9 @@ import android.app.Activity;
 
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public int id;
-	public String name;
-	public String street;
-	public String city;
-	public String state;
-	public String zip;
-	public String phone;
-	public String lat;
-	public String lon;
-	public String website;
-	public int zoneID;
-	public int locationTypeID;
+	public int id, zoneID, locationTypeID;
+	public String name, street, city, state, zip, phone, lat, lon, website, milesInfo;
 	public float distanceFromYou;
-	public String milesInfo;
 
 	public Location(int id, String name, String lat, String lon, int zoneID, String street, String city, String state, String zip, String phone, int locationTypeID, String website) {
 		this.id = id;

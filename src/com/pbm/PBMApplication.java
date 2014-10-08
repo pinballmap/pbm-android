@@ -439,6 +439,8 @@ public class PBMApplication extends Application {
 			String name = region.getString("name");
 			String formalName = region.getString("full_name");
 			String motd = region.getString("motd");
+			String lat = region.getString("lat");
+			String lon = region.getString("lon");
 
 			List<String> emailAddresses = null;
 
@@ -449,7 +451,7 @@ public class PBMApplication extends Application {
 				}
 			}
 
-			addRegion(Integer.parseInt(id), new Region(Integer.parseInt(id), name, formalName, motd, emailAddresses));
+			addRegion(Integer.parseInt(id), new Region(Integer.parseInt(id), name, formalName, motd, lat, lon, emailAddresses));
 		}
 
 		return true;
