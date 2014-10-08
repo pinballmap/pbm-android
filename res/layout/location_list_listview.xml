@@ -7,7 +7,7 @@
         android:layout_centerVertical="true"
         android:background="@drawable/circle" android:gravity="center" android:shadowColor="@android:color/white"
         android:layout_alignParentEnd="true"
-        android:textColor="@android:color/white" android:textSize="15sp" />
+        android:textColor="@android:color/white" android:textSize="12sp" />
 	<TextView android:layout_below="@+id/name" android:id="@+id/distance"
 		android:textSize="15sp" android:layout_width="100dip" android:layout_height="wrap_content" />
 </RelativeLayout>
