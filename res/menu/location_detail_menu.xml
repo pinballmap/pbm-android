@@ -1,5 +1,9 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/add_machine_button"
+          android:icon="@drawable/add_icon_active"
+          android:title="@string/add_machine_button"
+          app:showAsAction="always" />
     <item android:id="@+id/edit_button"
           android:icon="@drawable/edit_icon_active"
           android:title="@string/edit_button"
@@ -7,10 +11,6 @@
     <item android:id="@+id/nav_button"
           android:icon="@drawable/nav_icon_active"
           android:title="@string/nav_button"
-          app:showAsAction="always" />
-    <item android:id="@+id/add_machine_button"
-          android:icon="@drawable/add_icon_active"
-          android:title="@string/add_machine_button"
           app:showAsAction="always" />
     <item android:id="@+id/map_button"
           android:icon="@drawable/map_icon_active"
