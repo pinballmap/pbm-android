@@ -7,16 +7,7 @@
 	<TextView android:layout_width="fill_parent" android:id="@+id/spacer"
 		android:layout_below="@+id/greeting" android:layout_height="3dip"
 		android:background="#000000" />
-	<ListView android:id="@+id/splashRegionTable"
+	<ListView android:id="@+id/regionListView"
 		android:layout_below="@+id/spacer" android:dividerHeight="1dip"
 		android:layout_width="fill_parent" android:layout_height="wrap_content" />
-	<ImageView android:id="@+id/splash_image" android:src="@drawable/splash_image"
-		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:scaleType="fitCenter" android:gravity="center"
-		android:contentDescription="@string/splash_image_desc"
-		android:visibility="invisible" />
-	<ImageView android:id="@+id/splash_image_city"
-		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:contentDescription="@string/splash_image_city_desc"
-		android:visibility="invisible" android:gravity="center" />
 </RelativeLayout>

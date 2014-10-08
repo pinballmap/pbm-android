@@ -1,128 +1,39 @@
 package com.pbm;
 
-import java.io.UnsupportedEncodingException;
-import java.util.concurrent.ExecutionException;
-
-import org.json.JSONException;
-
 import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.SharedPreferences;
+import android.app.ActionBar;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.Menu;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 
 @SuppressLint("HandlerLeak")
 public class Preferences extends PBMUtil {
-	private ListView table;
-	private ProgressDialog progressDialog;
-	private ProgressThread progressThread;
+	private	ActionBar.Tab regionsByNameTab, regionsByLocationTab;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.preferences);
+		setContentView(R.layout.region_tab_container);
 
 		logAnalyticsHit("com.pbm.Preferences");
-		
-		table = (ListView)findViewById(R.id.preferencesRegionTable);
-		table.setFastScrollEnabled(true);
-		table.setTextFilterEnabled(true);
-		
-		table.setOnItemClickListener(new OnItemClickListener() {
-			@SuppressWarnings("deprecation")
-			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
-				Region region = (Region) parentView.getItemAtPosition(position);
-				table.setEnabled(false);
-				setRegionBase(httpBase + apiPath + "region/" + region.name + "/");						
 
-				SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-				settings.edit().putInt("region", region.id).commit();
-
-				showDialog(PROGRESS_DIALOG);
-
-				Thread splashTread = new Thread() {
-					public void run() {
-						try {
-						} finally {
-						}
-					}
-				};
-				splashTread.start();
-			}
-		});
-		
 		PBMApplication app = (PBMApplication) getApplication();
-		table.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_list_item_1, app.getRegionValues()));
+        android.app.ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        
+		Fragment regionsByName = new RegionsTab(app.getRegionValues(), false);
+		Fragment regionsByLocation = new RegionsTab(app.getRegionValues(), true);
+	
+		regionsByNameTab = actionBar.newTab().setText("Sorted Alphabetically");
+    	regionsByLocationTab = actionBar.newTab().setText("Sorted By Distance");
+    
+    	regionsByNameTab.setTabListener(new RegionTabListener(regionsByName));
+    	regionsByLocationTab.setTabListener(new RegionTabListener(regionsByLocation));
+    
+    	actionBar.addTab(regionsByNameTab);
+    	actionBar.addTab(regionsByLocationTab);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		return false;
-	}
-	
-	final Handler waitHandler = new Handler() {
-		@SuppressWarnings("deprecation")
-		public void handleMessage(Message msg) {
-			int total = msg.getData().getInt("total");
-
-			if (total >= 100){
-				try{
-					dismissDialog(PROGRESS_DIALOG); 
-
-					setResult(RESET_RESULT);
-					finish();
-				} catch (java.lang.IllegalArgumentException iae) {}
-			}
-		}
-	};
-
-	protected Dialog onCreateDialog(int id) { 
-		switch(id) {
-		case PROGRESS_DIALOG:
-			progressDialog = new ProgressDialog(this);
-			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			progressDialog.setMessage("Loading...");
-			progressThread = new ProgressThread(waitHandler);
-			progressThread.start();
-
-			return progressDialog;
-		default:
-			return null;
-		}
-	}
-
-	private class ProgressThread extends Thread {
-		Handler mHandler;
-
-		ProgressThread(Handler h) {
-			mHandler = h;
-		}
-
-		public void run() {
-			PBMApplication app = (PBMApplication) getApplication();
-			try {
-				app.initializeData();
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			
-			Message msg = mHandler.obtainMessage();
-			Bundle b = new Bundle();
-			b.putInt("total", 100);
-			msg.setData(b);
-			mHandler.sendMessage(msg);
-		}
 	}
 }

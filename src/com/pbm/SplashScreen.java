@@ -12,35 +12,27 @@ import org.json.JSONException;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 
+import android.app.ActionBar;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class SplashScreen extends PBMUtil implements LocationListener, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener {
-	private ListView table;
 	private LocationClient locationClient;
-	private volatile SplashThread splashThread;
 	private android.location.Location yourLocation;
-
+	private	ActionBar.Tab regionsByNameTab, regionsByLocationTab;
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(R.layout.splash);
+		setContentView(R.layout.region_tab_container);
 
-		table = (ListView)findViewById(R.id.splashRegionTable);
+        android.app.ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		Integer prefRegion = settings.getInt("region", -1);
@@ -60,108 +52,34 @@ public class SplashScreen extends PBMUtil implements LocationListener, GooglePla
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
+
 		if (ConnectionResult.SUCCESS == GooglePlayServicesUtil.isGooglePlayServicesAvailable(this)) {
         	locationClient = new LocationClient(this, this, this);
         }
 
-		if (prefRegion == -1) {
-			table.setVisibility(View.VISIBLE);
-
-			table.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
-					setProgressBarIndeterminateVisibility(true);
-					Region region = (Region) parentView.getItemAtPosition(position);
-					if (! (region.name.equals(""))) {
-						setRegionBase(httpBase + apiPath + "region/" + region.name + "/");						
-					}
-
-					SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-					SharedPreferences.Editor editor = settings.edit();
-					editor.putInt("region", region.id);
-					editor.commit();
-
-					loadSplashAndStart(region);
-				}
-			});
-
-			table.setAdapter(new ArrayAdapter<Object>(this, android.R.layout.simple_list_item_1, app.getRegionValues()));
-		} else {
+		if (prefRegion != -1) {
 			Region region = app.getRegion(prefRegion);
 			setRegionBase(httpBase + apiPath + "region/" + region.name + "/");						
 
-			loadSplashAndStart(region);
+			Intent myIntent = new Intent();	
+			myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			myIntent.setClassName("com.pbm", "com.pbm.InitializingScreen");
+			startActivityForResult(myIntent, PBMUtil.QUIT_RESULT);
+		} else {
+			Fragment regionsByName = new RegionsTab(app.getRegionValues(), false);
+			Fragment regionsByLocation = new RegionsTab(app.getRegionValues(), true);
+		
+			regionsByNameTab = actionBar.newTab().setText("Sorted Alphabetically");
+	    	regionsByLocationTab = actionBar.newTab().setText("Sorted By Distance");
+	    
+        	regionsByNameTab.setTabListener(new RegionTabListener(regionsByName));
+        	regionsByLocationTab.setTabListener(new RegionTabListener(regionsByLocation));
+	    
+	    	actionBar.addTab(regionsByNameTab);
+        	actionBar.addTab(regionsByLocationTab);
 		}
 	}
 	
-	private void loadSplashAndStart(Region region) {
-		setProgressBarIndeterminateVisibility(true);
-		((TextView) findViewById(R.id.greeting)).setVisibility(View.INVISIBLE);
-		((TextView) findViewById(R.id.spacer)).setVisibility(View.INVISIBLE);
-		table.setVisibility(View.INVISIBLE);
-		
-		
-		((RelativeLayout) findViewById(R.id.splash_layout)).setBackgroundColor(Color.BLACK);
-
-		ImageView splashImage = (ImageView) findViewById(R.id.splash_image);
-		splashImage.setVisibility(View.VISIBLE);
-
-		int resID = getResources().getIdentifier(getCityNamePath(region), null, null);		
-		if (resID != 0) {
-			ImageView cityNameImage = (ImageView) findViewById(R.id.splash_image_city);
-			Drawable image = getResources().getDrawable(resID);
-			cityNameImage.setImageDrawable(image);	
-			cityNameImage.setVisibility(View.VISIBLE);
-		}
-
-		splashThread = new SplashThread();
-		splashThread.start();
-	}
-
-	private String getCityNamePath(Region region) {
-		String cityNamePath = "com.pbm:drawable/";
-		String cityName = region.name;
-
-		if (cityName.equals("")) {
-			cityName = "portland_city";
-		} else {
-			cityName += "_city";
-		}
-
-		cityNamePath += cityName;
-		return cityNamePath;
-	}
-
-	private class SplashThread extends Thread {
-		public void run() {
-			try {
-				PBMApplication app = (PBMApplication) getApplication();
-				app.initializeData();
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			} catch (JSONException e) {
-				e.printStackTrace();
-			} finally {
-				Intent myIntent = new Intent();
-				myIntent.setClassName("com.pbm", "com.pbm.PBMMenu");
-				startActivity(myIntent);
-
-				finish();
-				interrupt();
-			}
-		}
-	}
-
-	public static void startApp() {}
-
-	public boolean onCreateOptionsMenu(Menu menu) {
-		return false;
-	}
-
 	public void onStart() {
 		super.onStart();
 		
@@ -204,6 +122,10 @@ public class SplashScreen extends PBMUtil implements LocationListener, GooglePla
 			editor.putFloat("yourLon", (float) yourLocation.getLongitude());
 			editor.commit();
 		}
+	}
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return false;
 	}
 
 	public void onConnectionFailed(ConnectionResult arg0) {}
