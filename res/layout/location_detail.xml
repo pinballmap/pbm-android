@@ -24,8 +24,18 @@
 		    android:textSize="18sp" />
 
 		<TextView
-		    android:id="@+id/locationType"
+		    android:id="@+id/locationPhone"
 		    android:layout_below="@+id/locationMetadata"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:paddingStart="10dip"
+		    android:paddingEnd="0dip"
+		    android:autoLink="phone"
+		    android:textSize="18sp" />
+
+		<TextView
+		    android:id="@+id/locationType"
+		    android:layout_below="@+id/locationPhone"
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:paddingStart="10dip"
