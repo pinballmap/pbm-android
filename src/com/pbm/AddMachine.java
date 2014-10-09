@@ -29,6 +29,8 @@ public class AddMachine extends PBMUtil implements OnTaskCompleted {
 		logAnalyticsHit("com.pbm.AddMachine");
 
 		location = (Location) getIntent().getExtras().get("Location");
+		
+		setTitle(location.name);
 
 		ListView table = (ListView)findViewById(R.id.addMachineTable);
 		table.setFastScrollEnabled(true);
