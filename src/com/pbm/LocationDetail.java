@@ -61,6 +61,7 @@ public class LocationDetail extends PBMUtil {
 						TextView locationType = (TextView)findViewById(R.id.locationType);
 						TextView locationMetadata = (TextView)findViewById(R.id.locationMetadata);
 						TextView locationWebsite = (TextView)findViewById(R.id.website);
+						TextView locationPhone = (TextView)findViewById(R.id.locationPhone);
 						
 						String locationTypeName = "";
 						LocationType type = location.getLocationType(LocationDetail.this);
@@ -69,11 +70,14 @@ public class LocationDetail extends PBMUtil {
 						}
 
 						locationName.setText(location.name);
-						
-						locationMetadata.setText(
-							location.street + ", " + location.city + ", " + location.state + ", " + location.zip +
-							((location.phone == null || location.phone.equals("") || location.phone.equals("null")) ? "" : "\n" + location.phone)
-						);
+						locationMetadata.setText(location.street + ", " + location.city + ", " + location.state + ", " + location.zip);
+
+						if (location.phone != null && !location.phone.equals("") && !location.phone.equals("null")) {
+							locationPhone.setVisibility(View.VISIBLE);
+							locationPhone.setText(location.phone);
+						} else {
+							locationPhone.setVisibility(View.GONE);
+						}
 
 						if (locationTypeName != null && !locationTypeName.equals("") && !locationTypeName.equals("null")) {
 							locationType.setVisibility(View.VISIBLE);
