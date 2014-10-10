@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.pbm" android:versionName="2.00" android:versionCode="10">
+	package="com.pbm" android:versionName="2.10" android:versionCode="11">
 	<uses-sdk android:targetSdkVersion="19" android:minSdkVersion="18" />
 	
 	<uses-feature android:glEsVersion="0x00020000" android:required="true"/>
