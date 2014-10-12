@@ -24,6 +24,7 @@ public class PBMMenu extends PBMUtil {
 		setContentView(R.layout.main);
 
 		final List<String> mainMenuItems = new ArrayList<String>();
+		mainMenuItems.add("Lookup By Zone");
 		mainMenuItems.add("Lookup By Machine");
 		mainMenuItems.add("Lookup By Location");
 		mainMenuItems.add("Recently Added");
@@ -46,19 +47,23 @@ public class PBMMenu extends PBMUtil {
 				Intent intent = new Intent();
 
 				switch (position) {
-				case 0: 
+				case 0:
+					intent.setClassName("com.pbm", "com.pbm.LookupByZoneList"); break;
+				case 1: 
 					intent.setClassName("com.pbm", "com.pbm.LookupByMachineList"); break;
-				case 1:
-					intent.setClassName("com.pbm", "com.pbm.LookupByLocationList"); break;
 				case 2:
-					intent.setClassName("com.pbm", "com.pbm.RecentlyAdded"); break;
+					intent.putExtra("Zone", Zone.allZone());
+					intent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
+					break;
 				case 3:
-					intent.setClassName("com.pbm", "com.pbm.RecentScores"); break;
+					intent.setClassName("com.pbm", "com.pbm.RecentlyAdded"); break;
 				case 4:
-					intent.setClassName("com.pbm", "com.pbm.Events"); break;
+					intent.setClassName("com.pbm", "com.pbm.RecentScores"); break;
 				case 5:
-					intent.setClassName("com.pbm", "com.pbm.CloseLocations"); break;
+					intent.setClassName("com.pbm", "com.pbm.Events"); break;
 				case 6:
+					intent.setClassName("com.pbm", "com.pbm.CloseLocations"); break;
+				case 7:
 					intent.setClassName("com.pbm", "com.pbm.SuggestLocation"); break;
 				default:	
 					intent.setClassName("com.pbm", "com.pbm.LookupByMachineList"); break;

@@ -116,11 +116,13 @@ public class SplashScreen extends PBMUtil implements LocationListener, GooglePla
 		if (locationClient != null) {
 			yourLocation = locationClient.getLastLocation();
 
-			SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-			SharedPreferences.Editor editor = settings.edit();
-			editor.putFloat("yourLat", (float) yourLocation.getLatitude());
-			editor.putFloat("yourLon", (float) yourLocation.getLongitude());
-			editor.commit();
+			if (yourLocation != null) {
+				SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+				SharedPreferences.Editor editor = settings.edit();
+				editor.putFloat("yourLat", (float) yourLocation.getLatitude());
+				editor.putFloat("yourLon", (float) yourLocation.getLongitude());
+				editor.commit();
+			}
 		}
 	}
 

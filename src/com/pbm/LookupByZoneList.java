@@ -15,18 +15,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class LookupByLocationList extends PBMUtil {
+public class LookupByZoneList extends PBMUtil {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.lookup_by_location_list);
+		setContentView(R.layout.lookup_by_zone_list);
 		
-		logAnalyticsHit("com.pbm.LookupByLocationList");
+		logAnalyticsHit("com.pbm.LookupByZoneList");
 
 		List<Zone> primaryZones = new ArrayList<Zone>();
 		List<Zone> secondaryZones = new ArrayList<Zone>();
 
-		primaryZones.add(new Zone(0, "All", 0));
+		primaryZones.add(Zone.allZone());
 
 		ListView table = (ListView)findViewById(R.id.locationLookupListTable);
 		table.setOnItemClickListener(new OnItemClickListener() {
