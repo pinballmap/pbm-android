@@ -17,4 +17,8 @@ public class Zone implements Serializable {
 	public String toString() {
 		return name;
 	}
+	
+	public static Zone allZone() {
+		return new Zone(0, "All", 0);
+	}
 }
