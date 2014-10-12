@@ -3,6 +3,10 @@ Android Application for http://pinballmap.com
 CHANGELOG
 =========
 
+version 2.1.1
+-top level zone menu item
+-bug fixes from crash reports
+
 version 2.1
 -use PBM api to pull data
 -numerous UI/UX updates
