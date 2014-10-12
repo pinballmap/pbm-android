@@ -31,8 +31,8 @@
     <screenName name="com.pbm.LocationMachineEdit">
         Location Machine Edit
     </screenName>
-    <screenName name="com.pbm.LookupByLocationList">
-        Lookup By Location List
+    <screenName name="com.pbm.LookupByZoneList">
+        Lookup By Zone List
     </screenName>
     <screenName name="com.pbm.LookupByMachineList">
         Lookup By Machine List
