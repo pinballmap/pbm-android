@@ -16,6 +16,16 @@ import android.os.Bundle;
 
 public class PBMMenu extends PBMUtil {
 	public static int rootPID;
+	
+	public static final String LOOKUP_BY_LOCATION = "Lookup By Location";
+	public static final String LOOKUP_BY_MACHINE = "Lookup By Machine";
+	public static final String LOOKUP_BY_ZONE = "Lookup By Zone";
+	public static final String RECENTLY_ADDED = "Recently Added";
+	public static final String RECENT_HIGH_SCORES = "Recent High Scores";
+	public static final String EVENTS = "Events";
+	public static final String CLOSEST_LOCATIONS = "Closest Locations";
+	public static final String SUGGEST_A_LOCATION = "Suggest A Location";
+
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,17 +33,22 @@ public class PBMMenu extends PBMUtil {
 		rootPID = this.getTaskId();
 		setContentView(R.layout.main);
 
-		final List<String> mainMenuItems = new ArrayList<String>();
-		mainMenuItems.add("Lookup By Zone");
-		mainMenuItems.add("Lookup By Machine");
-		mainMenuItems.add("Lookup By Location");
-		mainMenuItems.add("Recently Added");
-		mainMenuItems.add("Recent High Scores");
-		mainMenuItems.add("Events");
-		mainMenuItems.add("Closest Locations");
-		mainMenuItems.add("Suggest A Location");
-
 		PBMApplication app = (PBMApplication) getApplication();
+		
+		final List<String> mainMenuItems = new ArrayList<String>();
+		mainMenuItems.add(LOOKUP_BY_LOCATION);
+		mainMenuItems.add(LOOKUP_BY_MACHINE);
+
+		if (app.getZones().values().size() > 0) {
+			mainMenuItems.add(LOOKUP_BY_ZONE);
+		}
+
+		mainMenuItems.add(RECENTLY_ADDED);
+		mainMenuItems.add(RECENT_HIGH_SCORES);
+		mainMenuItems.add(EVENTS);
+		mainMenuItems.add(CLOSEST_LOCATIONS);
+		mainMenuItems.add(SUGGEST_A_LOCATION);
+
 		Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 
 		if (region != null && region.motd != null && !(region.motd.equals(""))) {
@@ -41,39 +56,40 @@ public class PBMMenu extends PBMUtil {
 		}
 
 		ListView table = (ListView)findViewById(R.id.maintable);
+		final ArrayAdapter<String>adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mainMenuItems);
+
 		table.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
 
 				Intent intent = new Intent();
-
-				switch (position) {
-				case 0:
-					intent.setClassName("com.pbm", "com.pbm.LookupByZoneList"); break;
-				case 1: 
-					intent.setClassName("com.pbm", "com.pbm.LookupByMachineList"); break;
-				case 2:
+				String menuItem = (String) adapter.getItem(position);
+				
+				if (menuItem.equals(LOOKUP_BY_LOCATION)) {
 					intent.putExtra("Zone", Zone.allZone());
 					intent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
-					break;
-				case 3:
-					intent.setClassName("com.pbm", "com.pbm.RecentlyAdded"); break;
-				case 4:
-					intent.setClassName("com.pbm", "com.pbm.RecentScores"); break;
-				case 5:
-					intent.setClassName("com.pbm", "com.pbm.Events"); break;
-				case 6:
-					intent.setClassName("com.pbm", "com.pbm.CloseLocations"); break;
-				case 7:
-					intent.setClassName("com.pbm", "com.pbm.SuggestLocation"); break;
-				default:	
-					intent.setClassName("com.pbm", "com.pbm.LookupByMachineList"); break;
+				} else if (menuItem.equals(LOOKUP_BY_MACHINE)) {
+					intent.setClassName("com.pbm", "com.pbm.LookupByMachineList");
+				} else if (menuItem.equals(LOOKUP_BY_ZONE)) {
+					intent.setClassName("com.pbm", "com.pbm.LookupByZoneList");
+				} else if (menuItem.equals(RECENTLY_ADDED)) {
+					intent.setClassName("com.pbm", "com.pbm.RecentlyAdded");
+				} else if (menuItem.equals(RECENT_HIGH_SCORES)) {
+					intent.setClassName("com.pbm", "com.pbm.RecentScores");
+				} else if (menuItem.equals(EVENTS)) {
+					intent.setClassName("com.pbm", "com.pbm.Events");
+				} else if (menuItem.equals(CLOSEST_LOCATIONS)) {
+					intent.setClassName("com.pbm", "com.pbm.CloseLocations");
+				} else if (menuItem.equals(SUGGEST_A_LOCATION)) {
+					intent.setClassName("com.pbm", "com.pbm.SuggestLocation");
+				} else {
+					intent.setClassName("com.pbm", "com.pbm.PBMMenu");
 				}
 
 				startActivityForResult(intent, MENU_RESULT);
 			}
 		});
 
-		table.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mainMenuItems));
+		table.setAdapter(adapter);
 	}   
 
 	public void activityResetResult() {}
