@@ -38,6 +38,8 @@ public class LocationEdit extends PBMUtil implements OnTaskCompleted {
 		
 		locationTypes = new TreeMap <String, Integer>();
 		
+		LocationType blankLocationType = LocationType.blankLocationType();
+		locationTypes.put(blankLocationType.name, blankLocationType.id);
 		for (Object element : app.getLocationTypes().values()) {
 			LocationType locationType = (LocationType) element;
 
@@ -86,9 +88,14 @@ public class LocationEdit extends PBMUtil implements OnTaskCompleted {
 	        		int locationTypeID = locationTypes.get(locationTypeName);
 	        		String phoneNumber = URLEncoder.encode(phone.getText().toString(), "UTF-8");
 	        		String locationWebsite = website.getText().toString();
+	        		
+	        		String locationTypeString = "";
+	        		if (locationTypeID != 0) {
+	        			locationTypeString = Integer.toString(locationTypeID);
+	        		}
 
 	        		new RetrieveJsonTask(LocationEdit.this).execute(
-	        			regionlessBase + "locations/" + location.id + ".json?phone=" + phoneNumber + ";location_type=" + Integer.toString(locationTypeID) + ";website=" + URLDecoder.decode(locationWebsite, "UTF-8"),
+	        			regionlessBase + "locations/" + location.id + ".json?phone=" + phoneNumber + ";location_type=" + locationTypeString + ";website=" + URLDecoder.decode(locationWebsite, "UTF-8"),
 	        			"PUT"
 	        		).get();
 				} catch (InterruptedException e) {
@@ -122,8 +129,13 @@ public class LocationEdit extends PBMUtil implements OnTaskCompleted {
 			JSONObject jsonLocation = jsonObject.getJSONObject("location");
 
 	        location.setPhone(jsonLocation.getString("phone"));
-	        location.setLocationTypeID(jsonLocation.getInt("location_type_id"));
 	        location.setWebsite(jsonLocation.getString("website"));
+	        
+	        if (jsonLocation.getString("location_type_id") != "null") {
+	        	location.setLocationTypeID(jsonLocation.getInt("location_type_id"));
+	        } else {
+	        	location.setLocationTypeID(LocationType.blankLocationType().id);
+	        }
 	        	
 	        app.setLocation(location.id, location);
 

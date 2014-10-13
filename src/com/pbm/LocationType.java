@@ -12,4 +12,8 @@ public class LocationType implements Serializable {
 		this.id = id;
 		this.name = name;
 	}
+	
+	public static LocationType blankLocationType() {
+		return new LocationType(0, "");
+	}
 }
