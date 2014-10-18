@@ -16,4 +16,8 @@ public class LocationType implements Serializable {
 	public static LocationType blankLocationType() {
 		return new LocationType(0, "");
 	}
+	
+	public String toString() {
+		return name;
+	}
 }

@@ -34,6 +34,9 @@
     <screenName name="com.pbm.LookupByZoneList">
         Lookup By Zone List
     </screenName>
+    <screenName name="com.pbm.LookupByLocationType">
+        Lookup By Location Type
+    </screenName>
     <screenName name="com.pbm.LookupByMachineList">
         Lookup By Machine List
     </screenName>

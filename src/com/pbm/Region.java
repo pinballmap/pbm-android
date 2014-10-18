@@ -4,6 +4,8 @@ import java.lang.String;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
+
 public class Region {
 	public int id;
 	public String name, formalName, motd, lat, lon;
@@ -37,5 +39,23 @@ public class Region {
 		} catch (java.lang.NumberFormatException nfe) {}
 		
 		return mockLocation;
+	}
+
+	public List<LocationType> locationTypes(Activity activity) {
+		PBMApplication app = (PBMApplication) activity.getApplication();
+
+		List<LocationType> locationTypes = new ArrayList<LocationType>();
+
+		Object[] locations = app.getLocationValues();
+		for (int i = 0; i < locations.length; i++) {
+			Location location = (Location) locations[i];
+			LocationType type = location.getLocationType(activity);
+			
+			if (type != null && !locationTypes.contains(type)) {
+				locationTypes.add(type);
+			}
+		}
+		
+		return locationTypes;
 	}
 }
