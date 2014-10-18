@@ -151,21 +151,25 @@ public class CloseLocations extends PBMUtil implements LocationListener, GoogleP
 	public void onConnected(Bundle arg0) {
 		yourLocation = locationClient.getLastLocation();
 		locationsForMap = new ArrayList<com.pbm.Location>();
+		
+		if (yourLocation != null) {
+			PBMApplication app = (PBMApplication) getApplication();
+			for (int i = 0; i < app.getLocationValues().length; i++) {
+				com.pbm.Location location = (com.pbm.Location) app.getLocationValues()[i];
 
-		PBMApplication app = (PBMApplication) getApplication();
-		for (int i = 0; i < app.getLocationValues().length; i++) {
-			com.pbm.Location location = (com.pbm.Location) app.getLocationValues()[i];
+				float distance = yourLocation.distanceTo(location.toAndroidLocation()); 
+				distance = (float) (distance * PBMUtil.METERS_TO_MILES);	
 
-			float distance = yourLocation.distanceTo(location.toAndroidLocation()); 
-			distance = (float) (distance * PBMUtil.METERS_TO_MILES);	
-
-			if (distance < maxMilesFromYourLocation) {
-				location.setDistance(distance);
-				locationsForMap.add(location);
+				if (distance < maxMilesFromYourLocation) {
+					location.setDistance(distance);
+					locationsForMap.add(location);
+				}
 			}
-		}
 
-		showTable(sortLocations(locationsForMap));
+			showTable(sortLocations(locationsForMap));
+		} else {
+			Toast.makeText(getBaseContext(), "I couldn't get a fix on your position. Try again, please.", Toast.LENGTH_LONG).show();
+		}
 	}
 
 	public void onDisconnected() { }

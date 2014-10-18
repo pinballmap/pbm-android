@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 public class LocationLookupDetail extends PBMUtil {
 	private Zone zone;
+	private LocationType locationType;
 	private ArrayList<Location> foundLocations = new ArrayList<Location>();
 	private ListView table;
 
@@ -25,11 +26,21 @@ public class LocationLookupDetail extends PBMUtil {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Bundle extras = getIntent().getExtras();
-		zone = (Zone) extras.get("Zone");
+		
+		if (extras != null) {
+			if (extras.containsKey("LocationType")) {
+				locationType = (LocationType) extras.get("LocationType");
+				setTitle(locationType.name);
+			} else if (extras.containsKey("Zone")) {
+				zone = (Zone) extras.get("Zone");
+				setTitle(zone.name);
+			}
+		} else {
+			setTitle("Locations");
+		}
 		
 		logAnalyticsHit("com.pbm.LocationLookupDetail");
 
-		setTitle(zone.name);
 
 		table = (ListView)findViewById(R.id.locationLookupDetailTable);
 		table.setFastScrollEnabled(true);
@@ -62,8 +73,18 @@ public class LocationLookupDetail extends PBMUtil {
 		HashMap<Integer, com.pbm.Location> locations = app.getLocations();
 		for(Object key : locations.keySet()) {
 			Location location = locations.get(key);
+			
+			if (locationType == null && zone == null) {
+				foundLocations.add(location);
+				continue;
+			}
+			
+			if (locationType != null && location.locationTypeID == locationType.id) {
+				foundLocations.add(location);
+				continue;
+			}
 
-			if (zone.id == 0 || location.zoneID == zone.id) {
+			if (zone != null && (zone.id == 0 || location.zoneID == zone.id)) {
 				foundLocations.add(location);
 			}
 		}

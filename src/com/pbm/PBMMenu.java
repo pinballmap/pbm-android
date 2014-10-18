@@ -20,6 +20,7 @@ public class PBMMenu extends PBMUtil {
 	public static final String LOOKUP_BY_LOCATION = "Lookup By Location";
 	public static final String LOOKUP_BY_MACHINE = "Lookup By Machine";
 	public static final String LOOKUP_BY_ZONE = "Lookup By Zone";
+	public static final String LOOKUP_BY_LOCATION_TYPE = "Lookup By Location Type";
 	public static final String RECENTLY_ADDED = "Recently Added";
 	public static final String RECENT_HIGH_SCORES = "Recent High Scores";
 	public static final String EVENTS = "Events";
@@ -34,6 +35,7 @@ public class PBMMenu extends PBMUtil {
 		setContentView(R.layout.main);
 
 		PBMApplication app = (PBMApplication) getApplication();
+		Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 		
 		final List<String> mainMenuItems = new ArrayList<String>();
 		mainMenuItems.add(LOOKUP_BY_LOCATION);
@@ -42,14 +44,16 @@ public class PBMMenu extends PBMUtil {
 		if (app.getZones().values().size() > 0) {
 			mainMenuItems.add(LOOKUP_BY_ZONE);
 		}
+		
+		if (region.locationTypes(this) != null) {
+			mainMenuItems.add(LOOKUP_BY_LOCATION_TYPE);
+		}
 
 		mainMenuItems.add(RECENTLY_ADDED);
 		mainMenuItems.add(RECENT_HIGH_SCORES);
 		mainMenuItems.add(EVENTS);
 		mainMenuItems.add(CLOSEST_LOCATIONS);
 		mainMenuItems.add(SUGGEST_A_LOCATION);
-
-		Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 
 		if (region != null && region.motd != null && !(region.motd.equals(""))) {
 			Toast.makeText(getBaseContext(), region.motd, Toast.LENGTH_LONG).show();
@@ -65,7 +69,6 @@ public class PBMMenu extends PBMUtil {
 				String menuItem = (String) adapter.getItem(position);
 				
 				if (menuItem.equals(LOOKUP_BY_LOCATION)) {
-					intent.putExtra("Zone", Zone.allZone());
 					intent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
 				} else if (menuItem.equals(LOOKUP_BY_MACHINE)) {
 					intent.setClassName("com.pbm", "com.pbm.LookupByMachineList");
@@ -81,6 +84,8 @@ public class PBMMenu extends PBMUtil {
 					intent.setClassName("com.pbm", "com.pbm.CloseLocations");
 				} else if (menuItem.equals(SUGGEST_A_LOCATION)) {
 					intent.setClassName("com.pbm", "com.pbm.SuggestLocation");
+				} else if (menuItem.equals(LOOKUP_BY_LOCATION_TYPE)) {
+					intent.setClassName("com.pbm", "com.pbm.LookupByLocationType");
 				} else {
 					intent.setClassName("com.pbm", "com.pbm.PBMMenu");
 				}

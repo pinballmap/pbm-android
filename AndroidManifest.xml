@@ -57,6 +57,13 @@
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</activity>
+		<activity android:name=".LookupByLocationType" android:label="Lookup By Location Type"
+		    android:parentActivityName="com.pbm.PBMMenu" android:screenOrientation="portrait">
+			<intent-filter>
+				<action android:name="com.pbm.LookupByLocationType" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
 		<activity android:name=".LocationLookupDetail" android:label="@string/app_name"
 		    android:parentActivityName="com.pbm.PBMMenu" android:screenOrientation="portrait">
 			<intent-filter>
