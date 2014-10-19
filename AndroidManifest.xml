@@ -43,6 +43,20 @@
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</activity>
+		<activity android:name=".ContactAdmin" android:label="Contact Region Admin"
+		    android:parentActivityName="com.pbm.PBMMenu" android:screenOrientation="portrait">
+			<intent-filter>
+				<action android:name="com.pbm.ContactAdmin" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+		<activity android:name=".SuggestRegion" android:label="Suggest A New Region"
+		    android:parentActivityName="com.pbm.PBMMenu" android:screenOrientation="portrait">
+			<intent-filter>
+				<action android:name="com.pbm.SuggestRegion" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
 		<activity android:name=".LookupByMachineList" android:label="Lookup By Machine"
 		    android:parentActivityName="com.pbm.PBMMenu" android:screenOrientation="portrait">
 			<intent-filter>

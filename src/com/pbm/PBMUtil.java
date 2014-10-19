@@ -29,17 +29,20 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {	
-	public static final int MENU_RESULT     = 8;
-	public static final int QUIT_RESULT     = 42;
-	public static final int RESET_RESULT    = 23;
-	public static final int REFRESH_RESULT  = 30;
-	public static final int CONDITION_DATE  = 0;
-	public static final int CONDITION       = 1;
-	public static final int PROGRESS_DIALOG = 0;
-	public static final int MENU_PREFS      = 0;
-	public static final int MENU_ABOUT      = 1;
-	public static final int MENU_QUIT       = 2;
-	public static final int HTTP_RETRIES    = 5;
+	public static final int MENU_RESULT     	  = 8;
+	public static final int QUIT_RESULT     	  = 42;
+	public static final int RESET_RESULT    	  = 23;
+	public static final int REFRESH_RESULT  	  = 30;
+	public static final int CONDITION_DATE  	  = 0;
+	public static final int CONDITION       	  = 1;
+	public static final int PROGRESS_DIALOG 	  = 0;
+	public static final int MENU_PREFS      	  = 0;
+	public static final int MENU_SUGGEST_REGION   = 1;
+	public static final int MENU_SUGGEST_LOCATION = 2;
+	public static final int MENU_CONTACT_ADMIN    = 3;
+	public static final int MENU_ABOUT      	  = 4;
+	public static final int MENU_QUIT       	  = 5;
+	public static final int HTTP_RETRIES    	  = 5;
 	public static final String PREFS_NAME = "pbmPrefs";
 	public static final float METERS_TO_MILES = (float) 0.000621371192;
 
@@ -61,6 +64,9 @@ public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(MENU_PREFS, MENU_PREFS, MENU_PREFS, "Change Region");
+		menu.add(MENU_CONTACT_ADMIN, MENU_CONTACT_ADMIN, MENU_CONTACT_ADMIN, "Contact Region Admin");
+		menu.add(MENU_SUGGEST_REGION, MENU_SUGGEST_REGION, MENU_SUGGEST_REGION, "Suggest A New Region");
+		menu.add(MENU_SUGGEST_LOCATION, MENU_SUGGEST_LOCATION, MENU_SUGGEST_LOCATION, "Suggest A Location");
 		menu.add(MENU_ABOUT, MENU_ABOUT, MENU_ABOUT, "About");
 		menu.add(MENU_QUIT, MENU_QUIT, MENU_QUIT, "Quit");
 
@@ -88,6 +94,24 @@ public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 			Intent aboutIntent = new Intent();
 			aboutIntent.setClassName("com.pbm", "com.pbm.About");
 			startActivityForResult(aboutIntent, QUIT_RESULT);
+
+			return true;
+		case MENU_CONTACT_ADMIN:
+			Intent contactIntent = new Intent();
+			contactIntent.setClassName("com.pbm", "com.pbm.ContactAdmin");
+			startActivityForResult(contactIntent, QUIT_RESULT);
+
+			return true;
+		case MENU_SUGGEST_REGION:
+			Intent suggestIntent = new Intent();
+			suggestIntent.setClassName("com.pbm", "com.pbm.SuggestRegion");
+			startActivityForResult(suggestIntent, QUIT_RESULT);
+
+			return true;
+		case MENU_SUGGEST_LOCATION:
+			Intent suggestLocationIntent = new Intent();
+			suggestLocationIntent.setClassName("com.pbm", "com.pbm.SuggestLocation");
+			startActivityForResult(suggestLocationIntent, QUIT_RESULT);
 
 			return true;
 		case MENU_QUIT:
