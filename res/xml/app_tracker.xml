@@ -52,6 +52,12 @@
     <screenName name="com.pbm.RecentScores">
         Recent Scores
     </screenName>
+    <screenName name="com.pbm.ContactAdmin">
+        Contact Region Admin
+    </screenName>
+    <screenName name="com.pbm.SuggestRegion">
+        Suggest A New Region
+    </screenName>
 
     <string name="ga_trackingId">UA-33321299-3</string>
 </resources>

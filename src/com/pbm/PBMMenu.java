@@ -25,7 +25,6 @@ public class PBMMenu extends PBMUtil {
 	public static final String RECENT_HIGH_SCORES = "Recent High Scores";
 	public static final String EVENTS = "Events";
 	public static final String CLOSEST_LOCATIONS = "Closest Locations";
-	public static final String SUGGEST_A_LOCATION = "Suggest A Location";
 
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +52,6 @@ public class PBMMenu extends PBMUtil {
 		mainMenuItems.add(RECENT_HIGH_SCORES);
 		mainMenuItems.add(EVENTS);
 		mainMenuItems.add(CLOSEST_LOCATIONS);
-		mainMenuItems.add(SUGGEST_A_LOCATION);
 
 		if (region != null && region.motd != null && !(region.motd.equals(""))) {
 			Toast.makeText(getBaseContext(), region.motd, Toast.LENGTH_LONG).show();
@@ -82,8 +80,6 @@ public class PBMMenu extends PBMUtil {
 					intent.setClassName("com.pbm", "com.pbm.Events");
 				} else if (menuItem.equals(CLOSEST_LOCATIONS)) {
 					intent.setClassName("com.pbm", "com.pbm.CloseLocations");
-				} else if (menuItem.equals(SUGGEST_A_LOCATION)) {
-					intent.setClassName("com.pbm", "com.pbm.SuggestLocation");
 				} else if (menuItem.equals(LOOKUP_BY_LOCATION_TYPE)) {
 					intent.setClassName("com.pbm", "com.pbm.LookupByLocationType");
 				} else {
