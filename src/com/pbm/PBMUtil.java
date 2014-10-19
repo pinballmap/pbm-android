@@ -44,7 +44,9 @@ public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 	public static final float METERS_TO_MILES = (float) 0.000621371192;
 
 	public static String httpBase = "http://pinballmap.com/";
+//  staging site testing
 //	public static String httpBase = "http://pinballmapstaging.herokuapp.com/";
+
 	public static String apiPath = "api/v1/";
 
 	public static String regionBase = "THIS IS SET DURING APP INIT";
