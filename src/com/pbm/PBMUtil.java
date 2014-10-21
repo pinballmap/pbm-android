@@ -36,10 +36,10 @@ public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 	public static final int CONDITION_DATE  	  = 0;
 	public static final int CONDITION       	  = 1;
 	public static final int PROGRESS_DIALOG 	  = 0;
-	public static final int MENU_PREFS      	  = 0;
-	public static final int MENU_SUGGEST_REGION   = 1;
-	public static final int MENU_SUGGEST_LOCATION = 2;
-	public static final int MENU_CONTACT_ADMIN    = 3;
+	public static final int MENU_SUGGEST_LOCATION = 0;
+	public static final int MENU_CONTACT_ADMIN    = 1;
+	public static final int MENU_PREFS      	  = 2;
+	public static final int MENU_SUGGEST_REGION   = 3;
 	public static final int MENU_ABOUT      	  = 4;
 	public static final int MENU_QUIT       	  = 5;
 	public static final int HTTP_RETRIES    	  = 5;
