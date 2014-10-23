@@ -67,7 +67,8 @@
 	            <EditText
 	                android:id="@+id/messageField"
 	                android:layout_marginStart="10dp"
-	                android:inputType="text"
+	                android:inputType="textMultiLine"
+	                android:lines="10"
 	                android:ems="10" >
 	
 	                <requestFocus />

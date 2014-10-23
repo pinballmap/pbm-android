@@ -37,9 +37,9 @@
   	<string name="search_hint">Search here..</string>
   	<string name="submitter_name">Your Name</string>
   	<string name="submitter_email">Your Email</string>
-  	<string name="contact_admin">CONTACT ADMIN LOL</string>
-  	<string name="message">MESSAGE LOL</string>
-  	<string name="submit_a_region">SUBMIT A REGION LOL</string>
-  	<string name="comments">COMMENTS LOL</string>
+  	<string name="contact_admin">Send A Message To Your Region\'s Admin</string>
+  	<string name="message">Message</string>
+  	<string name="submit_a_region">When requesting that a map for your area be added, please describe WHY one should be added. Does your region have an active pinball scene? Leagues? How many locations have pinball machines? Are you keeping track of them already? Would you be willing to act as the regional administrator, to help curate your map\'s data? The more details give us, the better your request sounds!</string>
+  	<string name="comments">Comments</string>
   	<string name="region_name">Region Name</string>
 </resources>
