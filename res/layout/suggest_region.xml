@@ -9,6 +9,7 @@
 	        android:layout_marginBottom="10dp"
 	        android:layout_marginStart="10dp"
 	        android:text="@string/submit_a_region"
+	        android:textSize="16sp"
 	        android:textAppearance="?android:attr/textAppearanceMedium" />
 	
 	    <TableLayout
@@ -86,7 +87,8 @@
 	            <EditText
 	                android:id="@+id/commentsField"
 	                android:layout_marginStart="10dp"
-	                android:inputType="text"
+	                android:inputType="textMultiLine"
+	                android:lines="7"
 	                android:ems="10" >
 	
 	                <requestFocus />
