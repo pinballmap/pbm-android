@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -171,14 +172,12 @@ public class PBMApplication extends Application {
 		return null;
 	}
 	public Location getLocationByName(String name) {
-		Object[] locations = getLocationValues();
-		for (int i = 0; i < locations.length; i++) {
-			Location location = (Location) locations[i];
+		List<Location> locations = getLocationValues();
+		for (Location location : locations) {
 			if (location.name.equals(name)) {
 				return location;
 			}
 		}
-		
 		return null;
 	}
 	public Location getLocation(Integer id) {
@@ -199,26 +198,23 @@ public class PBMApplication extends Application {
 	public HashMap<Integer, com.pbm.Region> getRegions() {
 		return regions;
 	}
-	public Object[] getRegionValues() {
-		Object[] regionValues = getRegions().values().toArray();
+	public ArrayList<Region> getRegionValues() {
+		ArrayList<Region> regionValues = new ArrayList<Region> (getRegions().values());
 
-		Arrays.sort(regionValues, new Comparator<Object>() {
-			public int compare(Object o1, Object o2) {
-				Region r1 = (Region) o1;
-				Region r2 = (Region) o2;
+		Collections.sort(regionValues, new Comparator<Region>() {
+			public int compare(Region r1, Region r2) {
 				return r1.formalName.compareTo(r2.formalName);
 			}
 		});
 
 		return regionValues;
 	}
-	public Object[] getLocationValues() {
-		Object[] locationValues = getLocations().values().toArray();
+	public ArrayList<Location> getLocationValues() {
+//		Location[] locationValues = (Location[]) getLocations().values().toArray();
+		ArrayList<Location> locationValues = new ArrayList<Location> (getLocations().values());
 
-		Arrays.sort(locationValues, new Comparator<Object>() {
-			public int compare(Object o1, Object o2) {
-				Location l1 = (Location) o1;
-				Location l2 = (Location) o2;
+		Collections.sort(locationValues, new Comparator<Location>() {
+			public int compare(Location l1, Location l2) {
 				return l1.name.toString().compareTo(l2.name.toString());
 			}
 		});

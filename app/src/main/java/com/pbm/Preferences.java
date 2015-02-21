@@ -1,12 +1,10 @@
 package com.pbm;
 
-import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 
-@SuppressLint("HandlerLeak")
 public class Preferences extends PBMUtil {
 	private	ActionBar.Tab regionsByNameTab, regionsByLocationTab;
 
@@ -17,11 +15,20 @@ public class Preferences extends PBMUtil {
 		logAnalyticsHit("com.pbm.Preferences");
 
 		PBMApplication app = (PBMApplication) getApplication();
-        android.app.ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        ActionBar actionBar = getSupportActionBar();
+//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         
-		Fragment regionsByName = new RegionsTab(app.getRegionValues(), false);
-		Fragment regionsByLocation = new RegionsTab(app.getRegionValues(), true);
+		Bundle b = new Bundle();
+		b.putSerializable("regions", app.getRegionValues());
+		b.putBoolean("sortByDistance", false);
+		Fragment regionsByName = getSupportFragmentManager().findFragmentById(R.layout.region_tab);
+		regionsByName.setArguments(b);
+
+		Bundle b_loc = new Bundle();
+		b_loc.putSerializable("regions", app.getRegionValues());
+		b_loc.putBoolean("sortByDistance", true);
+		Fragment regionsByLocation = getSupportFragmentManager().findFragmentById(R.layout.region_tab);
+		//		Fragment regionsByLocation = new RegionsTab(app.getRegionValues(), true);
 	
 		regionsByNameTab = actionBar.newTab().setText("Sorted Alphabetically");
     	regionsByLocationTab = actionBar.newTab().setText("Sorted By Distance");

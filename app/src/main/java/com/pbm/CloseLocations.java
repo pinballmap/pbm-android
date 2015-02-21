@@ -8,14 +8,14 @@ import java.util.List;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,12 +25,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.location.Location;
 
-@SuppressLint("HandlerLeak")
-public class CloseLocations extends PBMUtil implements LocationListener, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener {
+public class CloseLocations extends PBMUtil implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 	private ListView table;
-	private android.location.Location yourLocation;
-	
-	private LocationClient locationClient;
+
+	private GoogleApiClient googleApiClient;
+	private LocationRequest locationRequest;
 	private List<com.pbm.Location> locationsForMap;
 	private static final int maxMilesFromYourLocation = 10;
 	private static final int maxNumMachinesToDisplayOnMap = 25;
@@ -61,12 +60,9 @@ public class CloseLocations extends PBMUtil implements LocationListener, GoogleP
 
 		super.onCreate(savedInstanceState, table);
 		
-        if (ConnectionResult.SUCCESS == GooglePlayServicesUtil.isGooglePlayServicesAvailable(this)) {
-        	locationClient = new LocationClient(this, this, this);
-        } else {
-			Toast.makeText(getBaseContext(), "I couldn't get a fix on your position. Try again, please.", Toast.LENGTH_LONG).show();
-        }
-	}   
+		googleApiClient = new GoogleApiClient.Builder(this).addApi(LocationServices.API)
+				.addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
+	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
@@ -93,36 +89,14 @@ public class CloseLocations extends PBMUtil implements LocationListener, GoogleP
 		}
 	}
 
-	public void onStart() {
+	protected void onStart() {
 		super.onStart();
-		
-        if (ConnectionResult.SUCCESS == GooglePlayServicesUtil.isGooglePlayServicesAvailable(this)) {
-        	locationClient.connect();
-        }
+		googleApiClient.connect();
 	}
 
-	public void onStop() {
-        if (ConnectionResult.SUCCESS == GooglePlayServicesUtil.isGooglePlayServicesAvailable(this)) {
-        	locationClient.disconnect();
-        }
-
+	protected void onStop() {
+		googleApiClient.disconnect();
 		super.onStop();
-	}
-
-	public void onPause() {
-        if (ConnectionResult.SUCCESS == GooglePlayServicesUtil.isGooglePlayServicesAvailable(this)) {
-        	locationClient.disconnect();
-        }
-
-		super.onPause();
-	}
-
-	public void onDestroy() {
-        if (ConnectionResult.SUCCESS == GooglePlayServicesUtil.isGooglePlayServicesAvailable(this)) {
-        	locationClient.disconnect();
-        }
-
-		super.onDestroy();
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -149,33 +123,35 @@ public class CloseLocations extends PBMUtil implements LocationListener, GoogleP
 	}
 
 	public void onConnected(Bundle arg0) {
-		yourLocation = locationClient.getLastLocation();
-		locationsForMap = new ArrayList<com.pbm.Location>();
-		
-		if (yourLocation != null) {
-			PBMApplication app = (PBMApplication) getApplication();
-			for (int i = 0; i < app.getLocationValues().length; i++) {
-				com.pbm.Location location = (com.pbm.Location) app.getLocationValues()[i];
-
-				float distance = yourLocation.distanceTo(location.toAndroidLocation()); 
-				distance = (float) (distance * PBMUtil.METERS_TO_MILES);	
-
-				if (distance < maxMilesFromYourLocation) {
-					location.setDistance(distance);
-					locationsForMap.add(location);
-				}
-			}
-
-			showTable(sortLocations(locationsForMap));
-		} else {
-			Toast.makeText(getBaseContext(), "I couldn't get a fix on your position. Try again, please.", Toast.LENGTH_LONG).show();
-		}
+		locationRequest = LocationRequest.create();
+		locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+		locationRequest.setInterval(5000);
+		LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,
+				locationRequest, this);
 	}
 
-	public void onDisconnected() { }
-	public void onLocationChanged(Location arg0) { }
-	public void onConnectionFailed(ConnectionResult arg0) { }
-	public void onProviderDisabled(String arg0) {}
-	public void onProviderEnabled(String arg0) {}
-	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {}	
+	@Override
+	public void onConnectionSuspended(int i) {
+		Log.i("PBM","GoogleApiClient connection suspended");
+	}
+
+	public void onLocationChanged(Location yourLocation) {
+		locationsForMap = new ArrayList<com.pbm.Location>();
+		PBMApplication app = (PBMApplication) getApplication();
+		ArrayList<com.pbm.Location> locations = app.getLocationValues();
+		for (com.pbm.Location location: locations) {
+			float distance = yourLocation.distanceTo(location.toAndroidLocation()) * PBMUtil.METERS_TO_MILES;
+
+			if (distance < maxMilesFromYourLocation) {
+				location.setDistance(distance);
+				locationsForMap.add(location);
+			}
+		}
+		showTable(sortLocations(locationsForMap));
+	}
+
+	@Override
+	public void onConnectionFailed(ConnectionResult connectionResult) {
+		Toast.makeText(getBaseContext(), "I couldn't get a fix on your position. Try again, please.", Toast.LENGTH_LONG).show();
+	}
 }

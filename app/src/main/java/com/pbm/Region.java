@@ -1,15 +1,21 @@
 package com.pbm;
 
+import java.io.Serializable;
 import java.lang.String;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
 
-public class Region {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class Region implements Serializable, JSONConverter<Region> {
 	public int id;
 	public String name, formalName, motd, lat, lon;
 	public float distanceFromYou;
+	public final static String jsonLabel = "regions";
 	List<String>emailAddresses = new ArrayList<String>();
 
 	public Region(int id, String name, String formalName, String motd, String lat, String lon, List<String> emailAddresses) {
@@ -20,6 +26,27 @@ public class Region {
 	    this.emailAddresses = emailAddresses;
 	    this.lat = lat;
 	    this.lon = lon;
+	}
+
+	public Region() {
+	}
+	public Region fromJSON(JSONObject region) throws JSONException {
+		this.id = region.getInt("id");
+		this.name = region.getString("name");
+		this.formalName = region.getString("full_name");
+		this.motd = region.getString("motd");
+		this.lat = region.getString("lat");
+		this.lon = region.getString("lon");
+
+		this.emailAddresses = null;
+
+		if (region.has("all_admin_email_address")) {
+			JSONArray jsonEmailAddresses = region.getJSONArray("all_admin_email_address");
+			for (int x = 0; x < jsonEmailAddresses.length(); x++) {
+				this.emailAddresses.add(jsonEmailAddresses.getString(x));
+			}
+		}
+		return this;
 	}
 	
 	public String toString() {
@@ -46,9 +73,9 @@ public class Region {
 
 		List<LocationType> locationTypes = new ArrayList<LocationType>();
 
-		Object[] locations = app.getLocationValues();
-		for (int i = 0; i < locations.length; i++) {
-			Location location = (Location) locations[i];
+		ArrayList<Location> locations = app.getLocationValues();
+		for (Location location: locations) {
+
 			LocationType type = location.getLocationType(activity);
 			
 			if (type != null && !locationTypes.contains(type)) {
