@@ -1,33 +1,27 @@
 package com.pbm;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class RegionsTab extends ListFragment implements LoaderManager.LoaderCallbacks<ArrayList<Region>> {
     ListView table;
     boolean sortByDistance = false;
-    Region[] regions;
+    ArrayList<Region> regions;
 
 	public RegionsTab() {
 		if (getArguments() != null) {
-			regions = (Region[]) getArguments().getSerializable("regions");
+			regions = (ArrayList<Region>) getArguments().getSerializable("regions");
 			sortByDistance = getArguments().getBoolean("sortByDistance");
 		}
 	}
@@ -116,6 +110,10 @@ public class RegionsTab extends ListFragment implements LoaderManager.LoaderCall
 	@Override
 	public Loader<ArrayList<Region>> onCreateLoader(int id, Bundle args) {
 		Region region = new Region();
+		if (args != null) {
+			this.regions = (ArrayList<Region>) args.getSerializable("regions");
+			this.sortByDistance = args.getBoolean("sortByDistance");
+		}
 		return new AsyncJsonLoader<>(getActivity(), PBMUtil.regionlessBase + "regions.json", "GET", region);
 	}
 
@@ -124,15 +122,22 @@ public class RegionsTab extends ListFragment implements LoaderManager.LoaderCall
 	public void onLoadFinished(Loader<ArrayList<Region>> loader, ArrayList<Region> data) {
 		PBMApplication pbm = (PBMApplication) getActivity().getApplication();
 		if (data != null) {
+//			pbm.setRegions(new HashMap<Integer, Region>(data.size()));
 			for (Region region : data) {
 				pbm.addRegion(region.id, region);
 			}
 		}
 		ArrayList<Region> regionValues = new ArrayList<Region> (pbm.getRegions().values());
 
-//		this.regions = (Region[]) pbm.getRegions().values().toArray();
 		if (this.sortByDistance) {
-			sortByDistance(regionValues);
+			regionValues = sortByDistance(regionValues);
+		} else {
+			Collections.sort(regionValues, new Comparator<Region>() {
+				@Override
+				public int compare(Region lhs, Region rhs) {
+					return lhs.formalName.compareTo(rhs.formalName);
+				}
+			});
 		}
 		setListAdapter(new ArrayAdapter<Object>(getActivity(), android.R.layout.simple_list_item_1, regionValues.toArray()));
 	}

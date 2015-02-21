@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.pbm"
-        minSdkVersion 18
+        minSdkVersion 17
         targetSdkVersion 21
     }
 

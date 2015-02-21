@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import com.google.android.gms.common.ConnectionResult;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
@@ -17,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Criteria;
+import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -48,7 +50,7 @@ public class SplashScreen extends PBMUtil implements LocationListener, GoogleApi
 //        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		PreferenceManager.setDefaultValues(this,R.xml.preferences, false);
-		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+		final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 		Integer prefRegion = settings.getInt("region", -1);
 		PBMApplication app = (PBMApplication) getApplication();
 
@@ -67,23 +69,7 @@ public class SplashScreen extends PBMUtil implements LocationListener, GoogleApi
 			e.printStackTrace();
 		}
 		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
-		Criteria criteria = new Criteria();
-		criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
-		criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-		criteria.setAltitudeRequired(false);
-		String locationProvider = locationManager.getBestProvider(criteria, true);
-		if (locationProvider != null) {
-			Location location = locationManager.getLastKnownLocation(locationProvider);
-			if (location != null) {
-//				SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-				SharedPreferences.Editor editor = settings.edit();
-				editor.putFloat("yourLat", (float) location.getLatitude());
-				editor.putFloat("yourLon", (float) location.getLongitude());
-				editor.commit();
-			}
-		}
-//		locationClient = new GoogleApiClient.Builder(this).addApi(LocationServices.API).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
+		updateLocation(settings);
 
 		if (prefRegion != -1) {
 			Region region = app.getRegion(prefRegion);
@@ -100,13 +86,11 @@ public class SplashScreen extends PBMUtil implements LocationListener, GoogleApi
 			alpha.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-//					FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-					RegionsTab regionsByName = (RegionsTab) getSupportFragmentManager().findFragmentById(R.id.region_fragment);
+					RegionsTab regionsTab = (RegionsTab) getSupportFragmentManager().findFragmentById(R.id.region_fragment);
 					Bundle b = new Bundle();
 					b.putSerializable("regions", regionValues);
 					b.putBoolean("sortByDistance", false);
-					getSupportLoaderManager().restartLoader(0, b, regionsByName);
-//					ft.replace(R.id.region_fragment,regionsByName);
+					getSupportLoaderManager().restartLoader(0, b, regionsTab);
 				}
 			});
 
@@ -114,32 +98,36 @@ public class SplashScreen extends PBMUtil implements LocationListener, GoogleApi
 			distance.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-//					FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-					RegionsTab regionsByName = (RegionsTab) getSupportFragmentManager().findFragmentById(R.id.region_fragment);
+					updateLocation(settings);
+					RegionsTab regionsTab = (RegionsTab) getSupportFragmentManager().findFragmentById(R.id.region_fragment);
 					Bundle b = new Bundle();
 					b.putSerializable("regions", regionValues);
-					b.putBoolean("sortByDistance", false);
-//					regionsByName.setArguments(b);
-					getSupportLoaderManager().restartLoader(0, b, regionsByName);
-//					ft.replace(R.id.region_fragment, regionsByName);
+					b.putBoolean("sortByDistance", true);
+					getSupportLoaderManager().restartLoader(0, b, regionsTab);
 				}
 			});
 
 
-//			Fragment regionsByName = new RegionsTab(app.getRegionValues(), false);
-//			Fragment regionsByLocation = new RegionsTab(app.getRegionValues(), true);
-		
-//			regionsByNameTab = actionBar.newTab().setText("Sorted Alphabetically");
-//	    	regionsByLocationTab = actionBar.newTab().setText("Sorted By Distance");
-	    
-//        	regionsByNameTab.setTabListener(new RegionTabListener(regionsByName));
-//        	regionsByLocationTab.setTabListener(new RegionTabListener(regionsByLocation));
-	    
-//	    	actionBar.addTab(regionsByNameTab);
-//        	actionBar.addTab(regionsByLocationTab);
 		}
 	}
-	
+
+	private void updateLocation(SharedPreferences settings) {
+		Criteria criteria = new Criteria();
+		criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
+		criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+		criteria.setAltitudeRequired(false);
+		String locationProvider = locationManager.getBestProvider(criteria, true);
+		if (locationProvider != null) {
+			Location location = locationManager.getLastKnownLocation(locationProvider);
+			if (location != null) {
+				SharedPreferences.Editor editor = settings.edit();
+				editor.putFloat("yourLat", (float) location.getLatitude());
+				editor.putFloat("yourLon", (float) location.getLongitude());
+				editor.commit();
+			}
+		}
+	}
+
 	public void onStart() {
 		super.onStart();
 		

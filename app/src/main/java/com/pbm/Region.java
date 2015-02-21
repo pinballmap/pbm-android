@@ -15,7 +15,6 @@ public class Region implements Serializable, JSONConverter<Region> {
 	public int id;
 	public String name, formalName, motd, lat, lon;
 	public float distanceFromYou;
-	public final static String jsonLabel = "regions";
 	List<String>emailAddresses = new ArrayList<String>();
 
 	public Region(int id, String name, String formalName, String motd, String lat, String lon, List<String> emailAddresses) {
@@ -48,7 +47,12 @@ public class Region implements Serializable, JSONConverter<Region> {
 		}
 		return this;
 	}
-	
+
+	@Override
+	public String getJsonLabel() {
+		return "regions";
+	}
+
 	public String toString() {
 		return formalName;
 	}

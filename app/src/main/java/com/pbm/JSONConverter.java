@@ -8,6 +8,7 @@ import org.json.JSONObject;
  */
 public interface JSONConverter<T> {
 
-	public final static String jsonLabel = "";
 	public T fromJSON(JSONObject json) throws JSONException;
+
+	String getJsonLabel();
 }

@@ -2,6 +2,7 @@ package com.pbm;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,7 +56,8 @@ public class AsyncJsonLoader<T> extends AsyncTaskLoader<ArrayList<T>> {
 			}
 			result = sb.toString();
 			JSONObject jsonObject = new JSONObject(result);
-			JSONArray objs = jsonObject.getJSONArray(this.type.jsonLabel);
+			Log.i("json", result);
+			JSONArray objs = jsonObject.getJSONArray(type.getJsonLabel());
 			for (int i = 0; i < objs.length(); i++) {
 				alist.add(this.type.fromJSON(objs.getJSONObject(i)));
 			}
