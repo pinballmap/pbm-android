@@ -1,14 +1,14 @@
 package com.pbm;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.concurrent.ExecutionException;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.concurrent.ExecutionException;
 
 public class ConditionEdit extends PBMUtil {
 	private LocationMachineXref lmx;
@@ -24,8 +24,9 @@ public class ConditionEdit extends PBMUtil {
 		
 		logAnalyticsHit("com.pbm.ConditionEdit");
 
-		EditText condition = (EditText)findViewById(R.id.condition);
-		condition.setText(lmx.condition.equals("null") ? "" : lmx.condition);
+		// remove per Ryan
+//		EditText condition = (EditText)findViewById(R.id.condition);
+//		condition.setText(lmx.condition.equals("null") ? "" : lmx.condition);
 
 		inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputMethodManager.toggleSoftInput(inputMethodManager.SHOW_FORCED, 0);
