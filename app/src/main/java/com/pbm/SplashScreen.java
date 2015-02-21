@@ -1,31 +1,13 @@
 package com.pbm;
 
-import java.io.UnsupportedEncodingException;
-import com.google.android.gms.common.ConnectionResult;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import org.json.JSONException;
-
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Criteria;
-import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
@@ -33,6 +15,18 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+
+import org.json.JSONException;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class SplashScreen extends PBMUtil implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 	private GoogleApiClient locationClient;
@@ -49,8 +43,9 @@ public class SplashScreen extends PBMUtil implements LocationListener, GoogleApi
         ActionBar actionBar = getSupportActionBar();
 //        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		PreferenceManager.setDefaultValues(this,R.xml.preferences, false);
-		final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+
+		PreferenceManager.setDefaultValues(this, PBMUtil.PREFS_NAME, 0, R.xml.preferences, false);
+		final SharedPreferences settings = getSharedPreferences(PBMUtil.PREFS_NAME, 0);
 		Integer prefRegion = settings.getInt("region", -1);
 		PBMApplication app = (PBMApplication) getApplication();
 
