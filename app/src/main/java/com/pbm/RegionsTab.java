@@ -25,18 +25,11 @@ public class RegionsTab extends ListFragment implements LoaderManager.LoaderCall
 			sortByDistance = getArguments().getBoolean("sortByDistance");
 		}
 	}
-//	public RegionsTab(Object[] regions, boolean sortByDistance) {
-//		this.regions = regions;
-//		this.sortByDistance = sortByDistance;
-//	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setEmptyText("loading regions");
 //		table = (ListView) getView().findViewById(android.R.id.list);
-//		SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1,
-//				null, new String[] {"Region"}, new int[] {android.R.id.text1}, 0);
-//		setListAdapter(adapter);
 		setListShown(false);
 		getLoaderManager().initLoader(0, getArguments(), this);
 	}

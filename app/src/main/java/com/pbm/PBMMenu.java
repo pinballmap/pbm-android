@@ -1,18 +1,17 @@
 package com.pbm;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
-import android.content.Intent;
-import android.os.Bundle;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PBMMenu extends PBMUtil {
 	public static int rootPID;
@@ -28,8 +27,8 @@ public class PBMMenu extends PBMUtil {
 
 
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		super.onCreate(savedInstanceState);
 		rootPID = this.getTaskId();
 		setContentView(R.layout.main);
 

@@ -1,11 +1,5 @@
 package com.pbm;
 
-import java.io.UnsupportedEncodingException;
-
-import java.util.concurrent.ExecutionException;
-
-import org.json.JSONException;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -14,12 +8,17 @@ import android.view.Menu;
 import android.view.Window;
 import android.widget.ImageView;
 
+import org.json.JSONException;
+
+import java.io.UnsupportedEncodingException;
+import java.util.concurrent.ExecutionException;
+
 public class InitializingScreen extends PBMUtil {
 	private volatile SplashThread splashThread;
 	
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		super.onCreate(savedInstanceState);
 		setContentView(R.layout.initializing_screen);
 
 		setProgressBarIndeterminateVisibility(true);
