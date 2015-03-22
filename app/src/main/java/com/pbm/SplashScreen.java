@@ -33,8 +33,12 @@ public class SplashScreen extends PBMUtil {
 		PBMApplication app = (PBMApplication) getApplication();
 
 		try {
-			if (!haveInternet(getBaseContext()) || !app.initializeRegions()) {
+			if (!haveInternet(getBaseContext())) {
 				closeWithNoInternet();
+				return;
+			}
+			if (!app.initializeRegions()) {
+				closeOnMissingServer();
 				return;
 			}
 		} catch (UnsupportedEncodingException | InterruptedException | ExecutionException | JSONException e) {

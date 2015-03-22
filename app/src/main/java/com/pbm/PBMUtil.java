@@ -226,7 +226,16 @@ public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 			}
 		}).show();
 	}
-	
+
+	public void closeOnMissingServer() {
+		new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Sorry")
+				.setMessage("The Pinball Map Server is missing! Please try later, thank you.")
+				.setPositiveButton("Bummer", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						activityQuitResult();
+					}
+				}).show();
+	}
 	public boolean onQueryTextChange(String newText) {
 		if (TextUtils.isEmpty(newText)) {
 			table.clearTextFilter();
