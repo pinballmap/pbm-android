@@ -11,7 +11,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "SERVER_URL", '"http://pinballmapstaging.herokuapp.com/"'
+        }
         release {
+            buildConfigField "String", "SERVER_URL", '"http://pinballmap.com/"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }

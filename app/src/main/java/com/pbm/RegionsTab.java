@@ -220,9 +220,11 @@ public class RegionsTab extends Fragment implements LoaderManager.LoaderCallback
 
 		public void setRegionValues(ArrayList<Region> regions) {
 			regionValues = regions;
-			adapter.clear();
-			adapter.addAll(regionValues);
-			updateLocation();
+			if (adapter != null) {
+				adapter.clear();
+				adapter.addAll(regionValues);
+				updateLocation();
+			}
 		}
 
 		public void updateLocation() {
