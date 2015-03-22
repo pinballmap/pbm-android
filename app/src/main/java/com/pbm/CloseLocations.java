@@ -1,19 +1,7 @@
 package com.pbm;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,13 +11,24 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.location.Location;
+
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class CloseLocations extends PBMUtil implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 	private ListView table;
 
 	private GoogleApiClient googleApiClient;
-	private LocationRequest locationRequest;
 	private List<com.pbm.Location> locationsForMap;
 	private static final int maxMilesFromYourLocation = 10;
 	private static final int maxNumMachinesToDisplayOnMap = 25;
@@ -37,7 +36,6 @@ public class CloseLocations extends PBMUtil implements LocationListener, GoogleA
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.close_locations);
-
 		setTitle("Close locations");
 
 		Tracker tracker = ((PBMApplication) getApplication()).getTracker();
@@ -73,8 +71,8 @@ public class CloseLocations extends PBMUtil implements LocationListener, GoogleA
 	private List<com.pbm.Location> sortLocations(List<com.pbm.Location> locations) {
 		Collections.sort(locations, new Comparator<com.pbm.Location>() {
 			public int compare(com.pbm.Location l1, com.pbm.Location l2) {
-				Float distanceFromYou1 = Float.valueOf(l1.distanceFromYou);
-				Float distanceFromYou2 = Float.valueOf(l2.distanceFromYou);
+				Float distanceFromYou1 = l1.distanceFromYou;
+				Float distanceFromYou2 = l2.distanceFromYou;
 
 				return distanceFromYou1.compareTo(distanceFromYou2);
 			}
@@ -82,8 +80,8 @@ public class CloseLocations extends PBMUtil implements LocationListener, GoogleA
 
 		return locations;
 	}
-	
-	public void showTable(List<com.pbm.Location> locations) {
+
+	void showTable(List<com.pbm.Location> locations) {
 		if (locations.size() > 0) {
 			table.setAdapter(new LocationListAdapter(this, locations));
 		}
@@ -123,7 +121,7 @@ public class CloseLocations extends PBMUtil implements LocationListener, GoogleA
 	}
 
 	public void onConnected(Bundle arg0) {
-		locationRequest = LocationRequest.create();
+		LocationRequest locationRequest = LocationRequest.create();
 		locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 		locationRequest.setInterval(5000);
 		LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,

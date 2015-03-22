@@ -1,11 +1,11 @@
 package com.pbm;
 
+import android.app.Activity;
+
 import java.io.Serializable;
-import java.lang.String;
 import java.util.ArrayList;
 import java.util.List;
-
-import android.app.Activity;
+import java.util.TreeMap;
 
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -43,11 +43,11 @@ public class Location implements Serializable {
 	public void setDistance(float distance) {
 		this.distanceFromYou = distance;
 	}
-	
+
 	public void setMilesInfo(String milesInfo) {
 		this.milesInfo = milesInfo;
 	}
-	
+
 	public int numMachines(Activity activity) {
 		PBMApplication app = (PBMApplication) activity.getApplication();
 
@@ -57,11 +57,11 @@ public class Location implements Serializable {
 	public String toString() {
 		return milesInfo != null ? name + " " + milesInfo : name;
 	}
-	
+
 	public List<LocationMachineXref> getLmxes(Activity activity) {
 		List<LocationMachineXref> locationLmxes = new ArrayList<LocationMachineXref>();
 		PBMApplication app = (PBMApplication) activity.getApplication();
-		
+
 		for (LocationMachineXref lmx : app.getLmxes().values()) {
 			if (lmx.locationID == id) {
 				locationLmxes.add(lmx);
@@ -71,10 +71,21 @@ public class Location implements Serializable {
 		return locationLmxes;
 	}
 
+	public TreeMap<Integer, LocationMachineXref> getLMXMap(Activity activity) {
+		TreeMap<Integer, LocationMachineXref> lmxes = new TreeMap<Integer, LocationMachineXref>();
+		PBMApplication app = (PBMApplication) activity.getApplication();
+		for (LocationMachineXref lmx : app.getLmxes().values()) {
+			if (lmx.locationID == id) {
+				lmxes.put(lmx.machineID, lmx);
+			}
+		}
+		return lmxes;
+	}
+
 	public List<Machine> getMachines(Activity activity) {
 		List<Machine> machinesFromLmxes = new ArrayList<Machine>();
 		PBMApplication app = (PBMApplication) activity.getApplication();
-		
+
 		for (LocationMachineXref lmx : getLmxes(activity)) {
 			machinesFromLmxes.add(app.getMachine(lmx.machineID));
 		}
@@ -84,24 +95,26 @@ public class Location implements Serializable {
 
 	public LocationType getLocationType(Activity activity) {
 		PBMApplication app = (PBMApplication) activity.getApplication();
-		
+
 		return app.getLocationType(locationTypeID);
 	}
-	
+
 	public void removeMachine(Activity activity, LocationMachineXref lmx) {
 		PBMApplication app = (PBMApplication) activity.getApplication();
-		
+
 		app.removeLmx(lmx);
 	}
-	
+
 	public android.location.Location toAndroidLocation() {
 		android.location.Location mockLocation = new android.location.Location("");
-			
-		try{
+
+		try {
 			mockLocation.setLatitude(Double.valueOf(lat));
 			mockLocation.setLongitude(Double.valueOf(lon));
-		} catch (java.lang.NumberFormatException nfe) {}
-		
+		} catch (java.lang.NumberFormatException nfe) {
+			nfe.printStackTrace();
+		}
+
 		return mockLocation;
 	}
 }

@@ -1,7 +1,8 @@
 package com.pbm;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.Menu;
 
@@ -14,30 +15,16 @@ public class Preferences extends PBMUtil {
 
 		logAnalyticsHit("com.pbm.Preferences");
 
-		PBMApplication app = (PBMApplication) getApplication();
-        ActionBar actionBar = getSupportActionBar();
-//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        
-		Bundle b = new Bundle();
-		b.putSerializable("regions", app.getRegionValues());
-		b.putBoolean("sortByDistance", false);
-		Fragment regionsByName = getSupportFragmentManager().findFragmentById(R.layout.region_tab);
-		regionsByName.setArguments(b);
+		final SharedPreferences settings = getSharedPreferences(PBMUtil.PREFS_NAME, 0);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putInt("region", -1);
+		editor.commit();
 
-		Bundle b_loc = new Bundle();
-		b_loc.putSerializable("regions", app.getRegionValues());
-		b_loc.putBoolean("sortByDistance", true);
-		Fragment regionsByLocation = getSupportFragmentManager().findFragmentById(R.layout.region_tab);
-		//		Fragment regionsByLocation = new RegionsTab(app.getRegionValues(), true);
-	
-		regionsByNameTab = actionBar.newTab().setText("Sorted Alphabetically");
-    	regionsByLocationTab = actionBar.newTab().setText("Sorted By Distance");
-    
-    	regionsByNameTab.setTabListener(new RegionTabListener(regionsByName));
-    	regionsByLocationTab.setTabListener(new RegionTabListener(regionsByLocation));
-    
-    	actionBar.addTab(regionsByNameTab);
-    	actionBar.addTab(regionsByLocationTab);
+		Intent myIntent = new Intent();
+		myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		myIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
+		startActivityForResult(myIntent, PBMUtil.QUIT_RESULT);
+
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {

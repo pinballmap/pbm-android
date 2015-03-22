@@ -5,7 +5,6 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -14,21 +13,26 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
- * Created by dols on 2/21/15.
+ * Copyright (c) 2015, Brian Dols <brian.dols@gmail.com>
+ * <p/>
+ * Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
+ * <p/>
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-public class AsyncJsonLoader<T> extends AsyncTaskLoader<ArrayList<T>> {
+class AsyncJsonLoader<T> extends AsyncTaskLoader<ArrayList<T>> {
 
-	String url;
-	String requestType;
-	ArrayList<T> data = null;
-	JSONConverter<T> type;
+	private final String url;
+	private final String requestType;
+	private ArrayList<T> data = null;
+	private final JSONConverter<T> type;
 
-	public AsyncJsonLoader (Context context, String url, String requestType, JSONConverter<T> type) {
+	public AsyncJsonLoader(Context context, String url, JSONConverter<T> type) {
 		super(context);
 		this.url = url;
-		this.requestType = requestType;
+		this.requestType = "GET";
 		this.type = type;
 	}
+
 	@Override
 	protected void onStartLoading() {
 		super.onStartLoading();
@@ -43,16 +47,16 @@ public class AsyncJsonLoader<T> extends AsyncTaskLoader<ArrayList<T>> {
 	public ArrayList<T> loadInBackground() {
 		String result;
 		ArrayList<T> alist = new ArrayList<T>();
-		InputStream inputStream = null;
+		InputStream inputStream;
 		try {
 			inputStream = PBMUtil.openHttpConnection(this.url, this.requestType);
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
 			StringBuilder sb = new StringBuilder();
 
-			String line = null;
+			String line;
 			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
+				sb.append(line).append("\n");
 			}
 			result = sb.toString();
 			JSONObject jsonObject = new JSONObject(result);

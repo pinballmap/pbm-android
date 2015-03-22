@@ -25,9 +25,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/locationName"
-            android:paddingLeft="10dip"
-            android:paddingRight="0dip"
-
+            android:paddingEnd="0dip"
+            android:paddingStart="10dip"
             android:textSize="18sp"/>
 
         <TextView
@@ -36,8 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/locationMetadata"
             android:autoLink="phone"
-            android:paddingLeft="10dip"
-            android:paddingRight="0dip"
+            android:paddingEnd="0dip"
+            android:paddingStart="10dip"
             android:textSize="18sp"/>
 
         <TextView
@@ -45,8 +44,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/locationPhone"
-            android:paddingLeft="10dip"
-            android:paddingRight="0dip"
+            android:paddingEnd="0dip"
+            android:paddingStart="10dip"
             android:textColor="#333333"
             android:textSize="15sp"/>
 
@@ -57,8 +56,8 @@
             android:layout_below="@+id/locationType"
             android:autoLink="web"
             android:linksClickable="true"
-            android:paddingLeft="10dip"
-            android:paddingRight="0dip"
+            android:paddingEnd="0dip"
+            android:paddingStart="10dip"
             android:textColor="#333333"
             android:textSize="15sp"/>
     </RelativeLayout>

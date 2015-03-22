@@ -14,21 +14,20 @@ import java.util.concurrent.ExecutionException;
 
 public class SuggestLocation extends PBMUtil {
 	public void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.suggest_location);
 
 		logAnalyticsHit("com.pbm.SuggestLocation");
-		
+
 		PBMApplication app = (PBMApplication) getApplication();
 		String[] machineNames = app.getMachineNamesWithMetadata();
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, machineNames);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, machineNames);
 		MultiAutoCompleteTextView mactv = (MultiAutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView1);
 		mactv.setAdapter(adapter);
 		mactv.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 	}
-	
+
 	public void buttonOnClick(View view) throws UnsupportedEncodingException {
 		String locationName = ((EditText) findViewById(R.id.nameField)).getText().toString();
 		String machineNames = ((MultiAutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView1)).getText().toString();
@@ -36,7 +35,7 @@ public class SuggestLocation extends PBMUtil {
 		if (locationName != null && !locationName.isEmpty() && machineNames != null && !machineNames.isEmpty()) {
 			PBMApplication app = (PBMApplication) getApplication();
 			Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
-				
+
 			String url = regionlessBase + "locations/suggest.json?region_id=" + region.id
 					+ ";location_name=" + URLEncoder.encode(locationName, "UTF-8")
 					+ ";submitter_name=" + URLEncoder.encode(((EditText) findViewById(R.id.submitterNameField)).getText().toString(), "UTF-8")
@@ -48,16 +47,13 @@ public class SuggestLocation extends PBMUtil {
 					+ ";location_phone=" + URLEncoder.encode(((EditText) findViewById(R.id.phoneField)).getText().toString(), "UTF-8")
 					+ ";location_website=" + URLEncoder.encode(((EditText) findViewById(R.id.websiteField)).getText().toString(), "UTF-8")
 					+ ";location_operator=" + URLEncoder.encode(((EditText) findViewById(R.id.operatorField)).getText().toString(), "UTF-8")
-					+ ";location_machines=" + URLEncoder.encode(machineNames, "UTF-8")
-			;
+					+ ";location_machines=" + URLEncoder.encode(machineNames, "UTF-8");
 			try {
 				new RetrieveJsonTask().execute(url, "POST").get();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
+			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 			}
-				
+
 			Toast.makeText(getBaseContext(), "Thank you for that submission! A region administrator will enter this location into the database shortly.", Toast.LENGTH_LONG).show();
 			setResult(REFRESH_RESULT);
 			SuggestLocation.this.finish();

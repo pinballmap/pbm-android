@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/splash_layout"
-	android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
-	<TextView android:id="@+id/greeting" android:textSize="20sp"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:paddingBottom="5dip" android:text="@string/select_region" />
-	<TextView android:layout_width="fill_parent" android:id="@+id/spacer"
-		android:layout_below="@+id/greeting" android:layout_height="3dip"
-		android:background="#000000" />
-	<ListView android:id="@android:id/list"
-		android:layout_below="@+id/spacer" android:dividerHeight="1dip"
-		android:layout_width="fill_parent" android:layout_height="wrap_content" />
+<RelativeLayout
+    android:id="@+id/region_tab_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/greeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dip"
+        android:text="@string/select_region"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/spacer"
+        android:layout_width="fill_parent"
+        android:layout_height="3dip"
+        android:layout_below="@+id/greeting"
+        android:background="#000000"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/region_pager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/spacer"
+        >
+
+        <android.support.v4.view.PagerTabStrip
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@color/material_blue_grey_900"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:textColor="#fff"/>
+    </android.support.v4.view.ViewPager>
 </RelativeLayout>

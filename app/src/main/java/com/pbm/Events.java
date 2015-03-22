@@ -1,14 +1,5 @@
 package com.pbm;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,9 +7,18 @@ import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter; 
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class Events extends PBMUtil {
 	private String[] eventLinks;
@@ -30,7 +30,7 @@ public class Events extends PBMUtil {
 
 		logAnalyticsHit("com.pbm.Events");
 
-		ListView table = (ListView)findViewById(R.id.eventsTable);
+		ListView table = (ListView) findViewById(R.id.eventsTable);
 		table.setFastScrollEnabled(true);
 		table.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
@@ -45,8 +45,8 @@ public class Events extends PBMUtil {
 		});
 
 		new Thread(new Runnable() {
-	        public void run() {
-	        	try {
+			public void run() {
+				try {
 					getEventData();
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
@@ -57,16 +57,16 @@ public class Events extends PBMUtil {
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-	        	Events.super.runOnUiThread(new Runnable() {
+				Events.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						ListView table = (ListView)findViewById(R.id.eventsTable);
+						ListView table = (ListView) findViewById(R.id.eventsTable);
 						table.setAdapter(new ArrayAdapter<Spanned>(Events.this, android.R.layout.simple_list_item_1, events));
 					}
-	        	});
-	        }
-	    }).start();
-	}   
+				});
+			}
+		}).start();
+	}
 
 	public void getEventData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
 		String json = new RetrieveJsonTask().execute(regionBase + "events.json", "GET").get();
@@ -77,27 +77,27 @@ public class Events extends PBMUtil {
 
 		JSONObject jsonObject = new JSONObject(json);
 		JSONArray jsonEvents = jsonObject.getJSONArray("events");
-		
+
 		eventLinks = new String[jsonEvents.length()];
 		for (int i = 0; i < jsonEvents.length(); i++) {
-		    JSONObject event = jsonEvents.getJSONObject(i);
+			JSONObject event = jsonEvents.getJSONObject(i);
 
 			String name = event.getString("name");
 			String longDesc = event.getString("long_desc");
 			String link = event.getString("external_link");
 			String startDate = event.getString("start_date");
 			String endDate = event.getString("end_date");
-			
-			if (startDate == "null") {
+
+			if (startDate.equals("null")) {
 				startDate = "";
 			}
-			
+
 			String eventText = "<b>" + name + "</b><br />" + longDesc + "<br /><small>" + startDate + "</small>";
-			if(!endDate.equals("") && endDate != null && endDate != "null") {
+			if (!endDate.equals("") && !endDate.equals("null")) {
 				eventText += " - " + "<small>" + endDate + "</small>";
 			}
 
-			if(!link.equals("") && link != null && link != "null") {
+			if (!link.equals("") && !link.equals("null")) {
 				eventLinks[i] = link;
 			}
 

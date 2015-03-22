@@ -1,12 +1,9 @@
 package com.pbm;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,11 +11,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+
 public class LocationLookupDetail extends PBMUtil {
 	private Zone zone;
 	private LocationType locationType;
 	private ArrayList<Location> foundLocations = new ArrayList<Location>();
 	private ListView table;
+	private Parcelable listState;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,16 +67,15 @@ public class LocationLookupDetail extends PBMUtil {
 	    inflater.inflate(R.menu.map_menu, menu);
 	    return super.onCreateOptionsMenu(menu);
 	}
-	
-	public void loadLocationData() {
+
+	void loadLocationData() {
 		foundLocations.clear();
 		table.setAdapter(null);
 
 		PBMApplication app = (PBMApplication) getApplication();
 		HashMap<Integer, com.pbm.Location> locations = app.getLocations();
-		for(Object key : locations.keySet()) {
-			Location location = locations.get(key);
-			
+		for (Location location : locations.values()) {
+
 			if (locationType == null && zone == null) {
 				foundLocations.add(location);
 				continue;
@@ -91,18 +93,36 @@ public class LocationLookupDetail extends PBMUtil {
 
 		Collections.sort(foundLocations, new Comparator<Location>() {
 			public int compare(Location l1, Location l2) {
-				return l1.name.toString().compareTo(l2.name.toString());
+				return l1.name.compareTo(l2.name);
 			}
 		});
 
 		table.setAdapter(new LocationListAdapter(this, foundLocations));
+		if (listState != null) {
+			table.onRestoreInstanceState(listState);
+		}
 	}
 
 	public void onResume() {
 		super.onResume();
 		loadLocationData();
+		listState = null;
+		Log.d("com.pbm", "done");
 	}
-	
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		listState = table.onSaveInstanceState();
+		outState.putParcelable("listState", listState);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		listState = savedInstanceState.getParcelable("listState");
+	}
+
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.map_button :

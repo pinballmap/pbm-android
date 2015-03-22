@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <Preference android:title="Region" android:key="region" android:enabled="false"></Preference>
+    <Preference
+        android:title="Region"
+        android:key="region"
+        android:enabled="false"/>
 </PreferenceScreen>

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class PBMMenu extends PBMUtil {
 	public static int rootPID;
-	
+
 	public static final String LOOKUP_BY_LOCATION = "Lookup By Location";
 	public static final String LOOKUP_BY_MACHINE = "Lookup By Machine";
 	public static final String LOOKUP_BY_ZONE = "Lookup By Zone";
@@ -27,14 +27,16 @@ public class PBMMenu extends PBMUtil {
 
 
 	public void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		rootPID = this.getTaskId();
 		setContentView(R.layout.main);
+		getSupportActionBar().setIcon(R.drawable.icon);
+		getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 		PBMApplication app = (PBMApplication) getApplication();
 		Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
-		
+
 		final List<String> mainMenuItems = new ArrayList<String>();
 		mainMenuItems.add(LOOKUP_BY_LOCATION);
 		mainMenuItems.add(LOOKUP_BY_MACHINE);
@@ -42,7 +44,7 @@ public class PBMMenu extends PBMUtil {
 		if (app.getZones().values().size() > 0) {
 			mainMenuItems.add(LOOKUP_BY_ZONE);
 		}
-		
+
 		if (region.locationTypes(this) != null) {
 			mainMenuItems.add(LOOKUP_BY_LOCATION_TYPE);
 		}
@@ -56,33 +58,43 @@ public class PBMMenu extends PBMUtil {
 			Toast.makeText(getBaseContext(), region.motd, Toast.LENGTH_LONG).show();
 		}
 
-		ListView table = (ListView)findViewById(R.id.maintable);
-		final ArrayAdapter<String>adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mainMenuItems);
+		ListView table = (ListView) findViewById(R.id.maintable);
+		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mainMenuItems);
 
 		table.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
+			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
 
 				Intent intent = new Intent();
-				String menuItem = (String) adapter.getItem(position);
-				
-				if (menuItem.equals(LOOKUP_BY_LOCATION)) {
-					intent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
-				} else if (menuItem.equals(LOOKUP_BY_MACHINE)) {
-					intent.setClassName("com.pbm", "com.pbm.LookupByMachineList");
-				} else if (menuItem.equals(LOOKUP_BY_ZONE)) {
-					intent.setClassName("com.pbm", "com.pbm.LookupByZoneList");
-				} else if (menuItem.equals(RECENTLY_ADDED)) {
-					intent.setClassName("com.pbm", "com.pbm.RecentlyAdded");
-				} else if (menuItem.equals(RECENT_HIGH_SCORES)) {
-					intent.setClassName("com.pbm", "com.pbm.RecentScores");
-				} else if (menuItem.equals(EVENTS)) {
-					intent.setClassName("com.pbm", "com.pbm.Events");
-				} else if (menuItem.equals(CLOSEST_LOCATIONS)) {
-					intent.setClassName("com.pbm", "com.pbm.CloseLocations");
-				} else if (menuItem.equals(LOOKUP_BY_LOCATION_TYPE)) {
-					intent.setClassName("com.pbm", "com.pbm.LookupByLocationType");
-				} else {
-					intent.setClassName("com.pbm", "com.pbm.PBMMenu");
+				String menuItem = adapter.getItem(position);
+
+				switch (menuItem) {
+					case LOOKUP_BY_LOCATION:
+						intent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
+						break;
+					case LOOKUP_BY_MACHINE:
+						intent.setClassName("com.pbm", "com.pbm.LookupByMachineList");
+						break;
+					case LOOKUP_BY_ZONE:
+						intent.setClassName("com.pbm", "com.pbm.LookupByZoneList");
+						break;
+					case RECENTLY_ADDED:
+						intent.setClassName("com.pbm", "com.pbm.RecentlyAdded");
+						break;
+					case RECENT_HIGH_SCORES:
+						intent.setClassName("com.pbm", "com.pbm.RecentScores");
+						break;
+					case EVENTS:
+						intent.setClassName("com.pbm", "com.pbm.Events");
+						break;
+					case CLOSEST_LOCATIONS:
+						intent.setClassName("com.pbm", "com.pbm.CloseLocations");
+						break;
+					case LOOKUP_BY_LOCATION_TYPE:
+						intent.setClassName("com.pbm", "com.pbm.LookupByLocationType");
+						break;
+					default:
+						intent.setClassName("com.pbm", "com.pbm.PBMMenu");
+						break;
 				}
 
 				startActivityForResult(intent, MENU_RESULT);
@@ -90,7 +102,8 @@ public class PBMMenu extends PBMUtil {
 		});
 
 		table.setAdapter(adapter);
-	}   
+	}
 
-	public void activityResetResult() {}
+	public void activityResetResult() {
+	}
 }

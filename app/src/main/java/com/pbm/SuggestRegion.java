@@ -12,13 +12,13 @@ import java.util.concurrent.ExecutionException;
 
 public class SuggestRegion extends PBMUtil {
 	public void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.suggest_region);
 
 		logAnalyticsHit("com.pbm.SuggestRegion");
 	}
-	
+
 	public void buttonOnClick(View view) throws UnsupportedEncodingException {
 		String name = ((EditText) findViewById(R.id.submitterNameField)).getText().toString();
 		String email = ((EditText) findViewById(R.id.submitterEmailField)).getText().toString();
@@ -29,16 +29,14 @@ public class SuggestRegion extends PBMUtil {
 					+ "region_name=" + URLEncoder.encode(regionName, "UTF-8")
 					+ ";name=" + URLEncoder.encode(name, "UTF-8")
 					+ ";email=" + URLEncoder.encode(email, "UTF-8")
-					+ ";comments=" + URLEncoder.encode(((EditText) findViewById(R.id.commentsField)).getText().toString(), "UTF-8")
-			;
+					+ ";comments=" + URLEncoder.encode(((EditText) findViewById(R.id.commentsField)).getText().toString(), "UTF-8");
 			try {
 				new RetrieveJsonTask().execute(url, "POST").get();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
+
+			} catch (ExecutionException | InterruptedException e) {
 				e.printStackTrace();
 			}
-				
+
 			Toast.makeText(getBaseContext(), "Thank you for that submission! We'll be in touch.", Toast.LENGTH_LONG).show();
 			setResult(REFRESH_RESULT);
 			SuggestRegion.this.finish();

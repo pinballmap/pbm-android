@@ -14,30 +14,29 @@ import java.io.UnsupportedEncodingException;
 import java.util.concurrent.ExecutionException;
 
 public class InitializingScreen extends PBMUtil {
-	private volatile SplashThread splashThread;
-	
+
 	public void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.initializing_screen);
 
-		setProgressBarIndeterminateVisibility(true);
+		setSupportProgressBarIndeterminateVisibility(true);
 
 		PBMApplication app = (PBMApplication) getApplication();
 		SharedPreferences settings = getSharedPreferences(PBMUtil.PREFS_NAME, 0);
-		Region region = app.getRegion(settings.getInt("region",  1));
+		Region region = app.getRegion(settings.getInt("region", 1));
 
-		int resID = getResources().getIdentifier(getCityNamePath(region), null, null);		
+		int resID = getResources().getIdentifier(getCityNamePath(region), null, null);
 		if (resID != 0) {
 			ImageView cityNameImage = (ImageView) findViewById(R.id.splash_image_city);
 			Drawable image = getResources().getDrawable(resID);
-			cityNameImage.setImageDrawable(image);	
+			cityNameImage.setImageDrawable(image);
 		}
 
-		splashThread = new SplashThread();
+		SplashThread splashThread = new SplashThread();
 		splashThread.start();
 	}
-	
+
 	private String getCityNamePath(Region region) {
 		String cityNamePath = "com.pbm:drawable/";
 		String cityName = region.name;

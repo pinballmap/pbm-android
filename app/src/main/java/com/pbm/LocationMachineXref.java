@@ -1,12 +1,11 @@
 package com.pbm;
 
-import java.io.Serializable;
-import java.lang.String;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
+
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @SuppressLint("SimpleDateFormat")
 public class LocationMachineXref implements Serializable {
@@ -24,7 +23,7 @@ public class LocationMachineXref implements Serializable {
 		this.condition = condition;
 		this.conditionDate = conditionDate;
 	}
-	
+
 	public Location getLocation(Activity activity) {
 		PBMApplication app = (PBMApplication) activity.getApplication();
 
@@ -32,15 +31,14 @@ public class LocationMachineXref implements Serializable {
 	}
 
 	public Machine getMachine(Activity activity) {
-		PBMApplication app = (PBMApplication) activity.getApplication();
-
-		return app.getMachine(machineID);
+		return ((PBMApplication) activity.getApplicationContext()).getMachine(machineID);
 	}
-	
+
+
 	public void setCondition(Activity activity, String condition) {
 		this.condition = condition;
 
-		SimpleDateFormat format = new SimpleDateFormat ("yyyy-MM-dd");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		this.conditionDate = format.format(new Date());
 
 		PBMApplication app = (PBMApplication) activity.getApplication();

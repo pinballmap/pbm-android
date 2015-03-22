@@ -1,16 +1,5 @@
 package com.pbm;
 
-import java.io.UnsupportedEncodingException;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Html;
@@ -18,11 +7,22 @@ import android.text.Spanned;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 public class RecentScores extends PBMUtil {
 	private List<Spanned> recentScores = new ArrayList<Spanned>();
 	final private static int NUM_RECENT_SCORES_TO_SHOW = 20;	
 	@SuppressLint("UseSparseArrays")
-	HashMap<Integer, String> ranks = new HashMap<Integer, String>() {
+	private HashMap<Integer, String> ranks = new HashMap<Integer, String>() {
 		private static final long serialVersionUID = 1L;
 	{
 		put(1, "GC");
@@ -79,20 +79,21 @@ public class RecentScores extends PBMUtil {
 			JSONObject msx = scores.getJSONObject(i);
 			
 			int lmxID = msx.getInt("location_machine_xref_id");
-			LocationMachineXref lmx = app.getLmx(lmxID);
+			if (msx.get("rank") != null && !String.valueOf(msx.get("rank")).equals("null")) {
+				LocationMachineXref lmx = app.getLmx(lmxID);
+				int rank = msx.getInt("rank");
+				long score = msx.getLong("score");
+				String initials = msx.getString("initials");
+				String scoreDate = msx.getString("created_at").split("T")[0];
+				Location location = lmx.getLocation(this);
+				Machine machine = lmx.getMachine(this);
 
-			int rank = msx.getInt("rank");
-			long score = msx.getLong("score");
-			String initials = msx.getString("initials");
-			String scoreDate = msx.getString("created_at").split("T")[0];
-			Location location = lmx.getLocation(this);
-			Machine machine = lmx.getMachine(this);
-			
-			String title = location.name + "'s " + machine.name + "<br />" +
-			ranks.get(rank) + " with " + formatter.format(score) + " by <b>" + initials + "</b>" + "<br />" +
-			"<small>" + scoreDate + "</small>";
+				String title = location.name + "'s " + machine.name + "<br />" +
+						ranks.get(rank) + " with " + formatter.format(score) + " by <b>" + initials + "</b>" + "<br />" +
+						"<small>" + scoreDate + "</small>";
 
-			recentScores.add(Html.fromHtml(title));
+				recentScores.add(Html.fromHtml(title));
+			}
 		}
 	}
 }

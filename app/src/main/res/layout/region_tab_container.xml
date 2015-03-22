@@ -2,38 +2,13 @@
 <LinearLayout
     android:id="@+id/region_tab_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/region_buttons"
-        android:orientation="horizontal"
-        >
-
-        <Button
-            android:id="@+id/region_alpha"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:text="Sorted Alphabetically"/>
-
-        <Button
-            android:id="@+id/region_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:text="Sorted by Distance"/>
-    </LinearLayout>
-
-    <fragment
+    <FrameLayout
         android:id="@+id/region_fragment"
-        android:layout_below="@id/region_buttons"
-        android:name="com.pbm.RegionsTab"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        tools:layout="@layout/region_tab"
-        >
-    </fragment>
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"/>
+
 </LinearLayout>

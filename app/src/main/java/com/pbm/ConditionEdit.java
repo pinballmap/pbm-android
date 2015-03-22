@@ -21,7 +21,7 @@ public class ConditionEdit extends PBMUtil {
 
 		Bundle extras = getIntent().getExtras();
 		lmx = (LocationMachineXref) extras.get("lmx");
-		
+
 		logAnalyticsHit("com.pbm.ConditionEdit");
 
 		// remove per Ryan
@@ -34,10 +34,10 @@ public class ConditionEdit extends PBMUtil {
 
 	private void updateCondition(final String condition) {
 		new Thread(new Runnable() {
-	        public void run() {
-	        	try {
-	        		lmx.setCondition(ConditionEdit.this, condition);
-	        		new RetrieveJsonTask().execute(regionlessBase + "location_machine_xrefs/" + lmx.id + ".json?condition=" + URLEncoder.encode(condition, "UTF8"), "PUT").get();
+			public void run() {
+				try {
+					lmx.setCondition(ConditionEdit.this, condition);
+					new RetrieveJsonTask().execute(regionlessBase + "location_machine_xrefs/" + lmx.id + ".json?condition=" + URLEncoder.encode(condition, "UTF8"), "PUT").get();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} catch (ExecutionException e) {
@@ -46,7 +46,7 @@ public class ConditionEdit extends PBMUtil {
 					e.printStackTrace();
 				}
 
-	        	ConditionEdit.super.runOnUiThread(new Runnable() {
+				ConditionEdit.super.runOnUiThread(new Runnable() {
 					public void run() {
 						final EditText currText = (EditText) findViewById(R.id.condition);
 						inputMethodManager.hideSoftInputFromWindow(currText.getWindowToken(), 0);
@@ -54,23 +54,23 @@ public class ConditionEdit extends PBMUtil {
 						setResult(REFRESH_RESULT);
 						ConditionEdit.this.finish();
 					}
-	        	});
-	        }
-	    }).start();
+				});
+			}
+		}).start();
 	}
 
-	public void clickHandler(View view) {		
+	public void clickHandler(View view) {
 		switch (view.getId()) {
-		case R.id.submitCondition :
-			EditText currText = (EditText) findViewById(R.id.condition);
-			updateCondition(currText.getText().toString());
+			case R.id.submitCondition:
+				EditText currText = (EditText) findViewById(R.id.condition);
+				updateCondition(currText.getText().toString());
 
-			break;
-		case R.id.deleteCondition :
-			updateCondition(new String(" "));
-			break;
-		default:
-			break;
+				break;
+			case R.id.deleteCondition:
+				updateCondition(" ");
+				break;
+			default:
+				break;
 		}
-	} 
+	}
 }

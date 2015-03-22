@@ -1,8 +1,5 @@
 package com.pbm;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 	private List<com.pbm.Location> locations;
@@ -37,7 +37,7 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
             row = layoutInflater.inflate(R.layout.location_list_listview, null);
 
 			holder = new ViewHolder();
-			holder.name = (TextView) row.findViewById(R.id.name);
+			holder.name = (TextView) row.findViewById(R.id.machine_info);
 			holder.distance = (TextView) row.findViewById(R.id.distance);
 			holder.numMachines = (TextView) row.findViewById(R.id.numMachines);
 
