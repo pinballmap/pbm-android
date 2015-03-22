@@ -4,7 +4,7 @@
     <string name="select_region">Select your region..</string>
     <string name="splash_image_desc">Splash Image</string>
     <string name="splash_image_city_desc">City Splash Image</string>
-    <string name="about_text">\tPinballMap.com\n\t\tScott Wainstock\n\t\tRyan Gratzer\n\nBrian Dols\n\n\tArtwork\n\t\tDrew Marshall\n\n\tSpecial Thanks\n\t\tCleo, Sassy, Solomon,\n\t\tBawb, and Brian Hanifin</string>
+    <string name="about_text">\tPinballMap.com\n\t\tScott Wainstock\n\t\tRyan Gratzer\n\t\tBrian Dols\n\n\tArtwork\n\t\tDrew Marshall\n\n\tSpecial Thanks\n\t\tCleo, Sassy, Solomon,\n\t\tBawb, and Brian Hanifin</string>
     <string name="sass_description">A beautiful kitten</string>
     <string name="enter_machine">Enter the machine name in the box below, or select it from the list..</string>
     <string name="enter_condition">Click the box below to enter a machine description..</string>
