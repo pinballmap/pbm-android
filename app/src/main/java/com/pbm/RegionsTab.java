@@ -234,7 +234,7 @@ public class RegionsTab extends Fragment implements LoaderManager.LoaderCallback
 		}
 
 		public void sortByDistance() {
-			SharedPreferences settings = getActivity().getSharedPreferences(PBMUtil.PREFS_NAME, 0);
+			SharedPreferences settings = activity.getSharedPreferences(PBMUtil.PREFS_NAME, 0);
 			float yourLat = settings.getFloat("yourLat", -1);
 			float yourLon = settings.getFloat("yourLon", -1);
 
