@@ -1,7 +1,5 @@
 package com.pbm;
 
-import java.util.ArrayList;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,13 +7,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 public class LookupByMachineList extends PBMUtil {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lookup_by_machine_list);
 
-		final PBMApplication app = (PBMApplication) getApplication();
+		final PBMApplication app = getPBMApplication();
 
 		logAnalyticsHit("com.pbm.LookupByMachineList");
 		
@@ -34,7 +34,7 @@ public class LookupByMachineList extends PBMUtil {
 			}
 		});
 
-		super.onCreate(savedInstanceState, table);
+		setTable(table);
 	}   
 
 	public boolean onCreateOptionsMenu(Menu menu) {

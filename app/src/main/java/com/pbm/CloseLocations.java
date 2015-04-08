@@ -38,7 +38,7 @@ public class CloseLocations extends PBMUtil implements LocationListener, GoogleA
 		setContentView(R.layout.close_locations);
 		setTitle("Close locations");
 
-		Tracker tracker = ((PBMApplication) getApplication()).getTracker();
+		Tracker tracker = getPBMApplication().getTracker();
         tracker.setScreenName("com.pbm.CloseLocations");
         tracker.send(new HitBuilders.AppViewBuilder().build());
 
@@ -56,7 +56,7 @@ public class CloseLocations extends PBMUtil implements LocationListener, GoogleA
 			}
 		});
 
-		super.onCreate(savedInstanceState, table);
+		setTable(table);
 		
 		googleApiClient = new GoogleApiClient.Builder(this).addApi(LocationServices.API)
 				.addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
@@ -135,7 +135,7 @@ public class CloseLocations extends PBMUtil implements LocationListener, GoogleA
 
 	public void onLocationChanged(Location yourLocation) {
 		locationsForMap = new ArrayList<com.pbm.Location>();
-		PBMApplication app = (PBMApplication) getApplication();
+		PBMApplication app = getPBMApplication();
 		ArrayList<com.pbm.Location> locations = app.getLocationValues();
 		for (com.pbm.Location location: locations) {
 			float distance = yourLocation.distanceTo(location.toAndroidLocation()) * PBMUtil.METERS_TO_MILES;

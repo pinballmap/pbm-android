@@ -145,6 +145,10 @@ public class PBMApplication extends Application {
 		return locationTypes;
 	}
 
+	public void setLocationTypes(HashMap<Integer, com.pbm.LocationType> locationTypes) {
+		this.locationTypes = locationTypes;
+	}
+
 	public void addLocationMachineXref(Integer id, LocationMachineXref lmx) {
 		this.lmxes.put(id, lmx);
 	}

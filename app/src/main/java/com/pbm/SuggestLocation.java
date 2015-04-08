@@ -20,7 +20,7 @@ public class SuggestLocation extends PBMUtil {
 
 		logAnalyticsHit("com.pbm.SuggestLocation");
 
-		PBMApplication app = (PBMApplication) getApplication();
+		PBMApplication app = getPBMApplication();
 		String[] machineNames = app.getMachineNamesWithMetadata();
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, machineNames);
 		MultiAutoCompleteTextView mactv = (MultiAutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView1);
@@ -33,7 +33,7 @@ public class SuggestLocation extends PBMUtil {
 		String machineNames = ((MultiAutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView1)).getText().toString();
 
 		if (locationName != null && !locationName.isEmpty() && machineNames != null && !machineNames.isEmpty()) {
-			PBMApplication app = (PBMApplication) getApplication();
+			PBMApplication app = getPBMApplication();
 			Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 
 			String url = regionlessBase + "locations/suggest.json?region_id=" + region.id

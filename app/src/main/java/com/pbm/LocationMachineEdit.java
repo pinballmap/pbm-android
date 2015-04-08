@@ -26,7 +26,7 @@ public class LocationMachineEdit extends PBMUtil {
 		lmx = (LocationMachineXref) getIntent().getExtras().get("lmx");
 
 		location = lmx.getLocation(this);
-		Machine machine = ((PBMApplication) getApplication()).getMachine(lmx.machineID);
+		Machine machine = getPBMApplication().getMachine(lmx.machineID);
 
 		setTitle(machine.name + " @ " + location.name);
 

@@ -1,19 +1,19 @@
 package com.pbm;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 public class LookupByZoneList extends PBMUtil {
 
@@ -36,7 +36,7 @@ public class LookupByZoneList extends PBMUtil {
 			}
 		});
 
-		PBMApplication app = (PBMApplication) getApplication();
+		PBMApplication app = getPBMApplication();
 		HashMap<Integer, com.pbm.Zone> zones = app.getZones();
 		for(Integer key : zones.keySet()) {
 			Zone zone = zones.get(key);
@@ -55,7 +55,7 @@ public class LookupByZoneList extends PBMUtil {
 
 		table.setAdapter(new ArrayAdapter<Zone>(this, android.R.layout.simple_list_item_1, primaryZones));
 		
-		super.onCreate(savedInstanceState, table);
+		setTable(table);
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {

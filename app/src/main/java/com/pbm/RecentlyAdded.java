@@ -61,7 +61,7 @@ public class RecentlyAdded extends PBMUtil {
 		JSONObject jsonObject = new JSONObject(json);
 		JSONArray lmxes = jsonObject.getJSONArray("location_machine_xrefs");
 
-		PBMApplication app = (PBMApplication) getApplication();
+		PBMApplication app = getPBMApplication();
 		for (int i = 0; i < lmxes.length(); i++) {
 			JSONObject lmxJson = lmxes.getJSONObject(i);
 
@@ -87,7 +87,7 @@ public class RecentlyAdded extends PBMUtil {
 				locationName = locationName.split(" \\(")[0];
 				locationName = locationName.split("\n")[0];
 
-				PBMApplication app = (PBMApplication) getApplication();
+				PBMApplication app = getPBMApplication();
 				Location location = app.getLocationByName(locationName);
 
 				if (location == null) {

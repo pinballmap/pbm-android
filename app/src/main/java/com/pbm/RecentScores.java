@@ -74,7 +74,7 @@ public class RecentScores extends PBMUtil {
 		DecimalFormat formatter = new DecimalFormat("#,###");
 		JSONObject jsonObject = new JSONObject(json);
 		JSONArray scores = jsonObject.getJSONArray("machine_score_xrefs");
-		PBMApplication app = (PBMApplication) getApplication();
+		PBMApplication app = getPBMApplication();
 		for (int i=0; i < scores.length(); i++) {
 			JSONObject msx = scores.getJSONObject(i);
 			

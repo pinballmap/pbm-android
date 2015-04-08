@@ -27,7 +27,7 @@ public class LocationEdit extends PBMUtil implements OnTaskCompleted {
 	private TreeMap<String, Integer> locationTypes;
 
 	public void onCreate(Bundle savedInstanceState) {
-		PBMApplication app = (PBMApplication) getApplication();
+		PBMApplication app = getPBMApplication();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.location_edit);
 
@@ -121,7 +121,7 @@ public class LocationEdit extends PBMUtil implements OnTaskCompleted {
 	}
 
 	public void onTaskCompleted(String results) throws JSONException, InterruptedException, ExecutionException {
-		PBMApplication app = (PBMApplication) getApplication();
+		PBMApplication app = getPBMApplication();
 
 		final JSONObject jsonObject = new JSONObject(results);
 

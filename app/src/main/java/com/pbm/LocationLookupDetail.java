@@ -59,7 +59,7 @@ public class LocationLookupDetail extends PBMUtil {
 			}
 		});
 
-		super.onCreate(savedInstanceState, table);
+		setTable(table);
 	}   
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -70,9 +70,9 @@ public class LocationLookupDetail extends PBMUtil {
 
 	void loadLocationData() {
 		foundLocations.clear();
-		table.setAdapter(null);
+		table.setAdapter(null); //TODO
 
-		PBMApplication app = (PBMApplication) getApplication();
+		PBMApplication app = getPBMApplication();
 		HashMap<Integer, com.pbm.Location> locations = app.getLocations();
 		for (Location location : locations.values()) {
 
@@ -97,7 +97,7 @@ public class LocationLookupDetail extends PBMUtil {
 			}
 		});
 
-		table.setAdapter(new LocationListAdapter(this, foundLocations));
+		table.setAdapter(new LocationListAdapter(this, foundLocations)); // TODO change miles based on distance
 		if (listState != null) {
 			table.onRestoreInstanceState(listState);
 		}

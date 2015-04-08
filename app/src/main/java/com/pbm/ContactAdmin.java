@@ -23,7 +23,7 @@ public class ContactAdmin extends PBMUtil {
 		String message = ((EditText) findViewById(R.id.messageField)).getText().toString();
 
 		if (message != null && !message.isEmpty()) {
-			PBMApplication app = (PBMApplication) getApplication();
+			PBMApplication app = getPBMApplication();
 			Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 
 			String url = regionlessBase + "regions/contact.json?region_id=" + region.id

@@ -30,7 +30,7 @@ public class SplashScreen extends PBMUtil {
 		final SharedPreferences settings = getSharedPreferences(PBMUtil.PREFS_NAME, 0);
 		PreferenceManager.setDefaultValues(this, PBMUtil.PREFS_NAME, 0, R.xml.preferences, false);
 		Integer prefRegion = settings.getInt("region", -1);
-		PBMApplication app = (PBMApplication) getApplication();
+		PBMApplication app = getPBMApplication();
 
 		try {
 			if (!haveInternet(getBaseContext())) {

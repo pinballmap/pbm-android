@@ -114,7 +114,7 @@ public class RegionsTab extends Fragment implements LoaderManager.LoaderCallback
 				editor.putFloat("yourLat", (float) location.getLatitude());
 				editor.putFloat("yourLon", (float) location.getLongitude());
 				editor.commit();
-				((RegionsFragment) regionsPagerAdapter.getItem(1)).updateLocation();
+				((RegionsFragment) regionsPagerAdapter.getItem(1)).updateLocation(); // XXX hack
 			}
 
 			@Override

@@ -1,7 +1,6 @@
 package com.pbm;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +48,7 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 		Location location = filteredLocationList.get(position);
 		holder.name.setText(location.name);
 		holder.distance.setText(location.milesInfo);
-		holder.numMachines.setText(Integer.toString(location.numMachines((Activity) context)));
+		holder.numMachines.setText(Integer.toString(location.numMachines((PBMUtil) context)));
 		
 		return row;
 	}

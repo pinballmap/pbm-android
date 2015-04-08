@@ -1,18 +1,18 @@
 package com.pbm;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class LookupByLocationType extends PBMUtil {
 
@@ -22,7 +22,7 @@ public class LookupByLocationType extends PBMUtil {
 		
 		logAnalyticsHit("com.pbm.LookupByLocationType");
 
-		PBMApplication app = (PBMApplication) getApplication();
+		PBMApplication app = getPBMApplication();
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		Region region = app.getRegion(settings.getInt("region",  1));
 		List<LocationType> locationTypes = region.locationTypes(this);
@@ -41,7 +41,7 @@ public class LookupByLocationType extends PBMUtil {
 
 		table.setAdapter(new ArrayAdapter<LocationType>(this, android.R.layout.simple_list_item_1, locationTypes));
 		
-		super.onCreate(savedInstanceState, table);
+		setTable(table);
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {

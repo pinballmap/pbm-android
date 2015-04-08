@@ -102,7 +102,7 @@ public class LocationDetail extends PBMUtil {
 								Machine machine = machines.get(position);
 
 								Intent myIntent = new Intent();
-								PBMApplication app = (PBMApplication) getApplication();
+								PBMApplication app = getPBMApplication();
 								myIntent.putExtra("lmx", app.getLmxFromMachine(machine, lmxes));
 								myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
 								startActivityForResult(myIntent, QUIT_RESULT);
@@ -165,7 +165,7 @@ public class LocationDetail extends PBMUtil {
 
 		new Thread(new Runnable() {
 			public void run() {
-				PBMApplication app = (PBMApplication) getApplication();
+				PBMApplication app = getPBMApplication();
 				location = app.getLocation(location.id);
 				lmxes = location.getLmxes(LocationDetail.this);
 				machines = location.getMachines(LocationDetail.this);

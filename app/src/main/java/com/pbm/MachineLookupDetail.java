@@ -47,7 +47,7 @@ public class MachineLookupDetail extends PBMUtil {
 
 		loadLocationData();
 
-		super.onCreate(savedInstanceState, table);
+		setTable(table);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -110,7 +110,7 @@ public class MachineLookupDetail extends PBMUtil {
 	ArrayList<Location> getLocationsWithMachine(Machine machine) {
 		ArrayList<Location> locations = new ArrayList<Location>();
 
-		PBMApplication app = (PBMApplication) getApplication();
+		PBMApplication app = getPBMApplication();
 		for (LocationMachineXref lmx : app.getLmxes().values()) {
 			if (lmx.getMachine(this).id == machine.id) {
 				locations.add(lmx.getLocation(this));

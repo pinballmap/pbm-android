@@ -1,7 +1,5 @@
 package com.pbm;
 
-import android.app.Activity;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,8 +76,8 @@ public class Region implements Serializable, JSONConverter<Region> {
 		return mockLocation;
 	}
 
-	public List<LocationType> locationTypes(Activity activity) {
-		PBMApplication app = (PBMApplication) activity.getApplication();
+	public List<LocationType> locationTypes(PBMUtil activity) {
+		PBMApplication app = activity.getPBMApplication();
 
 		List<LocationType> locationTypes = new ArrayList<LocationType>();
 

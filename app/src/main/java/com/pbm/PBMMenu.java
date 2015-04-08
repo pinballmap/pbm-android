@@ -34,7 +34,7 @@ public class PBMMenu extends PBMUtil {
 		getSupportActionBar().setIcon(R.drawable.icon);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-		PBMApplication app = (PBMApplication) getApplication();
+		PBMApplication app = getPBMApplication();
 		Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 
 		final List<String> mainMenuItems = new ArrayList<String>();

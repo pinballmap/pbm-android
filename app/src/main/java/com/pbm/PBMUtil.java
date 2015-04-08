@@ -34,51 +34,71 @@ import java.net.URLConnection;
 @SuppressLint("Registered")
 public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 	static final int MENU_RESULT = 8;
-	public static final int QUIT_RESULT     	  = 42;
+	public static final int QUIT_RESULT = 42;
 	static final int RESET_RESULT = 23;
 	static final int REFRESH_RESULT = 30;
-	public static final int CONDITION_DATE  	  = 0;
-	public static final int CONDITION       	  = 1;
-	public static final int PROGRESS_DIALOG 	  = 0;
+	public static final int CONDITION_DATE = 0;
+	public static final int CONDITION = 1;
+	public static final int PROGRESS_DIALOG = 0;
 	public static final int MENU_SUGGEST_LOCATION = 0;
-	public static final int MENU_CONTACT_ADMIN    = 1;
-	public static final int MENU_PREFS      	  = 2;
-	public static final int MENU_SUGGEST_REGION   = 3;
-	public static final int MENU_ABOUT      	  = 4;
-	public static final int MENU_QUIT       	  = 5;
-	public static final int HTTP_RETRIES    	  = 5;
+	public static final int MENU_CONTACT_ADMIN = 1;
+	public static final int MENU_PREFS = 2;
+	public static final int MENU_SUGGEST_REGION = 3;
+	public static final int MENU_ABOUT = 4;
+	public static final int MENU_QUIT = 5;
+	public static final int HTTP_RETRIES = 5;
 	public static final String PREFS_NAME = "pbmPrefs";
 	public static final float METERS_TO_MILES = (float) 0.000621371192;
 
-	public static String httpBase = BuildConfig.SERVER_URL;
-//	"http://pinballmap.com/";
-//  staging site testing
-//	public static String httpBase = "http://pinballmapstaging.herokuapp.com/";
-
+	public static String httpBase = BuildConfig.SERVER_URL; // see build.gradle
 	public static String apiPath = "api/v1/";
-
 	public static String regionBase = "THIS IS SET DURING APP INIT";
 	public static String regionlessBase = httpBase + apiPath;
-	
+
 	public ListView table;
 
-	public void onCreate(Bundle savedInstanceState, ListView table) {
-		table.setTextFilterEnabled(true);
-		this.table = table;
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString("regionBase", regionBase);
+		outState.putSerializable("locations", getPBMApplication().getLocations());
+		outState.putSerializable("locationTypes", getPBMApplication().getLocationTypes());
+		outState.putSerializable("machines", getPBMApplication().getMachines());
+		outState.putSerializable("lmxes", getPBMApplication().getLmxes());
+		outState.putSerializable("zones", getPBMApplication().getZones());
+		outState.putSerializable("regions", getPBMApplication().getRegions());
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		regionBase = savedInstanceState.getString("regionBase");
+		PBMApplication pbm = getPBMApplication();
+		pbm.setLocations((java.util.HashMap<Integer, Location>) savedInstanceState.getSerializable("locations"));
+		pbm.setLocationTypes((java.util.HashMap<Integer, LocationType>) savedInstanceState.getSerializable("locationTypes"));
+		pbm.setMachines((java.util.HashMap<Integer, Machine>) savedInstanceState.getSerializable("machines"));
+		pbm.setLmxes((java.util.HashMap<Integer, LocationMachineXref>) savedInstanceState.getSerializable("lmxes"));
+		pbm.setZones((java.util.HashMap<Integer, Zone>) savedInstanceState.getSerializable("zones"));
+		pbm.setRegions((java.util.HashMap<Integer, Region>) savedInstanceState.getSerializable("regions"));
+	}
+
+	public PBMApplication getPBMApplication() {
+		return (PBMApplication) getApplication();
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.options_menu, menu);
 
-        if (menu.findItem(R.id.search) != null) {
-        	SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        	SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
- 
-        	searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        	searchView.setSubmitButtonEnabled(false);
-        	searchView.setOnQueryTextListener(this);
-        }
+		if (menu.findItem(R.id.search) != null) {
+			SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+			searchView.setSubmitButtonEnabled(false);
+			searchView.setOnQueryTextListener(this);
+		}
 
 		return true;
 	}
@@ -86,41 +106,41 @@ public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.prefs:
-			Intent myIntent = new Intent();
-			myIntent.setClassName("com.pbm", "com.pbm.Preferences");
-			startActivityForResult(myIntent, QUIT_RESULT);
+				Intent myIntent = new Intent();
+				myIntent.setClassName("com.pbm", "com.pbm.Preferences");
+				startActivityForResult(myIntent, QUIT_RESULT);
 
-			return true;
+				return true;
 			case R.id.about:
-			Intent aboutIntent = new Intent();
-			aboutIntent.setClassName("com.pbm", "com.pbm.About");
-			startActivityForResult(aboutIntent, QUIT_RESULT);
+				Intent aboutIntent = new Intent();
+				aboutIntent.setClassName("com.pbm", "com.pbm.About");
+				startActivityForResult(aboutIntent, QUIT_RESULT);
 
-			return true;
+				return true;
 			case R.id.contact_admin:
-			Intent contactIntent = new Intent();
-			contactIntent.setClassName("com.pbm", "com.pbm.ContactAdmin");
-			startActivityForResult(contactIntent, QUIT_RESULT);
+				Intent contactIntent = new Intent();
+				contactIntent.setClassName("com.pbm", "com.pbm.ContactAdmin");
+				startActivityForResult(contactIntent, QUIT_RESULT);
 
-			return true;
+				return true;
 			case R.id.suggest_region:
-			Intent suggestIntent = new Intent();
-			suggestIntent.setClassName("com.pbm", "com.pbm.SuggestRegion");
-			startActivityForResult(suggestIntent, QUIT_RESULT);
+				Intent suggestIntent = new Intent();
+				suggestIntent.setClassName("com.pbm", "com.pbm.SuggestRegion");
+				startActivityForResult(suggestIntent, QUIT_RESULT);
 
-			return true;
+				return true;
 			case R.id.suggest_location:
-			Intent suggestLocationIntent = new Intent();
-			suggestLocationIntent.setClassName("com.pbm", "com.pbm.SuggestLocation");
-			startActivityForResult(suggestLocationIntent, QUIT_RESULT);
+				Intent suggestLocationIntent = new Intent();
+				suggestLocationIntent.setClassName("com.pbm", "com.pbm.SuggestLocation");
+				startActivityForResult(suggestLocationIntent, QUIT_RESULT);
 
-			return true;
+				return true;
 			case R.id.quit:
-			setResult(QUIT_RESULT);
-			super.finish();
-			this.finish();  
+				setResult(QUIT_RESULT);
+				super.finish();
+				this.finish();
 
-			return true;
+				return true;
 		}
 		return false;
 	}
@@ -147,40 +167,46 @@ public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 		this.finish();
 	}
 
-	public void activityRefreshResult() {}
+	public void activityRefreshResult() {
+	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch(resultCode) {
-		case QUIT_RESULT:
-			activityQuitResult();
-			break;
-		case RESET_RESULT:
-			activityResetResult();
-			break;
-		case REFRESH_RESULT:
-			activityRefreshResult();
-		default:
-			break;
+		switch (resultCode) {
+			case QUIT_RESULT:
+				activityQuitResult();
+				break;
+			case RESET_RESULT:
+				activityResetResult();
+				break;
+			case REFRESH_RESULT:
+				activityRefreshResult();
+			default:
+				break;
 		}
 	}
 
 	public static void setRegionBase(String newBase) {
 		regionBase = newBase;
 	}
-	
+
+	public void setTable(ListView table) {
+		table.setTextFilterEnabled(true);
+		this.table = table;
+	}
+
 	public void logAnalyticsHit(String page) {
-		Tracker tracker = ((PBMApplication) getApplication()).getTracker();
-        tracker.setScreenName(page);
-        tracker.send(new HitBuilders.AppViewBuilder().build());
+		Tracker tracker = getPBMApplication().getTracker();
+		tracker.setScreenName(page);
+		tracker.send(new HitBuilders.AppViewBuilder().build());
 	}
 
 	public static InputStream openHttpConnection(String urlString, String requestType) throws IOException {
-		URL url = new URL(urlString); 
-		try{
+		URL url = new URL(urlString);
+		try {
 			for (int attempt = 0; attempt < HTTP_RETRIES; attempt++) {
 				URLConnection urlConnection = url.openConnection();
 
-				if (!(urlConnection instanceof HttpURLConnection))                     
+				if (!(urlConnection instanceof HttpURLConnection))
 					throw new IOException("Not an HTTP connection");
 
 				HttpURLConnection httpConn = (HttpURLConnection) urlConnection;
@@ -188,11 +214,11 @@ public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 				httpConn.setInstanceFollowRedirects(true);
 				httpConn.setRequestMethod(requestType);
 
-				httpConn.connect(); 
-				InputStream inputStream = httpConn.getInputStream();                                 
+				httpConn.connect();
+				InputStream inputStream = httpConn.getInputStream();
 
 				if ((httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) && (inputStream != null)) {
-					return inputStream;                                 
+					return inputStream;
 				} else {
 					Log.e("HTTP RESPONSE MESSAGE:", httpConn.getResponseMessage());
 				}
@@ -202,7 +228,7 @@ public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 		} catch (Exception ex) {
 			Log.e("EXCEPTION:", ex.toString());
 		}
-		return null;     
+		return null;
 	}
 
 	public static int convertPixelsToDip(int dipValue, DisplayMetrics displayMetrics) {
@@ -219,12 +245,12 @@ public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 
 	public void closeWithNoInternet() {
 		new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Get some Internet, dude")
-		.setMessage("This application requires an Internet connection, sorry.")
-		.setPositiveButton("Bummer", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				activityQuitResult();		            
-			}
-		}).show();
+				.setMessage("This application requires an Internet connection, sorry.")
+				.setPositiveButton("Bummer", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						activityQuitResult();
+					}
+				}).show();
 	}
 
 	public void closeOnMissingServer() {
@@ -236,17 +262,18 @@ public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 					}
 				}).show();
 	}
+
 	public boolean onQueryTextChange(String newText) {
 		if (TextUtils.isEmpty(newText)) {
 			table.clearTextFilter();
-	    } else {
+		} else {
 			table.setFilterText(newText);
 		}
-	         
-	    return true;
-	 }
-	 
-	 public boolean onQueryTextSubmit(String query) {
-		 return false;
-	 }
+
+		return true;
+	}
+
+	public boolean onQueryTextSubmit(String query) {
+		return false;
+	}
 }

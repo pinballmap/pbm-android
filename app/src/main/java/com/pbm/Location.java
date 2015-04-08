@@ -1,7 +1,5 @@
 package com.pbm;
 
-import android.app.Activity;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +46,8 @@ public class Location implements Serializable {
 		this.milesInfo = milesInfo;
 	}
 
-	public int numMachines(Activity activity) {
-		PBMApplication app = (PBMApplication) activity.getApplication();
-
+	public int numMachines(PBMUtil activity) {
+		PBMApplication app = activity.getPBMApplication();
 		return app.numMachinesForLocation(this);
 	}
 
@@ -58,9 +55,9 @@ public class Location implements Serializable {
 		return milesInfo != null ? name + " " + milesInfo : name;
 	}
 
-	public List<LocationMachineXref> getLmxes(Activity activity) {
+	public List<LocationMachineXref> getLmxes(PBMUtil activity) {
 		List<LocationMachineXref> locationLmxes = new ArrayList<LocationMachineXref>();
-		PBMApplication app = (PBMApplication) activity.getApplication();
+		PBMApplication app = activity.getPBMApplication();
 
 		for (LocationMachineXref lmx : app.getLmxes().values()) {
 			if (lmx.locationID == id) {
@@ -71,9 +68,9 @@ public class Location implements Serializable {
 		return locationLmxes;
 	}
 
-	public TreeMap<Integer, LocationMachineXref> getLMXMap(Activity activity) {
+	public TreeMap<Integer, LocationMachineXref> getLMXMap(PBMUtil activity) {
 		TreeMap<Integer, LocationMachineXref> lmxes = new TreeMap<Integer, LocationMachineXref>();
-		PBMApplication app = (PBMApplication) activity.getApplication();
+		PBMApplication app = activity.getPBMApplication();
 		for (LocationMachineXref lmx : app.getLmxes().values()) {
 			if (lmx.locationID == id) {
 				lmxes.put(lmx.machineID, lmx);
@@ -82,9 +79,9 @@ public class Location implements Serializable {
 		return lmxes;
 	}
 
-	public List<Machine> getMachines(Activity activity) {
+	public List<Machine> getMachines(PBMUtil activity) {
 		List<Machine> machinesFromLmxes = new ArrayList<Machine>();
-		PBMApplication app = (PBMApplication) activity.getApplication();
+		PBMApplication app = activity.getPBMApplication();
 
 		for (LocationMachineXref lmx : getLmxes(activity)) {
 			machinesFromLmxes.add(app.getMachine(lmx.machineID));
@@ -93,16 +90,12 @@ public class Location implements Serializable {
 		return machinesFromLmxes;
 	}
 
-	public LocationType getLocationType(Activity activity) {
-		PBMApplication app = (PBMApplication) activity.getApplication();
-
-		return app.getLocationType(locationTypeID);
+	public LocationType getLocationType(PBMUtil activity) {
+		return activity.getPBMApplication().getLocationType(locationTypeID);
 	}
 
-	public void removeMachine(Activity activity, LocationMachineXref lmx) {
-		PBMApplication app = (PBMApplication) activity.getApplication();
-
-		app.removeLmx(lmx);
+	public void removeMachine(PBMUtil activity, LocationMachineXref lmx) {
+		activity.getPBMApplication().removeLmx(lmx);
 	}
 
 	public android.location.Location toAndroidLocation() {

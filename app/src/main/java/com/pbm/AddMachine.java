@@ -1,22 +1,22 @@
 package com.pbm;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 @SuppressLint("HandlerLeak")
 public class AddMachine extends PBMUtil implements OnTaskCompleted {	
@@ -36,10 +36,9 @@ public class AddMachine extends PBMUtil implements OnTaskCompleted {
 		table.setFastScrollEnabled(true);
 		table.setTextFilterEnabled(true);
 
-		PBMApplication app = (PBMApplication) getApplication();
+		PBMApplication app = getPBMApplication();
 		String[] machineNames = app.getMachineNames();
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, machineNames);
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, machineNames);
 		AutoCompleteTextView actv = (AutoCompleteTextView) findViewById(R.id.manualNewMachine);
 		actv.setAdapter(adapter);
 		final ArrayList<Machine> allMachines = app.getMachineValues(true);
@@ -118,7 +117,7 @@ public class AddMachine extends PBMUtil implements OnTaskCompleted {
 	}
 	
 	private int getMachineIDFromMachineName(String name) throws InterruptedException, ExecutionException, JSONException {
-		PBMApplication app = (PBMApplication) getApplication();
+		PBMApplication app = getPBMApplication();
 		int machineID = -1;
 
 		Machine machine = app.getMachineByName(name);
@@ -132,7 +131,7 @@ public class AddMachine extends PBMUtil implements OnTaskCompleted {
 	}
 
 	public void onTaskCompleted(String results) throws JSONException, InterruptedException, ExecutionException {
-		PBMApplication app = (PBMApplication) getApplication();
+		PBMApplication app = getPBMApplication();
 
 		JSONObject jsonObject = new JSONObject(results);
 		
