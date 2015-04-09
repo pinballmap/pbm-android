@@ -33,6 +33,11 @@ public class PBMMenu extends PBMUtil {
 		setContentView(R.layout.main);
 		getSupportActionBar().setIcon(R.drawable.icon);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
 
 		PBMApplication app = getPBMApplication();
 		Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
