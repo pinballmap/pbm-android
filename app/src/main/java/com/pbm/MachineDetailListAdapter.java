@@ -56,9 +56,9 @@ class MachineDetailListAdapter extends ArrayAdapter<Machine> {
 		holder.name.setText(machine.name + " " + machine.metaData());
 //		holder.metaData.setText(machine.metaData());
 		String conditionText = "";
-		if (!lmxes.get(machine.id).condition.equals("null")) {
+		if (!lmxes.get(machine.id).condition.equals("null") && !lmxes.get(machine.id).condition.equals("")) {
 			conditionText += lmxes.get(machine.id).condition;
-			if (!lmxes.get(machine.id).conditionDate.equals("null")) {
+			if (!lmxes.get(machine.id).conditionDate.equals("null") && !lmxes.get(machine.id).condition.equals("")) {
 				conditionText += '\n' + getContext().getString(R.string.updated_on) + " " + lmxes.get(machine.id).conditionDate;
 			}
 		}
