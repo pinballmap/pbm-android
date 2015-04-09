@@ -5,6 +5,7 @@ CHANGELOG
 
 version 2.1.3
 -reset user-reported conditions
+-display conditions inline in location details
 -new UI for selecting regions
 -numerous fixes for crashes
 
