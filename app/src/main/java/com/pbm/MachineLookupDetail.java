@@ -3,7 +3,6 @@ package com.pbm;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +23,9 @@ public class MachineLookupDetail extends PinballMapActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (savedInstanceState != null) {
+			listState = savedInstanceState.getParcelable("listState");
+		}
 		setContentView(R.layout.machine_lookup_detail);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -93,12 +95,6 @@ public class MachineLookupDetail extends PinballMapActivity {
 		super.onSaveInstanceState(outState);
 		listState = table.onSaveInstanceState();
 		outState.putParcelable("listState", listState);
-	}
-
-	@Override
-	protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		listState = savedInstanceState.getParcelable("listState");
 	}
 
 	public void onResume() {

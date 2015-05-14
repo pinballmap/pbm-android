@@ -315,14 +315,6 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	private void setLocation(android.location.Location location) {
 		this.location = location;
 		Log.d("com.pbm.location", "set location to " + location);
-		if (this.location != null) {
-			SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-			SharedPreferences.Editor editor = settings.edit();
-			Log.d("com.pbm", "lat: " + location.getLongitude() + " long: " + location.getLatitude() + " acc: " + location.getAccuracy());
-			editor.putFloat("yourLat", (float) location.getLatitude());
-			editor.putFloat("yourLon", (float) location.getLongitude());
-			editor.commit();
-		}
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package com.pbm;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,14 +27,13 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 		this.filteredLocationList = new ArrayList<>(locations);
 	}
 	
-	@SuppressLint("InflateParams")
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		View row = convertView;
 
 		if (row == null) {
 			LayoutInflater layoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = layoutInflater.inflate(R.layout.location_list_listview, null);
+            row = layoutInflater.inflate(R.layout.location_list_listview, parent, false);
 
 			holder = new ViewHolder();
 			holder.name = (TextView) row.findViewById(R.id.machine_info);
@@ -76,13 +74,12 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 	    return filter;
 	}
 	
-	@SuppressLint("DefaultLocale")
 	private class LocationFilter extends Filter {
 		protected FilterResults performFiltering(CharSequence constraint) {
 			FilterResults results = new FilterResults();
 			String filter = constraint.toString().toLowerCase();
 
-			if(constraint == null || constraint.length() == 0) {
+			if(constraint.length() == 0) {
 			    ArrayList<com.pbm.Location> list = new ArrayList<>(locations);
 			    results.values = list;
 			    results.count = list.size();
@@ -96,12 +93,11 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 			    }
 			    results.values = newValues;
 			    results.count = newValues.size();
-			}       
+			}
 			
 			return results;
 		}
 			
-		@SuppressWarnings("unchecked")
 		protected void publishResults(CharSequence constraint, FilterResults results) {
 		    filteredLocationList = (ArrayList<com.pbm.Location>) results.values;
 

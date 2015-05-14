@@ -1,6 +1,5 @@
 package com.pbm;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,7 +17,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-@SuppressLint("HandlerLeak")
 public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 	private Location location;
 

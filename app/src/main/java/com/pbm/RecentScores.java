@@ -1,6 +1,5 @@
 package com.pbm;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -14,24 +13,14 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class RecentScores extends PinballMapActivity {
-	private List<Spanned> recentScores = new ArrayList<Spanned>();
-	final private static int NUM_RECENT_SCORES_TO_SHOW = 20;	
-	@SuppressLint("UseSparseArrays")
-	private HashMap<Integer, String> ranks = new HashMap<Integer, String>() {
-		private static final long serialVersionUID = 1L;
-	{
-		put(1, "GC");
-		put(2, "1st");
-		put(3, "2nd");
-		put(4, "3rd");
-		put(5, "4th");
-	}};
-
+	private List<Spanned> recentScores = new ArrayList<>();
+	final private static int NUM_RECENT_SCORES_TO_SHOW = 20;
+	private List<String> ranks = Arrays.asList("zero", "GC", "1st", "2nd", "3rd", "4th");
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

@@ -1,6 +1,5 @@
 package com.pbm;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,20 +21,19 @@ public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 	public MachineListAdapter(Context context, List<com.pbm.Machine> machines, boolean disableSelectImage) {
 		super(context, R.layout.machine_list_listview, machines);
 
-		this.machines = new ArrayList<Machine>(machines);
-		this.filteredMachineList = new ArrayList<Machine>(machines);
+		this.machines = new ArrayList<>(machines);
+		this.filteredMachineList = new ArrayList<>(machines);
 
 		this.disableSelectImage = disableSelectImage;
 	}
 
-	@SuppressLint("InflateParams")
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		MachineViewHolder holder;
 		View row = convertView;
 
 		if (row == null) {
 			LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			row = layoutInflater.inflate(R.layout.machine_list_listview, null);
+			row = layoutInflater.inflate(R.layout.machine_list_listview, parent, false);
 
 			holder = new MachineViewHolder();
 			holder.name = (TextView) row.findViewById(R.id.machine_info);
@@ -75,18 +73,17 @@ public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 		return filter;
 	}
 
-	@SuppressLint("DefaultLocale")
 	private class MachineFilter extends Filter {
 		protected FilterResults performFiltering(CharSequence constraint) {
 			FilterResults results = new FilterResults();
 			String filter = constraint.toString().toLowerCase();
 
 			if (constraint == null || constraint.length() == 0) {
-				ArrayList<com.pbm.Machine> list = new ArrayList<com.pbm.Machine>(machines);
+				ArrayList<com.pbm.Machine> list = new ArrayList<>(machines);
 				results.values = list;
 				results.count = list.size();
 			} else {
-				ArrayList<com.pbm.Machine> newValues = new ArrayList<com.pbm.Machine>();
+				ArrayList<com.pbm.Machine> newValues = new ArrayList<>();
 				for (int i = 0; i < machines.size(); i++) {
 					com.pbm.Machine item = machines.get(i);
 					if (item.name.toLowerCase().contains(filter)) {
@@ -100,7 +97,6 @@ public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 			return results;
 		}
 
-		@SuppressWarnings("unchecked")
 		protected void publishResults(CharSequence constraint, FilterResults results) {
 			filteredMachineList = (ArrayList<com.pbm.Machine>) results.values;
 

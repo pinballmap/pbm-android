@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@SuppressLint("SimpleDateFormat")
 public class LocationMachineXref implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public int id;
@@ -37,7 +36,7 @@ public class LocationMachineXref implements Serializable {
 	public void setCondition(Activity activity, String condition) {
 		this.condition = condition;
 
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		@SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		this.conditionDate = format.format(new Date());
 
 		PBMApplication app = (PBMApplication) activity.getApplication();

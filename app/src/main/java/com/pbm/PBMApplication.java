@@ -2,7 +2,6 @@ package com.pbm;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -14,8 +13,6 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,9 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-@SuppressLint("UseSparseArrays")
 public class PBMApplication extends Application {
-
 
 	public enum TrackerName {
 		APP_TRACKER;
@@ -277,7 +272,7 @@ public class PBMApplication extends Application {
 	}
 
 	public ArrayList<Machine> getMachineValues(boolean displayAllMachines) {
-		ArrayList<Machine> machineValues = new ArrayList<Machine>();
+		ArrayList<Machine> machineValues = new ArrayList<>();
 
 		for (Machine machine : getMachines().values()) {
 			if (displayAllMachines || machine.existsInRegion) {
@@ -420,15 +415,6 @@ public class PBMApplication extends Application {
 
 			if ((name != null) && (lat != null) && (lon != null)) {
 				Location newLocation = new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip, phone, locationTypeID, website);
-
-				SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
-				float yourLat = settings.getFloat("yourLat", -1);
-				float yourLon = settings.getFloat("yourLon", -1);
-
-				if (yourLat != -1 && yourLon != -1) {
-					newLocation = setMilesInfoOnNewLocation(newLocation, yourLat, yourLon);
-				}
-
 				addLocation(id, newLocation);
 			}
 
@@ -458,7 +444,7 @@ public class PBMApplication extends Application {
 						);
 						if (lmx.has("machine_conditions")) {
 							JSONArray conditions = lmx.getJSONArray("machine_conditions");
-							DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+							@SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 //							TreeMap<Date, String> conditionMap = new TreeMap<>();
 							ArrayList<Condition> conditionList = new ArrayList<>();
 							for (int conditionIndex = 0; conditionIndex < conditions.length(); conditionIndex ++ ) {
@@ -483,17 +469,6 @@ public class PBMApplication extends Application {
 		}
 	}
 
-	Location setMilesInfoOnNewLocation(Location newLocation, float yourLat, float yourLon) {
-		android.location.Location yourLocation = new android.location.Location("");
-		yourLocation.setLatitude(yourLat);
-		yourLocation.setLongitude(yourLon);
-		newLocation.setDistance(yourLocation);
-		NumberFormat formatter = new DecimalFormat(".00");
-		newLocation.setMilesInfo(formatter.format(newLocation.distanceFromYou) + " miles");
-
-		return newLocation;
-	}
-
 	public boolean initializeRegions() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
 		String json = new RetrieveJsonTask().execute(PinballMapActivity.regionlessBase + "regions.json", "GET").get();
 		if (json == null) {
@@ -511,7 +486,6 @@ public class PBMApplication extends Application {
 			String motd = region.getString("motd");
 			String lat = region.getString("lat");
 			String lon = region.getString("lon");
-
 			List<String> emailAddresses = new ArrayList<>();
 
 			if (region.has("all_admin_email_address")) {
@@ -520,10 +494,8 @@ public class PBMApplication extends Application {
 					emailAddresses.add(jsonEmailAddresses.getString(x));
 				}
 			}
-
 			addRegion(Integer.parseInt(id), new Region(Integer.parseInt(id), name, formalName, motd, lat, lon, emailAddresses));
 		}
-
 		return true;
 	}
 
