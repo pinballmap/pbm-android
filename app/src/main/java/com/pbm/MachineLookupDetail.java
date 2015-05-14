@@ -3,6 +3,7 @@ package com.pbm;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,9 +16,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class MachineLookupDetail extends PBMUtil {
+public class MachineLookupDetail extends PinballMapActivity {
 	private Machine machine;
-	private ArrayList<Location> locationsWithMachine = new ArrayList<Location>();
+	private ArrayList<Location> locationsWithMachine = new ArrayList<>();
 	private ListView table;
 	private Parcelable listState;
 
@@ -41,7 +42,7 @@ public class MachineLookupDetail extends PBMUtil {
 				com.pbm.Location location = locationsWithMachine.get(position);
 				myIntent.putExtra("Location", location);
 				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
-				startActivityForResult(myIntent, PBMUtil.QUIT_RESULT);
+				startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
 			}
 		});
 
@@ -95,7 +96,7 @@ public class MachineLookupDetail extends PBMUtil {
 	}
 
 	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+	protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		listState = savedInstanceState.getParcelable("listState");
 	}
@@ -108,7 +109,7 @@ public class MachineLookupDetail extends PBMUtil {
 	}
 
 	ArrayList<Location> getLocationsWithMachine(Machine machine) {
-		ArrayList<Location> locations = new ArrayList<Location>();
+		ArrayList<Location> locations = new ArrayList<>();
 
 		PBMApplication app = getPBMApplication();
 		for (LocationMachineXref lmx : app.getLmxes().values()) {

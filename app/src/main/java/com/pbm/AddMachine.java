@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 @SuppressLint("HandlerLeak")
-public class AddMachine extends PBMUtil implements OnTaskCompleted {	
+public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 	private Location location;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,9 +56,7 @@ public class AddMachine extends PBMUtil implements OnTaskCompleted {
 								regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + machine.id,
 								"POST"
 							).get();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						} catch (ExecutionException e) {
+						} catch (InterruptedException | ExecutionException e) {
 							e.printStackTrace();
 						}
 						AddMachine.super.runOnUiThread(new Runnable() {
@@ -95,13 +93,7 @@ public class AddMachine extends PBMUtil implements OnTaskCompleted {
 								"POST"
 							).get();
 						}
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					} catch (ExecutionException e) {
-						e.printStackTrace();
-					} catch (JSONException e) {
-						e.printStackTrace();
-					} catch (UnsupportedEncodingException e) {
+					} catch (InterruptedException | ExecutionException | UnsupportedEncodingException | JSONException e) {
 						e.printStackTrace();
 					}
 

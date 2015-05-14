@@ -25,6 +25,7 @@ class AsyncJsonLoader<T> extends AsyncTaskLoader<ArrayList<T>> {
 	private final String requestType;
 	private ArrayList<T> data = null;
 	private final JSONConverter<T> type;
+//	private final Class<? extends JSONConverter<T>> typeClass;
 
 	public AsyncJsonLoader(Context context, String url, JSONConverter<T> type) {
 		super(context);
@@ -49,7 +50,7 @@ class AsyncJsonLoader<T> extends AsyncTaskLoader<ArrayList<T>> {
 		ArrayList<T> alist = new ArrayList<T>();
 		InputStream inputStream;
 		try {
-			inputStream = PBMUtil.openHttpConnection(this.url, this.requestType);
+			inputStream = PinballMapActivity.openHttpConnection(this.url, this.requestType);
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
 			StringBuilder sb = new StringBuilder();
@@ -62,7 +63,9 @@ class AsyncJsonLoader<T> extends AsyncTaskLoader<ArrayList<T>> {
 			JSONObject jsonObject = new JSONObject(result);
 			Log.i("json", result);
 			JSONArray objs = jsonObject.getJSONArray(type.getJsonLabel());
+//			Method jsonMethod = typeClass.getMethod("fromJson", JSONObject.class);
 			for (int i = 0; i < objs.length(); i++) {
+//				alist.add((T) jsonMethod.invoke(null, objs.getJSONObject(i)));
 				alist.add(this.type.fromJSON(objs.getJSONObject(i)));
 			}
 			return alist;

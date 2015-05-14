@@ -16,7 +16,7 @@ public class Region implements Serializable, JSONConverter<Region> {
 	private String lat;
 	private String lon;
 	public float distanceFromYou;
-	private List<String> emailAddresses = new ArrayList<String>();
+	private List<String> emailAddresses = new ArrayList<>();
 
 	public Region(int id, String name, String formalName, String motd, String lat, String lon, List<String> emailAddresses) {
 		this.id = id;
@@ -76,10 +76,10 @@ public class Region implements Serializable, JSONConverter<Region> {
 		return mockLocation;
 	}
 
-	public List<LocationType> locationTypes(PBMUtil activity) {
+	public List<LocationType> locationTypes(PinballMapActivity activity) {
 		PBMApplication app = activity.getPBMApplication();
 
-		List<LocationType> locationTypes = new ArrayList<LocationType>();
+		List<LocationType> locationTypes = new ArrayList<>();
 
 		ArrayList<Location> locations = app.getLocationValues();
 		for (Location location : locations) {

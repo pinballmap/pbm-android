@@ -8,9 +8,10 @@ import android.widget.EditText;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
-public class ConditionEdit extends PBMUtil {
+public class ConditionEdit extends PinballMapActivity {
 	private LocationMachineXref lmx;
 	private InputMethodManager inputMethodManager;
 
@@ -37,12 +38,9 @@ public class ConditionEdit extends PBMUtil {
 			public void run() {
 				try {
 					lmx.setCondition(ConditionEdit.this, condition);
+					getPBMApplication().getLmxConditionsByID(lmx.id).addCondition(new Condition(new Date(), condition));
 					new RetrieveJsonTask().execute(regionlessBase + "location_machine_xrefs/" + lmx.id + ".json?condition=" + URLEncoder.encode(condition, "UTF8"), "PUT").get();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				} catch (UnsupportedEncodingException e) {
+				} catch (InterruptedException | ExecutionException | UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
 
@@ -66,9 +64,9 @@ public class ConditionEdit extends PBMUtil {
 				updateCondition(currText.getText().toString());
 
 				break;
-			case R.id.deleteCondition:
-				updateCondition(" ");
-				break;
+//			case R.id.deleteCondition:
+//				updateCondition(" ");
+//				break;
 			default:
 				break;
 		}

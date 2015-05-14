@@ -12,7 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.concurrent.ExecutionException;
 
-public class SuggestLocation extends PBMUtil {
+public class SuggestLocation extends PinballMapActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
@@ -22,7 +22,7 @@ public class SuggestLocation extends PBMUtil {
 
 		PBMApplication app = getPBMApplication();
 		String[] machineNames = app.getMachineNamesWithMetadata();
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, machineNames);
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, machineNames);
 		MultiAutoCompleteTextView mactv = (MultiAutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView1);
 		mactv.setAdapter(adapter);
 		mactv.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());

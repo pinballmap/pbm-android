@@ -10,7 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.concurrent.ExecutionException;
 
-public class SuggestRegion extends PBMUtil {
+public class SuggestRegion extends PinballMapActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);

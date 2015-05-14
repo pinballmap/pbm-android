@@ -10,6 +10,8 @@ import android.widget.Filter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
@@ -22,8 +24,8 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 		super(context, R.layout.location_list_listview, locations);
 
 		this.context = context;
-		this.locations = new ArrayList<com.pbm.Location>(locations);
-		this.filteredLocationList = new ArrayList<com.pbm.Location>(locations);
+		this.locations = new ArrayList<>(locations);
+		this.filteredLocationList = new ArrayList<>(locations);
 	}
 	
 	@SuppressLint("InflateParams")
@@ -44,13 +46,20 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 		} else {
 			holder = (ViewHolder) row.getTag();
 		}
-
-		Location location = filteredLocationList.get(position);
-		holder.name.setText(location.name);
-		holder.distance.setText(location.milesInfo);
-		holder.numMachines.setText(Integer.toString(location.numMachines((PBMUtil) context)));
-		
+		if (filteredLocationList.size() > 0) {
+			Location location = filteredLocationList.get(position);
+			holder.name.setText(location.name);
+			holder.distance.setText(location.milesInfo);
+			holder.numMachines.setText(Integer.toString(location.numMachines((PinballMapActivity) context)));
+		}
 		return row;
+	}
+
+	@Override
+	public void sort(Comparator<? super Location> comparator) {
+		super.sort(comparator);
+		Collections.sort(this.locations, comparator);
+		Collections.sort(this.filteredLocationList, comparator);
 	}
 
 	class ViewHolder {
@@ -74,11 +83,11 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 			String filter = constraint.toString().toLowerCase();
 
 			if(constraint == null || constraint.length() == 0) {
-			    ArrayList<com.pbm.Location> list = new ArrayList<com.pbm.Location>(locations);
+			    ArrayList<com.pbm.Location> list = new ArrayList<>(locations);
 			    results.values = list;
 			    results.count = list.size();
 			} else {
-			    ArrayList<com.pbm.Location> newValues = new ArrayList<com.pbm.Location>();
+			    ArrayList<com.pbm.Location> newValues = new ArrayList<>();
 			    for(int i = 0; i < locations.size(); i++) {
 			        com.pbm.Location item = locations.get(i);
 			        if (item.name.toLowerCase().contains(filter)) {

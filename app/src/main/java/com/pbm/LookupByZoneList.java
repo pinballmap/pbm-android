@@ -15,7 +15,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-public class LookupByZoneList extends PBMUtil {
+public class LookupByZoneList extends PinballMapActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,8 +23,8 @@ public class LookupByZoneList extends PBMUtil {
 		
 		logAnalyticsHit("com.pbm.LookupByZoneList");
 
-		List<Zone> primaryZones = new ArrayList<Zone>();
-		List<Zone> secondaryZones = new ArrayList<Zone>();
+		List<Zone> primaryZones = new ArrayList<>();
+		List<Zone> secondaryZones = new ArrayList<>();
 
 		ListView table = (ListView)findViewById(R.id.locationLookupListTable);
 		table.setOnItemClickListener(new OnItemClickListener() {
@@ -53,7 +53,7 @@ public class LookupByZoneList extends PBMUtil {
 		sort(secondaryZones);
 		primaryZones.addAll(secondaryZones);
 
-		table.setAdapter(new ArrayAdapter<Zone>(this, android.R.layout.simple_list_item_1, primaryZones));
+		table.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, primaryZones));
 		
 		setTable(table);
 	}

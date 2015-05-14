@@ -3,6 +3,7 @@ package com.pbm;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -12,8 +13,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,18 +28,19 @@ import java.util.concurrent.ExecutionException;
 
 @SuppressLint("UseSparseArrays")
 public class PBMApplication extends Application {
+
+
 	public enum TrackerName {
-		APP_TRACKER
+		APP_TRACKER;
 	}
-
-	private HashMap<Integer, com.pbm.Location> locations = new HashMap<Integer, Location>();
-	private HashMap<Integer, com.pbm.LocationType> locationTypes = new HashMap<Integer, LocationType>();
-	private HashMap<Integer, com.pbm.Machine> machines = new HashMap<Integer, Machine>();
-	private HashMap<Integer, com.pbm.LocationMachineXref> lmxes = new HashMap<Integer, LocationMachineXref>();
-	private HashMap<Integer, com.pbm.Zone> zones = new HashMap<Integer, Zone>();
-	private HashMap<Integer, com.pbm.Region> regions = new HashMap<Integer, Region>();
-
-	private HashMap<TrackerName, Tracker> mTrackers = new HashMap<TrackerName, Tracker>();
+	private HashMap<Integer, com.pbm.Location> locations = new HashMap<>();
+	private HashMap<Integer, com.pbm.LocationType> locationTypes = new HashMap<>();
+	private HashMap<Integer, com.pbm.Machine> machines = new HashMap<>();
+	private HashMap<Integer, com.pbm.LocationMachineXref> lmxes = new HashMap<>();
+	private HashMap<Integer, com.pbm.LocationMachineConditions> lmxConditions = new HashMap<>();
+	private HashMap<Integer, com.pbm.Zone> zones = new HashMap<>();
+	private HashMap<Integer, com.pbm.Region> regions = new HashMap<>();
+	private HashMap<TrackerName, Tracker> mTrackers = new HashMap<>();
 
 	synchronized Tracker getTracker() {
 		if (!mTrackers.containsKey(TrackerName.APP_TRACKER)) {
@@ -113,12 +118,27 @@ public class PBMApplication extends Application {
 		this.lmxes = lmxes;
 	}
 
+	public void setLmxConditions(HashMap<Integer, LocationMachineConditions> lmxConditions) {
+		this.lmxConditions = lmxConditions;
+	}
+
 	public void setLmx(com.pbm.LocationMachineXref lmx) {
 		this.lmxes.put(lmx.id, lmx);
 	}
 
 	public void removeLmx(LocationMachineXref lmx) {
 		this.lmxes.remove(lmx.id);
+	}
+
+	public HashMap<Integer, LocationMachineConditions> getLmxConditionsMap() {
+		return lmxConditions;
+	}
+
+	public ArrayList<LocationMachineConditions> getLmxConditions() {
+		return new ArrayList<> (lmxConditions.values());
+	}
+	public LocationMachineConditions getLmxConditionsByID(Integer id) {
+		return this.lmxConditions.get(id);
 	}
 
 	public HashMap<Integer, com.pbm.Zone> getZones() {
@@ -151,6 +171,10 @@ public class PBMApplication extends Application {
 
 	public void addLocationMachineXref(Integer id, LocationMachineXref lmx) {
 		this.lmxes.put(id, lmx);
+	}
+
+	public void addLocationMachineConditions(Integer id, LocationMachineConditions locationMachineConditions) {
+		this.lmxConditions.put(id,locationMachineConditions);
 	}
 
 	public LocationMachineXref getLmxFromMachine(Machine machine, List<LocationMachineXref> lmxes) {
@@ -229,7 +253,7 @@ public class PBMApplication extends Application {
 	}
 
 	public ArrayList<Region> getRegionValues() {
-		ArrayList<Region> regionValues = new ArrayList<Region>(getRegions().values());
+		ArrayList<Region> regionValues = new ArrayList<>(getRegions().values());
 
 		Collections.sort(regionValues, new Comparator<Region>() {
 			public int compare(Region r1, Region r2) {
@@ -241,8 +265,7 @@ public class PBMApplication extends Application {
 	}
 
 	public ArrayList<Location> getLocationValues() {
-//		Location[] locationValues = (Location[]) getLocations().values().toArray();
-		ArrayList<Location> locationValues = new ArrayList<Location>(getLocations().values());
+		ArrayList<Location> locationValues = new ArrayList<>(getLocations().values());
 
 		Collections.sort(locationValues, new Comparator<Location>() {
 			public int compare(Location l1, Location l2) {
@@ -284,7 +307,7 @@ public class PBMApplication extends Application {
 	void initializeLocationTypes() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
 		locationTypes.clear();
 
-		String json = new RetrieveJsonTask().execute(PBMUtil.regionlessBase + "location_types.json", "GET").get();
+		String json = new RetrieveJsonTask().execute(PinballMapActivity.regionlessBase + "location_types.json", "GET").get();
 		if (json == null) {
 			return;
 		}
@@ -310,7 +333,7 @@ public class PBMApplication extends Application {
 	void initializeAllMachines() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
 		machines.clear();
 
-		String json = new RetrieveJsonTask().execute(PBMUtil.regionlessBase + "machines.json", "GET").get();
+		String json = new RetrieveJsonTask().execute(PinballMapActivity.regionlessBase + "machines.json", "GET").get();
 		if (json == null) {
 			return;
 		}
@@ -338,7 +361,7 @@ public class PBMApplication extends Application {
 	void initializeZones() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
 		zones.clear();
 
-		String json = new RetrieveJsonTask().execute(PBMUtil.regionBase + "zones.json", "GET").get();
+		String json = new RetrieveJsonTask().execute(PinballMapActivity.regionBase + "zones.json", "GET").get();
 		if (json == null) {
 			return;
 		}
@@ -363,7 +386,7 @@ public class PBMApplication extends Application {
 		lmxes.clear();
 		locations.clear();
 
-		String json = new RetrieveJsonTask().execute(PBMUtil.regionBase + "locations.json", "GET").get();
+		String json = new RetrieveJsonTask().execute(PinballMapActivity.regionBase + "locations.json", "GET").get();
 		if (json == null) {
 			return;
 		}
@@ -398,7 +421,7 @@ public class PBMApplication extends Application {
 			if ((name != null) && (lat != null) && (lon != null)) {
 				Location newLocation = new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip, phone, locationTypeID, website);
 
-				SharedPreferences settings = getSharedPreferences(PBMUtil.PREFS_NAME, 0);
+				SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 				float yourLat = settings.getFloat("yourLat", -1);
 				float yourLon = settings.getFloat("yourLon", -1);
 
@@ -433,6 +456,27 @@ public class PBMApplication extends Application {
 								lmxID,
 								new com.pbm.LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate)
 						);
+						if (lmx.has("machine_conditions")) {
+							JSONArray conditions = lmx.getJSONArray("machine_conditions");
+							DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+//							TreeMap<Date, String> conditionMap = new TreeMap<>();
+							ArrayList<Condition> conditionList = new ArrayList<>();
+							for (int conditionIndex = 0; conditionIndex < conditions.length(); conditionIndex ++ ) {
+								JSONObject pastCondition = conditions.getJSONObject(conditionIndex);
+								try {
+									conditionList.add(new Condition(dateFormat.parse(pastCondition.getString("updated_at")), pastCondition.getString("comment")));
+									Log.d("lmxconditions", pastCondition.getString("updated_at"));
+									Log.d("lmxconditions", pastCondition.getString("comment"));
+//									conditionMap.put(dateFormat.parse(pastCondition.getString("updated_at")), pastCondition.getString("comment"));
+								} catch (ParseException e) {
+									e.printStackTrace();
+								}
+
+							}
+							LocationMachineConditions machineConditions = new LocationMachineConditions(lmxID, machineID, lmxLocationID,
+									conditionList);
+							addLocationMachineConditions(lmxID, machineConditions);
+						}
 					}
 				}
 			}
@@ -443,18 +487,15 @@ public class PBMApplication extends Application {
 		android.location.Location yourLocation = new android.location.Location("");
 		yourLocation.setLatitude(yourLat);
 		yourLocation.setLongitude(yourLon);
-
-		float distance = yourLocation.distanceTo(newLocation.toAndroidLocation());
-		distance = distance * PBMUtil.METERS_TO_MILES;
-
+		newLocation.setDistance(yourLocation);
 		NumberFormat formatter = new DecimalFormat(".00");
-		newLocation.setMilesInfo(formatter.format(distance) + " miles");
+		newLocation.setMilesInfo(formatter.format(newLocation.distanceFromYou) + " miles");
 
 		return newLocation;
 	}
 
 	public boolean initializeRegions() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		String json = new RetrieveJsonTask().execute(PBMUtil.regionlessBase + "regions.json", "GET").get();
+		String json = new RetrieveJsonTask().execute(PinballMapActivity.regionlessBase + "regions.json", "GET").get();
 		if (json == null) {
 			return false;
 		}

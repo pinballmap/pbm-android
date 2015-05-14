@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class Events extends PBMUtil {
+public class Events extends PinballMapActivity {
 	private String[] eventLinks;
-	private List<Spanned> events = new ArrayList<Spanned>();
+	private List<Spanned> events = new ArrayList<>();
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,20 +48,14 @@ public class Events extends PBMUtil {
 			public void run() {
 				try {
 					getEventData();
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				} catch (JSONException e) {
+				} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException e) {
 					e.printStackTrace();
 				}
 				Events.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
 						ListView table = (ListView) findViewById(R.id.eventsTable);
-						table.setAdapter(new ArrayAdapter<Spanned>(Events.this, android.R.layout.simple_list_item_1, events));
+						table.setAdapter(new ArrayAdapter<>(Events.this, android.R.layout.simple_list_item_1, events));
 					}
 				});
 			}

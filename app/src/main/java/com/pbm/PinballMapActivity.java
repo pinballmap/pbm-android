@@ -1,6 +1,5 @@
 package com.pbm;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -9,8 +8,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.text.TextUtils;
@@ -21,9 +21,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,8 +37,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
-@SuppressLint("Registered")
-public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
+public class PinballMapActivity extends AppCompatActivity implements OnQueryTextListener, LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 	static final int MENU_RESULT = 8;
 	public static final int QUIT_RESULT = 42;
 	static final int RESET_RESULT = 23;
@@ -56,6 +61,8 @@ public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 	public static String regionlessBase = httpBase + apiPath;
 
 	public ListView table;
+	private GoogleApiClient googleApiClient;
+	private android.location.Location location;
 
 
 	@Override
@@ -66,25 +73,37 @@ public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 		outState.putSerializable("locationTypes", getPBMApplication().getLocationTypes());
 		outState.putSerializable("machines", getPBMApplication().getMachines());
 		outState.putSerializable("lmxes", getPBMApplication().getLmxes());
+		outState.putSerializable("lmxConditions", getPBMApplication().getLmxConditionsMap());
 		outState.putSerializable("zones", getPBMApplication().getZones());
 		outState.putSerializable("regions", getPBMApplication().getRegions());
+		outState.putParcelable("location", this.location);
 	}
 
 	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		regionBase = savedInstanceState.getString("regionBase");
-		PBMApplication pbm = getPBMApplication();
-		pbm.setLocations((java.util.HashMap<Integer, Location>) savedInstanceState.getSerializable("locations"));
-		pbm.setLocationTypes((java.util.HashMap<Integer, LocationType>) savedInstanceState.getSerializable("locationTypes"));
-		pbm.setMachines((java.util.HashMap<Integer, Machine>) savedInstanceState.getSerializable("machines"));
-		pbm.setLmxes((java.util.HashMap<Integer, LocationMachineXref>) savedInstanceState.getSerializable("lmxes"));
-		pbm.setZones((java.util.HashMap<Integer, Zone>) savedInstanceState.getSerializable("zones"));
-		pbm.setRegions((java.util.HashMap<Integer, Region>) savedInstanceState.getSerializable("regions"));
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		googleApiClient = new GoogleApiClient.Builder(getPBMActivity()).addApi(LocationServices.API)
+				.addConnectionCallbacks(getPBMActivity()).addOnConnectionFailedListener(getPBMActivity()).build();
+		if (savedInstanceState != null) {
+			regionBase = savedInstanceState.getString("regionBase");
+			PBMApplication pbm = getPBMApplication();
+			pbm.setLocations((java.util.HashMap<Integer, Location>) savedInstanceState.getSerializable("locations"));
+			pbm.setLocationTypes((java.util.HashMap<Integer, LocationType>) savedInstanceState.getSerializable("locationTypes"));
+			pbm.setMachines((java.util.HashMap<Integer, Machine>) savedInstanceState.getSerializable("machines"));
+			pbm.setLmxes((java.util.HashMap<Integer, LocationMachineXref>) savedInstanceState.getSerializable("lmxes"));
+			pbm.setLmxConditions((java.util.HashMap<Integer, LocationMachineConditions>) savedInstanceState.getSerializable("lmxConditions"));
+			pbm.setZones((java.util.HashMap<Integer, Zone>) savedInstanceState.getSerializable("zones"));
+			pbm.setRegions((java.util.HashMap<Integer, Region>) savedInstanceState.getSerializable("regions"));
+			this.location = savedInstanceState.getParcelable("location");
+		}
 	}
 
 	public PBMApplication getPBMApplication() {
 		return (PBMApplication) getApplication();
+	}
+
+	public PinballMapActivity getPBMActivity() {
+		return this;
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,8 +118,20 @@ public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 			searchView.setSubmitButtonEnabled(false);
 			searchView.setOnQueryTextListener(this);
 		}
-
 		return true;
+	}
+
+
+	@Override
+	protected void onPause() {
+		googleApiClient.disconnect();
+		super.onPause();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		googleApiClient.connect();
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -147,7 +178,7 @@ public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		SharedPreferences settings = getSharedPreferences(PBMUtil.PREFS_NAME, 0);
+		SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 		if (settings.getInt("region", -1) == -1) {
 			menu.removeItem(R.id.contact_admin);
 			menu.removeItem(R.id.suggest_location);
@@ -275,5 +306,65 @@ public class PBMUtil extends ActionBarActivity implements OnQueryTextListener {
 
 	public boolean onQueryTextSubmit(String query) {
 		return false;
+	}
+
+	public android.location.Location getLocation() {
+		return location;
+	}
+
+	private void setLocation(android.location.Location location) {
+		this.location = location;
+		Log.d("com.pbm.location", "set location to " + location);
+		if (this.location != null) {
+			SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+			SharedPreferences.Editor editor = settings.edit();
+			Log.d("com.pbm", "lat: " + location.getLongitude() + " long: " + location.getLatitude() + " acc: " + location.getAccuracy());
+			editor.putFloat("yourLat", (float) location.getLatitude());
+			editor.putFloat("yourLon", (float) location.getLongitude());
+			editor.commit();
+		}
+	}
+
+	@Override
+	public void onConnected(Bundle bundle) {
+		Log.d("com.pbm.location", "PBM onConnected");
+		LocationRequest locationRequest = LocationRequest.create();
+		if (Build.MODEL.equals("sdk") || Build.MODEL.contains("Genymotion") || Build.FINGERPRINT.contains("generic")) {
+			locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+			locationRequest.setInterval(60000);
+		} else {
+			locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+			locationRequest.setInterval(60000 * 60);
+			locationRequest.setFastestInterval(60000);
+		}
+		setLocation(LocationServices.FusedLocationApi.getLastLocation(googleApiClient));
+		LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,
+				locationRequest, this);
+	}
+
+	@Override
+	public void onConnectionSuspended(int i) {
+		Log.d("com.pbm.location", "PBM onConnectionSuspended");
+		Log.i("PBM", "GoogleApiClient connection suspended"); //  When called, all requests have been canceled
+		// and no outstanding listeners will be executed. GoogleApiClient will automatically attempt
+		// to restore the connection. Applications should disable UI components that require the
+		// service, and wait for a call to onConnected(Bundle) to re-enable them
+	}
+
+	@Override
+	public void onConnectionFailed(ConnectionResult connectionResult) {
+		Toast.makeText(getBaseContext(), "I couldn't get a fix on your position. Try again, please.", Toast.LENGTH_LONG).show();
+		Log.d("com.pbm.location", "PBM onConnectionSuspended");
+	}
+
+	@Override
+	public void onLocationChanged(android.location.Location location) {
+		Log.d("com.pbm.location", "PBM onLocationChanged" + location);
+		setLocation(location);
+		processLocation();
+	}
+
+	public void processLocation() {
+		Log.d("com.pbm.location", "PBM processLocation");
 	}
 }

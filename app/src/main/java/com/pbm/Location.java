@@ -1,7 +1,10 @@
 package com.pbm;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -26,6 +29,14 @@ public class Location implements Serializable {
 		this.locationTypeID = locationTypeID;
 	}
 
+	protected static Comparator<Location> byNearestDistance = new Comparator<com.pbm.Location>() {
+		public int compare(com.pbm.Location l1, com.pbm.Location l2) {
+			Float distanceFromYou1 = l1.distanceFromYou;
+			Float distanceFromYou2 = l2.distanceFromYou;
+			return distanceFromYou1.compareTo(distanceFromYou2);
+		}
+	};
+
 	public void setWebsite(String website) {
 		this.website = website;
 	}
@@ -38,6 +49,14 @@ public class Location implements Serializable {
 		this.locationTypeID = locationTypeID;
 	}
 
+	public void setDistance(android.location.Location location) {
+		float distance = location.distanceTo(toAndroidLocation());
+		this.distanceFromYou = distance * PinballMapActivity.METERS_TO_MILES;
+
+		NumberFormat formatter = new DecimalFormat(".00");
+		setMilesInfo(formatter.format(this.distanceFromYou) + " miles");
+
+	}
 	public void setDistance(float distance) {
 		this.distanceFromYou = distance;
 	}
@@ -46,7 +65,7 @@ public class Location implements Serializable {
 		this.milesInfo = milesInfo;
 	}
 
-	public int numMachines(PBMUtil activity) {
+	public int numMachines(PinballMapActivity activity) {
 		PBMApplication app = activity.getPBMApplication();
 		return app.numMachinesForLocation(this);
 	}
@@ -55,8 +74,8 @@ public class Location implements Serializable {
 		return milesInfo != null ? name + " " + milesInfo : name;
 	}
 
-	public List<LocationMachineXref> getLmxes(PBMUtil activity) {
-		List<LocationMachineXref> locationLmxes = new ArrayList<LocationMachineXref>();
+	public List<LocationMachineXref> getLmxes(PinballMapActivity activity) {
+		List<LocationMachineXref> locationLmxes = new ArrayList<>();
 		PBMApplication app = activity.getPBMApplication();
 
 		for (LocationMachineXref lmx : app.getLmxes().values()) {
@@ -68,8 +87,8 @@ public class Location implements Serializable {
 		return locationLmxes;
 	}
 
-	public TreeMap<Integer, LocationMachineXref> getLMXMap(PBMUtil activity) {
-		TreeMap<Integer, LocationMachineXref> lmxes = new TreeMap<Integer, LocationMachineXref>();
+	public TreeMap<Integer, LocationMachineXref> getLMXMap(PinballMapActivity activity) {
+		TreeMap<Integer, LocationMachineXref> lmxes = new TreeMap<>();
 		PBMApplication app = activity.getPBMApplication();
 		for (LocationMachineXref lmx : app.getLmxes().values()) {
 			if (lmx.locationID == id) {
@@ -79,8 +98,8 @@ public class Location implements Serializable {
 		return lmxes;
 	}
 
-	public List<Machine> getMachines(PBMUtil activity) {
-		List<Machine> machinesFromLmxes = new ArrayList<Machine>();
+	public List<Machine> getMachines(PinballMapActivity activity) {
+		List<Machine> machinesFromLmxes = new ArrayList<>();
 		PBMApplication app = activity.getPBMApplication();
 
 		for (LocationMachineXref lmx : getLmxes(activity)) {
@@ -90,11 +109,11 @@ public class Location implements Serializable {
 		return machinesFromLmxes;
 	}
 
-	public LocationType getLocationType(PBMUtil activity) {
+	public LocationType getLocationType(PinballMapActivity activity) {
 		return activity.getPBMApplication().getLocationType(locationTypeID);
 	}
 
-	public void removeMachine(PBMUtil activity, LocationMachineXref lmx) {
+	public void removeMachine(PinballMapActivity activity, LocationMachineXref lmx) {
 		activity.getPBMApplication().removeLmx(lmx);
 	}
 

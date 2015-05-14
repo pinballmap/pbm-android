@@ -18,7 +18,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DisplayOnMap extends PBMUtil implements OnMapReadyCallback {
+public class DisplayOnMap extends PinballMapActivity implements OnMapReadyCallback {
 	private ArrayList<Marker> markers = new ArrayList<>();
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -75,14 +75,14 @@ public class DisplayOnMap extends PBMUtil implements OnMapReadyCallback {
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (resultCode) {
-			case PBMUtil.QUIT_RESULT:
-				setResult(PBMUtil.QUIT_RESULT);
+			case PinballMapActivity.QUIT_RESULT:
+				setResult(PinballMapActivity.QUIT_RESULT);
 				super.finish();
 				this.finish();
 
 				break;
-			case PBMUtil.RESET_RESULT:
-				setResult(PBMUtil.RESET_RESULT);
+			case PinballMapActivity.RESET_RESULT:
+				setResult(PinballMapActivity.RESET_RESULT);
 				super.finish();
 				this.finish();
 

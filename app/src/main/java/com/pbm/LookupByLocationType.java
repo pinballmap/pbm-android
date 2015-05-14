@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class LookupByLocationType extends PBMUtil {
+public class LookupByLocationType extends PinballMapActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,7 +39,7 @@ public class LookupByLocationType extends PBMUtil {
 
 		sort(locationTypes);
 
-		table.setAdapter(new ArrayAdapter<LocationType>(this, android.R.layout.simple_list_item_1, locationTypes));
+		table.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, locationTypes));
 		
 		setTable(table);
 	}

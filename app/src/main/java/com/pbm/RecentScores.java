@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class RecentScores extends PBMUtil {
+public class RecentScores extends PinballMapActivity {
 	private List<Spanned> recentScores = new ArrayList<Spanned>();
 	final private static int NUM_RECENT_SCORES_TO_SHOW = 20;	
 	@SuppressLint("UseSparseArrays")
@@ -44,20 +44,14 @@ public class RecentScores extends PBMUtil {
 	        public void run() {
 	        	try {
 					getLocationData();
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				} catch (JSONException e) {
+				} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException e) {
 					e.printStackTrace();
 				}
-	        	RecentScores.super.runOnUiThread(new Runnable() {
+		        RecentScores.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
 						ListView table = (ListView)findViewById(R.id.recentscorestable);
-						table.setAdapter(new ArrayAdapter<Spanned>(RecentScores.this, android.R.layout.simple_list_item_1, recentScores));
+						table.setAdapter(new ArrayAdapter<>(RecentScores.this, android.R.layout.simple_list_item_1, recentScores));
 					}
 	        	});
 	        }

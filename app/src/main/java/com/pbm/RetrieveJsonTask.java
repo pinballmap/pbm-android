@@ -30,7 +30,7 @@ public class RetrieveJsonTask extends AsyncTask<String, Void, String> {
 				String url = urls[0];
 				String requestType = urls[1];
 
-				inputStream = PBMUtil.openHttpConnection(url, requestType);
+				inputStream = PinballMapActivity.openHttpConnection(url, requestType);
 
 				BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
 				StringBuilder sb = new StringBuilder();
@@ -57,11 +57,7 @@ public class RetrieveJsonTask extends AsyncTask<String, Void, String> {
 		if (listener != null) {
 			try {
 				listener.onTaskCompleted(results);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
+			} catch (JSONException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 			}
 		}

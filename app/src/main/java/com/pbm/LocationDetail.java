@@ -18,12 +18,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class LocationDetail extends PBMUtil {
+public class LocationDetail extends PinballMapActivity {
 	private ListView table;
 
 	private Location location;
-	private List<LocationMachineXref> lmxes = new ArrayList<LocationMachineXref>();
-	private List<Machine> machines = new ArrayList<Machine>();
+	private List<LocationMachineXref> lmxes = new ArrayList<>();
+	private List<Machine> machines = new ArrayList<>();
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

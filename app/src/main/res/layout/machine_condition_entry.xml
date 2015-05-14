@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:id="@+id/_condition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:text="Condition ... sdlkj asdfl asdlf sdlf asdf asdfasdfasdfa asd asdf as"
+        android:singleLine="false">
+    </TextView>
+
+
+    <TextView
+        android:id="@+id/_updated_on"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-- updated on"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/_condition"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/_condition_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:text="xx/xx/xx yy:yy:yy"
+        android:layout_alignTop="@+id/_updated_on"
+        android:layout_toRightOf="@+id/_updated_on"
+        android:layout_toEndOf="@+id/_updated_on"
+        android:layout_marginLeft="5dp"/>
+
+</RelativeLayout>
+

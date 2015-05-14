@@ -13,7 +13,7 @@ import org.json.JSONException;
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.ExecutionException;
 
-public class InitializingScreen extends PBMUtil {
+public class InitializingScreen extends PinballMapActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -23,7 +23,7 @@ public class InitializingScreen extends PBMUtil {
 		setSupportProgressBarIndeterminateVisibility(true);
 
 		PBMApplication app = getPBMApplication();
-		SharedPreferences settings = getSharedPreferences(PBMUtil.PREFS_NAME, 0);
+		SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 		Region region = app.getRegion(settings.getInt("region", 1));
 
 		int resID = getResources().getIdentifier(getCityNamePath(region), null, null);

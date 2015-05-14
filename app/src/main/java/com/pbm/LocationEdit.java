@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 
-public class LocationEdit extends PBMUtil implements OnTaskCompleted {
+public class LocationEdit extends PinballMapActivity implements OnTaskCompleted {
 	private Location location;
 	private EditText phone;
 	private EditText website;
@@ -36,7 +36,7 @@ public class LocationEdit extends PBMUtil implements OnTaskCompleted {
 		location = (Location) getIntent().getExtras().get("Location");
 		setTitle("Edit Data At " + location.name);
 
-		locationTypes = new TreeMap<String, Integer>();
+		locationTypes = new TreeMap<>();
 
 		LocationType blankLocationType = LocationType.blankLocationType();
 		locationTypes.put(blankLocationType.name, blankLocationType.id);
@@ -63,7 +63,7 @@ public class LocationEdit extends PBMUtil implements OnTaskCompleted {
 						website.setText((location.website.equals("null")) ? "" : location.website);
 
 						dropdown = (Spinner) findViewById(R.id.locationTypeSpinner);
-						ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+						ArrayAdapter<String> adapter = new ArrayAdapter<>(
 								LocationEdit.this,
 								android.R.layout.simple_spinner_item,
 								locationTypeNames
@@ -98,9 +98,7 @@ public class LocationEdit extends PBMUtil implements OnTaskCompleted {
 							regionlessBase + "locations/" + location.id + ".json?phone=" + phoneNumber + ";location_type=" + locationTypeString + ";website=" + URLDecoder.decode(locationWebsite, "UTF-8"),
 							"PUT"
 					).get();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
+				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
@@ -158,9 +156,7 @@ public class LocationEdit extends PBMUtil implements OnTaskCompleted {
 					try {
 						error = URLDecoder.decode(jsonObject.getString("errors"), "UTF-8");
 						error = error.replace("\\/", "/");
-					} catch (JSONException e) {
-						e.printStackTrace();
-					} catch (UnsupportedEncodingException e) {
+					} catch (JSONException | UnsupportedEncodingException e) {
 						e.printStackTrace();
 					}
 

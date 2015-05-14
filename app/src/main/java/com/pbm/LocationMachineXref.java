@@ -24,7 +24,7 @@ public class LocationMachineXref implements Serializable {
 		this.conditionDate = conditionDate;
 	}
 
-	public Location getLocation(PBMUtil activity) {
+	public Location getLocation(PinballMapActivity activity) {
 		PBMApplication app = activity.getPBMApplication();
 		return app.getLocation(locationID);
 	}

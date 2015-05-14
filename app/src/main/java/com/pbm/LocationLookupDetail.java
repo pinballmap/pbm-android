@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
-public class LocationLookupDetail extends PBMUtil {
+public class LocationLookupDetail extends PinballMapActivity {
 	private Zone zone;
 	private LocationType locationType;
 	private ArrayList<Location> foundLocations = new ArrayList<Location>();
@@ -25,6 +25,9 @@ public class LocationLookupDetail extends PBMUtil {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (savedInstanceState != null) {
+			listState = savedInstanceState.getParcelable("listState");
+		}
 		setContentView(R.layout.location_lookup_detail);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -55,7 +58,7 @@ public class LocationLookupDetail extends PBMUtil {
 				
 				myIntent.putExtra("Location", location);
 				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
-				startActivityForResult(myIntent, PBMUtil.QUIT_RESULT);
+				startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
 			}
 		});
 
@@ -69,13 +72,19 @@ public class LocationLookupDetail extends PBMUtil {
 	}
 
 	void loadLocationData() {
+		LocationListAdapter adapter = (LocationListAdapter) table.getAdapter();
 		foundLocations.clear();
-		table.setAdapter(null); //TODO
+//		table.setAdapter(null); //TODO
 
 		PBMApplication app = getPBMApplication();
 		HashMap<Integer, com.pbm.Location> locations = app.getLocations();
+		if (this.getLocation() != null) {
+			Log.d("com.pbm.location", "adjusting distance to locations");
+		}
 		for (Location location : locations.values()) {
-
+			if (this.getLocation() != null) {
+				location.setDistance(this.getLocation());
+			}
 			if (locationType == null && zone == null) {
 				foundLocations.add(location);
 				continue;
@@ -96,8 +105,12 @@ public class LocationLookupDetail extends PBMUtil {
 				return l1.name.compareTo(l2.name);
 			}
 		});
-
-		table.setAdapter(new LocationListAdapter(this, foundLocations)); // TODO change miles based on distance
+		if (adapter == null) {
+			adapter = new LocationListAdapter(this, foundLocations);
+			table.setAdapter(adapter);
+		} else {
+			adapter.notifyDataSetChanged();
+		}
 		if (listState != null) {
 			table.onRestoreInstanceState(listState);
 		}
@@ -106,8 +119,14 @@ public class LocationLookupDetail extends PBMUtil {
 	public void onResume() {
 		super.onResume();
 		loadLocationData();
-		listState = null;
+//		listState = null;
 		Log.d("com.pbm", "done");
+	}
+
+	@Override
+	public void processLocation() {
+		super.processLocation();
+		loadLocationData();
 	}
 
 	@Override
@@ -115,12 +134,6 @@ public class LocationLookupDetail extends PBMUtil {
 		super.onSaveInstanceState(outState);
 		listState = table.onSaveInstanceState();
 		outState.putParcelable("listState", listState);
-	}
-
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		listState = savedInstanceState.getParcelable("listState");
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {

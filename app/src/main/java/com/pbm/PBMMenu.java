@@ -13,7 +13,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PBMMenu extends PBMUtil {
+public class PBMMenu extends PinballMapActivity {
 	public static int rootPID;
 
 	public static final String LOOKUP_BY_LOCATION = "Lookup By Location";
@@ -42,7 +42,7 @@ public class PBMMenu extends PBMUtil {
 		PBMApplication app = getPBMApplication();
 		Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 
-		final List<String> mainMenuItems = new ArrayList<String>();
+		final List<String> mainMenuItems = new ArrayList<>();
 		mainMenuItems.add(LOOKUP_BY_LOCATION);
 		mainMenuItems.add(LOOKUP_BY_MACHINE);
 
@@ -50,7 +50,7 @@ public class PBMMenu extends PBMUtil {
 			mainMenuItems.add(LOOKUP_BY_ZONE);
 		}
 
-		if (region.locationTypes(this) != null) {
+		if (region != null && region.locationTypes(this) != null) {
 			mainMenuItems.add(LOOKUP_BY_LOCATION_TYPE);
 		}
 
@@ -64,7 +64,7 @@ public class PBMMenu extends PBMUtil {
 		}
 
 		ListView table = (ListView) findViewById(R.id.maintable);
-		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mainMenuItems);
+		final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mainMenuItems);
 
 		table.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
@@ -109,6 +109,4 @@ public class PBMMenu extends PBMUtil {
 		table.setAdapter(adapter);
 	}
 
-	public void activityResetResult() {
-	}
 }

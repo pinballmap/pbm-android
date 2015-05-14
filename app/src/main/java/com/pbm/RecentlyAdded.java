@@ -1,6 +1,5 @@
 package com.pbm;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -22,9 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-@SuppressLint("HandlerLeak")
-public class RecentlyAdded extends PBMUtil {
-	private List<Spanned> recentAdds = new ArrayList<Spanned>();
+public class RecentlyAdded extends PinballMapActivity {
+	private List<Spanned> recentAdds = new ArrayList<>();
 
 	public void onCreate(Bundle savedInstanceState) {
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -101,6 +99,6 @@ public class RecentlyAdded extends PBMUtil {
 			}
 		});
 
-		table.setAdapter(new ArrayAdapter<Spanned>(this, android.R.layout.simple_list_item_1, locations));
+		table.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, locations));
 	}
 }
