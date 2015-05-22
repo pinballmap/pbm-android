@@ -98,9 +98,7 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 							regionlessBase + "locations/" + location.id + ".json?phone=" + phoneNumber + ";location_type=" + locationTypeString + ";website=" + URLDecoder.decode(locationWebsite, "UTF-8"),
 							"PUT"
 					).get();
-				} catch (InterruptedException | ExecutionException e) {
-					e.printStackTrace();
-				} catch (UnsupportedEncodingException e) {
+				} catch (InterruptedException | ExecutionException | UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
 			}

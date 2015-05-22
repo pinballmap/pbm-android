@@ -43,4 +43,10 @@ public class LocationMachineConditions implements Serializable {
 		}
 	}
 
+	public void removeCondition(Condition condition) {
+		if (condition != null) {
+			conditions.remove(condition);
+		}
+	}
+
 }

@@ -4,13 +4,6 @@
                 android:layout_height="fill_parent"
                 android:orientation="vertical">
 
-    <!--<TextView-->
-    <!--android:id="@+id/enterConditionHeader"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="@string/enter_condition"-->
-    <!--android:textSize="20sp"/>-->
-
     <Button
         android:id="@+id/add_condition_button"
         android:layout_width="wrap_content"
@@ -28,26 +21,6 @@
         android:layout_above="@+id/remove_machine_button"
 
         android:layout_below="@+id/add_condition_button"/>
-    <!-- -->
-    <!--<TableLayout android:id="@+id/conditionTable"-->
-    <!--android:layout_below="@+id/enterConditionHeader" android:layout_width="fill_parent"-->
-    <!--android:layout_height="270dip">-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/condition"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="264dip"-->
-    <!--android:layout_marginBottom="3dip"-->
-    <!--android:layout_marginLeft="3dip"-->
-    <!--android:layout_marginRight="3dip"-->
-    <!--android:layout_marginTop="3dip"-->
-    <!--android:textColor="#000000"-->
-    <!--android:background="#cccccc"-->
-    <!--android:clickable="true"-->
-    <!--android:onClick="clickHandler"-->
-    <!--android:text="@string/blank" />-->
-
-    <!--</TableLayout>-->
 
     <TextView
         android:id="@android:id/empty"
@@ -77,7 +50,5 @@
         android:text="Remove machine"
         android:layout_marginTop="20dp"
         android:padding="15dp"/>
-    <!--<TextView android:id="@+id/conditionDate"-->
-    <!--android:layout_below="@+id/conditionTable" android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content" android:dividerHeight="1dip" />-->
+
 </RelativeLayout>

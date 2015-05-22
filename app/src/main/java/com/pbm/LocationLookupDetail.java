@@ -19,7 +19,7 @@ import java.util.HashMap;
 public class LocationLookupDetail extends PinballMapActivity {
 	private Zone zone;
 	private LocationType locationType;
-	private ArrayList<Location> foundLocations = new ArrayList<Location>();
+	private ArrayList<Location> foundLocations = new ArrayList<>();
 	private ListView table;
 	private Parcelable listState;
 

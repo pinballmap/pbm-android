@@ -21,12 +21,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 
 public class PBMApplication extends Application {
 
 	public enum TrackerName {
-		APP_TRACKER;
+		APP_TRACKER
 	}
 	private HashMap<Integer, com.pbm.Location> locations = new HashMap<>();
 	private HashMap<Integer, com.pbm.LocationType> locationTypes = new HashMap<>();
@@ -136,6 +137,9 @@ public class PBMApplication extends Application {
 		return this.lmxConditions.get(id);
 	}
 
+	public void removeLocationMachine(Integer id) {
+		lmxConditions.remove(id);
+	}
 	public HashMap<Integer, com.pbm.Zone> getZones() {
 		return zones;
 	}
@@ -442,30 +446,37 @@ public class PBMApplication extends Application {
 								lmxID,
 								new com.pbm.LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate)
 						);
-						if (lmx.has("machine_conditions")) {
-							JSONArray conditions = lmx.getJSONArray("machine_conditions");
-							@SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-//							TreeMap<Date, String> conditionMap = new TreeMap<>();
-							ArrayList<Condition> conditionList = new ArrayList<>();
-							for (int conditionIndex = 0; conditionIndex < conditions.length(); conditionIndex ++ ) {
-								JSONObject pastCondition = conditions.getJSONObject(conditionIndex);
-								try {
-									conditionList.add(new Condition(dateFormat.parse(pastCondition.getString("updated_at")), pastCondition.getString("comment")));
-									Log.d("lmxconditions", pastCondition.getString("updated_at"));
-									Log.d("lmxconditions", pastCondition.getString("comment"));
-//									conditionMap.put(dateFormat.parse(pastCondition.getString("updated_at")), pastCondition.getString("comment"));
-								} catch (ParseException e) {
-									e.printStackTrace();
-								}
-
-							}
-							LocationMachineConditions machineConditions = new LocationMachineConditions(lmxID, machineID, lmxLocationID,
-									conditionList);
-							addLocationMachineConditions(lmxID, machineConditions);
-						}
+						loadConditions(lmx, lmxID, lmxLocationID, machineID);
 					}
 				}
 			}
+		}
+	}
+
+	void loadConditions(JSONObject lmx, int lmxID, int lmxLocationID, int machineID) throws JSONException {
+		if (lmx.has("machine_conditions")) {
+			JSONArray conditions = lmx.getJSONArray("machine_conditions");
+			@SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+			dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+//							TreeMap<Date, String> conditionMap = new TreeMap<>();
+			ArrayList<Condition> conditionList = new ArrayList<>();
+			for (int conditionIndex = 0; conditionIndex < conditions.length(); conditionIndex++) {
+				JSONObject pastCondition = conditions.getJSONObject(conditionIndex);
+				try {
+					conditionList.add(new Condition(pastCondition.getInt("id"),
+							dateFormat.parse(pastCondition.getString("updated_at")),
+							pastCondition.getString("comment"),
+							lmxID));
+									Log.d("lmxconditions", pastCondition.getString("updated_at"));
+									Log.d("lmxconditions", pastCondition.getString("comment"));
+//									conditionMap.put(dateFormat.parse(pastCondition.getString("updated_at")), pastCondition.getString("comment"));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+			LocationMachineConditions machineConditions = new LocationMachineConditions(lmxID, machineID, lmxLocationID,
+					conditionList);
+			addLocationMachineConditions(lmxID, machineConditions);
 		}
 	}
 

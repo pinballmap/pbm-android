@@ -1,39 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="match_parent"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
     >
 
-    <TextView
-        android:id="@+id/_condition"
+    <RelativeLayout
+        android:id="@+id/condition_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:text="Condition ... sdlkj asdfl asdlf sdlf asdf asdfasdfasdfa asd asdf as"
-        android:singleLine="false">
-    </TextView>
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/remove_condition"
+        android:layout_toStartOf="@+id/remove_condition"
+        android:layout_marginLeft="10dp">
 
 
-    <TextView
-        android:id="@+id/_updated_on"
+        <TextView
+            android:id="@+id/_condition"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="false"
+            android:text="Condition ... sdlkj asdfl asdlf sdlf asdf asdfasdfasdfa asd asdf as"
+            android:textColor="@android:color/black">
+        </TextView>
+
+
+        <TextView
+            android:id="@+id/_updated_on"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/_condition"
+            android:text="-- updated on"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/_condition_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/_updated_on"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/_updated_on"
+            android:layout_toRightOf="@+id/_updated_on"
+            android:text="xx/xx/xx yy:yy:yy"
+            android:textColor="@android:color/black"/>
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/remove_condition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-- updated on"
-        android:textColor="@android:color/black"
-        android:layout_below="@+id/_condition"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:src="@android:drawable/ic_menu_delete"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
     <TextView
-        android:id="@+id/_condition_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:text="xx/xx/xx yy:yy:yy"
-        android:layout_alignTop="@+id/_updated_on"
-        android:layout_toRightOf="@+id/_updated_on"
-        android:layout_toEndOf="@+id/_updated_on"
-        android:layout_marginLeft="5dp"/>
+        android:text="null"
+        android:id="@+id/condition_id"
+        android:layout_below="@+id/remove_condition"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"/>
 
 </RelativeLayout>
 

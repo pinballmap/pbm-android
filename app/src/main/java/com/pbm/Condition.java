@@ -15,10 +15,14 @@ public class Condition implements Serializable {
 	private final Date date;
 
 	private final String description;
+	private int lmxId;
+	private final int id;
 
-	public Condition (Date date, String description) {
+	public Condition(int id, Date date, String description, int lmxId) {
+		this.id = id;
 		this.date = date;
 		this.description = description;
+		this.lmxId = lmxId;
 	}
 
 	public String getDescription() {
@@ -27,5 +31,13 @@ public class Condition implements Serializable {
 
 	public Date getDate() {
 		return date;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public int getLmxId() {
+		return lmxId;
 	}
 }
