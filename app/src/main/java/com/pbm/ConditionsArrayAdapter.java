@@ -1,14 +1,11 @@
 package com.pbm;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,37 +46,37 @@ public class ConditionsArrayAdapter extends ArrayAdapter<Condition> implements O
 		format.setTimeZone(TimeZone.getDefault());
 		conditionDate.setText(format.format(condition.getDate()));
 
-		ImageButton removeCondition = (ImageButton) convertView.findViewById(R.id.remove_condition);
-		removeCondition.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				new AlertDialog.Builder(context)
-						.setIcon(android.R.drawable.ic_dialog_alert).setTitle("Remove this condition note?").setMessage("Are you sure?")
-						.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								new Thread(new Runnable() {
-									public void run() {
-										((PinballMapActivity) context).getPBMApplication().getLmxConditionsByID(condition.getLmxId()).removeCondition(condition);
-										((PinballMapActivity) context).runOnUiThread(new Runnable() {
-											@Override
-											public void run() {
-												notifyDataSetChanged();
-											}
-										});
-										try {
-											new RetrieveJsonTask(ConditionsArrayAdapter.this).execute(((PinballMapActivity) context).regionlessBase
-													+ "machine_conditions/" + Integer.toString(condition.getId()) + ".json", "DELETE").get();
-										} catch (InterruptedException | ExecutionException e) {
-											e.printStackTrace();
-										}
-									}
-								}).start();
-							}
-						})
-						.setNegativeButton("No", null)
-						.show();
-			}
-		});
+//		ImageButton removeCondition = (ImageButton) convertView.findViewById(R.id.remove_condition);
+//		removeCondition.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				new AlertDialog.Builder(context)
+//						.setIcon(android.R.drawable.ic_dialog_alert).setTitle("Remove this condition note?").setMessage("Are you sure?")
+//						.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//							public void onClick(DialogInterface dialog, int which) {
+//								new Thread(new Runnable() {
+//									public void run() {
+//										((PinballMapActivity) context).getPBMApplication().getLmxConditionsByID(condition.getLmxId()).removeCondition(condition);
+//										((PinballMapActivity) context).runOnUiThread(new Runnable() {
+//											@Override
+//											public void run() {
+//												notifyDataSetChanged();
+//											}
+//										});
+//										try {
+//											new RetrieveJsonTask(ConditionsArrayAdapter.this).execute(((PinballMapActivity) context).regionlessBase
+//													+ "machine_conditions/" + Integer.toString(condition.getId()) + ".json", "DELETE").get();
+//										} catch (InterruptedException | ExecutionException e) {
+//											e.printStackTrace();
+//										}
+//									}
+//								}).start();
+//							}
+//						})
+//						.setNegativeButton("No", null)
+//						.show();
+//			}
+//		});
 		return convertView;
 	}
 
