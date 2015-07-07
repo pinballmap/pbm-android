@@ -26,6 +26,16 @@ import java.util.concurrent.ExecutionException;
 
 public class PBMApplication extends Application {
 
+	private long dataLoadTimestamp;
+
+	public long getDataLoadTimestamp() {
+		return dataLoadTimestamp;
+	}
+
+	public void setDataLoadTimestamp(long dataLoadTimestamp) {
+		this.dataLoadTimestamp = dataLoadTimestamp;
+	}
+
 	public enum TrackerName {
 		APP_TRACKER
 	}
@@ -297,6 +307,8 @@ public class PBMApplication extends Application {
 	}
 
 	public void initializeData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+		dataLoadTimestamp = System.currentTimeMillis();
+		Log.d("com.pbm", "initializing data");
 		initializeAllMachines();
 		initializeLocations();
 		initializeLocationTypes();

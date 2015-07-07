@@ -31,11 +31,15 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.concurrent.ExecutionException;
 
 public class PinballMapActivity extends AppCompatActivity implements OnQueryTextListener, LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 	static final int MENU_RESULT = 8;
@@ -69,6 +73,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString("regionBase", regionBase);
+		outState.putLong("datatimestamp", getPBMApplication().getDataLoadTimestamp());
 		outState.putSerializable("locations", getPBMApplication().getLocations());
 		outState.putSerializable("locationTypes", getPBMApplication().getLocationTypes());
 		outState.putSerializable("machines", getPBMApplication().getMachines());
@@ -94,6 +99,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 			pbm.setLmxConditions((java.util.HashMap<Integer, LocationMachineConditions>) savedInstanceState.getSerializable("lmxConditions"));
 			pbm.setZones((java.util.HashMap<Integer, Zone>) savedInstanceState.getSerializable("zones"));
 			pbm.setRegions((java.util.HashMap<Integer, Region>) savedInstanceState.getSerializable("regions"));
+			pbm.setDataLoadTimestamp(savedInstanceState.getLong("datatimestamp"));
 			this.location = savedInstanceState.getParcelable("location");
 		}
 	}
@@ -121,6 +127,15 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 		return true;
 	}
 
+	private class ReloadData extends Thread {
+		public void run() {
+			try {
+				getPBMApplication().initializeData();
+			} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	@Override
 	protected void onPause() {
@@ -132,6 +147,12 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	protected void onResume() {
 		super.onResume();
 		googleApiClient.connect();
+		if (System.currentTimeMillis() - getPBMApplication().getDataLoadTimestamp() >= 3600000) {
+//		if (System.currentTimeMillis() - getPBMApplication().getDataLoadTimestamp() >= 86400000) // 1day
+			Log.d("com.pbm", "starting thread");
+			ReloadData reloadDataThread = new ReloadData();
+			reloadDataThread.run();
+		}
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {

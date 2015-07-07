@@ -143,7 +143,8 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 			int machineID = jsonLmx.getInt("machine_id");
 
 			app.addLocationMachineXref(id, new com.pbm.LocationMachineXref(id, locationID, machineID, "", ""));
-			
+			app.loadConditions(jsonLmx, id, locationID, machineID);
+
 			return;
 		}
 	}
