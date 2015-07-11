@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+
+    <Button
+        android:id="@+id/add_condition_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+
+        android:layout_centerHorizontal="true"
+        android:text="Add a new condition report"
+        android:padding="15dp"/>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/remove_machine_button"
+
+        android:layout_below="@+id/add_condition_button"/>
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent"
+        android:layout_above="@+id/remove_machine_button"
+        android:layout_alignParentLeft="true"
+
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/add_condition_button"
+
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="50dp"
+        android:text="No conditions"/>
+
+    <Button
+        android:id="@+id/remove_machine_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/holo_red_dark"
+        android:textColor="@android:color/white"
+        android:text="Remove machine"
+        android:layout_marginTop="20dp"
+        android:padding="15dp"/>
+
+</RelativeLayout>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/machineListRow"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="2dip">
+
+
+    <ImageView
+        android:id="@+id/machineSelectButton"
+        android:layout_width="32dip"
+        android:layout_height="32dip"
+
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/machine_button_desc"
+        android:src="@drawable/machine_icon"/>
+
+    <LinearLayout
+        android:id="@+id/drp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/machineSelectButton"
+        android:layout_toStartOf="@+id/machineSelectButton"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/machine_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sample_machine_name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+
+
+            />
+
+        <TextView
+            android:id="@+id/machine_condition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="@string/sample_condition_from_user"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+    </LinearLayout>
+</RelativeLayout>

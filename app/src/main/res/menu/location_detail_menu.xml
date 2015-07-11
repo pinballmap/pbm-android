@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/map_button"
+        android:icon="@android:drawable/ic_menu_mapmode"
+        android:title="@string/map_button"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/add_machine_button"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="@string/add_machine_button"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/edit_button"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/edit_button"
+        app:showAsAction="ifRoom"/>
+</menu>

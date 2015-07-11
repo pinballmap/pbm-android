@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/condition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:labelFor="@+id/condition"/>
+
+    <Button
+        android:id="@+id/submitCondition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/condition"
+        android:onClick="clickHandler"
+        android:text="@string/submit"/>
+
+    <!--<Button-->
+        <!--android:id="@+id/deleteCondition"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/condition"-->
+        <!--android:layout_toEndOf="@+id/submitCondition"-->
+        <!--android:layout_toRightOf="@+id/submitCondition"-->
+        <!--android:onClick="clickHandler"-->
+        <!--android:text="@string/delete"/>-->
+
+
+</RelativeLayout>

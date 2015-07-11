@@ -3,6 +3,12 @@ Android Application for http://pinballmap.com
 CHANGELOG
 =========
 
+version 2.1.3
+-reset user-reported conditions
+-display conditions inline in location details
+-new UI for selecting regions
+-numerous fixes for crashes
+
 version 2.1.2
 -email screens for adding new regions and contacting regional admins
 -search by type
