@@ -38,7 +38,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 		removeMachine.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new AlertDialog.Builder(getApplicationContext())
+				new AlertDialog.Builder(LocationMachineEdit.this)
 						.setIcon(android.R.drawable.ic_dialog_alert).setTitle("Remove this machine?").setMessage("Are you sure?")
 						.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {

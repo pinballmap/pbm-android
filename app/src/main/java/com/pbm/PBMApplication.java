@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutionException;
 public class PBMApplication extends Application {
 
 	private long dataLoadTimestamp;
+	private android.location.Location location;
 
 	public long getDataLoadTimestamp() {
 		return dataLoadTimestamp;
@@ -36,9 +37,19 @@ public class PBMApplication extends Application {
 		this.dataLoadTimestamp = dataLoadTimestamp;
 	}
 
+	public android.location.Location getLocation() {
+		return this.location;
+	}
+
+	public void setLocation(android.location.Location location) {
+		this.location = location;
+		Log.d("com.pbm.location", "set location to " + location);
+	}
+
 	public enum TrackerName {
 		APP_TRACKER
 	}
+
 	private HashMap<Integer, com.pbm.Location> locations = new HashMap<>();
 	private HashMap<Integer, com.pbm.LocationType> locationTypes = new HashMap<>();
 	private HashMap<Integer, com.pbm.Machine> machines = new HashMap<>();
@@ -64,6 +75,10 @@ public class PBMApplication extends Application {
 
 	public void setLocation(Integer index, com.pbm.Location location) {
 		this.locations.put(index, location);
+	}
+
+	public Region getRegion() {
+		return getRegion(getSharedPreferences(PinballMapActivity.PREFS_NAME, 0).getInt("region", -1));
 	}
 
 	public HashMap<Integer, com.pbm.Location> getLocations() {
@@ -141,8 +156,9 @@ public class PBMApplication extends Application {
 	}
 
 	public ArrayList<LocationMachineConditions> getLmxConditions() {
-		return new ArrayList<> (lmxConditions.values());
+		return new ArrayList<>(lmxConditions.values());
 	}
+
 	public LocationMachineConditions getLmxConditionsByID(Integer id) {
 		return this.lmxConditions.get(id);
 	}
@@ -150,6 +166,7 @@ public class PBMApplication extends Application {
 	public void removeLocationMachine(Integer id) {
 		lmxConditions.remove(id);
 	}
+
 	public HashMap<Integer, com.pbm.Zone> getZones() {
 		return zones;
 	}
@@ -183,7 +200,7 @@ public class PBMApplication extends Application {
 	}
 
 	public void addLocationMachineConditions(Integer id, LocationMachineConditions locationMachineConditions) {
-		this.lmxConditions.put(id,locationMachineConditions);
+		this.lmxConditions.put(id, locationMachineConditions);
 	}
 
 	public LocationMachineXref getLmxFromMachine(Machine machine, List<LocationMachineXref> lmxes) {
@@ -470,7 +487,6 @@ public class PBMApplication extends Application {
 			JSONArray conditions = lmx.getJSONArray("machine_conditions");
 			@SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 			dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-//							TreeMap<Date, String> conditionMap = new TreeMap<>();
 			ArrayList<Condition> conditionList = new ArrayList<>();
 			for (int conditionIndex = 0; conditionIndex < conditions.length(); conditionIndex++) {
 				JSONObject pastCondition = conditions.getJSONObject(conditionIndex);
@@ -479,9 +495,7 @@ public class PBMApplication extends Application {
 							dateFormat.parse(pastCondition.getString("updated_at")),
 							pastCondition.getString("comment"),
 							lmxID));
-									Log.d("lmxconditions", pastCondition.getString("updated_at"));
-									Log.d("lmxconditions", pastCondition.getString("comment"));
-//									conditionMap.put(dateFormat.parse(pastCondition.getString("updated_at")), pastCondition.getString("comment"));
+					Log.d("lmxconditions", pastCondition.getString("updated_at") + " " + pastCondition.getString("comment"));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}

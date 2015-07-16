@@ -65,11 +65,13 @@ public class SplashScreen extends PinballMapActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		for (Fragment f : getSupportFragmentManager().getFragments()) {
-			if (f.getClass() == RegionsTab.class) {
-				getSupportFragmentManager().putFragment(outState, RegionsTab.class.getName(),
-						regionsTab);
-				Log.d("com.pbm", "saving regionsTab" + regionsTab);
+		if (getSupportFragmentManager().getFragments() != null) {
+			for (Fragment f : getSupportFragmentManager().getFragments()) {
+				if (f.getClass() == RegionsTab.class) {
+					getSupportFragmentManager().putFragment(outState, RegionsTab.class.getName(),
+							regionsTab);
+					Log.d("com.pbm", "saving regionsTab" + regionsTab);
+				}
 			}
 		}
 	}

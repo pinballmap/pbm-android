@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
@@ -15,7 +16,8 @@ public class ContactAdmin extends PinballMapActivity {
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contact_admin);
-
+		TextView contactAdmin = (TextView) findViewById(R.id.contact_admin_id);
+		contactAdmin.setText("Send A Message To " + getPBMApplication().getRegion().formalName + " Admin");
 		logAnalyticsHit("com.pbm.ContactAdmin");
 	}
 
