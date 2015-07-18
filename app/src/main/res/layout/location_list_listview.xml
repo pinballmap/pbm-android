@@ -7,8 +7,12 @@
 
     <TextView
         android:id="@+id/machine_info"
-        android:layout_width="330dip"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/numMachines"
+        android:layout_toStartOf="@+id/numMachines"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:textSize="20sp"/>
 
     <TextView
@@ -30,5 +34,14 @@
         android:layout_width="100dip"
         android:layout_height="wrap_content"
         android:layout_below="@+id/machine_info"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/locationCity"
+        android:layout_width="180dip"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/machine_info"
+        android:layout_toLeftOf="@+id/numMachines"
+        android:layout_toStartOf="@+id/numMachines"
         android:textSize="15sp"/>
 </RelativeLayout>

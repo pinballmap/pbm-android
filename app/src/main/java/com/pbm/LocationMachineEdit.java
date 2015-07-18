@@ -21,6 +21,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 	private Location location;
 	private LocationMachineXref lmx;
 	private ConditionsArrayAdapter adapter;
+	private View.OnClickListener removeHandler;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,39 +35,15 @@ public class LocationMachineEdit extends PinballMapActivity {
 		Machine machine = getPBMApplication().getMachine(lmx.machineID);
 
 		setTitle(machine.name + " @ " + location.name);
-		Button removeMachine = (Button) findViewById(R.id.remove_machine_button);
-		removeMachine.setOnClickListener(new View.OnClickListener() {
+		removeHandler = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new AlertDialog.Builder(getApplicationContext())
-						.setIcon(android.R.drawable.ic_dialog_alert).setTitle("Remove this machine?").setMessage("Are you sure?")
-						.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								new Thread(new Runnable() {
-									public void run() {
-										try {
-											location.removeMachine(LocationMachineEdit.this, lmx);
-											new RetrieveJsonTask().execute(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.id) + ".json", "DELETE").get();
-										} catch (InterruptedException | ExecutionException e) {
-											e.printStackTrace();
-										}
-
-										LocationMachineEdit.super.runOnUiThread(new Runnable() {
-											public void run() {
-												Toast.makeText(getBaseContext(), "OK, machine deleted.", Toast.LENGTH_LONG).show();
-
-												setResult(REFRESH_RESULT);
-												LocationMachineEdit.this.finish();
-											}
-										});
-									}
-								}).start();
-							}
-						})
-						.setNegativeButton("No", null)
-						.show();
+				removeMachineDialog();
 			}
-		});
+		};
+		Button removeMachine = (Button) findViewById(R.id.remove_machine_button);
+		removeMachine.setOnClickListener(removeHandler);
+
 		Button addMachine = (Button) findViewById(R.id.add_condition_button);
 		addMachine.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -79,43 +56,47 @@ public class LocationMachineEdit extends PinballMapActivity {
 		});
 	}
 
+	private void removeMachineDialog() {
+		new AlertDialog.Builder(LocationMachineEdit.this)
+				.setIcon(android.R.drawable.ic_dialog_alert).setTitle("Remove this machine?").setMessage("Are you sure?")
+				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						new Thread(new Runnable() {
+							public void run() {
+								try {
+									location.removeMachine(LocationMachineEdit.this, lmx);
+									new RetrieveJsonTask().execute(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.id) + ".json", "DELETE").get();
+								} catch (InterruptedException | ExecutionException e) {
+									e.printStackTrace();
+								}
+
+								LocationMachineEdit.super.runOnUiThread(new Runnable() {
+									public void run() {
+										Toast.makeText(getBaseContext(), "OK, machine deleted.", Toast.LENGTH_LONG).show();
+
+										setResult(REFRESH_RESULT);
+										LocationMachineEdit.this.finish();
+									}
+								});
+							}
+						}).start();
+					}
+				})
+				.setNegativeButton("No", null)
+				.show();
+	}
+
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.location_machine_edit_menu, menu);
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.remove_button:
-//				new AlertDialog.Builder(this)
-//						.setIcon(android.R.drawable.ic_dialog_alert).setTitle("Remove this machine?").setMessage("Are you sure?")
-//						.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//							public void onClick(DialogInterface dialog, int which) {
-//								new Thread(new Runnable() {
-//									public void run() {
-//										try {
-//											location.removeMachine(LocationMachineEdit.this, lmx);
-//											new RetrieveJsonTask().execute(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.id) + ".json", "DELETE").get();
-//										} catch (InterruptedException | ExecutionException e) {
-//											e.printStackTrace();
-//										}
-//
-//										LocationMachineEdit.super.runOnUiThread(new Runnable() {
-//											public void run() {
-//												Toast.makeText(getBaseContext(), "OK, machine deleted.", Toast.LENGTH_LONG).show();
-//
-//												setResult(REFRESH_RESULT);
-//												LocationMachineEdit.this.finish();
-//											}
-//										});
-//									}
-//								}).start();
-//							}
-//						})
-//						.setNegativeButton("No", null)
-//						.show();
-
+				removeMachineDialog();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

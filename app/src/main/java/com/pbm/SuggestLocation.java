@@ -6,6 +6,7 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
@@ -17,7 +18,8 @@ public class SuggestLocation extends PinballMapActivity {
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.suggest_location);
-
+		TextView suggestLocationText = (TextView) findViewById(R.id.submit_location_id);
+		suggestLocationText.setText("Submit A Location To The " + getPBMApplication().getRegion().formalName + " Map");
 		logAnalyticsHit("com.pbm.SuggestLocation");
 
 		PBMApplication app = getPBMApplication();

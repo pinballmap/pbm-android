@@ -66,7 +66,6 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 
 	public ListView table;
 	private GoogleApiClient googleApiClient;
-	private android.location.Location location;
 
 
 	@Override
@@ -81,7 +80,6 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 		outState.putSerializable("lmxConditions", getPBMApplication().getLmxConditionsMap());
 		outState.putSerializable("zones", getPBMApplication().getZones());
 		outState.putSerializable("regions", getPBMApplication().getRegions());
-		outState.putParcelable("location", this.location);
 	}
 
 	@Override
@@ -100,7 +98,6 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 			pbm.setZones((java.util.HashMap<Integer, Zone>) savedInstanceState.getSerializable("zones"));
 			pbm.setRegions((java.util.HashMap<Integer, Region>) savedInstanceState.getSerializable("regions"));
 			pbm.setDataLoadTimestamp(savedInstanceState.getLong("datatimestamp"));
-			this.location = savedInstanceState.getParcelable("location");
 		}
 	}
 
@@ -330,12 +327,11 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	}
 
 	public android.location.Location getLocation() {
-		return location;
+		return getPBMApplication().getLocation();
 	}
 
 	private void setLocation(android.location.Location location) {
-		this.location = location;
-		Log.d("com.pbm.location", "set location to " + location);
+		getPBMApplication().setLocation(location);
 	}
 
 	@Override
@@ -367,7 +363,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	@Override
 	public void onConnectionFailed(ConnectionResult connectionResult) {
 		Toast.makeText(getBaseContext(), "I couldn't get a fix on your position. Try again, please.", Toast.LENGTH_LONG).show();
-		Log.d("com.pbm.location", "PBM onConnectionSuspended");
+		Log.d("com.pbm.location", "PBM onConnectionFailed");
 	}
 
 	@Override
@@ -378,6 +374,6 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	}
 
 	public void processLocation() {
-		Log.d("com.pbm.location", "PBM processLocation");
+		Log.d("com.pbm.location", "PBM processLocation " + getLocation());
 	}
 }

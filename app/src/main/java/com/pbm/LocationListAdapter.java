@@ -39,7 +39,7 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 			holder.name = (TextView) row.findViewById(R.id.machine_info);
 			holder.distance = (TextView) row.findViewById(R.id.distance);
 			holder.numMachines = (TextView) row.findViewById(R.id.numMachines);
-
+			holder.city = (TextView) row.findViewById(R.id.locationCity);
 			row.setTag(holder);
 		} else {
 			holder = (ViewHolder) row.getTag();
@@ -48,6 +48,7 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 			Location location = filteredLocationList.get(position);
 			holder.name.setText(location.name);
 			holder.distance.setText(location.milesInfo);
+			holder.city.setText(location.city);
 			holder.numMachines.setText(Integer.toString(location.numMachines((PinballMapActivity) context)));
 		}
 		return row;
@@ -64,6 +65,7 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 		TextView name;
 		TextView distance;
 		TextView numMachines;
+		TextView city;
 	}
 
 	public Filter getFilter() {
