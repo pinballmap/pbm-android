@@ -32,3 +32,4 @@ proguard/
 
 .idea/libraries
 .idea/workspace.xml
+.DS_Store

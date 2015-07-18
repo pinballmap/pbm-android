@@ -13,8 +13,6 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "SERVER_URL", '"http://pinballmapstaging.herokuapp.com/"'
-//            buildConfigField "String", "SERVER_URL", '"http://pinballmap.com/"'
-
         }
         release {
             buildConfigField "String", "SERVER_URL", '"http://pinballmap.com/"'
