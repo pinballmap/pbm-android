@@ -13,18 +13,20 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "SERVER_URL", '"http://pinballmapstaging.herokuapp.com/"'
+            buildConfigField "long", "DATA_EXPIRY_TIME_IN_MS", "3600000"
 //            buildConfigField "String", "SERVER_URL", '"http://pinballmap.com/"'
-
         }
         release {
             buildConfigField "String", "SERVER_URL", '"http://pinballmap.com/"'
+            buildConfigField "long", "DATA_EXPIRY_TIME_IN_MS", "86400000"
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
 }
 dependencies {
-    compile "com.android.support:support-v4:22.2.0"
-    compile "com.android.support:appcompat-v7:22.2.0"
-    compile 'com.google.android.gms:play-services:7.3.0'
+    compile "com.android.support:support-v4:22.2.1"
+    compile "com.android.support:appcompat-v7:22.2.1"
+    compile 'com.google.android.gms:play-services:7.5.0'
 }
