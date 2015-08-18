@@ -31,6 +31,7 @@ public class RetrieveJsonTask extends AsyncTask<String, Void, String> {
 				String requestType = urls[1];
 
 				inputStream = PinballMapActivity.openHttpConnection(url, requestType);
+				Log.d("com.pbm", url);
 
 				BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
 				StringBuilder sb = new StringBuilder();

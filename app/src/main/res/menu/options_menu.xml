@@ -1,10 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:pbm="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/contact_admin"
-        android:icon="@android:drawable/ic_menu_help"
-        android:title="@string/contact_region_admin"
-        pbm:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/suggest_location"
@@ -18,6 +13,12 @@
     <item
         android:id="@+id/suggest_region"
         android:title="@string/suggest_region"
+        pbm:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/contact_admin"
+        android:title="@string/contact_region_admin"
+        android:icon="@android:drawable/ic_menu_help"
         pbm:showAsAction="ifRoom"/>
 
     <item
