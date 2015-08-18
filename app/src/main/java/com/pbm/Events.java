@@ -81,10 +81,13 @@ public class Events extends PinballMapActivity {
 			String link = event.getString("external_link");
 			String startDate = event.getString("start_date");
 			String endDate = event.getString("end_date");
-			Integer locationId = event.getInt("location_id");
 			Location location = null;
-			if (locationId != null) {
-				location = getPBMApplication().getLocation(locationId);
+
+			if (!event.isNull("location_id")) {
+				Integer locationId = event.getInt("location_id");
+				if (locationId != null) {
+					location = getPBMApplication().getLocation(locationId);
+				}
 			}
 
 			if (startDate.equals("null")) {
