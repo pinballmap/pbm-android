@@ -2,31 +2,29 @@
       xmlns:pbm="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/contact_admin"
+        android:title="@string/contact_region_admin"
+        android:icon="@drawable/ic_live_help_white_48dp"
+        pbm:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/suggest_location"
         android:title="@string/suggest_location"
-        pbm:showAsAction="ifRoom"/>
+        pbm:showAsAction="never"/>
     <item
         android:id="@+id/prefs"
         android:title="@string/change_region"
-        pbm:showAsAction="ifRoom"/>
-
+        pbm:showAsAction="never"/>
     <item
         android:id="@+id/suggest_region"
         android:title="@string/suggest_region"
-        pbm:showAsAction="ifRoom"/>
-
-    <item
-        android:id="@+id/contact_admin"
-        android:title="@string/contact_region_admin"
-        android:icon="@android:drawable/ic_menu_help"
-        pbm:showAsAction="ifRoom"/>
+        pbm:showAsAction="never"/>
 
     <item
         android:id="@+id/about"
         android:title="@string/about"
-        pbm:showAsAction="ifRoom"/>
+        pbm:showAsAction="never"/>
     <item
         android:id="@+id/quit"
         android:title="@string/quit"
-        pbm:showAsAction="ifRoom"/>
+        pbm:showAsAction="never"/>
 </menu>
