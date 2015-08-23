@@ -47,15 +47,14 @@ public class LocationLookupDetail extends PinballMapActivity {
 		
 		logAnalyticsHit("com.pbm.LocationLookupDetail");
 
-
 		table = (ListView)findViewById(R.id.locationLookupDetailTable);
 		table.setFastScrollEnabled(true);
 		table.setTextFilterEnabled(true);
 		table.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Intent myIntent = new Intent();						
+				Intent myIntent = new Intent();
 				com.pbm.Location location = foundLocations.get(position);
-				
+
 				myIntent.putExtra("Location", location);
 				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
 				startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
@@ -89,7 +88,7 @@ public class LocationLookupDetail extends PinballMapActivity {
 				foundLocations.add(location);
 				continue;
 			}
-			
+
 			if (locationType != null && location.locationTypeID == locationType.id) {
 				foundLocations.add(location);
 				continue;
@@ -105,12 +104,9 @@ public class LocationLookupDetail extends PinballMapActivity {
 				return l1.name.compareTo(l2.name);
 			}
 		});
-		if (adapter == null) {
-			adapter = new LocationListAdapter(this, foundLocations);
-			table.setAdapter(adapter);
-		} else {
-			adapter.notifyDataSetChanged();
-		}
+        adapter = new LocationListAdapter(this, foundLocations);
+        table.setAdapter(adapter);
+        
 		if (listState != null) {
 			table.onRestoreInstanceState(listState);
 		}

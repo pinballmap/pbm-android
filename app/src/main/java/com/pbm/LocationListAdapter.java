@@ -107,6 +107,7 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 
 		    for (com.pbm.Location location : filteredLocationList) {
 		    	add(location);
+
 		    }
 
 		    notifyDataSetChanged();
