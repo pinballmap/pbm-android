@@ -42,6 +42,7 @@ public class MachineLookupDetail extends PinballMapActivity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent myIntent = new Intent();
 				com.pbm.Location location = locationsWithMachine.get(position);
+
 				myIntent.putExtra("Location", location);
 				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
 				startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
