@@ -22,8 +22,8 @@ public class CloseLocations extends PinballMapActivity {
 	private ListView table;
 
 	private List<com.pbm.Location> locationsForMap = new ArrayList<>();
-	private static final int maxMilesFromYourLocation = 10;
-	private static final int maxNumMachinesToDisplayOnMap = 25;
+	private static final int maxMilesFromYourLocation = 20;
+	private static final int maxNumMachinesToDisplayOnMap = 100;
 	private Parcelable listState;
 
 	public void onCreate(Bundle savedInstanceState) {
