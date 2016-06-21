@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+    android:background="#FEFBF8">
 
     <LinearLayout
         android:id="@+id/suggestALocationLayout"
@@ -11,13 +12,13 @@
 
         <TextView
             android:id="@+id/submit_location_id"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
             android:text="@string/submit_a_location"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:background="#FCF3EA"
+            android:padding="10dp" />
 
         <TableLayout
             android:id="@+id/tableLayout1"
@@ -206,7 +207,8 @@
             <TableRow
                 android:id="@+id/tableRow10"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
 
                 <TextView
                     android:id="@+id/submitterEmailTextView"
@@ -249,11 +251,10 @@
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:onClick="buttonOnClick"
-            android:text="@string/submit_text"/>
+            android:text="@string/submit_text"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 </ScrollView>

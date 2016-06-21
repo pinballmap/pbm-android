@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:paddingLeft="5dip"
                 android:paddingRight="5dip"
-                android:orientation="vertical">
+                android:orientation="vertical"
+    android:background="#FEFBF8">
 
     <TextView
         android:id="@+id/enterConditionHeader"
@@ -13,14 +14,14 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="20dp"
         android:text="@string/phone_number"
         android:textSize="20sp"/>
 
     <EditText
         android:id="@+id/phoneNumber"
         android:labelFor="@+id/phoneNumber"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
@@ -49,7 +50,7 @@
 
     <EditText
         android:id="@+id/editWebsite"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
@@ -60,15 +61,17 @@
 
     <Button
         android:id="@+id/submitLocationEdit"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="85dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentLeft="false"
         android:onClick="clickHandler"
         android:text="@string/submit"
-        />
+        android:layout_alignParentTop="false"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentEnd="false" />
 
     <TextView
         android:id="@+id/enterWebsiteHeader"
@@ -77,7 +80,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/locationTypeSpinner"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="16dp"
         android:text="@string/website"
         android:textSize="20sp"/>
 
