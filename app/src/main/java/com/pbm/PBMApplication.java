@@ -494,8 +494,8 @@ public class PBMApplication extends Application {
 						machine.setExistsInRegion(true);
 
 						addLocationMachineXref(
-								lmxID,
-								new com.pbm.LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate)
+							lmxID,
+							new com.pbm.LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate)
 						);
 						loadConditions(lmx, lmxID, lmxLocationID, machineID);
 					}
@@ -514,9 +514,11 @@ public class PBMApplication extends Application {
 				JSONObject pastCondition = conditions.getJSONObject(conditionIndex);
 				try {
 					conditionList.add(new Condition(pastCondition.getInt("id"),
-							dateFormat.parse(pastCondition.getString("updated_at")),
-							pastCondition.getString("comment"),
-							lmxID));
+						dateFormat.parse(pastCondition.getString("updated_at")),
+						pastCondition.getString("comment"),
+						lmxID,
+						pastCondition.getString("username")
+					));
 					Log.d("lmxconditions", pastCondition.getString("updated_at") + " " + pastCondition.getString("comment"));
 				} catch (ParseException e) {
 					e.printStackTrace();

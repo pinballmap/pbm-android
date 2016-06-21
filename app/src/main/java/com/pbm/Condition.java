@@ -17,12 +17,14 @@ public class Condition implements Serializable {
 	private final String description;
 	private int lmxId;
 	private final int id;
+	private final String username;
 
-	public Condition(int id, Date date, String description, int lmxId) {
+	public Condition(int id, Date date, String description, int lmxId, String username) {
 		this.id = id;
 		this.date = date;
 		this.description = description;
 		this.lmxId = lmxId;
+		this.username = username;
 	}
 
 	public String getDescription() {
@@ -40,4 +42,6 @@ public class Condition implements Serializable {
 	public int getLmxId() {
 		return lmxId;
 	}
+
+	public String getUsername() { return username; }
 }

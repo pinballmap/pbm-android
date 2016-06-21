@@ -46,6 +46,17 @@
             android:text="xx/xx/xx yy:yy:yy"
             android:textColor="#999999"
             android:paddingBottom="2dp" />
+
+        <TextView
+            android:id="@+id/_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/_condition_date"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/_condition_date"
+            android:layout_toRightOf="@+id/_condition_date"
+            android:text="ssw"
+            android:textColor="@android:color/black"/>
     </RelativeLayout>
 
     <!--<ImageButton-->
