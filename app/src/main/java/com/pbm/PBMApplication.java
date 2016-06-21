@@ -2,6 +2,8 @@ package com.pbm;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -323,6 +325,17 @@ public class PBMApplication extends Application {
 		return machineValues;
 	}
 
+	public String requestWithAuthDetails(String origRequest) {
+		final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+		PreferenceManager.setDefaultValues(this, PinballMapActivity.PREFS_NAME, 0, R.xml.preferences, false);
+		String authToken = settings.getString("authToken", "");
+		String email = settings.getString("email", "");
+
+		String authDetails = "user_email=" + email + ";user_token=" + authToken;
+
+		return origRequest + (origRequest.indexOf("?") == -1 ? "?" : ";") + authDetails;
+	}
+
 	public void initializeData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
 		dataLoadTimestamp = System.currentTimeMillis();
 		Log.d("com.pbm", "initializing data");
@@ -335,7 +348,9 @@ public class PBMApplication extends Application {
 	void initializeLocationTypes() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
 		locationTypes.clear();
 
-		String json = new RetrieveJsonTask().execute(PinballMapActivity.regionlessBase + "location_types.json", "GET").get();
+		String json = new RetrieveJsonTask().execute(
+			requestWithAuthDetails(PinballMapActivity.regionlessBase + "location_types.json"), "GET"
+		).get();
 		if (json == null) {
 			return;
 		}
@@ -361,7 +376,10 @@ public class PBMApplication extends Application {
 	void initializeAllMachines() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
 		machines.clear();
 
-		String json = new RetrieveJsonTask().execute(PinballMapActivity.regionlessBase + "machines.json", "GET").get();
+		String json = new RetrieveJsonTask().execute(
+            requestWithAuthDetails(PinballMapActivity.regionlessBase + "machines.json"), "GET"
+		).get();
+
 		if (json == null) {
 			return;
 		}
@@ -389,7 +407,9 @@ public class PBMApplication extends Application {
 	void initializeZones() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
 		zones.clear();
 
-		String json = new RetrieveJsonTask().execute(PinballMapActivity.regionBase + "zones.json", "GET").get();
+		String json = new RetrieveJsonTask().execute(
+            requestWithAuthDetails(PinballMapActivity.regionBase + "zones.json"), "GET"
+        ).get();
 		if (json == null) {
 			return;
 		}
@@ -414,7 +434,9 @@ public class PBMApplication extends Application {
 		lmxes.clear();
 		locations.clear();
 
-		String json = new RetrieveJsonTask().execute(PinballMapActivity.regionBase + "locations.json", "GET").get();
+		String json = new RetrieveJsonTask().execute(
+            requestWithAuthDetails(PinballMapActivity.regionBase + "locations.json"), "GET"
+        ).get();
 		if (json == null) {
 			return;
 		}

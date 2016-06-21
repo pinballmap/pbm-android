@@ -1,48 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.pbm"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    package="com.pbm"
     android:versionCode="19"
     android:versionName="2.2">
 
     <uses-feature
         android:glEsVersion="0x00020000"
-        android:required="true"/>
+        android:required="true" />
 
     <permission
         android:name="com.pbm.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature"/>
+        android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.pbm.permission.MAPS_RECEIVE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="package.name.permission.MAPS_RECEIVE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="com.pbm.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="package.name.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
-        tools:node="remove"/>
-
+        tools:node="remove" />
 
     <application
-        android:name="com.pbm.PBMApplication"
+        android:name=".PBMApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
-
         <activity
             android:name=".SplashScreen"
             android:label="@string/app_name"
             android:noHistory="true"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -51,113 +49,123 @@
             android:noHistory="true"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="com.pbm.InitializingScreen"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.InitializingScreen" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".PBMMenu"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="com.pbm.PBMMenu"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.PBMMenu" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ContactAdmin"
             android:label="Contact Region Admin"
-            android:parentActivityName="com.pbm.PBMMenu"
+            android:parentActivityName=".PBMMenu"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pbm.PBMMenu"/>
+                android:value="com.pbm.PBMMenu" />
+
             <intent-filter>
-                <action android:name="com.pbm.ContactAdmin"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.ContactAdmin" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".SuggestRegion"
             android:label="Suggest A New Region"
-            android:parentActivityName="com.pbm.PBMMenu"
+            android:parentActivityName=".PBMMenu"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pbm.PBMMenu"/>
+                android:value="com.pbm.PBMMenu" />
 
             <intent-filter>
-                <action android:name="com.pbm.SuggestRegion"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.SuggestRegion" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".LookupByMachineList"
             android:label="Lookup By Machine"
-            android:parentActivityName="com.pbm.PBMMenu"
+            android:parentActivityName=".PBMMenu"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pbm.PBMMenu"/>
+                android:value="com.pbm.PBMMenu" />
 
             <intent-filter>
-                <action android:name="com.pbm.LookupByMachineList"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.LookupByMachineList" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".LookupByZoneList"
             android:label="Lookup By Zone"
-            android:parentActivityName="com.pbm.PBMMenu"
+            android:parentActivityName=".PBMMenu"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pbm.PBMMenu"/>
+                android:value="com.pbm.PBMMenu" />
 
             <intent-filter>
-                <action android:name="com.pbm.LookupByZoneList"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.LookupByZoneList" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".LookupByLocationType"
             android:label="Lookup By Location Type"
-            android:parentActivityName="com.pbm.PBMMenu"
+            android:parentActivityName=".PBMMenu"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pbm.PBMMenu"/>
+                android:value="com.pbm.PBMMenu" />
 
             <intent-filter>
-                <action android:name="com.pbm.LookupByLocationType"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.LookupByLocationType" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".LocationLookupDetail"
             android:label="@string/app_name"
-            android:parentActivityName="com.pbm.PBMMenu"
+            android:parentActivityName=".PBMMenu"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pbm.PBMMenu"/>
+                android:value="com.pbm.PBMMenu" />
 
             <intent-filter>
-                <action android:name="com.pbm.LocationLookupDetail"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.LocationLookupDetail" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MachineLookupDetail"
             android:label="@string/app_name"
-            android:parentActivityName="com.pbm.LookupByMachineList"
+            android:parentActivityName=".LookupByMachineList"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pbm.PBMMenu"/>
+                android:value="com.pbm.PBMMenu" />
 
             <intent-filter>
-                <action android:name="com.pbm.MachineLookupDetail"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.MachineLookupDetail" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
@@ -166,11 +174,12 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pbm.PBMMenu"/>
+                android:value="com.pbm.PBMMenu" />
 
             <intent-filter>
-                <action android:name="com.pbm.LocationDetail"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.LocationDetail" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
@@ -179,53 +188,57 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pbm.PBMMenu"/>
+                android:value="com.pbm.PBMMenu" />
 
             <intent-filter>
-                <action android:name="com.pbm.DisplayOnMap"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.DisplayOnMap" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".RecentlyAdded"
             android:label="Recently Added"
-            android:parentActivityName="com.pbm.PBMMenu"
+            android:parentActivityName=".PBMMenu"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pbm.PBMMenu"/>
+                android:value="com.pbm.PBMMenu" />
 
             <intent-filter>
-                <action android:name="com.pbm.RecentlyAdded"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.RecentlyAdded" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".RecentScores"
             android:label="Recent High Scores"
-            android:parentActivityName="com.pbm.PBMMenu"
+            android:parentActivityName=".PBMMenu"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pbm.PBMMenu"/>
+                android:value="com.pbm.PBMMenu" />
 
             <intent-filter>
-                <action android:name="com.pbm.RecentScores"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.RecentScores" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".CloseLocations"
             android:label="Close Locations"
-            android:parentActivityName="com.pbm.PBMMenu"
+            android:parentActivityName=".PBMMenu"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pbm.PBMMenu"/>
+                android:value="com.pbm.PBMMenu" />
 
             <intent-filter>
-                <action android:name="com.pbm.CloseLocations"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.CloseLocations" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
@@ -233,8 +246,9 @@
             android:label="Preferences"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="com.pbm.Preferences"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.Preferences" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
@@ -242,8 +256,9 @@
             android:label="About"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="com.pbm.About"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.About" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
@@ -251,8 +266,9 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="com.pbm.AddMachine"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.AddMachine" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
@@ -260,22 +276,24 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="com.pbm.LocationMachineEdit"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.LocationMachineEdit" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".Events"
             android:label="Events"
-            android:parentActivityName="com.pbm.PBMMenu"
+            android:parentActivityName=".PBMMenu"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pbm.PBMMenu"/>
+                android:value="com.pbm.PBMMenu" />
 
             <intent-filter>
-                <action android:name="com.pbm.Events"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.Events" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
@@ -283,22 +301,24 @@
             android:label="Edit Condition"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="com.pbm.ConditionEdit"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.ConditionEdit" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".SuggestLocation"
             android:label="Suggest a Location"
-            android:parentActivityName="com.pbm.PBMMenu"
+            android:parentActivityName=".PBMMenu"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pbm.PBMMenu"/>
+                android:value="com.pbm.PBMMenu" />
 
             <intent-filter>
-                <action android:name="com.pbm.SuggestLocation"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.SuggestLocation" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
@@ -306,20 +326,23 @@
             android:label="Edit a Location"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="com.pbm.LocationEdit"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.pbm.LocationEdit" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCeIu8smOy2xbRUmiQV316CfQGjk_mbXAs"/>
+            android:value="AIzaSyCeIu8smOy2xbRUmiQV316CfQGjk_mbXAs" />
         <!-- key for bdols -->
-        <!-- <meta-data-->
-        <!--android:name="com.google.android.geo.API_KEY"-->
-        <!--android:value="AIzaSyCyBrhDoLxIC8kQl_KKUIue-nGawWj44TE"/>-->
+        <!-- <meta-data -->
+        <!-- android:name="com.google.android.geo.API_KEY" -->
+        <!-- android:value="AIzaSyCyBrhDoLxIC8kQl_KKUIue-nGawWj44TE"/> -->
+        <activity android:name=".Login"></activity>
     </application>
+
 </manifest>

@@ -54,8 +54,8 @@ public class Events extends PinballMapActivity {
 				Events.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						ListView table = (ListView) findViewById(R.id.eventsTable);
-						table.setAdapter(new ArrayAdapter<>(Events.this, android.R.layout.simple_list_item_1, events));
+					ListView table = (ListView) findViewById(R.id.eventsTable);
+					table.setAdapter(new ArrayAdapter<>(Events.this, android.R.layout.simple_list_item_1, events));
 					}
 				});
 			}
@@ -63,7 +63,11 @@ public class Events extends PinballMapActivity {
 	}
 
 	public void getEventData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		String json = new RetrieveJsonTask().execute(regionBase + "events.json", "GET").get();
+		PBMApplication app = getPBMApplication();
+
+		String json = new RetrieveJsonTask().execute(
+			app.requestWithAuthDetails(regionBase + "events.json"), "GET"
+		).get();
 
 		if (json == null) {
 			return;

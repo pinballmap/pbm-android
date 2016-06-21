@@ -49,8 +49,12 @@ public class RecentlyAdded extends PinballMapActivity {
 	}
 
 	public void getLocationData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		int NUM_ADDED_TO_SHOW = 20;  // TODO make a setting
-		String json = new RetrieveJsonTask().execute(regionBase + "location_machine_xrefs.json?limit=" + NUM_ADDED_TO_SHOW, "GET").get();
+		int NUM_ADDED_TO_SHOW = 20;
+		PBMApplication app = getPBMApplication();
+
+		String json = new RetrieveJsonTask().execute(
+			app.requestWithAuthDetails(regionBase + "location_machine_xrefs.json?limit=" + NUM_ADDED_TO_SHOW), "GET"
+		).get();
 
 		if (json == null) {
 			return;
@@ -59,7 +63,6 @@ public class RecentlyAdded extends PinballMapActivity {
 		JSONObject jsonObject = new JSONObject(json);
 		JSONArray lmxes = jsonObject.getJSONArray("location_machine_xrefs");
 
-		PBMApplication app = getPBMApplication();
 		for (int i = 0; i < lmxes.length(); i++) {
 			JSONObject lmxJson = lmxes.getJSONObject(i);
 

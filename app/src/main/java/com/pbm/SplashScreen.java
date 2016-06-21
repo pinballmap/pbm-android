@@ -26,22 +26,41 @@ public class SplashScreen extends PinballMapActivity {
 		final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 		PreferenceManager.setDefaultValues(this, PinballMapActivity.PREFS_NAME, 0, R.xml.preferences, false);
 		Integer prefRegion = settings.getInt("region", -1);
+		String authToken = settings.getString("authToken", "");
+		String username = settings.getString("username", "");
+
 		PBMApplication app = getPBMApplication();
 
+		if (!haveInternet(getBaseContext())) {
+			closeWithNoInternet();
+			return;
+		}
+
 		try {
-			if (!haveInternet(getBaseContext())) {
-				closeWithNoInternet();
-				return;
-			}
 			if (!app.initializeRegions()) {
-				closeOnMissingServer();
-				return;
-			}
-		} catch (UnsupportedEncodingException | InterruptedException | ExecutionException | JSONException e) {
+                closeOnMissingServer();
+                return;
+            }
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
-		if (prefRegion != -1) {
+		// **********************
+		// ADD THE CHECK TO SEE IF THE SERVER IS AVAILABLE
+		// ***********************
+
+		if (authToken.equals("")) {
+			Intent myIntent = new Intent();
+			myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			myIntent.setClassName("com.pbm", "com.pbm.Login");
+			startActivity(myIntent);
+		} else if (prefRegion != -1) {
 			Region region = app.getRegion(prefRegion);
 			setRegionBase(httpBase + apiPath + "region/" + region.name + "/");						
 
@@ -49,13 +68,8 @@ public class SplashScreen extends PinballMapActivity {
 			myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			myIntent.setClassName("com.pbm", "com.pbm.InitializingScreen");
 			startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
-
 		} else {
-//			final ArrayList<Region> regionValues = app.getRegionValues();
 			regionsTab = new RegionsTab();
-//			Bundle b = new Bundle();
-//			b.putSerializable("regions", regionValues);
-//			regionsTab.setArguments(b);
 			FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 			fragmentTransaction.replace(R.id.region_fragment, regionsTab);
 			fragmentTransaction.commit();

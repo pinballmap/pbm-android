@@ -54,7 +54,8 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	public static final int MENU_PREFS = 2;
 	public static final int MENU_SUGGEST_REGION = 3;
 	public static final int MENU_ABOUT = 4;
-	public static final int MENU_QUIT = 5;
+	public static final int MENU_LOGOUT = 5;
+	public static final int MENU_QUIT = 6;
 	public static final int HTTP_RETRIES = 5;
 	public static final String PREFS_NAME = "pbmPrefs";
 	public static final float METERS_TO_MILES = (float) 0.000621371192;
@@ -127,7 +128,13 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	private class ReloadData extends Thread {
 		public void run() {
 			try {
-				getPBMApplication().initializeData();
+				final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+				String authToken = settings.getString("authToken", "");
+				int region = settings.getInt("region", -1);
+
+				if (!authToken.equals("") && region != -1) {
+					getPBMApplication().initializeData();
+				}
 			} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException e) {
 				e.printStackTrace();
 			}
@@ -181,6 +188,20 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 				Intent suggestLocationIntent = new Intent();
 				suggestLocationIntent.setClassName("com.pbm", "com.pbm.SuggestLocation");
 				startActivityForResult(suggestLocationIntent, QUIT_RESULT);
+
+				return true;
+			case R.id.logout:
+				final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+				SharedPreferences.Editor editor = settings.edit();
+                editor.putInt("region", -1);
+                editor.putString("authToken", "");
+				editor.putString("username", "");
+				editor.putString("email", "");
+				editor.commit();
+
+				Intent loginIntent = new Intent();
+				loginIntent.setClassName("com.pbm", "com.pbm.Login");
+				startActivityForResult(loginIntent, QUIT_RESULT);
 
 				return true;
 			case R.id.quit:
@@ -353,10 +374,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	@Override
 	public void onConnectionSuspended(int i) {
 		Log.d("com.pbm.location", "PBM onConnectionSuspended");
-		Log.i("PBM", "GoogleApiClient connection suspended"); //  When called, all requests have been canceled
-		// and no outstanding listeners will be executed. GoogleApiClient will automatically attempt
-		// to restore the connection. Applications should disable UI components that require the
-		// service, and wait for a call to onConnected(Bundle) to re-enable them
+		Log.i("PBM", "GoogleApiClient connection suspended");
 	}
 
 	@Override
