@@ -46,6 +46,14 @@ public class ConditionsArrayAdapter extends ArrayAdapter<Condition> implements O
 		format.setTimeZone(TimeZone.getDefault());
 		conditionDate.setText(format.format(condition.getDate()));
 
+		TextView usernameTextView = (TextView) convertView.findViewById(R.id._username);
+		String username = condition.getUsername();
+		if(username != null && !username.isEmpty()) {
+			usernameTextView.setText("by " + condition.getUsername());
+		} else {
+			usernameTextView.setText("");
+		}
+
 		return convertView;
 	}
 
