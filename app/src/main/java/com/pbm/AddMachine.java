@@ -50,8 +50,10 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 						machine.setExistsInRegion(true);
 
 						try {
+							PBMApplication app = getPBMApplication();
+
 							new RetrieveJsonTask(AddMachine.this).execute(
-								regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + machine.id,
+								app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + machine.id),
 								"POST"
 							).get();
 						} catch (InterruptedException | ExecutionException e) {

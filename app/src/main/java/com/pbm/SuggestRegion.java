@@ -31,7 +31,9 @@ public class SuggestRegion extends PinballMapActivity {
 					+ ";email=" + URLEncoder.encode(email, "UTF-8")
 					+ ";comments=" + URLEncoder.encode(((EditText) findViewById(R.id.commentsField)).getText().toString(), "UTF-8");
 			try {
-				new RetrieveJsonTask().execute(url, "POST").get();
+				PBMApplication app = getPBMApplication();
+
+				new RetrieveJsonTask().execute(app.requestWithAuthDetails(url), "POST").get();
 
 			} catch (ExecutionException | InterruptedException e) {
 				e.printStackTrace();

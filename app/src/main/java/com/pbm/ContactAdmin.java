@@ -33,7 +33,7 @@ public class ContactAdmin extends PinballMapActivity {
 					+ ";name=" + URLEncoder.encode(((EditText) findViewById(R.id.submitterNameField)).getText().toString(), "UTF-8")
 					+ ";email=" + URLEncoder.encode(((EditText) findViewById(R.id.submitterEmailField)).getText().toString(), "UTF-8");
 			try {
-				new RetrieveJsonTask().execute(url, "POST").get();
+				new RetrieveJsonTask().execute(app.requestWithAuthDetails(url), "POST").get();
 				Toast.makeText(getBaseContext(), "Thank you for that submission! We'll be in touch.", Toast.LENGTH_LONG).show();
 				setResult(REFRESH_RESULT);
 				ContactAdmin.this.finish();

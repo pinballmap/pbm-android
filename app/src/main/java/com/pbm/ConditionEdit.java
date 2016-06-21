@@ -36,8 +36,11 @@ public class ConditionEdit extends PinballMapActivity implements OnTaskCompleted
 			public void run() {
 				try {
 					lmx.setCondition(ConditionEdit.this, condition);
-//					getPBMApplication().getLmxConditionsByID(lmx.id).addCondition(new Condition(new Date(), condition));
-					new RetrieveJsonTask(ConditionEdit.this).execute(regionlessBase + "location_machine_xrefs/" + lmx.id + ".json?condition=" + URLEncoder.encode(condition, "UTF8"), "PUT").get();
+					PBMApplication app = getPBMApplication();
+
+					new RetrieveJsonTask(ConditionEdit.this).execute(
+						app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + lmx.id + ".json?condition=" + URLEncoder.encode(condition, "UTF8")), "PUT"
+					).get();
 				} catch (InterruptedException | ExecutionException | UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}

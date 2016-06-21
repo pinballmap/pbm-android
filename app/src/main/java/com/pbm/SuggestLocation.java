@@ -51,7 +51,7 @@ public class SuggestLocation extends PinballMapActivity {
 					+ ";location_operator=" + URLEncoder.encode(((EditText) findViewById(R.id.operatorField)).getText().toString(), "UTF-8")
 					+ ";location_machines=" + URLEncoder.encode(machineNames, "UTF-8");
 			try {
-				new RetrieveJsonTask().execute(url, "POST").get();
+				new RetrieveJsonTask().execute(app.requestWithAuthDetails(url), "POST").get();
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 			}

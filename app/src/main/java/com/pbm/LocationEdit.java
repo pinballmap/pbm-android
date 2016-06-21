@@ -94,9 +94,11 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 						locationTypeString = Integer.toString(locationTypeID);
 					}
 
+					PBMApplication app = getPBMApplication();
+
 					new RetrieveJsonTask(LocationEdit.this).execute(
-							regionlessBase + "locations/" + location.id + ".json?phone=" + phoneNumber + ";location_type=" + locationTypeString + ";website=" + URLDecoder.decode(locationWebsite, "UTF-8"),
-							"PUT"
+						app.requestWithAuthDetails(regionlessBase + "locations/" + location.id + ".json?phone=" + phoneNumber + ";location_type=" + locationTypeString + ";website=" + URLDecoder.decode(locationWebsite, "UTF-8")),
+						"PUT"
 					).get();
 				} catch (InterruptedException | ExecutionException | UnsupportedEncodingException e) {
 					e.printStackTrace();
@@ -163,8 +165,6 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 					loadLocationEditData();
 				}
 			});
-
-
 		}
 	}
 }

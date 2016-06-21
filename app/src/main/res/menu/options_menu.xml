@@ -24,6 +24,10 @@
         android:title="@string/about"
         pbm:showAsAction="never"/>
     <item
+        android:id="@+id/logout"
+        android:title="@string/logout"
+        pbm:showAsAction="never"/>
+    <item
         android:id="@+id/quit"
         android:title="@string/quit"
         pbm:showAsAction="never"/>
