@@ -5,8 +5,10 @@
 	<TextView android:id="@+id/aboutText" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:textSize="20sp"
 		android:textColor="#FFFFFF" android:textStyle="bold"
-		android:text="@string/about_text" />
+		android:text="@string/about_text"
+		android:background="#675032" />
 	<ImageView android:id="@+id/sass" android:src="@drawable/sassy" android:contentDescription="@string/sass_description"
 		android:layout_below="@+id/aboutText" android:layout_width="fill_parent"
-		android:layout_height="fill_parent" android:layout_gravity="bottom" />
+		android:layout_height="fill_parent" android:layout_gravity="bottom"
+		android:background="#675032" />
 </RelativeLayout>

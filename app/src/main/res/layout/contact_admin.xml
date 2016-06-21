@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+    android:fillViewport="false"
+    android:background="#FEFBF8">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#FEFBF8">
 
         <TextView
             android:id="@+id/contact_admin_id"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
             android:text="@string/contact_admin"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:background="#FCF3EA"
+            android:padding="10dp" />
 
         <TableLayout
             android:id="@+id/tableLayout1"
@@ -41,7 +44,8 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
                     android:inputType="text"
-                    android:ems="10"/>
+                    android:ems="10"
+                    android:layout_width="match_parent" />
             </TableRow>
 
             <TableRow
@@ -97,7 +101,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:onClick="buttonOnClick"
-            android:text="@string/submit_text"/>
+            android:text="@string/submit_text"
+            android:layout_margin="10dp"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 </ScrollView>

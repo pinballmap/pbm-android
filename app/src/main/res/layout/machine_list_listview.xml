@@ -10,7 +10,8 @@
         android:id="@+id/machine_info"
         android:layout_width="330dip"
         android:layout_height="wrap_content"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/machineSelectButton"
@@ -29,5 +30,6 @@
         android:id="@+id/metaData"
         android:textSize="15sp"
         android:layout_width="200dip"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textStyle="italic" />
 </RelativeLayout>

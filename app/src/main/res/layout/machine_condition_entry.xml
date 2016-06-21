@@ -17,7 +17,8 @@
             android:layout_height="wrap_content"
             android:singleLine="false"
             android:text="Condition ... sdlkj asdfl asdlf sdlf asdf asdfasdfasdfa asd asdf as"
-            android:textColor="@android:color/black">
+            android:textColor="@android:color/black"
+            android:paddingTop="5dp">
         </TextView>
 
 
@@ -28,8 +29,11 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/_condition"
-            android:text="-- updated on"
-            android:textColor="@android:color/black"/>
+            android:text="Updated on:"
+            android:textColor="#999999"
+            android:textStyle="italic"
+            android:paddingBottom="2dp"
+            android:paddingLeft="5dp" />
 
         <TextView
             android:id="@+id/_condition_date"
@@ -40,7 +44,8 @@
             android:layout_toEndOf="@+id/_updated_on"
             android:layout_toRightOf="@+id/_updated_on"
             android:text="xx/xx/xx yy:yy:yy"
-            android:textColor="@android:color/black"/>
+            android:textColor="#999999"
+            android:paddingBottom="2dp" />
     </RelativeLayout>
 
     <!--<ImageButton-->

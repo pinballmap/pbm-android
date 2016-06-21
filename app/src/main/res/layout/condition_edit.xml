@@ -2,14 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+    android:background="#FEFBF8">
 
     <EditText
         android:id="@+id/condition"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
-        android:labelFor="@+id/condition"/>
+        android:labelFor="@+id/condition"
+        android:background="#FFFFFF"
+        android:padding="5dp" />
 
     <Button
         android:id="@+id/submitCondition"
@@ -17,7 +20,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/condition"
         android:onClick="clickHandler"
-        android:text="@string/submit"/>
+        android:text="@string/submit"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentEnd="false"
+        android:layout_centerHorizontal="true" />
 
     <!--<Button-->
         <!--android:id="@+id/deleteCondition"-->
