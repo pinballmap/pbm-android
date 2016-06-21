@@ -64,8 +64,12 @@ public class LocationMachineEdit extends PinballMapActivity {
 						new Thread(new Runnable() {
 							public void run() {
 								try {
+									PBMApplication app = getPBMApplication();
+
 									location.removeMachine(LocationMachineEdit.this, lmx);
-									new RetrieveJsonTask().execute(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.id) + ".json", "DELETE").get();
+									new RetrieveJsonTask().execute(
+										app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.id) + ".json"), "DELETE"
+									).get();
 								} catch (InterruptedException | ExecutionException e) {
 									e.printStackTrace();
 								}

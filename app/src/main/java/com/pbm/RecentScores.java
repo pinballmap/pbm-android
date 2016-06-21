@@ -48,7 +48,11 @@ public class RecentScores extends PinballMapActivity {
 	}
 
 	public void getLocationData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		String json = new RetrieveJsonTask().execute(regionBase + "machine_score_xrefs.json?limit=" + NUM_RECENT_SCORES_TO_SHOW, "GET").get();
+		PBMApplication app = getPBMApplication();
+
+		String json = new RetrieveJsonTask().execute(
+			app.requestWithAuthDetails(regionBase + "machine_score_xrefs.json?limit=" + NUM_RECENT_SCORES_TO_SHOW), "GET"
+		).get();
 
 		if (json == null) {
 			return;
@@ -57,7 +61,6 @@ public class RecentScores extends PinballMapActivity {
 		DecimalFormat formatter = new DecimalFormat("#,###");
 		JSONObject jsonObject = new JSONObject(json);
 		JSONArray scores = jsonObject.getJSONArray("machine_score_xrefs");
-		PBMApplication app = getPBMApplication();
 		for (int i=0; i < scores.length(); i++) {
 			JSONObject msx = scores.getJSONObject(i);
 			
