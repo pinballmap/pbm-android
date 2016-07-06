@@ -10,7 +10,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.05"
         android:orientation="vertical">
 
         <ImageView android:id="@+id/logo" android:src="@drawable/pinballmapcom" android:contentDescription="Pinball Map"
@@ -53,7 +52,6 @@
             android:textSize="20sp"
             android:textColor="#675a5a"
             android:textStyle="italic"
-            android:background="#fffef2"
             android:autoText="false"
             android:padding="4dp" />
 
@@ -74,7 +72,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:hint="Login" />
+            android:hint="Login"
+            android:background="#fffef2"
+            android:padding="5dp" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -88,7 +88,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:hint="Password"/>
+            android:hint="Password"
+            android:background="#fffef2"
+            android:padding="5dp" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
