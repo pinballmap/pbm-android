@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#FEFBF8"
+    android:background="@drawable/backrepeat"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/activity_horizontal_margin"
@@ -10,13 +10,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.10"
+        android:layout_weight="0.05"
         android:orientation="vertical">
 
         <ImageView android:id="@+id/logo" android:src="@drawable/pinballmapcom" android:contentDescription="Pinball Map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#FEFBF8"
             android:layout_centerInParent="true" />
 
     </RelativeLayout>
@@ -24,7 +23,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.10"
         android:orientation="vertical">
 
         <TextView
@@ -32,9 +30,32 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="Login to continue"
+            android:text="A User-Powered Pinball Locator"
             android:textSize="22sp"
-            android:textColor="#333333"/>
+            android:textColor="#675032"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.10"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="Login to continue"
+            android:textSize="20sp"
+            android:textColor="#675a5a"
+            android:textStyle="italic"
+            android:background="#fffef2"
+            android:autoText="false"
+            android:padding="4dp" />
 
     </RelativeLayout>
 
@@ -53,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:hint="Login"/>
+            android:hint="Login" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
