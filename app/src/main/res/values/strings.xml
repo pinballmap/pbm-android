@@ -14,6 +14,7 @@
     <string name="submit">Submit</string>
     <string name="delete">Delete</string>
     <string name="location_type">Location Type:</string>
+    <string name="enter_operator">Operator:</string>
     <string name="edit_location_data">Edit Data At:</string>
     <string name="phone_number">Phone Number:</string>
     <string name="blank"> </string>
