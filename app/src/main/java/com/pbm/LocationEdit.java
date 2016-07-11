@@ -21,7 +21,11 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 	private Location location;
 	private EditText phone;
 	private EditText website;
-	private Spinner dropdown;
+	private TreeMap<String, Integer> operators;
+	private String[] operatorNames;
+	private Integer[] operatorIDs;
+	private Spinner locationTypeSpinner;
+	private Spinner operatorSpinner;
 	private String[] locationTypeNames;
 	private Integer[] locationTypeIDs;
 	private TreeMap<String, Integer> locationTypes;
@@ -51,6 +55,19 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 		phone = (EditText) findViewById(R.id.phoneNumber);
 		website = (EditText) findViewById(R.id.editWebsite);
 
+		operators = new TreeMap<>();
+
+		Operator blankOperator = Operator.blankOperator();
+		operators.put(blankOperator.name, blankOperator.id);
+		for (Object element : app.getOperators().values()) {
+			Operator operator = (Operator) element;
+
+			operators.put(operator.name, operator.id);
+		}
+
+		operatorNames = operators.keySet().toArray(new String[operators.size()]);
+		operatorIDs = operators.values().toArray(new Integer[operators.size()]);
+
 		loadLocationEditData();
 	}
 
@@ -62,17 +79,30 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 						phone.setText((location.phone.equals("null")) ? "" : location.phone);
 						website.setText((location.website.equals("null")) ? "" : location.website);
 
-						dropdown = (Spinner) findViewById(R.id.locationTypeSpinner);
-						ArrayAdapter<String> adapter = new ArrayAdapter<>(
+						locationTypeSpinner = (Spinner) findViewById(R.id.locationTypeSpinner);
+						ArrayAdapter<String> locationTypeAdapter = new ArrayAdapter<>(
 								LocationEdit.this,
 								android.R.layout.simple_spinner_item,
 								locationTypeNames
 						);
-						dropdown.setAdapter(adapter);
+						locationTypeSpinner.setAdapter(locationTypeAdapter);
 
 						if (location.locationTypeID != 0) {
 							int locationTypeIndex = Arrays.asList(locationTypeIDs).indexOf(location.locationTypeID);
-							dropdown.setSelection(locationTypeIndex);
+							locationTypeSpinner.setSelection(locationTypeIndex);
+						}
+
+						operatorSpinner = (Spinner) findViewById(R.id.operatorSpinner);
+						ArrayAdapter<String> operatorAdapter = new ArrayAdapter<>(
+							LocationEdit.this,
+								android.R.layout.simple_spinner_item,
+								operatorNames
+						);
+						operatorSpinner.setAdapter(operatorAdapter);
+
+						if (location.operatorID != 0) {
+							int operatorIndex = Arrays.asList(operatorIDs).indexOf(location.operatorID);
+							operatorSpinner.setSelection(operatorIndex);
 						}
 					}
 				});
@@ -84,8 +114,10 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 		new Thread(new Runnable() {
 			public void run() {
 				try {
-					String locationTypeName = (String) dropdown.getSelectedItem();
+					String locationTypeName = (String) locationTypeSpinner.getSelectedItem();
+					String operatorName = (String) operatorSpinner.getSelectedItem();
 					int locationTypeID = locationTypes.get(locationTypeName);
+					int operatorID = operators.get(operatorName);
 					String phoneNumber = URLEncoder.encode(phone.getText().toString(), "UTF-8");
 					String locationWebsite = website.getText().toString();
 
@@ -94,10 +126,15 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 						locationTypeString = Integer.toString(locationTypeID);
 					}
 
+					String operatorString = "";
+					if (operatorID != 0) {
+						operatorString = Integer.toString(operatorID);
+					}
+
 					PBMApplication app = getPBMApplication();
 
 					new RetrieveJsonTask(LocationEdit.this).execute(
-						app.requestWithAuthDetails(regionlessBase + "locations/" + location.id + ".json?phone=" + phoneNumber + ";location_type=" + locationTypeString + ";website=" + URLDecoder.decode(locationWebsite, "UTF-8")),
+						app.requestWithAuthDetails(regionlessBase + "locations/" + location.id + ".json?phone=" + phoneNumber + ";location_type=" + locationTypeString + ";operator_id=" + operatorString + ";website=" + URLDecoder.decode(locationWebsite, "UTF-8")),
 						"PUT"
 					).get();
 				} catch (InterruptedException | ExecutionException | UnsupportedEncodingException e) {
@@ -133,6 +170,12 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 				location.setLocationTypeID(jsonLocation.getInt("location_type_id"));
 			} else {
 				location.setLocationTypeID(LocationType.blankLocationType().id);
+			}
+
+			if (!jsonLocation.getString("operator_id").equals("null")) {
+				location.setOperatorID(jsonLocation.getInt("operator_id"));
+			} else {
+				location.setOperatorID(Operator.blankOperator().id);
 			}
 
 			app.setLocation(location.id, location);
