@@ -64,6 +64,7 @@ public class LocationDetail extends PinballMapActivity {
 						TextView locationMetadata = (TextView) findViewById(R.id.locationMetadata);
 						TextView locationWebsite = (TextView) findViewById(R.id.website);
 						TextView locationPhone = (TextView) findViewById(R.id.locationPhone);
+						TextView locationOperator = (TextView) findViewById(R.id.operator);
 
 						String locationTypeName = "";
 						LocationType type = location.getLocationType(LocationDetail.this);
@@ -94,6 +95,14 @@ public class LocationDetail extends PinballMapActivity {
 							locationWebsite.setText(location.website);
 						} else {
 							locationWebsite.setVisibility(View.GONE);
+						}
+
+						Operator operator = location.getOperator(getPBMActivity());
+						if (operator != null) {
+							locationOperator.setVisibility(View.VISIBLE);
+							locationOperator.setText("Operated By: " + operator.name);
+						} else {
+							locationOperator.setVisibility(View.GONE);
 						}
 
 						table = (ListView) findViewById(R.id.locationDetailTable);

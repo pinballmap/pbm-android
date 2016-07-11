@@ -64,6 +64,15 @@
             android:textSize="15sp"
             android:layout_gravity="left"
             android:paddingBottom="4dip" />
+        <TextView
+            android:id="@+id/operator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/website"
+            android:paddingLeft="10dip"
+            android:paddingRight="0dip"
+            android:textColor="#333333"
+            android:textSize="15sp"/>
     </RelativeLayout>
 
     <TextView
