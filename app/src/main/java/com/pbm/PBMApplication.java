@@ -59,6 +59,8 @@ public class PBMApplication extends Application {
 	private HashMap<Integer, com.pbm.LocationMachineConditions> lmxConditions = new HashMap<>();
 	private HashMap<Integer, com.pbm.Zone> zones = new HashMap<>();
 	private HashMap<Integer, com.pbm.Region> regions = new HashMap<>();
+	private HashMap<Integer, com.pbm.Operator> operators = new HashMap<>();
+
 	private HashMap<TrackerName, Tracker> mTrackers = new HashMap<>();
 
 	synchronized Tracker getTracker() {
@@ -181,9 +183,13 @@ public class PBMApplication extends Application {
 		this.machines.put(id, machine);
 	}
 
-	void addLocationType(Integer id, LocationType name) {
-		this.locationTypes.put(id, name);
-	}
+	void addOperator(Integer id, Operator operator) { this.operators.put(id, operator); }
+
+	public Operator getOperator(Integer id) { return operators.get(id); }
+
+	public HashMap<Integer, com.pbm.Operator> getOperators() { return operators; }
+
+	void addLocationType(Integer id, LocationType name) { this.locationTypes.put(id, name); }
 
 	public LocationType getLocationType(Integer id) {
 		return locationTypes.get(id);
@@ -343,6 +349,35 @@ public class PBMApplication extends Application {
 		initializeLocations();
 		initializeLocationTypes();
 		initializeZones();
+		initializeOperators();
+	}
+
+	void initializeOperators() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+		operators.clear();
+
+		String json = new RetrieveJsonTask().execute(
+			requestWithAuthDetails(PinballMapActivity.regionBase + "operators.json"), "GET"
+		).get();
+		if (json == null) {
+			return;
+		}
+
+		JSONObject jsonObject = new JSONObject(json);
+		JSONArray types = jsonObject.getJSONArray("operators");
+
+		for (int i = 0; i < types.length(); i++) {
+			try {
+				JSONObject type = types.getJSONObject(i);
+				String name = type.getString("name");
+				String id = type.getString("id");
+
+				if ((id != null) && (name != null)) {
+					addOperator(Integer.parseInt(id), new Operator(Integer.parseInt(id), name));
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	void initializeLocationTypes() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
@@ -468,8 +503,13 @@ public class PBMApplication extends Application {
 				locationTypeID = location.getInt("location_type_id");
 			}
 
+			int operatorID = 0;
+			if (location.has("operator_id") && !location.getString("operator_id").equals("null")) {
+				operatorID = location.getInt("operator_id");
+			}
+
 			if ((name != null) && (lat != null) && (lon != null)) {
-				Location newLocation = new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip, phone, locationTypeID, website);
+				Location newLocation = new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip, phone, locationTypeID, website, operatorID);
 				addLocation(id, newLocation);
 			}
 

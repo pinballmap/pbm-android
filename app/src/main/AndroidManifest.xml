@@ -124,6 +124,21 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".LookupByOperator"
+            android:label="Lookup By Operator"
+            android:parentActivityName=".PBMMenu"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pbm.PBMMenu" />
+
+            <intent-filter>
+                <action android:name="com.pbm.LookupByOperator" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".LookupByLocationType"
             android:label="Lookup By Location Type"
             android:parentActivityName=".PBMMenu"

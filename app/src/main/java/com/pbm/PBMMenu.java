@@ -19,6 +19,7 @@ public class PBMMenu extends PinballMapActivity {
 	public static final String LOOKUP_BY_LOCATION = "Lookup By Location";
 	public static final String LOOKUP_BY_MACHINE = "Lookup By Machine";
 	public static final String LOOKUP_BY_ZONE = "Lookup By Zone";
+	public static final String LOOKUP_BY_OPERATOR = "Lookup By Operator";
 	public static final String LOOKUP_BY_LOCATION_TYPE = "Lookup By Location Type";
 	public static final String RECENTLY_ADDED = "Recently Added";
 	public static final String RECENT_HIGH_SCORES = "Recent High Scores";
@@ -49,6 +50,10 @@ public class PBMMenu extends PinballMapActivity {
 
 		if (app.getZones().values().size() > 0) {
 			mainMenuItems.add(LOOKUP_BY_ZONE);
+		}
+
+		if (app.getOperators().values().size() > 0) {
+			mainMenuItems.add(LOOKUP_BY_OPERATOR);
 		}
 
 		if (region != null && region.locationTypes(this) != null) {
@@ -82,6 +87,9 @@ public class PBMMenu extends PinballMapActivity {
 						break;
 					case LOOKUP_BY_ZONE:
 						intent.setClassName("com.pbm", "com.pbm.LookupByZoneList");
+						break;
+					case LOOKUP_BY_OPERATOR:
+						intent.setClassName("com.pbm", "com.pbm.LookupByOperator");
 						break;
 					case RECENTLY_ADDED:
 						intent.setClassName("com.pbm", "com.pbm.RecentlyAdded");

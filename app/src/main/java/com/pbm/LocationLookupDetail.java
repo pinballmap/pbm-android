@@ -19,6 +19,7 @@ import java.util.HashMap;
 public class LocationLookupDetail extends PinballMapActivity {
 	private Zone zone;
 	private LocationType locationType;
+	private Operator operator;
 	private ArrayList<Location> foundLocations = new ArrayList<>();
 	private ListView table;
 	private Parcelable listState;
@@ -37,6 +38,9 @@ public class LocationLookupDetail extends PinballMapActivity {
 			if (extras.containsKey("LocationType")) {
 				locationType = (LocationType) extras.get("LocationType");
 				setTitle(locationType.name);
+			} else if (extras.containsKey("Operator")) {
+				operator = (Operator) extras.get("Operator");
+				setTitle(operator.name);
 			} else if (extras.containsKey("Zone")) {
 				zone = (Zone) extras.get("Zone");
 				setTitle(zone.name);
@@ -73,7 +77,6 @@ public class LocationLookupDetail extends PinballMapActivity {
 	void loadLocationData() {
 		LocationListAdapter adapter = (LocationListAdapter) table.getAdapter();
 		foundLocations.clear();
-//		table.setAdapter(null); //TODO
 
 		PBMApplication app = getPBMApplication();
 		HashMap<Integer, com.pbm.Location> locations = app.getLocations();
@@ -84,12 +87,17 @@ public class LocationLookupDetail extends PinballMapActivity {
 			if (this.getLocation() != null) {
 				location.setDistance(this.getLocation());
 			}
-			if (locationType == null && zone == null) {
+			if (locationType == null && zone == null && operator == null) {
 				foundLocations.add(location);
 				continue;
 			}
 
 			if (locationType != null && location.locationTypeID == locationType.id) {
+				foundLocations.add(location);
+				continue;
+			}
+
+			if (operator != null && location.operatorID == operator.id) {
 				foundLocations.add(location);
 				continue;
 			}
@@ -115,7 +123,6 @@ public class LocationLookupDetail extends PinballMapActivity {
 	public void onResume() {
 		super.onResume();
 		loadLocationData();
-//		listState = null;
 		Log.d("com.pbm", "done");
 	}
 

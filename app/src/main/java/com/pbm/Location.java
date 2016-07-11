@@ -10,11 +10,11 @@ import java.util.TreeMap;
 
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public int id, zoneID, locationTypeID;
+	public int id, zoneID, locationTypeID, operatorID;
 	public String name, street, city, state, zip, phone, lat, lon, website, milesInfo;
 	public float distanceFromYou;
 
-	public Location(int id, String name, String lat, String lon, int zoneID, String street, String city, String state, String zip, String phone, int locationTypeID, String website) {
+	public Location(int id, String name, String lat, String lon, int zoneID, String street, String city, String state, String zip, String phone, int locationTypeID, String website, int operatorID) {
 		this.id = id;
 		this.name = name;
 		this.lat = lat;
@@ -27,6 +27,7 @@ public class Location implements Serializable {
 		this.phone = phone;
 		this.website = website;
 		this.locationTypeID = locationTypeID;
+		this.operatorID = operatorID;
 	}
 
 	protected static Comparator<Location> byNearestDistance = new Comparator<com.pbm.Location>() {
@@ -48,6 +49,8 @@ public class Location implements Serializable {
 	public void setLocationTypeID(int locationTypeID) {
 		this.locationTypeID = locationTypeID;
 	}
+
+	public void setOperatorID(int operatorID) { this.operatorID = operatorID; }
 
 	public void setDistance(android.location.Location location) {
 		float distance = location.distanceTo(toAndroidLocation());
@@ -111,6 +114,10 @@ public class Location implements Serializable {
 
 	public LocationType getLocationType(PinballMapActivity activity) {
 		return activity.getPBMApplication().getLocationType(locationTypeID);
+	}
+
+	public Operator getOperator(PinballMapActivity activity) {
+		return activity.getPBMApplication().getOperator(operatorID);
 	}
 
 	public void removeMachine(PinballMapActivity activity, LocationMachineXref lmx) {

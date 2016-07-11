@@ -1,5 +1,7 @@
 package com.pbm;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,6 +76,24 @@ public class Region implements Serializable, JSONConverter<Region> {
 		}
 
 		return mockLocation;
+	}
+
+	public List<Operator> operators(PinballMapActivity activity) {
+		PBMApplication app = activity.getPBMApplication();
+
+		List<Operator> operators = new ArrayList<>();
+
+		ArrayList<Location> locations = app.getLocationValues();
+		for (Location location : locations) {
+
+			Operator operator = location.getOperator(activity);
+
+			if (operator != null && !operators.contains(operator)) {
+				operators.add(operator);
+			}
+		}
+
+		return operators;
 	}
 
 	public List<LocationType> locationTypes(PinballMapActivity activity) {
