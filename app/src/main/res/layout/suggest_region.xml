@@ -117,7 +117,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:onClick="buttonOnClick"
-            android:text="@string/submit_text"/>
+            android:text="@string/submit_text"
+            android:background="@drawable/input_btn"
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 </ScrollView>

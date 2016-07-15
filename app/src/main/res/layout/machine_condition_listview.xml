@@ -33,13 +33,11 @@
 
         <TextView
             android:id="@+id/machine_info"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/sample_machine_name"
             android:textAppearance="?android:attr/textAppearanceLarge"
-
-
-            />
+            android:background="@drawable/machine_bg" />
 
         <TextView
             android:id="@+id/machine_condition"

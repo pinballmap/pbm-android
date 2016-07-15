@@ -1,6 +1,7 @@
 package com.pbm;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +38,7 @@ public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 
 			holder = new MachineViewHolder();
 			holder.name = (TextView) row.findViewById(R.id.machine_info);
-			holder.metaData = (TextView) row.findViewById(R.id.metaData);
 			holder.machineSelectButton = (ImageView) row.findViewById(R.id.machineSelectButton);
-//			holder.condition = (TextView) row.findViewById(R.id.machine_condition);
 
 			row.setTag(holder);
 		} else {
@@ -47,9 +46,7 @@ public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 		}
 
 		Machine machine = filteredMachineList.get(position);
-		holder.name.setText(machine.name);
-		holder.metaData.setText(machine.metaData());
-//		holder.condition.setText(machine.getCondition());
+		holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>"));
 
 		if (disableSelectImage) {
 			holder.machineSelectButton.setVisibility(View.INVISIBLE);
@@ -62,7 +59,6 @@ public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 		TextView name;
 		TextView metaData;
 		ImageView machineSelectButton;
-//		TextView condition;
 	}
 
 	public Filter getFilter() {

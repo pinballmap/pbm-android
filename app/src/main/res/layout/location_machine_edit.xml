@@ -13,7 +13,9 @@
 
         android:layout_centerHorizontal="true"
         android:text="Add a new condition report"
-        android:padding="15dp"/>
+        android:padding="15dp"
+        android:background="@drawable/input_btn"
+        android:textColor="#FFFFFF" />
 
     <ListView
         android:id="@android:id/list"

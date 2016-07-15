@@ -9,17 +9,17 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="#FEFBF8"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/locationName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="5sp"
-            android:paddingRight="5sp"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:background="#FCF3EA" />
+            android:background="#FCF3EA"
+            android:padding="5sp" />
 
         <TextView
             android:id="@+id/locationMetadata"
@@ -61,8 +61,7 @@
             android:paddingLeft="10dip"
             android:paddingRight="0dip"
             android:textColor="#333333"
-            android:textSize="15sp"
-            android:paddingBottom="4dip" />
+            android:textSize="15sp" />
         <TextView
             android:id="@+id/operator"
             android:layout_width="fill_parent"
@@ -71,16 +70,16 @@
             android:paddingLeft="10dip"
             android:paddingRight="0dip"
             android:textColor="#333333"
-            android:textSize="15sp"/>
+            android:textSize="15sp" />
     </RelativeLayout>
 
     <TextView
         android:id="@+id/spacer"
         android:layout_width="fill_parent"
-        android:layout_height="2dip"
+        android:layout_height="4dip"
         android:layout_below="@+id/locationData"
         android:background="#a77e51"
-        android:layout_marginTop="2dp" />
+        android:layout_marginTop="4dp" />
 
     <ListView
         android:id="@+id/locationDetailTable"
