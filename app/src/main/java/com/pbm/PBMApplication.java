@@ -492,6 +492,12 @@ public class PBMApplication extends Application {
 			String phone = location.getString("phone");
 			String state = location.getString("state");
 			String website = location.getString("website");
+			String lastUpdatedByUsername = location.getString("last_updated_by_username");
+
+			String dateLastUpdated = null;
+			if (location.has("date_last_updated") && !location.getString("date_last_updated").equals("null")) {
+				dateLastUpdated = location.getString("date_last_updated");
+			}
 
 			int zoneID = 0;
 			if (location.has("zone_id") && !location.getString("zone_id").equals("null")) {
@@ -509,7 +515,10 @@ public class PBMApplication extends Application {
 			}
 
 			if ((name != null) && (lat != null) && (lon != null)) {
-				Location newLocation = new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip, phone, locationTypeID, website, operatorID);
+				Location newLocation =
+						new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip,
+								phone, locationTypeID, website, operatorID, dateLastUpdated,
+								lastUpdatedByUsername);
 				addLocation(id, newLocation);
 			}
 

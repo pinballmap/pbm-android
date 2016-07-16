@@ -60,11 +60,25 @@ public class LocationDetail extends PinballMapActivity {
 						machines = location.getMachines(LocationDetail.this);
 
 						TextView locationName = (TextView) findViewById(R.id.locationName);
+						TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
 						TextView locationType = (TextView) findViewById(R.id.locationType);
 						TextView locationMetadata = (TextView) findViewById(R.id.locationMetadata);
 						TextView locationWebsite = (TextView) findViewById(R.id.website);
 						TextView locationPhone = (TextView) findViewById(R.id.locationPhone);
 						TextView locationOperator = (TextView) findViewById(R.id.operator);
+
+						if (location.dateLastUpdated != null && !location.dateLastUpdated.equals("") && !location.dateLastUpdated.equals("null")) {
+							String lastUpdatedInfo = "Location last updated: " + location.dateLastUpdated;
+
+							if (location.lastUpdatedByUsername != null && !location.lastUpdatedByUsername.equals("") && !location.lastUpdatedByUsername.equals("null")) {
+								lastUpdatedInfo = lastUpdatedInfo + " by " + location.lastUpdatedByUsername;
+							}
+
+							locationLastUpdated.setVisibility(View.VISIBLE);
+							locationLastUpdated.setText(lastUpdatedInfo);
+						} else {
+							locationLastUpdated.setVisibility(View.GONE);
+						}
 
 						String locationTypeName = "";
 						LocationType type = location.getLocationType(LocationDetail.this);
