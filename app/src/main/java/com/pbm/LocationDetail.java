@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class LocationDetail extends PinballMapActivity {
 	private ListView table;
@@ -36,9 +37,26 @@ public class LocationDetail extends PinballMapActivity {
 
 		location = (Location) getIntent().getExtras().get("Location");
 
+		Button btn = (Button) findViewById(R.id.btn);
+
 		if (location != null) {
 			setTitle("");
 
+			btn.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					try{
+						PBMApplication app = getPBMApplication();
+
+						new RetrieveJsonTask().execute(
+								app.requestWithAuthDetails(PinballMapActivity.regionlessBase +
+										"locations/" + location.id + "/confirm.json"),
+								"PUT"
+						).get();
+					} catch (InterruptedException | ExecutionException e) {
+						e.printStackTrace();
+					}
+				}
+			});
 			loadLocationData();
 		}
 	}

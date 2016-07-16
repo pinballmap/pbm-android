@@ -85,11 +85,22 @@
             android:textSize="15sp"/>
     </RelativeLayout>
 
+    <Button
+        android:id="@+id/btn"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/locationData"
+        android:text="Click to confirm that this location's machine list is up to date"
+        android:textSize="10sp"
+        android:background="@drawable/input_btn"
+        android:textColor="#ffffff" />
+
     <TextView
         android:id="@+id/spacer"
         android:layout_width="fill_parent"
         android:layout_height="2dip"
-        android:layout_below="@+id/locationData"
+        android:layout_below="@+id/btn"
         android:background="#a77e51"/>
 
     <ListView
