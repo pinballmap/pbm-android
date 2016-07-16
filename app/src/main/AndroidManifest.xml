@@ -154,6 +154,21 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".LookupByCity"
+            android:label="Lookup By City"
+            android:parentActivityName=".PBMMenu"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pbm.PBMMenu" />
+
+            <intent-filter>
+                <action android:name="com.pbm.LookupByCity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".LocationLookupDetail"
             android:label="@string/app_name"
             android:parentActivityName=".PBMMenu"
