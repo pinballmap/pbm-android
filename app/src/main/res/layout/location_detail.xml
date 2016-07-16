@@ -22,10 +22,20 @@
             android:padding="5sp" />
 
         <TextView
-            android:id="@+id/locationMetadata"
+            android:id="@+id/locationLastUpdated"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/locationName"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:background="#FCF3EA"
+            android:padding="5sp" />
+
+        <TextView
+            android:id="@+id/locationMetadata"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/locationLastUpdated"
             android:paddingLeft="10dip"
             android:paddingRight="0dip"
 

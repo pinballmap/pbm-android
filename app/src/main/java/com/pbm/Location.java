@@ -11,10 +11,15 @@ import java.util.TreeMap;
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public int id, zoneID, locationTypeID, operatorID;
-	public String name, street, city, state, zip, phone, lat, lon, website, milesInfo;
+	public String name, street, city, state, zip, phone, lat, lon, website, milesInfo,
+			lastUpdatedByUsername, dateLastUpdated;
 	public float distanceFromYou;
 
-	public Location(int id, String name, String lat, String lon, int zoneID, String street, String city, String state, String zip, String phone, int locationTypeID, String website, int operatorID) {
+	public Location(int id, String name, String lat, String lon, int zoneID, String street,
+					String city, String state, String zip, String phone, int locationTypeID,
+					String website, int operatorID, String dateLastUpdated,
+					String lastUpdatedByUsername
+	) {
 		this.id = id;
 		this.name = name;
 		this.lat = lat;
@@ -28,6 +33,8 @@ public class Location implements Serializable {
 		this.website = website;
 		this.locationTypeID = locationTypeID;
 		this.operatorID = operatorID;
+		this.dateLastUpdated = dateLastUpdated;
+		this.lastUpdatedByUsername = lastUpdatedByUsername;
 	}
 
 	protected static Comparator<Location> byNearestDistance = new Comparator<com.pbm.Location>() {
