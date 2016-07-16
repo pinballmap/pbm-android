@@ -1,6 +1,7 @@
 package com.pbm;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,6 @@ class MachineDetailListAdapter extends ArrayAdapter<Machine> {
 			row = layoutInflater.inflate(R.layout.machine_condition_listview, parent, false);
 			holder = new MachineViewHolder();
 			holder.name = (TextView) row.findViewById(R.id.machine_info);
-//			holder.metaData = (TextView) row.findViewById(R.id.metaData);
 			holder.machineSelectButton = (ImageView) row.findViewById(R.id.machineSelectButton);
 			holder.condition = (TextView) row.findViewById(R.id.machine_condition);
 
@@ -53,8 +53,7 @@ class MachineDetailListAdapter extends ArrayAdapter<Machine> {
 		}
 
 		Machine machine = filteredMachineList.get(position);
-		holder.name.setText(machine.name + " " + machine.metaData());
-//		holder.metaData.setText(machine.metaData());
+        holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>"));
 		String conditionText = "";
 		if (!lmxes.get(machine.id).condition.equals("null") && !lmxes.get(machine.id).condition.equals("")) {
 			conditionText += lmxes.get(machine.id).condition;

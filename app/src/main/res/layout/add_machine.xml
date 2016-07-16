@@ -31,7 +31,9 @@
 	    android:text="@string/add_machine"
 		android:textSize="18dip"
 		android:layout_margin="5dp"
-		android:layout_gravity="center_horizontal" />
+		android:layout_gravity="center_horizontal"
+		android:textColor="#FFFFFF"
+		android:background="@drawable/input_btn" />
 
 	<TextView android:layout_width="fill_parent" android:id="@+id/spacer"
 		android:layout_height="3dip" android:background="#a77e51" />
