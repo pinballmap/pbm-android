@@ -18,6 +18,7 @@ import java.util.HashMap;
 
 public class LocationLookupDetail extends PinballMapActivity {
 	private Zone zone;
+	private String city;
 	private LocationType locationType;
 	private Operator operator;
 	private ArrayList<Location> foundLocations = new ArrayList<>();
@@ -44,6 +45,9 @@ public class LocationLookupDetail extends PinballMapActivity {
 			} else if (extras.containsKey("Zone")) {
 				zone = (Zone) extras.get("Zone");
 				setTitle(zone.name);
+			} else if (extras.containsKey("City")) {
+				city = (String) extras.get("City");
+				setTitle(city);
 			}
 		} else {
 			setTitle("Locations");
@@ -87,7 +91,13 @@ public class LocationLookupDetail extends PinballMapActivity {
 			if (this.getLocation() != null) {
 				location.setDistance(this.getLocation());
 			}
-			if (locationType == null && zone == null && operator == null) {
+
+			if (locationType == null && zone == null && operator == null && city == null) {
+				foundLocations.add(location);
+				continue;
+			}
+
+			if (city != null && location.city.equals(city)) {
 				foundLocations.add(location);
 				continue;
 			}

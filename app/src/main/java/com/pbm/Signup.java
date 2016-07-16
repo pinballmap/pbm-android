@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -20,27 +19,20 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.concurrent.ExecutionException;
 
-public class Login extends AppCompatActivity {
+public class Signup extends AppCompatActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.signup);
 
         final TextInputLayout usernameWrapper = (TextInputLayout) findViewById(R.id.usernameWrapper);
+        final TextInputLayout emailWrapper = (TextInputLayout) findViewById(R.id.emailWrapper);
         final TextInputLayout passwordWrapper = (TextInputLayout) findViewById(R.id.passwordWrapper);
-        usernameWrapper.setHint("Login");
+        usernameWrapper.setHint("Username");
+        emailWrapper.setHint("Email");
         passwordWrapper.setHint("Password");
 
         Button btn = (Button) findViewById(R.id.btn);
-        TextView signup = (TextView) findViewById(R.id.signup);
-
-        signup.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                Intent intent = new Intent();
-                intent.setClassName("com.pbm", "com.pbm.Signup");
-                startActivity(intent);
-            }
-        });
 
         btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -55,7 +47,7 @@ public class Login extends AppCompatActivity {
                     final JSONObject jsonObject = new JSONObject(json.toString());
 
                     if (jsonObject.has("errors")) {
-                        Login.super.runOnUiThread(new Runnable() {
+                        Signup.super.runOnUiThread(new Runnable() {
                             public void run() {
                                 String error = null;
                                 try {
@@ -101,6 +93,4 @@ public class Login extends AppCompatActivity {
     public boolean onPrepareOptionsMenu (Menu menu) {
         return false;
     }
-
-    public void onBackPressed() {}
 }
