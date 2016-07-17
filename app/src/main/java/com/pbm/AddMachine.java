@@ -81,15 +81,17 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 			new Thread(new Runnable() {
 				public void run() {
 					try {
+						PBMApplication app = getPBMApplication();
+
 						int machineID = getMachineIDFromMachineName(manualMachineName);
 						if (machineID != -1) {
 							new RetrieveJsonTask(AddMachine.this).execute(
-								regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + machineID,
+								app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + machineID),
 								"POST"
 							).get();
 						} else {
 							new RetrieveJsonTask(AddMachine.this).execute(
-								regionlessBase + "machines.json?machine_name=" + URLEncoder.encode(manualMachineName, "UTF8") + ";location_id=" + location.id,
+								app.requestWithAuthDetails(regionlessBase + "machines.json?machine_name=" + URLEncoder.encode(manualMachineName, "UTF8") + ";location_id=" + location.id),
 								"POST"
 							).get();
 						}
@@ -132,7 +134,8 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 			app.addMachine(jsonMachine.getInt("id"), new Machine(jsonMachine.getInt("id"), jsonMachine.getString("name"), null, null, true));
 			
 			new RetrieveJsonTask(AddMachine.this).execute(
-				regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + jsonMachine.getString("id"), "POST"
+				app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + jsonMachine.getString("id")),
+				"POST"
 			).get();
 			
 			return;
