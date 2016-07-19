@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:background="#FEFBF8"
         android:orientation="vertical"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="10dp">
 
         <TextView
             android:id="@+id/locationName"
@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:background="#FCF3EA"
+            android:background="#ece2d8"
+            android:textColor="#6E5335"
             android:padding="5sp" />
 
         <TextView
@@ -26,10 +27,11 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/locationName"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:textSize="14sp"
             android:background="#FCF3EA"
-            android:padding="5sp" />
+            android:textStyle="italic"
+            android:paddingLeft="10sp"
+            android:paddingBottom="5sp" />
 
         <TextView
             android:id="@+id/locationMetadata"
@@ -85,23 +87,21 @@
 
     <Button
         android:id="@+id/btn"
-        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/locationData"
-        android:text="Click to confirm that this location's machine list is up to date"
-        android:textSize="10sp"
-        android:background="@drawable/input_btn"
-
-        android:textColor="#ffffff" />
+        android:text="@string/location_confirm"
+        android:textSize="14sp"
+        android:textColor="#6E5335"
+        android:background="#FCF3EA"
+        android:textStyle="italic" />
 
     <TextView
         android:id="@+id/spacer"
         android:layout_width="fill_parent"
-        android:layout_height="4dip"
+        android:layout_height="1dip"
         android:layout_below="@+id/btn"
-        android:background="#a77e51"
-        android:layout_marginTop="4dp" />
+        android:background="#a77e51" />
 
     <ListView
         android:id="@+id/locationDetailTable"

@@ -102,15 +102,17 @@
             android:text="Login"
             android:textSize="22sp"
             android:background="@drawable/input_btn"
-
             android:textColor="#ffffff" />
 
         <TextView
             android:id="@+id/signup"
             android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Not a user?\nSign up here"/>
+            android:text="Not a user?\nSign up here"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_gravity="center_horizontal" />
 
 
     </LinearLayout>
