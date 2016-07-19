@@ -13,9 +13,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -86,7 +90,19 @@ public class LocationDetail extends PinballMapActivity {
 						TextView locationOperator = (TextView) findViewById(R.id.operator);
 
 						if (location.dateLastUpdated != null && !location.dateLastUpdated.equals("") && !location.dateLastUpdated.equals("null")) {
-							String lastUpdatedInfo = "Location last updated: " + location.dateLastUpdated;
+							DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd");
+							DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy");
+
+							String formattedDateLastUpdated = "";
+							try {
+								Date startDate = inputDF.parse(location.dateLastUpdated);
+								formattedDateLastUpdated = outputDF.format(startDate);
+								System.out.println(formattedDateLastUpdated);
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
+
+							String lastUpdatedInfo = "Location last updated: " + formattedDateLastUpdated;
 
 							if (location.lastUpdatedByUsername != null && !location.lastUpdatedByUsername.equals("") && !location.lastUpdatedByUsername.equals("null")) {
 								lastUpdatedInfo = lastUpdatedInfo + " by " + location.lastUpdatedByUsername;
