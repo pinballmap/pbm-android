@@ -1,6 +1,7 @@
 package com.pbm;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
@@ -12,9 +13,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,11 +56,24 @@ public class LocationDetail extends PinballMapActivity {
 										"locations/" + location.id + "/confirm.json"),
 								"PUT"
 						).get();
+						Toast.makeText(getBaseContext(), "Thanks for confirming that list!", Toast.LENGTH_LONG).show();
+
+						location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+
+						final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+						location.lastUpdatedByUsername = settings.getString("username", "");
+
+						String lastUpdatedInfo = "Location last updated: " + location.dateLastUpdated + " by " + location.lastUpdatedByUsername;
+
+						TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
+						locationLastUpdated.setVisibility(View.VISIBLE);
+						locationLastUpdated.setText(lastUpdatedInfo);
 					} catch (InterruptedException | ExecutionException e) {
 						e.printStackTrace();
 					}
 				}
 			});
+
 			loadLocationData();
 		}
 	}
@@ -90,19 +103,7 @@ public class LocationDetail extends PinballMapActivity {
 						TextView locationOperator = (TextView) findViewById(R.id.operator);
 
 						if (location.dateLastUpdated != null && !location.dateLastUpdated.equals("") && !location.dateLastUpdated.equals("null")) {
-							DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd");
-							DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy");
-
-							String formattedDateLastUpdated = "";
-							try {
-								Date startDate = inputDF.parse(location.dateLastUpdated);
-								formattedDateLastUpdated = outputDF.format(startDate);
-								System.out.println(formattedDateLastUpdated);
-							} catch (ParseException e) {
-								e.printStackTrace();
-							}
-
-							String lastUpdatedInfo = "Location last updated: " + formattedDateLastUpdated;
+							String lastUpdatedInfo = "Location last updated: " + location.dateLastUpdated;
 
 							if (location.lastUpdatedByUsername != null && !location.lastUpdatedByUsername.equals("") && !location.lastUpdatedByUsername.equals("null")) {
 								lastUpdatedInfo = lastUpdatedInfo + " by " + location.lastUpdatedByUsername;

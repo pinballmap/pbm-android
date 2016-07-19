@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
@@ -497,6 +498,19 @@ public class PBMApplication extends Application {
 			String dateLastUpdated = null;
 			if (location.has("date_last_updated") && !location.getString("date_last_updated").equals("null")) {
 				dateLastUpdated = location.getString("date_last_updated");
+
+				DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd");
+				DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy");
+
+				String formattedDateLastUpdated = "";
+				try {
+					Date startDate = inputDF.parse(dateLastUpdated);
+					formattedDateLastUpdated = outputDF.format(startDate);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+
+				dateLastUpdated = formattedDateLastUpdated;
 			}
 
 			int zoneID = 0;
