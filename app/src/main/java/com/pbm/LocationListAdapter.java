@@ -1,6 +1,7 @@
 package com.pbm;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,9 +47,8 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 		}
 		if (filteredLocationList.size() > 0) {
 			Location location = filteredLocationList.get(position);
-			holder.name.setText(location.name);
+			holder.name.setText(Html.fromHtml("<b>" + location.name + "</b> " + "<i>(" + location.city + ")</i>"));
 			holder.distance.setText(location.milesInfo);
-			holder.city.setText(location.city);
 			holder.numMachines.setText(Integer.toString(location.numMachines((PinballMapActivity) context)));
 		}
 		return row;
