@@ -1,114 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical">
-
-    <RelativeLayout
-        android:id="@+id/locationData"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollViewId"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true" >
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#FEFBF8"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginBottom="10dp">
+        android:background="#FEFBF8">
 
-        <TextView
-            android:id="@+id/locationName"
+        <RelativeLayout
+            android:id="@+id/locationData"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:background="#ece2d8"
-            android:textColor="#6E5335"
-            android:padding="5sp" />
+            android:background="#FEFBF8"
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp">
 
-        <TextView
-            android:id="@+id/locationLastUpdated"
+            <TextView
+                android:id="@+id/locationName"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="5sp"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:background="#ece2d8"
+                android:textColor="#6E5335" />
+
+            <TextView
+                android:id="@+id/locationLastUpdated"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/locationName"
+                android:textSize="14sp"
+                android:background="#FCF3EA"
+                android:textStyle="italic"
+                android:paddingLeft="10sp"
+                android:paddingBottom="5sp" />
+
+            <TextView
+                android:id="@+id/locationMetadata"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/locationLastUpdated"
+                android:paddingEnd="0dip"
+                android:paddingStart="10dip"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/locationPhone"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/locationMetadata"
+                android:autoLink="phone"
+                android:paddingEnd="0dip"
+                android:paddingStart="10dip"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/locationType"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/locationPhone"
+                android:paddingEnd="0dip"
+                android:paddingStart="10dip"
+                android:textColor="#333333"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/website"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/locationType"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:paddingEnd="0dip"
+                android:paddingStart="10dip"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:layout_gravity="left"
+                android:paddingBottom="4dip" />
+            <TextView
+                android:id="@+id/operator"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/website"
+                android:paddingLeft="10dip"
+                android:paddingRight="0dip"
+                android:textColor="#333333"
+                android:textSize="15sp"/>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/locationName"
+            android:layout_below="@+id/locationData"
+            android:text="@string/location_confirm"
             android:textSize="14sp"
+            android:textColor="#6E5335"
             android:background="#FCF3EA"
-            android:textStyle="italic"
-            android:paddingLeft="10sp"
-            android:paddingBottom="5sp" />
+            android:textStyle="italic" />
 
         <TextView
-            android:id="@+id/locationMetadata"
+            android:id="@+id/spacer"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/locationLastUpdated"
-            android:paddingLeft="10dip"
-            android:paddingRight="0dip"
+            android:layout_height="1dip"
+            android:layout_below="@+id/btn"
+            android:background="#a77e51"/>
 
-            android:textSize="18sp"/>
-
-        <TextView
-            android:id="@+id/locationPhone"
+        <com.pbm.NonScrollListView
+            android:id="@+id/locationDetailTable"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/locationMetadata"
-            android:autoLink="phone"
-            android:paddingLeft="10dip"
-            android:paddingRight="0dip"
-            android:textSize="18sp"/>
-
-        <TextView
-            android:id="@+id/locationType"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/locationPhone"
-            android:paddingLeft="10dip"
-            android:paddingRight="0dip"
-            android:textColor="#333333"
-            android:textSize="15sp"/>
-
-        <TextView
-            android:id="@+id/website"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/locationType"
-            android:autoLink="web"
-            android:linksClickable="true"
-            android:paddingLeft="10dip"
-            android:paddingRight="0dip"
-            android:textColor="#333333"
-            android:textSize="15sp" />
-        <TextView
-            android:id="@+id/operator"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/website"
-            android:paddingLeft="10dip"
-            android:paddingRight="0dip"
-            android:textColor="#333333"
-            android:textSize="15sp" />
+            android:layout_below="@+id/spacer"
+            android:background="#FEFBF8">
+        </com.pbm.NonScrollListView>
     </RelativeLayout>
-
-    <Button
-        android:id="@+id/btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/locationData"
-        android:text="@string/location_confirm"
-        android:textSize="14sp"
-        android:textColor="#6E5335"
-        android:background="#FCF3EA"
-        android:textStyle="italic" />
-
-    <TextView
-        android:id="@+id/spacer"
-        android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:layout_below="@+id/btn"
-        android:background="#a77e51" />
-
-    <ListView
-        android:id="@+id/locationDetailTable"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#FEFBF8"
-        android:layout_below="@+id/spacer"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-</RelativeLayout>
+</ScrollView>

@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +23,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class LocationDetail extends PinballMapActivity {
-	private ListView table;
+	private NonScrollListView table;
 
 	private Location location;
 	private List<LocationMachineXref> lmxes = new ArrayList<>();
@@ -154,7 +153,7 @@ public class LocationDetail extends PinballMapActivity {
 							locationOperator.setVisibility(View.GONE);
 						}
 
-						table = (ListView) findViewById(R.id.locationDetailTable);
+						table = (NonScrollListView) findViewById(R.id.locationDetailTable);
 						table.setOnItemClickListener(new OnItemClickListener() {
 							public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
 								Machine machine = machines.get(position);
@@ -186,7 +185,10 @@ public class LocationDetail extends PinballMapActivity {
 		}
 
 		if (machines != null) {
+			table.setFocusable(false);
+
 			table.setAdapter(new MachineDetailListAdapter(this, machines, location.getLMXMap(LocationDetail.this)));
+			//justifyListViewHeightBasedOnChildren(table);
 		}
 	}
 
