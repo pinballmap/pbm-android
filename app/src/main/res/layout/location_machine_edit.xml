@@ -4,17 +4,34 @@
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
     android:background="#FEFBF8">
-
+    <TextView
+        android:id="@+id/pintips"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:linksClickable="true"
+        android:textColor="#333333"
+        android:textSize="15sp"
+        android:layout_gravity="left"
+        android:layout_alignParentTop="true"
+        android:text="View playing tips on pintips.net"
+        android:paddingLeft="15dp"
+        android:paddingBottom="4dip" />
+    <TextView
+        android:id="@+id/spacer"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_below="@+id/pintips"
+        android:background="#a77e51"/>
     <Button
         android:id="@+id/add_condition_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-
         android:layout_centerHorizontal="true"
         android:text="Add a new condition report"
         android:padding="15dp"
         android:background="@drawable/input_btn"
+        android:layout_below="@+id/spacer"
         android:textColor="#FFFFFF" />
 
     <ListView
@@ -41,6 +58,14 @@
         android:layout_marginRight="30dp"
         android:layout_marginTop="50dp"
         android:text="No conditions"/>
+
+    <Button
+        android:id="@+id/other_locations"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Lookup Other Locations With MACHINE"
+        android:layout_above="@+id/remove_machine_button"
+        android:padding="15dp"/>
 
     <Button
         android:id="@+id/remove_machine_button"
