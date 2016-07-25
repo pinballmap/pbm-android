@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Comparator;
@@ -32,7 +35,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 		lmx = (LocationMachineXref) getIntent().getExtras().get("lmx");
 
 		location = lmx.getLocation(this);
-		Machine machine = getPBMApplication().getMachine(lmx.machineID);
+		final Machine machine = getPBMApplication().getMachine(lmx.machineID);
 
 		setTitle(machine.name + " @ " + location.name);
 		removeHandler = new View.OnClickListener() {
@@ -51,6 +54,23 @@ public class LocationMachineEdit extends PinballMapActivity {
 				Intent myIntent = new Intent();
 				myIntent.setClassName("com.pbm", "com.pbm.ConditionEdit");
 				myIntent.putExtra("lmx", lmx);
+				startActivityForResult(myIntent, QUIT_RESULT);
+			}
+		});
+
+		TextView pintips = (TextView) findViewById(R.id.pintips);
+		pintips.setMovementMethod(LinkMovementMethod.getInstance());
+		pintips.setText(Html.fromHtml("<a href=\"http://pintips.net/pinmap/machine/"+ Integer.toString(machine.id) + "\">View playing tips on pintips.net</a>"));
+
+		Button otherLocations = (Button) findViewById(R.id.other_locations);
+		otherLocations.setText("Lookup Other Locations With " + machine.name);
+
+		otherLocations.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent myIntent = new Intent();
+				myIntent.putExtra("Machine", machine);
+				myIntent.setClassName("com.pbm", "com.pbm.MachineLookupDetail");
 				startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
