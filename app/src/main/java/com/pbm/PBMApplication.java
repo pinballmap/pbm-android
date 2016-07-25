@@ -575,12 +575,20 @@ public class PBMApplication extends Application {
 			ArrayList<Condition> conditionList = new ArrayList<>();
 			for (int conditionIndex = 0; conditionIndex < conditions.length(); conditionIndex++) {
 				JSONObject pastCondition = conditions.getJSONObject(conditionIndex);
+
+				String pastConditionUsername = "";
+				try {
+					pastConditionUsername = pastCondition.getString("username");
+				} catch (JSONException e) {
+					pastConditionUsername = "";
+				}
+
 				try {
 					conditionList.add(new Condition(pastCondition.getInt("id"),
 						dateFormat.parse(pastCondition.getString("updated_at")),
 						pastCondition.getString("comment"),
 						lmxID,
-						pastCondition.getString("username")
+						pastConditionUsername
 					));
 					Log.d("lmxconditions", pastCondition.getString("updated_at") + " " + pastCondition.getString("comment"));
 				} catch (ParseException e) {

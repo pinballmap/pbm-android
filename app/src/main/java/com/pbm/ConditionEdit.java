@@ -80,13 +80,5 @@ public class ConditionEdit extends PinballMapActivity implements OnTaskCompleted
 			int machineID = jsonLmx.getInt("machine_id");
 			getPBMApplication().loadConditions(jsonLmx, id, locationID, machineID);
 		}
-// {"location_machine":{"id":18524,"created_at":"2015-04-08T23:55:25.440Z",
-// "updated_at":"2015-05-19T22:16:48.074Z","location_id":2719,"machine_id":1164,
-// "condition":"log this","condition_date":"2015-05-19","ip":null,"user_id":null,
-// "machine_score_xrefs_count":null,
-// "machine_conditions":[{"id":26,"comment":"dis condition doe","location_machine_xref_id":18524,"created_at":"2015-05-15T06:13:53.288Z","updated_at":"2015-05-15T06:13:53.288Z"},
-// {"id":27,"comment":"dat condition needs to go","location_machine_xref_id":18524,"created_at":"2015-05-15T06:16:05.670Z","updated_at":"2015-05-15T06:16:05.670Z"},
-// {"id":28,"comment":"log this","location_machine_xref_id":18524,"created_at":"2015-05-19T22:16:48.082Z","updated_at":"2015-05-19T22:16:48.082Z"}]}}
-
 	}
 }

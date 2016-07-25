@@ -57,7 +57,6 @@ public class ConditionsArrayAdapter extends ArrayAdapter<Condition> implements O
 		return convertView;
 	}
 
-	@Override
 	public void onTaskCompleted(String results) throws JSONException, InterruptedException, ExecutionException {
 		((PinballMapActivity) context).runOnUiThread(new Runnable() {
 			@Override
