@@ -188,7 +188,6 @@ public class LocationDetail extends PinballMapActivity {
 			table.setFocusable(false);
 
 			table.setAdapter(new MachineDetailListAdapter(this, machines, location.getLMXMap(LocationDetail.this)));
-			//justifyListViewHeightBasedOnChildren(table);
 		}
 	}
 

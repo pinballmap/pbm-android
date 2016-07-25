@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 
@@ -25,6 +26,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 	private LocationMachineXref lmx;
 	private ConditionsArrayAdapter adapter;
 	private View.OnClickListener removeHandler;
+	private final int NUMBER_OF_CONDITIONS_TO_SHOW = 5;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -140,8 +142,9 @@ public class LocationMachineEdit extends PinballMapActivity {
 		listView.setEmptyView(emptyView);
 
 		final LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-		adapter = new ConditionsArrayAdapter(this, inflater,
-				getPBMApplication().getLmxConditionsByID(lmx.id).getConditions());
+
+		ArrayList conditions = getPBMApplication().getLmxConditionsByID(lmx.id).getConditions();
+		adapter = new ConditionsArrayAdapter(this, inflater, new ArrayList(conditions.subList(0, NUMBER_OF_CONDITIONS_TO_SHOW)));
 		listView.setAdapter(adapter);
 		adapter.sort(new Comparator<Condition>() {
 			@Override
