@@ -4,8 +4,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="2dip"
-    android:background="#FEFBF8">
+    android:background="@drawable/border_bg"
+    android:paddingLeft="10dip"
+    android:paddingTop="10dip"
+    android:paddingBottom="10dip"
+    android:paddingRight="10dip">
 
 
     <ImageView
@@ -44,7 +47,7 @@
             android:id="@+id/machine_condition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
+            android:paddingLeft="10dp"
             android:paddingRight="20dp"
             android:text="@string/sample_condition_from_user"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
