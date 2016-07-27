@@ -16,7 +16,9 @@
         android:layout_alignParentTop="true"
         android:text="View playing tips on pintips.net"
         android:paddingLeft="15dp"
-        android:paddingBottom="4dip" />
+        android:paddingBottom="4dip"
+        android:paddingTop="6dp"
+        android:background="#FCF3EA" />
     <TextView
         android:id="@+id/spacer"
         android:layout_width="fill_parent"

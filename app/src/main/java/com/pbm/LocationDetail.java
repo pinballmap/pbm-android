@@ -3,6 +3,7 @@ package com.pbm;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -148,7 +149,7 @@ public class LocationDetail extends PinballMapActivity {
 						Operator operator = location.getOperator(getPBMActivity());
 						if (operator != null) {
 							locationOperator.setVisibility(View.VISIBLE);
-							locationOperator.setText("Operated By: " + operator.name);
+							locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.name));
 						} else {
 							locationOperator.setVisibility(View.GONE);
 						}
