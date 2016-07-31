@@ -46,7 +46,6 @@ public class PBMApplication extends Application {
 
 	public void setLocation(android.location.Location location) {
 		this.location = location;
-		Log.d("com.pbm.location", "set location to " + location);
 	}
 
 	public enum TrackerName {
@@ -58,6 +57,7 @@ public class PBMApplication extends Application {
 	private HashMap<Integer, com.pbm.Machine> machines = new HashMap<>();
 	private HashMap<Integer, com.pbm.LocationMachineXref> lmxes = new HashMap<>();
 	private HashMap<Integer, com.pbm.LocationMachineConditions> lmxConditions = new HashMap<>();
+	private HashMap<Integer, com.pbm.MachineScore> machineScores = new HashMap<>();
 	private HashMap<Integer, com.pbm.Zone> zones = new HashMap<>();
 	private HashMap<Integer, com.pbm.Region> regions = new HashMap<>();
 	private HashMap<Integer, com.pbm.Operator> operators = new HashMap<>();
@@ -148,6 +148,38 @@ public class PBMApplication extends Application {
 		this.lmxConditions = lmxConditions;
 	}
 
+	public void setMachineScores(HashMap<Integer, MachineScore> machineScores) {
+		this.machineScores = machineScores;
+	}
+
+	void addMachineScore(Integer id, MachineScore score) { this.machineScores.put(id, score); }
+
+	public void setMachineScore(com.pbm.MachineScore score) {this.machineScores.put(score.getId(), score); }
+
+	public HashMap<Integer, MachineScore> getMachineScoresMap() {
+		return machineScores;
+	}
+
+	public ArrayList<MachineScore> getMachineScores() {
+		return new ArrayList<>(machineScores.values());
+	}
+
+	public MachineScore getMachineScoreById(Integer id) {
+		return this.machineScores.get(id);
+	}
+
+	public ArrayList<MachineScore> getMachineScoresByLMXId(Integer id) {
+		ArrayList<MachineScore> scores = new ArrayList<>();
+
+		for (MachineScore score : getMachineScores()) {
+			if (score.getLmxId() == id) {
+				scores.add(score);
+			}
+		}
+
+		return scores;
+	}
+
 	public void setLmx(com.pbm.LocationMachineXref lmx) {
 		this.lmxes.put(lmx.id, lmx);
 	}
@@ -165,7 +197,7 @@ public class PBMApplication extends Application {
 	}
 
 	public LocationMachineConditions getLmxConditionsByID(Integer id) {
-		return this.lmxConditions.get(id);
+		return lmxConditions.get(id);
 	}
 
 	public void removeLocationMachine(Integer id) {
@@ -351,6 +383,56 @@ public class PBMApplication extends Application {
 		initializeLocationTypes();
 		initializeZones();
 		initializeOperators();
+		initializeMachineScores();
+	}
+
+	void initializeMachineScores() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+		machineScores.clear();
+
+		String json = new RetrieveJsonTask().execute(
+				requestWithAuthDetails(PinballMapActivity.regionBase + "machine_score_xrefs.json"), "GET"
+		).get();
+		if (json == null) {
+			return;
+		}
+
+		JSONObject jsonObject = new JSONObject(json);
+		JSONArray scores = jsonObject.getJSONArray("machine_score_xrefs");
+
+		for (int i = 0; i < scores.length(); i++) {
+			try {
+				JSONObject score = scores.getJSONObject(i);
+
+				String id = score.getString("id");
+				String lmxId = score.getString("location_machine_xref_id");
+				String username = score.getString("username");
+				String highScore = score.getString("score");
+
+				String dateCreated = null;
+				if (score.has("created_at") && !score.getString("created_at").equals("null")) {
+					dateCreated = score.getString("created_at");
+
+					DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd");
+					DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy");
+
+					String formattedDateCreated = "";
+					try {
+						Date startDate = inputDF.parse(dateCreated);
+						formattedDateCreated = outputDF.format(startDate);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+
+					dateCreated = formattedDateCreated;
+				}
+
+				if ((id != null) && (lmxId != null) && (highScore != null)) {
+					addMachineScore(Integer.parseInt(id), new MachineScore(Integer.parseInt(id), Integer.parseInt(lmxId), dateCreated, username, Long.parseLong(highScore)));
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	void initializeOperators() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
@@ -590,7 +672,6 @@ public class PBMApplication extends Application {
 						lmxID,
 						pastConditionUsername
 					));
-					Log.d("lmxconditions", pastCondition.getString("updated_at") + " " + pastCondition.getString("comment"));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}

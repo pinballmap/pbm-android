@@ -24,9 +24,11 @@ import java.util.concurrent.ExecutionException;
 public class LocationMachineEdit extends PinballMapActivity {
 	private Location location;
 	private LocationMachineXref lmx;
-	private ConditionsArrayAdapter adapter;
+	private ConditionsArrayAdapter conditionsAdapter;
+	private ScoresArrayAdapter scoresAdapter;
 	private View.OnClickListener removeHandler;
 	private final int NUMBER_OF_CONDITIONS_TO_SHOW = 5;
+	private final int NUMBER_OF_SCORES_TO_SHOW = 5;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -133,26 +135,53 @@ public class LocationMachineEdit extends PinballMapActivity {
 	protected void onResume() {
 		super.onResume();
 		loadConditions();
+		loadScores();
 	}
 
-	private void loadConditions() {
-		Log.d("com.pbm", "location Machine edit resume");
-		ListView listView = (ListView) findViewById(android.R.id.list);
-		View emptyView = findViewById(android.R.id.empty);
+	private void loadScores() {
+		Log.d("com.pbm", "msx edit resume");
+
+		NonScrollListView listView = (NonScrollListView) findViewById(R.id.score_list);
+		View emptyView = findViewById(R.id.empty_score);
 		listView.setEmptyView(emptyView);
 
 		final LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 
-		ArrayList conditions = getPBMApplication().getLmxConditionsByID(lmx.id).getConditions();
-		adapter = new ConditionsArrayAdapter(this, inflater, new ArrayList(conditions.subList(0, NUMBER_OF_CONDITIONS_TO_SHOW)));
-		listView.setAdapter(adapter);
-		adapter.sort(new Comparator<Condition>() {
+		ArrayList scores = getPBMApplication().getMachineScoresByLMXId(lmx.id);
+
+		int scoreCount = scores.size() < NUMBER_OF_SCORES_TO_SHOW ? scores.size() : NUMBER_OF_SCORES_TO_SHOW;
+
+		scoresAdapter = new ScoresArrayAdapter(this, inflater, new ArrayList(scores.subList(0, scoreCount)));
+		listView.setAdapter(scoresAdapter);
+		conditionsAdapter.sort(new Comparator<Condition>() {
 			@Override
 			public int compare(Condition lhs, Condition rhs) {
 				return rhs.getDate().compareTo(lhs.getDate());
 			}
 		});
 
+	}
+
+	private void loadConditions() {
+		Log.d("com.pbm", "location Machine edit resume");
+		NonScrollListView listView = (NonScrollListView) findViewById(android.R.id.list);
+		View emptyView = findViewById(android.R.id.empty);
+		listView.setEmptyView(emptyView);
+
+		final LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+
+		ArrayList conditions = getPBMApplication().getLmxConditionsByID(lmx.id).getConditions();
+
+		int conditionCount = conditions.size() < NUMBER_OF_CONDITIONS_TO_SHOW ? conditions.size() : NUMBER_OF_CONDITIONS_TO_SHOW;
+
+		conditionsAdapter = new ConditionsArrayAdapter(this, inflater, new ArrayList(conditions.subList(0, conditionCount)));
+		listView.setAdapter(conditionsAdapter);
+		conditionsAdapter.sort(new Comparator<Condition>() {
+			@Override
+			public int compare(Condition lhs, Condition rhs) {
+				return rhs.getDate().compareTo(lhs.getDate());
+			}
+		});
 	}
 
 	public void clickHandler(View view) {
