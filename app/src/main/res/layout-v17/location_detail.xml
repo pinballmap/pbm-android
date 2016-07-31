@@ -107,7 +107,7 @@
         <TextView
             android:id="@+id/spacer"
             android:layout_width="fill_parent"
-            android:layout_height="1dip"
+            android:layout_height="4dip"
             android:layout_below="@+id/btn"
             android:background="#a77e51"/>
 
