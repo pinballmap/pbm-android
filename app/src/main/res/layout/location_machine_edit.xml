@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollViewId"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true" >
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
     android:background="#FEFBF8">
     <TextView
@@ -13,7 +19,6 @@
         android:textColor="#333333"
         android:textSize="15sp"
         android:layout_gravity="left"
-        android:layout_alignParentTop="true"
         android:text="View playing tips on pintips.net"
         android:paddingLeft="15dp"
         android:paddingBottom="4dip"
@@ -25,6 +30,7 @@
         android:layout_height="1dip"
         android:layout_below="@+id/pintips"
         android:background="#a77e51"/>
+
     <Button
         android:id="@+id/add_condition_button"
         android:layout_width="wrap_content"
@@ -36,25 +42,21 @@
         android:layout_below="@+id/spacer"
         android:textColor="#FFFFFF" />
 
-    <ListView
+    <com.pbm.NonScrollListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@+id/remove_machine_button"
-
+        android:layout_height="wrap_content"
         android:layout_below="@+id/add_condition_button"/>
 
     <TextView
         android:id="@android:id/empty"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
 
-        android:layout_height="match_parent"
-        android:layout_above="@+id/remove_machine_button"
-        android:layout_alignParentLeft="true"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft= "true"
 
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/add_condition_button"
-
+        android:layout_below="@android:id/list"
         android:layout_marginBottom="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
@@ -62,23 +64,52 @@
         android:text="No conditions"/>
 
     <Button
+        android:id="@+id/add_new_score"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Your High Score"
+        android:layout_below="@android:id/empty"
+        android:padding="15dp"/>
+
+    <com.pbm.NonScrollListView
+        android:id="@+id/score_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_new_score"/>
+
+    <TextView
+        android:id="@+id/empty_score"
+        android:layout_width="fill_parent"
+
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft= "true"
+
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/score_list"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="50dp"
+        android:text="No scores"/>
+
+    <Button
         android:id="@+id/other_locations"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Lookup Other Locations With MACHINE"
-        android:layout_above="@+id/remove_machine_button"
+        android:text="Lookup Other Locations With MACHINE NAME"
+        android:layout_below="@+id/empty_score"
         android:padding="15dp"/>
-
     <Button
         android:id="@+id/remove_machine_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@android:color/holo_red_dark"
         android:textColor="@android:color/white"
         android:text="Remove machine"
         android:layout_marginTop="20dp"
+        android:layout_below="@+id/other_locations"
         android:padding="15dp"/>
 
 </RelativeLayout>
+</ScrollView>

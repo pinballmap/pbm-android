@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+    android:background="#FEFBF8">
+
+    <RelativeLayout
+        android:id="@+id/score_container"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp">
+
+
+        <TextView
+            android:id="@+id/_score"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="false"
+            android:text="SCORE ... sdlkj asdfl asdlf sdlf asdf asdfasdfasdfa asd asdf as"
+            android:textColor="@android:color/black"
+            android:paddingTop="5dp">
+        </TextView>
+
+
+        <TextView
+            android:id="@+id/_updated_on"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/_score"
+            android:text="Created on:"
+            android:textColor="#999999"
+            android:textStyle="italic"
+            android:paddingBottom="2dp"
+            android:paddingLeft="5dp" />
+
+        <TextView
+            android:id="@+id/_score_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/_updated_on"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/_updated_on"
+            android:layout_toRightOf="@+id/_updated_on"
+            android:text="xx/xx/xx yy:yy:yy"
+            android:textColor="#999999"
+            android:paddingBottom="2dp" />
+
+        <TextView
+            android:id="@+id/_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/_score_date"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/_score_date"
+            android:layout_toRightOf="@+id/_score_date"
+            android:text="ssw"
+            android:textColor="@android:color/black"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="null"
+        android:id="@+id/score_id"
+        android:layout_below="@+id/score_container"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"/>
+
+</RelativeLayout>
+
