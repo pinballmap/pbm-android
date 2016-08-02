@@ -40,7 +40,6 @@
             android:layout_height="wrap_content"
             android:text="@string/sample_machine_name"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:background="@drawable/machine_bg"
             android:textColor="#6E5335" />
 
         <TextView
@@ -50,7 +49,8 @@
             android:paddingLeft="10dp"
             android:paddingRight="20dp"
             android:text="@string/sample_condition_from_user"
-            android:textAppearance="?android:attr/textAppearanceSmall"/>
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:background="@drawable/machine_bg" />
 
     </LinearLayout>
 </RelativeLayout>
