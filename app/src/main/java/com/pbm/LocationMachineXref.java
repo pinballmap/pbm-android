@@ -32,6 +32,10 @@ public class LocationMachineXref implements Serializable {
 		return ((PBMApplication) activity.getApplicationContext()).getMachine(machineID);
 	}
 
+	public void addScore(Activity activity, MachineScore score) {
+		PBMApplication app = (PBMApplication) activity.getApplication();
+		app.addMachineScore(id, score);
+	}
 
 	public void setCondition(Activity activity, String condition) {
 		this.condition = condition;

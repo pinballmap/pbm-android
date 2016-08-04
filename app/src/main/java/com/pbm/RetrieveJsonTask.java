@@ -1,7 +1,6 @@
 package com.pbm;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.json.JSONException;
 
@@ -31,7 +30,6 @@ public class RetrieveJsonTask extends AsyncTask<String, Void, String> {
 				String requestType = urls[1];
 
 				inputStream = PinballMapActivity.openHttpConnection(url, requestType);
-				Log.d("com.pbm", url);
 
 				BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
 				StringBuilder sb = new StringBuilder();
@@ -41,7 +39,6 @@ public class RetrieveJsonTask extends AsyncTask<String, Void, String> {
 					sb.append(line).append("\n");
 				}
 				result = sb.toString();
-				Log.d("com.pbm", result);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
