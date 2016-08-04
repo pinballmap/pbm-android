@@ -60,8 +60,10 @@ class MachineDetailListAdapter extends ArrayAdapter<Machine> {
 			if (!lmxes.get(machine.id).conditionDate.equals("null") && !lmxes.get(machine.id).condition.equals("")) {
 				conditionText += '\n' + getContext().getString(R.string.updated_on) + " " + lmxes.get(machine.id).conditionDate;
 			}
+			holder.condition.setText(conditionText);
+		} else {
+			holder.condition.setVisibility(View.GONE);
 		}
-		holder.condition.setText(conditionText);
 
 		if (disableSelectImage) {
 			holder.machineSelectButton.setVisibility(View.INVISIBLE);
