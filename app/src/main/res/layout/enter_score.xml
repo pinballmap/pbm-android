@@ -6,28 +6,20 @@
     android:background="#FEFBF8">
 
     <EditText
-        android:id="@+id/condition"
+        android:id="@+id/score"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:labelFor="@+id/condition"
+        android:labelFor="@+id/score"
         android:background="#FFFFFF"
+        android:inputType="numberSigned"
         android:padding="5dp" />
 
     <Button
-        android:id="@+id/submitCondition"
+        android:id="@+id/submitScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/condition"
-        android:onClick="clickHandler"
+        android:layout_below="@+id/score"
         android:text="@string/submit"
-        android:layout_alignWithParentIfMissing="false"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentBottom="false"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentEnd="false"
-        android:layout_centerHorizontal="true"
         android:background="@drawable/input_btn"
         android:textColor="#FFFFFF"
         android:textSize="18sp" />

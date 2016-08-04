@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,9 +65,19 @@ public class LocationMachineEdit extends PinballMapActivity {
 		pintips.setMovementMethod(LinkMovementMethod.getInstance());
 		pintips.setText(Html.fromHtml("<a href=\"http://pintips.net/pinmap/machine/"+ Integer.toString(machine.id) + "\">View playing tips on pintips.net</a>"));
 
+		Button addScore = (Button) findViewById(R.id.add_new_score);
+		addScore.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent myScoreIntent = new Intent();
+				myScoreIntent.setClassName("com.pbm", "com.pbm.EnterScore");
+				myScoreIntent.putExtra("lmx", lmx);
+				startActivityForResult(myScoreIntent, QUIT_RESULT);
+			}
+		});
+
 		Button otherLocations = (Button) findViewById(R.id.other_locations);
 		otherLocations.setText("Lookup Other Locations With " + machine.name);
-
 		otherLocations.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -182,18 +191,6 @@ public class LocationMachineEdit extends PinballMapActivity {
 				return rhs.getDate().compareTo(lhs.getDate());
 			}
 		});
-	}
-
-	public void clickHandler(View view) {
-		switch (view.getId()) {
-			case R.id.condition:
-				Intent myIntent = new Intent();
-				myIntent.setClassName("com.pbm", "com.pbm.ConditionEdit");
-				myIntent.putExtra("lmx", lmx);
-				startActivityForResult(myIntent, QUIT_RESULT);
-
-				break;
-		}
 	}
 
 	public void activityRefreshResult() {
