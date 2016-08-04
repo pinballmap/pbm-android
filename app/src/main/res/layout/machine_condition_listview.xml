@@ -40,7 +40,8 @@
             android:layout_height="wrap_content"
             android:text="@string/sample_machine_name"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#6E5335" />
+            android:textColor="#6E5335"
+            android:paddingLeft="5dp" />
 
         <TextView
             android:id="@+id/machine_condition"

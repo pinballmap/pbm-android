@@ -10,33 +10,34 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
     android:background="#FEFBF8">
-    <TextView
+    <Button
         android:id="@+id/pintips"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_centerHorizontal="true"
         android:autoLink="web"
         android:linksClickable="true"
-        android:textColor="#333333"
+        android:textColor="#FFFFFF"
         android:textSize="15sp"
-        android:layout_gravity="left"
+        android:padding="15dp"
         android:text="View playing tips on pintips.net"
-        android:paddingLeft="15dp"
-        android:paddingBottom="4dip"
-        android:paddingTop="6dp"
-        android:background="#FCF3EA" />
+        android:background="@drawable/input_btn" />
     <TextView
         android:id="@+id/spacer"
         android:layout_width="fill_parent"
         android:layout_height="1dip"
         android:layout_below="@+id/pintips"
-        android:background="#a77e51"/>
+        android:background="#a77e51" />
 
     <Button
         android:id="@+id/add_condition_button"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:layout_centerHorizontal="true"
         android:text="Add a new condition report"
+        android:textSize="15sp"
         android:padding="15dp"
         android:background="@drawable/input_btn"
         android:layout_below="@+id/spacer"
@@ -51,10 +52,8 @@
     <TextView
         android:id="@android:id/empty"
         android:layout_width="fill_parent"
-
         android:layout_height="wrap_content"
         android:layout_alignParentLeft= "true"
-
         android:layout_alignParentStart="true"
         android:layout_below="@android:id/list"
         android:layout_marginBottom="30dp"
@@ -63,13 +62,25 @@
         android:layout_marginTop="50dp"
         android:text="No conditions"/>
 
+    <TextView
+        android:id="@+id/spacer2"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_below="@android:id/empty"
+        android:background="#a77e51" />
+
     <Button
         android:id="@+id/add_new_score"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text="Add Your High Score"
-        android:layout_below="@android:id/empty"
-        android:padding="15dp"/>
+        android:layout_below="@+id/spacer2"
+        android:textSize="15sp"
+        android:padding="15dp"
+        android:background="@drawable/input_btn"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFFFFF" />
 
     <com.pbm.NonScrollListView
         android:id="@+id/score_list"
@@ -80,10 +91,8 @@
     <TextView
         android:id="@+id/empty_score"
         android:layout_width="fill_parent"
-
         android:layout_height="wrap_content"
         android:layout_alignParentLeft= "true"
-
         android:layout_alignParentStart="true"
         android:layout_below="@+id/score_list"
         android:layout_marginBottom="30dp"
@@ -92,13 +101,24 @@
         android:layout_marginTop="50dp"
         android:text="No scores"/>
 
+    <TextView
+        android:id="@+id/spacer3"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_below="@+id/empty_score"
+        android:background="#a77e51" />
+
     <Button
         android:id="@+id/other_locations"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Lookup Other Locations With MACHINE NAME"
-        android:layout_below="@+id/empty_score"
-        android:padding="15dp"/>
+        android:layout_below="@+id/spacer3"
+        android:padding="15dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/input_btn"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFFFFF" />
     <Button
         android:id="@+id/remove_machine_button"
         android:layout_width="wrap_content"
