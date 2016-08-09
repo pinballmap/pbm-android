@@ -2,10 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:paddingLeft="5dip"
-                android:paddingRight="5dip"
-                android:orientation="vertical"
-    android:background="#FEFBF8">
+    android:orientation="vertical"
+    android:background="#FEFBF8"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/enterConditionHeader"
@@ -14,7 +13,6 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
         android:text="@string/phone_number"
         android:textSize="20sp"/>
 
@@ -26,6 +24,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/enterConditionHeader"
+        android:background="@drawable/textbox_bg"
         android:ems="10"
         android:inputType="phone"/>
 
@@ -46,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/enterLocationTypeHeader"/>
+        android:layout_below="@+id/enterLocationTypeHeader" />
 
     <EditText
         android:id="@+id/editWebsite"
@@ -55,6 +54,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/enterWebsiteHeader"
+        android:background="@drawable/textbox_bg"
         android:ems="10"
         android:inputType="textUri"
         android:labelFor="@+id/editWebsite"/>
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/enterOperator"/>
+        android:layout_below="@+id/enterOperator" />
 
     <Button
         android:id="@+id/submitLocationEdit"

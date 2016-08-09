@@ -3,20 +3,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
-    android:background="#FEFBF8">
+    android:background="#FEFBF8"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/enterConditionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/condition_text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#6E5335"
+        android:layout_centerHorizontal="true"
+        android:padding="5dp"
+        android:layout_marginTop="10dp" />
 
     <EditText
         android:id="@+id/condition"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/enterConditionText"
         android:inputType="textMultiLine"
         android:labelFor="@+id/condition"
-        android:background="#FFFFFF"
-        android:padding="5dp" />
+        android:background="@drawable/textbox_bg"
+        android:padding="15dp" />
 
     <Button
         android:id="@+id/submitCondition"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/condition"
         android:onClick="clickHandler"
@@ -30,5 +43,6 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/input_btn"
         android:textColor="#FFFFFF"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_marginTop="10dp" />
 </RelativeLayout>
