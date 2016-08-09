@@ -8,14 +8,15 @@
 
     <TextView
         android:id="@+id/enterScoreText"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/score_text"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#6E5335"
         android:layout_centerHorizontal="true"
         android:padding="5dp"
-        android:layout_marginTop="10dp" />
+        android:gravity="center_horizontal"
+        android:background="@drawable/header_bg" />
 
     <EditText
         android:id="@+id/score"
@@ -25,7 +26,8 @@
         android:labelFor="@+id/score"
         android:background="@drawable/textbox_bg"
         android:inputType="numberSigned"
-        android:padding="15dp" />
+        android:padding="15dp"
+        android:layout_marginTop="10dp" />
 
     <Button
         android:id="@+id/submitScore"

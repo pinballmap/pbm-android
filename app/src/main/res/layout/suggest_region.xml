@@ -4,122 +4,145 @@
             android:layout_height="fill_parent"
     android:background="#FEFBF8">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#FEFBF8"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/suggestRegionText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/suggest_region"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#6E5335"
+            android:layout_centerHorizontal="true"
+            android:padding="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/header_bg"
+            android:gravity="center_horizontal" />
 
         <TextView
             android:id="@+id/submit_region_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/suggestRegionText"
             android:text="@string/submit_a_region"
             android:textSize="16sp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:padding="10dp"
             android:background="#FCF3EA" />
 
-        <TableLayout
-            android:id="@+id/tableLayout1"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/submitterNameTextView"
+            android:text="@string/submitter_name"
+            android:layout_below="@+id/submit_region_id"
+            android:labelFor="@+id/submitterNameField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp" />
+
+        <EditText
+            android:id="@+id/submitterNameField"
+            android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:layout_below="@+id/submitterNameTextView"
+            android:inputType="text"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="10dp" >
+            <requestFocus/>
+        </EditText>
 
-            <TableRow
-                android:id="@+id/tableRow9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/submitterEmailTextView"
+            android:text="@string/submitter_email"
+            android:layout_below="@+id/submitterNameField"
+            android:labelFor="@+id/submitterEmailField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp" />
 
-                <TextView
-                    android:id="@+id/submitterNameTextView"
-                    android:text="@string/submitter_name"
-                    android:labelFor="@+id/submitterNameField"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
+        <EditText
+            android:id="@+id/submitterEmailField"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@+id/submitterEmailTextView"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="10dp" />
 
-                <EditText
-                    android:id="@+id/submitterNameField"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:inputType="text"
-                    android:ems="10"/>
-            </TableRow>
 
-            <TableRow
-                android:id="@+id/tableRow10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/regionNameTextView"
+            android:text="@string/region_name"
+            android:labelFor="@+id/regionNameField"
+            android:layout_below="@+id/submitterEmailField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp" />
 
-                <TextView
-                    android:id="@+id/submitterEmailTextView"
-                    android:text="@string/submitter_email"
-                    android:labelFor="@+id/submitterEmailField"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
+        <EditText
+            android:id="@+id/regionNameField"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@+id/regionNameTextView"
+            android:inputType="text"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="10dp" />
 
-                <EditText
-                    android:id="@+id/submitterEmailField"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:inputType="textEmailAddress"
-                    android:ems="10"/>
-            </TableRow>
+        <TextView
+            android:id="@+id/commentsTextView"
+            android:text="@string/comments"
+            android:labelFor="@+id/commentsField"
+            android:layout_below="@+id/regionNameField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp" />
 
-            <TableRow
-                android:id="@+id/tableRow11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/regionNameTextView"
-                    android:text="@string/region_name"
-                    android:labelFor="@+id/regionNameField"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                <EditText
-                    android:id="@+id/regionNameField"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:inputType="text"
-                    android:ems="10"/>
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="top">
-
-                <TextView
-                    android:id="@+id/commentsTextView"
-                    android:text="@string/comments"
-                    android:labelFor="@+id/commentsField"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                <EditText
-                    android:id="@+id/commentsField"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:inputType="textMultiLine"
-                    android:lines="7"
-                    android:ems="10">
-
-                    <requestFocus/>
-                </EditText>
-            </TableRow>
-
-        </TableLayout>
+        <EditText
+            android:id="@+id/commentsField"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@+id/commentsTextView"
+            android:inputType="textMultiLine"
+            android:lines="7"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="10dp" >
+        </EditText>
 
         <Button
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_below="@+id/commentsField"
             android:layout_marginTop="10dp"
             android:onClick="buttonOnClick"
             android:text="@string/submit_text"
             android:background="@drawable/input_btn"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 </ScrollView>

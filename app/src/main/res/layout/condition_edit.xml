@@ -8,14 +8,16 @@
 
     <TextView
         android:id="@+id/enterConditionText"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/condition_text"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#6E5335"
         android:layout_centerHorizontal="true"
         android:padding="5dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/header_bg"
+        android:gravity="center_horizontal" />
 
     <EditText
         android:id="@+id/condition"

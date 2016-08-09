@@ -27,7 +27,7 @@
     <string name="machines">Machines:</string>
     <string name="operator">Operator:</string>
     <string name="website">Website:</string>
-    <string name="submit_a_location">Submit a location to the map!</string>
+    <string name="submit_a_location">Submit a Location to the Map</string>
     <string name="submit_text"> Submit </string>
     <string name="machine_button_desc">Click to edit machine</string>
     <string name="map_button">Show on map</string>
@@ -40,7 +40,7 @@
     <string name="submitter_email">Your Email:</string>
     <string name="contact_admin">Send a message to your region\'s admin!</string>
     <string name="message">Message:</string>
-    <string name="submit_a_region">When requesting that a map for your area be added, please describe WHY one should be added. Does your region have an active pinball scene? Leagues? How many locations have pinball machines? Are you keeping track of them already? Would you be willing to act as the regional administrator, to help curate your map\'s data? The more details give us, the better your request sounds!</string>
+    <string name="submit_a_region">When requesting a new map for your area, please describe WHY one should be added. Does your region have an active pinball scene? Leagues? How many locations have pinball machines? Are you keeping track of them already? Would you be willing to act as the regional administrator, to help curate your map\'s data? The more details give us, the better your request sounds!</string>
     <string name="comments">Comments:</string>
     <string name="region_name">Region Name:</string>
     <string name="updated_on">Updated on:</string>
@@ -59,4 +59,5 @@
     <string name="location_confirm">Confirm that this machine list is up to date</string>
     <string name="score_text">Enter Your Score</string>
     <string name="condition_text">Enter a Condition Report</string>
+    <string name="edit_location">Edit Location</string>
 </resources>

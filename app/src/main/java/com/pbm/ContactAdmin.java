@@ -17,7 +17,7 @@ public class ContactAdmin extends PinballMapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contact_admin);
 		TextView contactAdmin = (TextView) findViewById(R.id.contact_admin_id);
-		contactAdmin.setText("Send A Message To " + getPBMApplication().getRegion().formalName + " Admin");
+		contactAdmin.setText("Send a Message to the " + getPBMApplication().getRegion().formalName + " Admin");
 		logAnalyticsHit("com.pbm.ContactAdmin");
 	}
 
