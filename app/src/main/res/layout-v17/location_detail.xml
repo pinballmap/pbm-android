@@ -99,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/locationData"
             android:text="@string/location_confirm"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="italic"
             android:background="@drawable/input_btn"
             android:layout_centerHorizontal="true"
