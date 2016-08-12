@@ -273,7 +273,6 @@
             android:layout_height="wrap_content"
             android:background="@drawable/textbox_bg"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
             android:ems="10"
             android:maxWidth="300dp"

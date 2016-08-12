@@ -27,7 +27,10 @@
         android:inputType="textMultiLine"
         android:labelFor="@+id/condition"
         android:background="@drawable/textbox_bg"
-        android:padding="15dp" />
+        android:padding="15dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
 
     <Button
         android:id="@+id/submitCondition"

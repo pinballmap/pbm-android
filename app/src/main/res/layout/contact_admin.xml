@@ -99,13 +99,10 @@
 
         <Button
             android:id="@+id/button1"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/messageField"
             android:onClick="buttonOnClick"
             android:text="@string/submit_text"
-            android:layout_margin="10dp"
             android:layout_gravity="center_horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
