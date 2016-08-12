@@ -4,11 +4,12 @@
             android:layout_height="fill_parent"
     android:background="#FEFBF8">
 
-    <LinearLayout
-        android:id="@+id/suggestALocationLayout"
-        android:layout_width="fill_parent"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#FEFBF8"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/submit_location_id"
@@ -17,239 +18,270 @@
             android:text="@string/submit_a_location"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"
-            android:background="#FCF3EA"
-            android:padding="10dp" />
-
-        <TableLayout
-            android:id="@+id/tableLayout1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
-
-            <TableRow
-                android:id="@+id/tableRow1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="top">
-
-                <TextView
-                    android:id="@+id/nameTextView"
-                    android:text="@string/name"
-                    android:labelFor="@+id/nameField"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                <EditText
-                    android:id="@+id/nameField"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:inputType="text"
-                    android:ems="10">
-
-                    <requestFocus/>
-                </EditText>
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/streetTextView"
-                    android:text="@string/street"
-                    android:labelFor="@+id/streetField"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                <EditText
-                    android:id="@+id/streetField"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:ems="10"
-                    android:inputType="textPostalAddress"/>
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/cityTextView"
-                    android:text="@string/city"
-                    android:labelFor="@+id/cityField"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                <EditText
-                    android:id="@+id/cityField"
-                    android:inputType="text"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:ems="10"/>
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/stateTextView"
-                    android:text="@string/state"
-                    android:labelFor="@+id/stateField"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                <EditText
-                    android:id="@+id/stateField"
-                    android:inputType="text"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:ems="10"/>
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/zipTextView"
-                    android:text="@string/zip"
-                    android:labelFor="@+id/zipField"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                <EditText
-                    android:id="@+id/zipField"
-                    android:inputType="text"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:ems="10"/>
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/phoneTextView"
-                    android:text="@string/phone"
-                    android:labelFor="@+id/phoneField"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                <EditText
-                    android:id="@+id/phoneField"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:ems="10"
-                    android:inputType="phone"/>
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/websiteTextView"
-                    android:text="@string/website"
-                    android:labelFor="@+id/websiteField"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                <EditText
-                    android:id="@+id/websiteField"
-                    android:inputType="text"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:ems="10"/>
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/operatorTextView"
-                    android:text="@string/operator"
-                    android:labelFor="@+id/operatorField"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                <EditText
-                    android:id="@+id/operatorField"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:inputType="text"
-                    android:ems="10"/>
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/submitterNameTextView"
-                    android:text="@string/submitter_name"
-                    android:labelFor="@+id/submitterNameField"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                <EditText
-                    android:id="@+id/submitterNameField"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:inputType="text"
-                    android:ems="10"/>
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">
-
-                <TextView
-                    android:id="@+id/submitterEmailTextView"
-                    android:text="@string/submitter_email"
-                    android:labelFor="@+id/submitterEmailField"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                <EditText
-                    android:id="@+id/submitterEmailField"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:inputType="textEmailAddress"
-                    android:ems="10"/>
-            </TableRow>
-        </TableLayout>
+            android:background="@drawable/header_bg"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/machinesTextView"
+            android:id="@+id/nameTextView"
+            android:text="@string/name"
+            android:labelFor="@+id/nameField"
+            android:layout_below="@+id/submit_location_id"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/nameField"
+            android:layout_below="@+id/nameTextView"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:inputType="text"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp">
+             <requestFocus/>
+        </EditText>
+
+        <TextView
+            android:id="@+id/streetTextView"
+            android:layout_below="@+id/nameField"
+            android:text="@string/street"
+            android:labelFor="@+id/streetField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/streetField"
+            android:layout_below="@+id/streetTextView"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:ems="10"
+            android:inputType="textPostalAddress"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:id="@+id/cityTextView"
+            android:layout_below="@+id/streetField"
+            android:text="@string/city"
+            android:labelFor="@+id/cityField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/cityField"
+            android:layout_below="@+id/cityTextView"
+            android:inputType="text"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:id="@+id/stateTextView"
+            android:layout_below="@+id/cityField"
+            android:text="@string/state"
+            android:labelFor="@+id/stateField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/stateField"
+            android:layout_below="@+id/stateTextView"
+            android:inputType="text"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:id="@+id/zipTextView"
+            android:layout_below="@+id/stateField"
+            android:text="@string/zip"
+            android:labelFor="@+id/zipField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/zipField"
+            android:layout_below="@+id/zipTextView"
+            android:inputType="text"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:id="@+id/phoneTextView"
+            android:layout_below="@+id/zipField"
+            android:text="@string/phone"
+            android:labelFor="@+id/phoneField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/phoneField"
+            android:layout_below="@+id/phoneTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:inputType="phone"/>
+
+        <TextView
+            android:id="@+id/websiteTextView"
+            android:layout_below="@+id/phoneField"
+            android:text="@string/website"
+            android:labelFor="@+id/websiteField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/websiteField"
+            android:layout_below="@+id/websiteTextView"
+            android:inputType="text"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:id="@+id/operatorTextView"
+            android:layout_below="@+id/websiteField"
+            android:text="@string/operator"
+            android:labelFor="@+id/operatorField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/operatorField"
+            android:layout_below="@+id/operatorTextView"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:inputType="text"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:id="@+id/submitterNameTextView"
+            android:layout_below="@+id/operatorField"
+            android:text="@string/submitter_name"
+            android:labelFor="@+id/submitterNameField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/submitterNameField"
+            android:layout_below="@+id/submitterNameTextView"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:inputType="text"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:id="@+id/submitterEmailTextView"
+            android:layout_below="@+id/submitterNameField"
+            android:text="@string/submitter_email"
+            android:labelFor="@+id/submitterEmailField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/submitterEmailField"
+            android:layout_below="@+id/submitterEmailTextView"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:id="@+id/machinesTextView"
+            android:layout_below="@+id/submitterEmailField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:labelFor="@+id/multiAutoCompleteTextView1"
             android:text="@string/machines"
-            android:textAppearance="?android:attr/textAppearanceSmall"/>
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="20sp" />
 
         <MultiAutoCompleteTextView
             android:id="@+id/multiAutoCompleteTextView1"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="10dp"
+            android:layout_below="@+id/machinesTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
             android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:ems="10"
             android:maxWidth="300dp"
             android:width="300dp"/>
 
         <Button
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
+            android:layout_below="@+id/multiAutoCompleteTextView1"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:onClick="buttonOnClick"
@@ -258,5 +290,5 @@
             android:background="@drawable/input_btn"
             android:textColor="#FFFFFF" />
 
-    </LinearLayout>
+    </RelativeLayout>
 </ScrollView>

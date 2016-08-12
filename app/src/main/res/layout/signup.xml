@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#e3e3e3"
+    android:background="@drawable/backrepeat"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/activity_horizontal_margin"
@@ -10,17 +10,19 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="Welcome"
-            android:textSize="30sp"
-            android:textColor="#333333"/>
+            android:text="@string/sign_up"
+            android:textSize="28sp"
+            android:textColor="#675032"
+            android:padding="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/header_bg"
+            android:gravity="center_horizontal" />
 
     </RelativeLayout>
 
@@ -39,7 +41,10 @@
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"/>
+            android:hint="Username"
+            android:background="@drawable/textbox_bg"
+            android:padding="10dp"
+            android:paddingLeft="10dp"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -51,7 +56,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="Email"/>
+                android:hint="Email"
+                android:background="@drawable/textbox_bg"
+                android:padding="10dp"
+                android:paddingLeft="10dp"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -65,7 +73,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:hint="Password"/>
+            android:hint="Password"
+            android:background="@drawable/textbox_bg"
+            android:padding="10dp"
+            android:paddingLeft="10dp"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -79,15 +90,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="Confirm Password"/>
+                android:hint="Confirm Password"
+                android:background="@drawable/textbox_bg"
+                android:padding="10dp"
+                android:paddingLeft="10dp"/>
         </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/btn"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sign Up"/>
+            android:text="Sign Up"
+            android:textSize="22sp"
+            android:background="@drawable/input_btn"
+            android:textColor="#ffffff" />
 
     </LinearLayout>
 
