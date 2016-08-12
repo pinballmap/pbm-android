@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<style name="Theme.CustomTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+	<style name="Theme.CustomTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
 		<item name="android:windowActionBar">false</item>
         <item name="colorAccent">#6E5335</item>
         <item name="android:textColorLink">#6E5335</item>
