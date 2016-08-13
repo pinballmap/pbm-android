@@ -10,13 +10,12 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
     android:background="#FEFBF8">
-    <Button
+    <TextView
         android:id="@+id/pintips"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_centerHorizontal="true"
-        android:autoLink="web"
         android:linksClickable="true"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
