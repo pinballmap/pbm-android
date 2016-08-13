@@ -63,7 +63,13 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 		TextView pintips = (TextView) findViewById(R.id.pintips);
 		pintips.setMovementMethod(LinkMovementMethod.getInstance());
-		pintips.setText(Html.fromHtml("<a href=\"http://pintips.net/pinmap/machine/"+ Integer.toString(machine.id) + "\">View playing tips on pintips.net</a>"));
+		String urlLookupTypeData = "";
+		if (machine.groupId != "") {
+			urlLookupTypeData = "group/" + machine.groupId;
+		} else {
+			urlLookupTypeData = "machine/" + Integer.toString(machine.id);
+		}
+		pintips.setText(Html.fromHtml("<a href=\"http://pintips.net/pinmap/" + urlLookupTypeData + "\">View playing tips on pintips.net</a>"));
 
 		Button addScore = (Button) findViewById(R.id.add_new_score);
 		addScore.setOnClickListener(new View.OnClickListener() {

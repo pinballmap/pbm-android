@@ -513,8 +513,14 @@ public class PBMApplication extends Application {
 				String year = machine.getString("year");
 				String manufacturer = machine.getString("manufacturer");
 
+				String machineGroupId = machine.getString("machine_group_id");
+				if (machineGroupId.equals("null")) {
+					machineGroupId = "";
+				}
+
+
 				if ((id != null) && (name != null)) {
-					addMachine(Integer.parseInt(id), new Machine(Integer.parseInt(id), name, year, manufacturer, false));
+					addMachine(Integer.parseInt(id), new Machine(Integer.parseInt(id), name, year, manufacturer, false, machineGroupId));
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();

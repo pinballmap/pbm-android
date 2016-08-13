@@ -9,6 +9,7 @@ public class Machine implements Serializable {
 	public String name;
 	public String year;
 	public String manufacturer;
+	public String groupId;
 	public int numLocations;
 	public boolean existsInRegion;
 
@@ -17,12 +18,13 @@ public class Machine implements Serializable {
 		this.name = name;
 	}
 
-	public Machine(int id, String name, String year, String manufacturer, boolean existsInRegion) {
+	public Machine(int id, String name, String year, String manufacturer, boolean existsInRegion, String groupId) {
 		this.id = id;
 		this.name = name;
 		this.year = year;
 		this.manufacturer = manufacturer;
 		this.existsInRegion = existsInRegion;
+		this.groupId = groupId;
 	}
 
 	public Machine(int id, String name, int numLocations) {
