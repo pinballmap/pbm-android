@@ -371,6 +371,24 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Signup"
+            android:label="Signup For An Account"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.pbm.Signup" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Login"
+            android:label="Login"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.pbm.Login" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -382,7 +400,6 @@
         <!-- <meta-data -->
         <!-- android:name="com.google.android.geo.API_KEY" -->
         <!-- android:value="AIzaSyCyBrhDoLxIC8kQl_KKUIue-nGawWj44TE"/> -->
-        <activity android:name=".Login"></activity>
     </application>
 
 </manifest>
