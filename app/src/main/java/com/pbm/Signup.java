@@ -28,9 +28,12 @@ public class Signup extends AppCompatActivity {
         final TextInputLayout usernameWrapper = (TextInputLayout) findViewById(R.id.usernameWrapper);
         final TextInputLayout emailWrapper = (TextInputLayout) findViewById(R.id.emailWrapper);
         final TextInputLayout passwordWrapper = (TextInputLayout) findViewById(R.id.passwordWrapper);
+        final TextInputLayout confirmPasswordWrapper = (TextInputLayout) findViewById(R.id.confirmPasswordWrapper);
+
         usernameWrapper.setHint("Username");
         emailWrapper.setHint("Email");
         passwordWrapper.setHint("Password");
+        confirmPasswordWrapper.setHint("Confirm Password");
 
         Button btn = (Button) findViewById(R.id.btn);
 
@@ -39,9 +42,11 @@ public class Signup extends AppCompatActivity {
                 try{
                     String json = new RetrieveJsonTask().execute(
                             PinballMapActivity.regionlessBase +
-                                "users/auth_details.json?password=" + passwordWrapper.getEditText().getText().toString() +
-                                ";login=" + usernameWrapper.getEditText().getText().toString(),
-                            "GET"
+                                "users/signup.json?password=" + passwordWrapper.getEditText().getText().toString() +
+                                ";confirm_password=" + confirmPasswordWrapper.getEditText().getText().toString() +
+                                ";username=" + usernameWrapper.getEditText().getText().toString() +
+                                ";email=" + emailWrapper.getEditText().getText().toString(),
+                            "POST"
                     ).get();
 
                     final JSONObject jsonObject = new JSONObject(json.toString());
