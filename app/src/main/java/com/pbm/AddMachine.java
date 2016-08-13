@@ -131,7 +131,7 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 		
 		if (jsonObject.has("machine")) {
 			JSONObject jsonMachine = jsonObject.getJSONObject("machine");
-			app.addMachine(jsonMachine.getInt("id"), new Machine(jsonMachine.getInt("id"), jsonMachine.getString("name"), null, null, true));
+			app.addMachine(jsonMachine.getInt("id"), new Machine(jsonMachine.getInt("id"), jsonMachine.getString("name"), null, null, true, null));
 			
 			new RetrieveJsonTask(AddMachine.this).execute(
 				app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + jsonMachine.getString("id")),
