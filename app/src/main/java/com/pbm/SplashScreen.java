@@ -51,16 +51,12 @@ public class SplashScreen extends PinballMapActivity {
 			e.printStackTrace();
 		}
 
-		// **********************
-		// ADD THE CHECK TO SEE IF THE SERVER IS AVAILABLE
-		// ***********************
-
-		if (authToken.equals("")) {
+		/*if (authToken.equals("")) {
 			Intent myIntent = new Intent();
 			myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			myIntent.setClassName("com.pbm", "com.pbm.Login");
-			startActivity(myIntent);
-		} else if (prefRegion != -1) {
+			startActivity(myIntent);*/
+		if (prefRegion != -1) {
 			Region region = app.getRegion(prefRegion);
 			setRegionBase(httpBase + apiPath + "region/" + region.name + "/");						
 

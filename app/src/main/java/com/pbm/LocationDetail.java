@@ -43,6 +43,10 @@ public class LocationDetail extends PinballMapActivity {
 		location = (Location) getIntent().getExtras().get("Location");
 
 		Button btn = (Button) findViewById(R.id.btn);
+		SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+		if (settings.getString("username", "").equals("")) {
+			btn.setText("Login to update this location");
+		}
 
 		if (location != null) {
 			setTitle("");
@@ -50,25 +54,31 @@ public class LocationDetail extends PinballMapActivity {
 			btn.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					try{
-						PBMApplication app = getPBMApplication();
-
-						new RetrieveJsonTask().execute(
-								app.requestWithAuthDetails(PinballMapActivity.regionlessBase +
-										"locations/" + location.id + "/confirm.json"),
-								"PUT"
-						).get();
-						Toast.makeText(getBaseContext(), "Thanks for confirming that list!", Toast.LENGTH_LONG).show();
-
-						location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
-
 						final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
-						location.lastUpdatedByUsername = settings.getString("username", "");
 
-						String lastUpdatedInfo = "Location last updated: " + location.dateLastUpdated + " by " + location.lastUpdatedByUsername;
+						if (settings.getString("username", "").equals("")) {
+							Intent intent = new Intent();
+							intent.setClassName("com.pbm", "com.pbm.Login");
+							startActivityForResult(intent, QUIT_RESULT);
+						} else {
+							PBMApplication app = getPBMApplication();
 
-						TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
-						locationLastUpdated.setVisibility(View.VISIBLE);
-						locationLastUpdated.setText(lastUpdatedInfo);
+							new RetrieveJsonTask().execute(
+									app.requestWithAuthDetails(PinballMapActivity.regionlessBase +
+											"locations/" + location.id + "/confirm.json"),
+									"PUT"
+							).get();
+							Toast.makeText(getBaseContext(), "Thanks for confirming that list!", Toast.LENGTH_LONG).show();
+
+							location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+							location.lastUpdatedByUsername = settings.getString("username", "");
+
+							String lastUpdatedInfo = "Location last updated: " + location.dateLastUpdated + " by " + location.lastUpdatedByUsername;
+
+							TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
+							locationLastUpdated.setVisibility(View.VISIBLE);
+							locationLastUpdated.setText(lastUpdatedInfo);
+						}
 					} catch (InterruptedException | ExecutionException e) {
 						e.printStackTrace();
 					}
@@ -82,7 +92,12 @@ public class LocationDetail extends PinballMapActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.location_detail_menu, menu);
-		Button b = (Button) findViewById(R.id.edit_button);
+
+		SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+		if (settings.getString("username", "").equals("")) {
+			menu.removeItem(R.id.add_machine_button);
+			menu.removeItem(R.id.edit_button);
+		}
 
 		return super.onCreateOptionsMenu(menu);
 	}
