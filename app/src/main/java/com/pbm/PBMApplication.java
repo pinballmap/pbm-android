@@ -745,7 +745,8 @@ public class PBMApplication extends Application {
 				listItem.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
 			}
 			listItem.measure(View.MeasureSpec.AT_MOST, View.MeasureSpec.UNSPECIFIED);
-			totalHeight += listItem.getMeasuredHeight();
+			//totalHeight += listItem.getMeasuredHeight();
+			totalHeight += 350;
 		}
 
 		ViewGroup.LayoutParams params = listView.getLayoutParams();
