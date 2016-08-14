@@ -28,6 +28,10 @@
         android:title="@string/logout"
         pbm:showAsAction="never"/>
     <item
+        android:id="@+id/login"
+        android:title="@string/login"
+        pbm:showAsAction="never"/>
+    <item
         android:id="@+id/quit"
         android:title="@string/quit"
         pbm:showAsAction="never"/>

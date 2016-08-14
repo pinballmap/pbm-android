@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -31,17 +32,26 @@ public class Login extends AppCompatActivity {
         usernameWrapper.setHint("Login");
         passwordWrapper.setHint("Password");
 
-        Button btn = (Button) findViewById(R.id.btn);
         TextView signup = (TextView) findViewById(R.id.signup);
-
         signup.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Intent intent = new Intent();
-                intent.setClassName("com.pbm", "com.pbm.Signup");
-                startActivity(intent);
+            Intent intent = new Intent();
+            intent.setClassName("com.pbm", "com.pbm.Signup");
+            startActivity(intent);
             }
         });
 
+        TextView noLogin = (TextView) findViewById(R.id.no_login);
+        noLogin.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Log.i("GOT A CLICK", "GOT A CLICK");
+            Intent splashIntent = new Intent();
+            splashIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
+            startActivityForResult(splashIntent, PinballMapActivity.QUIT_RESULT);
+            }
+        });
+
+        Button btn = (Button) findViewById(R.id.btn);
         btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try{

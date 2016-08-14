@@ -57,6 +57,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	public static final int MENU_ABOUT = 4;
 	public static final int MENU_LOGOUT = 5;
 	public static final int MENU_QUIT = 6;
+	public static final int MENU_LOGIN = 7;
 	public static final int HTTP_RETRIES = 5;
 	public static final String PREFS_NAME = "pbmPrefs";
 	public static final float METERS_TO_MILES = (float) 0.000621371192;
@@ -162,6 +163,11 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
+		boolean loggedIn = true;
+		SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+		if (settings.getString("username", "").equals("")) {
+			loggedIn = false;
+		}
 		switch (item.getItemId()) {
 			case R.id.prefs:
 				Intent myIntent = new Intent();
@@ -177,24 +183,26 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 				return true;
 			case R.id.contact_admin:
 				Intent contactIntent = new Intent();
-				contactIntent.setClassName("com.pbm", "com.pbm.ContactAdmin");
+				String contactClassName = loggedIn ? "com.pbm.ContactAdmin" : "com.pbm.Login";
+				contactIntent.setClassName("com.pbm", contactClassName);
 				startActivityForResult(contactIntent, QUIT_RESULT);
 
 				return true;
 			case R.id.suggest_region:
 				Intent suggestIntent = new Intent();
-				suggestIntent.setClassName("com.pbm", "com.pbm.SuggestRegion");
+				String suggestRegionClassName = loggedIn ? "com.pbm.SuggestRegion" : "com.pbm.Login";
+				suggestIntent.setClassName("com.pbm", suggestRegionClassName);
 				startActivityForResult(suggestIntent, QUIT_RESULT);
 
 				return true;
 			case R.id.suggest_location:
 				Intent suggestLocationIntent = new Intent();
-				suggestLocationIntent.setClassName("com.pbm", "com.pbm.SuggestLocation");
+				String suggestLocationClassName = loggedIn ? "com.pbm.SuggestLocation" : "com.pbm.Login";
+				suggestLocationIntent.setClassName("com.pbm", suggestLocationClassName);
 				startActivityForResult(suggestLocationIntent, QUIT_RESULT);
 
 				return true;
 			case R.id.logout:
-				final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 				SharedPreferences.Editor editor = settings.edit();
                 editor.putInt("region", -1);
                 editor.putString("authToken", "");
@@ -203,6 +211,12 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 				editor.commit();
 
 				Intent loginIntent = new Intent();
+				loginIntent.setClassName("com.pbm", "com.pbm.Login");
+				startActivityForResult(loginIntent, QUIT_RESULT);
+
+				return true;
+			case R.id.login:
+				loginIntent = new Intent();
 				loginIntent.setClassName("com.pbm", "com.pbm.Login");
 				startActivityForResult(loginIntent, QUIT_RESULT);
 
@@ -223,6 +237,12 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 		if (settings.getInt("region", -1) == -1) {
 			menu.removeItem(R.id.contact_admin);
 			menu.removeItem(R.id.suggest_location);
+		}
+
+		if (settings.getString("username", "") == "") {
+			menu.removeItem(R.id.logout);
+		} else {
+			menu.removeItem(R.id.login);
 		}
 		return super.onPrepareOptionsMenu(menu);
 	}

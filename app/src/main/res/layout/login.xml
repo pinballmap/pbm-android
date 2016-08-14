@@ -114,6 +114,16 @@
             android:textSize="22sp"
             android:layout_gravity="center_horizontal" />
 
+        <TextView
+            android:id="@+id/no_login"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Continue without logging in"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_gravity="center_horizontal" />
+
 
     </LinearLayout>
 

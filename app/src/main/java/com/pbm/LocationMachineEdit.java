@@ -3,6 +3,7 @@ package com.pbm;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -39,24 +40,36 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 		location = lmx.getLocation(this);
 		final Machine machine = getPBMApplication().getMachine(lmx.machineID);
+		SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 
 		setTitle(machine.name + " @ " + location.name);
+
+		Button removeMachine = (Button) findViewById(R.id.remove_machine_button);
 		removeHandler = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				removeMachineDialog();
 			}
 		};
-		Button removeMachine = (Button) findViewById(R.id.remove_machine_button);
 		removeMachine.setOnClickListener(removeHandler);
-
-		Button addMachine = (Button) findViewById(R.id.add_condition_button);
-		addMachine.setOnClickListener(new View.OnClickListener() {
+		Button addMachineCondition = (Button) findViewById(R.id.add_condition_button);
+		if (settings.getString("username", "").equals("")) {
+			addMachineCondition.setText("Login to leave a condition report");
+		}
+		addMachineCondition.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+
 				Intent myIntent = new Intent();
-				myIntent.setClassName("com.pbm", "com.pbm.ConditionEdit");
-				myIntent.putExtra("lmx", lmx);
+
+				if (settings.getString("username", "").equals("")) {
+					myIntent.setClassName("com.pbm", "com.pbm.Login");
+				} else {
+					myIntent.setClassName("com.pbm", "com.pbm.ConditionEdit");
+					myIntent.putExtra("lmx", lmx);
+				}
+
 				startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
@@ -72,12 +85,23 @@ public class LocationMachineEdit extends PinballMapActivity {
 		pintips.setText(Html.fromHtml("<a href=\"http://pintips.net/pinmap/" + urlLookupTypeData + "\">View playing tips on pintips.net</a>"));
 
 		Button addScore = (Button) findViewById(R.id.add_new_score);
+		if (settings.getString("username", "").equals("")) {
+			addScore.setText("Login to add your high score");
+		}
 		addScore.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+
 				Intent myScoreIntent = new Intent();
-				myScoreIntent.setClassName("com.pbm", "com.pbm.EnterScore");
-				myScoreIntent.putExtra("lmx", lmx);
+
+				if (settings.getString("username", "").equals("")) {
+					myScoreIntent.setClassName("com.pbm", "com.pbm.Login");
+				} else {
+					myScoreIntent.setClassName("com.pbm", "com.pbm.ConditionEdit");
+					myScoreIntent.putExtra("lmx", lmx);
+				}
+
 				startActivityForResult(myScoreIntent, QUIT_RESULT);
 			}
 		});
@@ -132,6 +156,11 @@ public class LocationMachineEdit extends PinballMapActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.location_machine_edit_menu, menu);
+
+		SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+		if (settings.getString("username", "").equals("")) {
+			menu.removeItem(R.id.remove_button);
+		}
 
 		return super.onCreateOptionsMenu(menu);
 	}
