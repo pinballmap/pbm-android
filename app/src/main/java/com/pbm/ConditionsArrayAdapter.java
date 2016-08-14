@@ -42,7 +42,7 @@ public class ConditionsArrayAdapter extends ArrayAdapter<Condition> implements O
 		TextView conditionText = (TextView) convertView.findViewById(R.id._condition);
 		conditionText.setText(condition.getDescription());
 		TextView conditionDate = (TextView) convertView.findViewById(R.id._condition_date);
-		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy KK:mm aa", Locale.getDefault());
+		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
 		format.setTimeZone(TimeZone.getDefault());
 		conditionDate.setText(format.format(condition.getDate()));
 
