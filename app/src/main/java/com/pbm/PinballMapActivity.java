@@ -39,6 +39,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 
 public class PinballMapActivity extends AppCompatActivity implements OnQueryTextListener, LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -136,6 +137,8 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 					getPBMApplication().initializeData();
 				}
 			} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException e) {
+				e.printStackTrace();
+			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 		}

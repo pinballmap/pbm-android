@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -147,7 +148,11 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 			int locationID = jsonLmx.getInt("location_id");
 			int machineID = jsonLmx.getInt("machine_id");
 
-			app.addLocationMachineXref(id, new com.pbm.LocationMachineXref(id, locationID, machineID, "", ""));
+			try {
+				app.addLocationMachineXref(id, new LocationMachineXref(id, locationID, machineID, "", "", ""));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 			app.loadConditions(jsonLmx, id, locationID, machineID);
 
 			return;

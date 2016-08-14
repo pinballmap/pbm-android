@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,19 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-/**
- * Copyright (c) 2015, Brian Dols <brian.dols@gmail.com>
- * <p/>
- * Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
- * <p/>
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- */
 class MachineDetailListAdapter extends ArrayAdapter<Machine> {
 	private final TreeMap<Integer, LocationMachineXref> lmxes;
 	private final LayoutInflater layoutInflater;
 	private List<com.pbm.Machine> filteredMachineList;
 	private boolean disableSelectImage;
-	private Filter filter;
 
 	public MachineDetailListAdapter(Context context, List<Machine> machines, TreeMap<Integer, LocationMachineXref> lmxes) {
 		super(context, R.layout.machine_condition_listview, machines);
@@ -55,11 +46,18 @@ class MachineDetailListAdapter extends ArrayAdapter<Machine> {
 		Machine machine = filteredMachineList.get(position);
         holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>"));
 		String conditionText = "";
-		if (!lmxes.get(machine.id).condition.equals("null") && !lmxes.get(machine.id).condition.equals("")) {
-			conditionText += lmxes.get(machine.id).condition;
-			if (!lmxes.get(machine.id).conditionDate.equals("null") && !lmxes.get(machine.id).condition.equals("")) {
-				conditionText += '\n' + getContext().getString(R.string.updated_on) + " " + lmxes.get(machine.id).conditionDate;
+		LocationMachineXref lmx = lmxes.get(machine.id);
+		if (!lmx.condition.equals("null") && !lmx.condition.equals("")) {
+			conditionText += lmx.condition;
+			if (!lmx.conditionDate.equals("null") && !lmx.condition.equals("")) {
+				conditionText += '\n' + getContext().getString(R.string.updated_on) + " " + lmx.conditionDate;
 			}
+
+			String lastUpdatedByUsername = lmx.lastUpdatedByUsername;
+			if(lastUpdatedByUsername != null && !lastUpdatedByUsername.isEmpty()) {
+				conditionText += " by " + lastUpdatedByUsername;
+			}
+
 			holder.condition.setText(conditionText);
 		} else {
 			holder.condition.setVisibility(View.GONE);
@@ -74,7 +72,6 @@ class MachineDetailListAdapter extends ArrayAdapter<Machine> {
 
 	class MachineViewHolder {
 		TextView name;
-		TextView metaData;
 		ImageView machineSelectButton;
 		TextView condition;
 	}

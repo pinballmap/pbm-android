@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import org.json.JSONException;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 
 public class InitializingScreen extends PinballMapActivity {
@@ -61,7 +62,7 @@ public class InitializingScreen extends PinballMapActivity {
 		public void run() {
 			try {
 				getPBMApplication().initializeData();
-			} catch (UnsupportedEncodingException | InterruptedException | ExecutionException | JSONException e) {
+			} catch (UnsupportedEncodingException | InterruptedException | ExecutionException | ParseException | JSONException e) {
 				e.printStackTrace();
 			} finally {
 				Intent myIntent = new Intent();

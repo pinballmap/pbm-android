@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class LocationDetail extends PinballMapActivity {
-	private NonScrollListView table;
+	private ListView table;
 
 	private Location location;
 	private List<LocationMachineXref> lmxes = new ArrayList<>();
@@ -154,7 +155,7 @@ public class LocationDetail extends PinballMapActivity {
 							locationOperator.setVisibility(View.GONE);
 						}
 
-						table = (NonScrollListView) findViewById(R.id.locationDetailTable);
+						table = (ListView) findViewById(R.id.locationDetailTable);
 						table.setOnItemClickListener(new OnItemClickListener() {
 							public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
 								Machine machine = machines.get(position);
@@ -178,7 +179,7 @@ public class LocationDetail extends PinballMapActivity {
 		try {
 			Collections.sort(machines, new Comparator<Machine>() {
 				public int compare(Machine m1, Machine m2) {
-					return m1.name.replaceAll("^(?i)The ", "").compareTo(m2.name.replaceAll("^(?i)The ", ""));
+				return m1.name.replaceAll("^(?i)The ", "").compareTo(m2.name.replaceAll("^(?i)The ", ""));
 				}
 			});
 		} catch (java.lang.NullPointerException nep) {
@@ -189,6 +190,9 @@ public class LocationDetail extends PinballMapActivity {
 			table.setFocusable(false);
 
 			table.setAdapter(new MachineDetailListAdapter(this, machines, location.getLMXMap(LocationDetail.this)));
+
+			PBMApplication app = getPBMApplication();
+			app.setListViewHeightBasedOnChildren(table);
 		}
 	}
 

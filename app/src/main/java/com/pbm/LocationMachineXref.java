@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,13 +15,21 @@ public class LocationMachineXref implements Serializable {
 	public int locationID;
 	public String condition;
 	public String conditionDate;
+	public String lastUpdatedByUsername;
 
-	public LocationMachineXref(int id, int locationID, int machineID, String condition, String conditionDate) {
+	public LocationMachineXref(int id, int locationID, int machineID, String condition, String conditionDate, String lastUpdatedByUsername) throws ParseException {
 		this.id = id;
 		this.locationID = locationID;
 		this.machineID = machineID;
 		this.condition = condition;
-		this.conditionDate = conditionDate;
+		this.lastUpdatedByUsername = lastUpdatedByUsername;
+
+		String formattedConditionDate = "";
+		if (conditionDate != null && !conditionDate.equalsIgnoreCase("null")){
+			Date rawDate = new SimpleDateFormat("yyyy-MM-dd").parse(conditionDate);
+			formattedConditionDate = new SimpleDateFormat("MM/dd/yyyy").format(rawDate);
+		}
+		this.conditionDate = formattedConditionDate;
 	}
 
 	public Location getLocation(PinballMapActivity activity) {
