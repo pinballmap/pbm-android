@@ -5,6 +5,10 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -375,7 +379,7 @@ public class PBMApplication extends Application {
 		return origRequest + (origRequest.indexOf("?") == -1 ? "?" : ";") + authDetails;
 	}
 
-	public void initializeData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+	public void initializeData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
 		dataLoadTimestamp = System.currentTimeMillis();
 		Log.d("com.pbm", "initializing data");
 		initializeAllMachines();
@@ -554,7 +558,7 @@ public class PBMApplication extends Application {
 		}
 	}
 
-	void initializeLocations() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+	void initializeLocations() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
 		lmxes.clear();
 		locations.clear();
 
@@ -638,6 +642,16 @@ public class PBMApplication extends Application {
 					int machineID = lmx.getInt("machine_id");
 					String condition = lmx.getString("condition");
 					String conditionDate = lmx.getString("condition_date");
+					if (conditionDate.equals("null")) {
+						conditionDate = null;
+					}
+
+					String username = "";
+					try {
+						username = lmx.getString("last_updated_by_username");
+					} catch (JSONException e) {
+						username = "";
+					}
 
 					Machine machine = getMachine(machineID);
 
@@ -646,7 +660,7 @@ public class PBMApplication extends Application {
 
 						addLocationMachineXref(
 							lmxID,
-							new com.pbm.LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate)
+							new com.pbm.LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate, username)
 						);
 						loadConditions(lmx, lmxID, lmxLocationID, machineID);
 					}
@@ -718,4 +732,25 @@ public class PBMApplication extends Application {
 		return true;
 	}
 
+	public void setListViewHeightBasedOnChildren(ListView listView) {
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			return;
+		}
+
+		int totalHeight = listView.getPaddingTop() + listView.getPaddingBottom();
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+			if (listItem instanceof ViewGroup) {
+				listItem.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+			}
+			listItem.measure(View.MeasureSpec.AT_MOST, View.MeasureSpec.UNSPECIFIED);
+			totalHeight += listItem.getMeasuredHeight();
+		}
+
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+
+		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		listView.setLayoutParams(params);
+	}
 }
