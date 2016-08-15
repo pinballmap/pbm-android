@@ -54,8 +54,9 @@
 
     <Spinner
         android:id="@+id/locationTypeSpinner"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        style="@style/spinner_style"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/enterLocationTypeHeader" />
@@ -84,8 +85,9 @@
         android:textSize="20sp"/>
     <Spinner
         android:id="@+id/operatorSpinner"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        style="@style/spinner_style"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/enterOperator" />
