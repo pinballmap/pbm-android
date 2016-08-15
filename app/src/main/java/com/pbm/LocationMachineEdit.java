@@ -74,7 +74,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 			}
 		});
 
-		TextView pintips = (TextView) findViewById(R.id.pintips);
+		Button pintips = (Button) findViewById(R.id.pintips);
 		pintips.setMovementMethod(LinkMovementMethod.getInstance());
 		String urlLookupTypeData = "";
 		if (machine.groupId != "") {

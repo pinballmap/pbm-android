@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity {
         usernameWrapper.setHint("Login");
         passwordWrapper.setHint("Password");
 
-        TextView signup = (TextView) findViewById(R.id.signup);
+        Button signup = (Button) findViewById(R.id.signup);
         signup.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
             Intent intent = new Intent();
@@ -41,7 +41,7 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        TextView noLogin = (TextView) findViewById(R.id.no_login);
+        Button noLogin = (Button) findViewById(R.id.no_login);
         noLogin.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Log.i("GOT A CLICK", "GOT A CLICK");
