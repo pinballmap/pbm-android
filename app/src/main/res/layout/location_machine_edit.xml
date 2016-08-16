@@ -10,7 +10,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
     android:background="#FEFBF8">
-    <TextView
+    <Button
         android:id="@+id/pintips"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -66,7 +66,8 @@
         android:layout_width="fill_parent"
         android:layout_height="1dip"
         android:layout_below="@android:id/empty"
-        android:background="#a77e51" />
+        android:background="#a77e51"
+        android:layout_marginTop="10dp" />
 
     <Button
         android:id="@+id/add_new_score"
@@ -105,7 +106,8 @@
         android:layout_width="fill_parent"
         android:layout_height="1dip"
         android:layout_below="@+id/empty_score"
-        android:background="#a77e51" />
+        android:background="#a77e51"
+        android:layout_marginTop="10dp" />
 
     <Button
         android:id="@+id/other_locations"

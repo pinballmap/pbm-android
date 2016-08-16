@@ -32,7 +32,8 @@
             android:text="A User-Powered Pinball Locator"
             android:textSize="22sp"
             android:textColor="#675032"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:background="@drawable/header_bg" />
 
     </RelativeLayout>
 
@@ -104,25 +105,51 @@
             android:background="@drawable/input_btn"
             android:textColor="#ffffff" />
 
-        <TextView
+        <Button
             android:id="@+id/signup"
             android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Not a user?\nSign up here"
-            android:textStyle="bold"
+            android:text="Not a user? Sign up here"
+            android:padding="10dp"
+            android:textColor="#ffffff"
             android:textSize="22sp"
+            android:background="@drawable/input_btn"
             android:layout_gravity="center_horizontal" />
 
         <TextView
+            android:id="@+id/or_text"
+            android:layout_width="wrap_content"
+            android:textColor="#6E5335"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:text="Or"
+            android:textSize="16sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:textStyle="italic" />
+        <Button
             android:id="@+id/no_login"
             android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
+            android:padding="10dp"
+            android:background="@drawable/input_btn"
+            android:layout_width="fill_parent"
+            android:textColor="#cccccc"
             android:layout_height="wrap_content"
-            android:text="Continue without logging in"
-            android:textStyle="bold"
-            android:textSize="22sp"
-            android:layout_gravity="center_horizontal" />
+            android:text="Continue without logging in..."
+            android:textSize="18sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:id="@+id/no_login_exp"
+            android:layout_width="wrap_content"
+            android:textColor="#6E5335"
+            android:layout_height="wrap_content"
+            android:text="Note: Can't update without logging in"
+            android:textSize="16sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:textStyle="italic" />
 
 
     </LinearLayout>
