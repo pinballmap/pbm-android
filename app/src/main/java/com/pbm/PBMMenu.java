@@ -76,51 +76,49 @@ public class PBMMenu extends PinballMapActivity {
 
 		table.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
+			Intent intent = new Intent();
+			String menuItem = adapter.getItem(position);
 
-				Intent intent = new Intent();
-				String menuItem = adapter.getItem(position);
+			switch (menuItem) {
+				case LOOKUP_BY_LOCATION:
+					intent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
+					break;
+				case LOOKUP_BY_MACHINE:
+					intent.setClassName("com.pbm", "com.pbm.LookupByMachineList");
+					break;
+				case LOOKUP_BY_CITY:
+					intent.setClassName("com.pbm", "com.pbm.LookupByCity");
+					break;
+				case LOOKUP_BY_ZONE:
+					intent.setClassName("com.pbm", "com.pbm.LookupByZoneList");
+					break;
+				case LOOKUP_BY_OPERATOR:
+					intent.setClassName("com.pbm", "com.pbm.LookupByOperator");
+					break;
+				case RECENTLY_ADDED:
+					intent.setClassName("com.pbm", "com.pbm.RecentlyAdded");
+					break;
+				case RECENT_HIGH_SCORES:
+					intent.setClassName("com.pbm", "com.pbm.RecentScores");
+					break;
+				case EVENTS:
+					intent.setClassName("com.pbm", "com.pbm.Events");
+					break;
+				case CLOSEST_LOCATIONS:
+					intent.setClassName("com.pbm", "com.pbm.CloseLocations");
+					break;
+				case LOOKUP_BY_LOCATION_TYPE:
+					intent.setClassName("com.pbm", "com.pbm.LookupByLocationType");
+					break;
+				default:
+					intent.setClassName("com.pbm", "com.pbm.PBMMenu");
+					break;
+			}
 
-				switch (menuItem) {
-					case LOOKUP_BY_LOCATION:
-						intent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
-						break;
-					case LOOKUP_BY_MACHINE:
-						intent.setClassName("com.pbm", "com.pbm.LookupByMachineList");
-						break;
-					case LOOKUP_BY_CITY:
-						intent.setClassName("com.pbm", "com.pbm.LookupByCity");
-						break;
-					case LOOKUP_BY_ZONE:
-						intent.setClassName("com.pbm", "com.pbm.LookupByZoneList");
-						break;
-					case LOOKUP_BY_OPERATOR:
-						intent.setClassName("com.pbm", "com.pbm.LookupByOperator");
-						break;
-					case RECENTLY_ADDED:
-						intent.setClassName("com.pbm", "com.pbm.RecentlyAdded");
-						break;
-					case RECENT_HIGH_SCORES:
-						intent.setClassName("com.pbm", "com.pbm.RecentScores");
-						break;
-					case EVENTS:
-						intent.setClassName("com.pbm", "com.pbm.Events");
-						break;
-					case CLOSEST_LOCATIONS:
-						intent.setClassName("com.pbm", "com.pbm.CloseLocations");
-						break;
-					case LOOKUP_BY_LOCATION_TYPE:
-						intent.setClassName("com.pbm", "com.pbm.LookupByLocationType");
-						break;
-					default:
-						intent.setClassName("com.pbm", "com.pbm.PBMMenu");
-						break;
-				}
-
-				startActivityForResult(intent, MENU_RESULT);
+			startActivityForResult(intent, MENU_RESULT);
 			}
 		});
 
 		table.setAdapter(adapter);
 	}
-
 }

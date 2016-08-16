@@ -12,7 +12,7 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/submit_location_id"
+            android:id="@+id/submitLocationId"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/submit_a_location"
@@ -27,7 +27,7 @@
             android:id="@+id/nameTextView"
             android:text="@string/name"
             android:labelFor="@+id/nameField"
-            android:layout_below="@+id/submit_location_id"
+            android:layout_below="@+id/submitLocationId"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -267,7 +267,7 @@
             android:textSize="20sp" />
 
         <MultiAutoCompleteTextView
-            android:id="@+id/multiAutoCompleteTextView1"
+            android:id="@+id/autoCompleteMachinesTextView"
             android:layout_below="@+id/machinesTextView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -279,8 +279,8 @@
             android:width="300dp"/>
 
         <Button
-            android:id="@+id/button1"
-            android:layout_below="@+id/multiAutoCompleteTextView1"
+            android:id="@+id/submitButton"
+            android:layout_below="@+id/autoCompleteMachinesTextView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

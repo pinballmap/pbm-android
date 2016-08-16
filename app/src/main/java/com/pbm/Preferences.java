@@ -22,7 +22,6 @@ public class Preferences extends PinballMapActivity {
 		myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		myIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
 		startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
-
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {

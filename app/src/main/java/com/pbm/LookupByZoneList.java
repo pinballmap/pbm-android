@@ -26,18 +26,18 @@ public class LookupByZoneList extends PinballMapActivity {
 		List<Zone> primaryZones = new ArrayList<>();
 		List<Zone> secondaryZones = new ArrayList<>();
 
-		ListView table = (ListView)findViewById(R.id.locationLookupListTable);
-		table.setOnItemClickListener(new OnItemClickListener() {
+		ListView locationLookupListTable = (ListView)findViewById(R.id.locationLookupListTable);
+		locationLookupListTable.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
-				Intent myIntent = new Intent();	
-				myIntent.putExtra("Zone", (Zone) parentView.getItemAtPosition(position));
-				myIntent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
-				startActivityForResult(myIntent, QUIT_RESULT);
+			Intent myIntent = new Intent();
+			myIntent.putExtra("Zone", (Zone) parentView.getItemAtPosition(position));
+			myIntent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
+
+			startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
 
-		PBMApplication app = getPBMApplication();
-		HashMap<Integer, com.pbm.Zone> zones = app.getZones();
+		HashMap<Integer, com.pbm.Zone> zones = getPBMApplication().getZones();
 		for(Integer key : zones.keySet()) {
 			Zone zone = zones.get(key);
 
@@ -53,9 +53,9 @@ public class LookupByZoneList extends PinballMapActivity {
 		sort(secondaryZones);
 		primaryZones.addAll(secondaryZones);
 
-		table.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, primaryZones));
+		locationLookupListTable.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, primaryZones));
 		
-		setTable(table);
+		setTable(locationLookupListTable);
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {

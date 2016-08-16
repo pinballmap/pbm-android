@@ -14,9 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -69,7 +67,6 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 
 	public ListView table;
 	private GoogleApiClient googleApiClient;
-
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -163,11 +160,6 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
-		boolean loggedIn = true;
-		SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
-		if (settings.getString("username", "").equals("")) {
-			loggedIn = false;
-		}
 		switch (item.getItemId()) {
 			case R.id.prefs:
 				Intent myIntent = new Intent();
@@ -183,26 +175,27 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 				return true;
 			case R.id.contact_admin:
 				Intent contactIntent = new Intent();
-				String contactClassName = loggedIn ? "com.pbm.ContactAdmin" : "com.pbm.Login";
+				String contactClassName = getPBMApplication().userIsAuthenticated() ? "com.pbm.ContactAdmin" : "com.pbm.Login";
 				contactIntent.setClassName("com.pbm", contactClassName);
 				startActivityForResult(contactIntent, QUIT_RESULT);
 
 				return true;
 			case R.id.suggest_region:
 				Intent suggestIntent = new Intent();
-				String suggestRegionClassName = loggedIn ? "com.pbm.SuggestRegion" : "com.pbm.Login";
+				String suggestRegionClassName = getPBMApplication().userIsAuthenticated() ? "com.pbm.SuggestRegion" : "com.pbm.Login";
 				suggestIntent.setClassName("com.pbm", suggestRegionClassName);
 				startActivityForResult(suggestIntent, QUIT_RESULT);
 
 				return true;
 			case R.id.suggest_location:
 				Intent suggestLocationIntent = new Intent();
-				String suggestLocationClassName = loggedIn ? "com.pbm.SuggestLocation" : "com.pbm.Login";
+				String suggestLocationClassName = getPBMApplication().userIsAuthenticated() ? "com.pbm.SuggestLocation" : "com.pbm.Login";
 				suggestLocationIntent.setClassName("com.pbm", suggestLocationClassName);
 				startActivityForResult(suggestLocationIntent, QUIT_RESULT);
 
 				return true;
 			case R.id.logout:
+				SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 				SharedPreferences.Editor editor = settings.edit();
                 editor.putInt("region", -1);
                 editor.putString("authToken", "");
@@ -239,28 +232,30 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 			menu.removeItem(R.id.suggest_location);
 		}
 
-		if (settings.getString("username", "") == "") {
-			menu.removeItem(R.id.logout);
-		} else {
+		if (getPBMApplication().userIsAuthenticated()) {
 			menu.removeItem(R.id.login);
+		} else {
+			menu.removeItem(R.id.logout);
 		}
+
 		return super.onPrepareOptionsMenu(menu);
 	}
 
 	public void activityQuitResult() {
 		setResult(QUIT_RESULT);
+
 		super.finish();
 		this.finish();
 	}
 
 	public void activityResetResult() {
 		setResult(RESET_RESULT);
+
 		super.finish();
 		this.finish();
 	}
 
-	public void activityRefreshResult() {
-	}
+	public void activityRefreshResult() {}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (resultCode) {
@@ -309,10 +304,10 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 				httpConn.connect();
 				InputStream inputStream = httpConn.getInputStream();
 
-					if (
-						((httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) || (httpConn.getResponseCode() == HttpURLConnection.HTTP_CREATED))
-						&& (inputStream != null)
-					) {
+				if (
+					((httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) || (httpConn.getResponseCode() == HttpURLConnection.HTTP_CREATED))
+					&& (inputStream != null)
+				) {
 					return inputStream;
 				} else {
 					Log.e("HTTP RESPONSE MESSAGE:", httpConn.getResponseMessage());
@@ -323,11 +318,8 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 		} catch (Exception ex) {
 			Log.e("EXCEPTION:", ex.toString());
 		}
-		return null;
-	}
 
-	public static int convertPixelsToDip(int dipValue, DisplayMetrics displayMetrics) {
-		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) dipValue, displayMetrics);
+		return null;
 	}
 
 	public static boolean haveInternet(Context context) {
@@ -335,13 +327,12 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
 		return networkInfo != null && networkInfo.isConnected();
-
 	}
 
 	public void closeWithNoInternet() {
 		new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Get some Internet, dude")
-				.setMessage("This application requires an Internet connection, sorry.")
-				.setPositiveButton("Bummer", new DialogInterface.OnClickListener() {
+			.setMessage("This application requires an Internet connection, sorry.")
+			.setPositiveButton("Bummer", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						activityQuitResult();
 					}
@@ -350,8 +341,8 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 
 	public void closeOnMissingServer() {
 		new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Sorry")
-				.setMessage("The Pinball Map Server is missing! Please try later, thank you.")
-				.setPositiveButton("Bummer", new DialogInterface.OnClickListener() {
+			.setMessage("The Pinball Map Server is missing! Please try later, thank you.")
+			.setPositiveButton("Bummer", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						activityQuitResult();
 					}
@@ -393,8 +384,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 			locationRequest.setFastestInterval(60000);
 		}
 		setLocation(LocationServices.FusedLocationApi.getLastLocation(googleApiClient));
-		LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,
-				locationRequest, this);
+		LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
 	}
 
 	@Override

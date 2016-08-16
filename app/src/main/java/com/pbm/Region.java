@@ -28,8 +28,7 @@ public class Region implements Serializable, JSONConverter<Region> {
 		this.lon = lon;
 	}
 
-	public Region() {
-	}
+	public Region() {}
 
 	public Region fromJSON(JSONObject region) throws JSONException {
 		this.id = region.getInt("id");

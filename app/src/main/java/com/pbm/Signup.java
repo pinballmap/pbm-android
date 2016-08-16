@@ -24,65 +24,63 @@ public class Signup extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
+    }
+
+    public void setupSignUpButton() {
 
         final TextInputLayout usernameWrapper = (TextInputLayout) findViewById(R.id.usernameWrapper);
         final TextInputLayout emailWrapper = (TextInputLayout) findViewById(R.id.emailWrapper);
         final TextInputLayout passwordWrapper = (TextInputLayout) findViewById(R.id.passwordWrapper);
         final TextInputLayout confirmPasswordWrapper = (TextInputLayout) findViewById(R.id.confirmPasswordWrapper);
 
-        usernameWrapper.setHint("Username");
-        emailWrapper.setHint("Email");
-        passwordWrapper.setHint("Password");
-        confirmPasswordWrapper.setHint("Confirm Password");
-
-        Button btn = (Button) findViewById(R.id.btn);
+        Button btn = (Button) findViewById(R.id.signUpButton);
 
         btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                try{
-                    String json = new RetrieveJsonTask().execute(
-                            PinballMapActivity.regionlessBase +
-                                "users/signup.json?password=" + passwordWrapper.getEditText().getText().toString() +
-                                ";confirm_password=" + confirmPasswordWrapper.getEditText().getText().toString() +
-                                ";username=" + usernameWrapper.getEditText().getText().toString() +
-                                ";email=" + emailWrapper.getEditText().getText().toString(),
-                            "POST"
-                    ).get();
+            try{
+                String json = new RetrieveJsonTask().execute(
+                    PinballMapActivity.regionlessBase +
+                        "users/signup.json?password=" + passwordWrapper.getEditText().getText().toString() +
+                        ";confirm_password=" + confirmPasswordWrapper.getEditText().getText().toString() +
+                        ";username=" + usernameWrapper.getEditText().getText().toString() +
+                        ";email=" + emailWrapper.getEditText().getText().toString(),
+                    "POST"
+                ).get();
 
-                    final JSONObject jsonObject = new JSONObject(json.toString());
+                final JSONObject jsonObject = new JSONObject(json);
 
-                    if (jsonObject.has("errors")) {
-                        Signup.super.runOnUiThread(new Runnable() {
-                            public void run() {
-                                String error = null;
-                                try {
-                                    error = URLDecoder.decode(jsonObject.getString("errors"), "UTF-8");
-                                    error = error.replace("\\/", "/");
-                                } catch (JSONException | UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                }
+                if (jsonObject.has("errors")) {
+                    Signup.super.runOnUiThread(new Runnable() {
+                        public void run() {
+                        String error = null;
+                        try {
+                            error = URLDecoder.decode(jsonObject.getString("errors"), "UTF-8");
+                            error = error.replace("\\/", "/");
+                        } catch (JSONException | UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
 
-                                Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    } else {
-                        JSONObject userObject = new JSONObject(jsonObject.getJSONObject("user").toString());
-                        final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
-                        SharedPreferences.Editor editor = settings.edit();
-                        editor.putString("authToken", userObject.getString("authentication_token"));
-                        editor.putString("username", userObject.getString("username"));
-                        editor.putString("email", userObject.getString("email"));
-                        editor.commit();
+                        Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else {
+                    JSONObject userObject = new JSONObject(jsonObject.getJSONObject("user").toString());
+                    final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("authToken", userObject.getString("authentication_token"));
+                    editor.putString("username", userObject.getString("username"));
+                    editor.putString("email", userObject.getString("email"));
+                    editor.commit();
 
-                        Intent splashIntent = new Intent();
-                        splashIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
-                        startActivityForResult(splashIntent, PinballMapActivity.QUIT_RESULT);
-                    }
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    Intent splashIntent = new Intent();
+                    splashIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
+                    startActivityForResult(splashIntent, PinballMapActivity.QUIT_RESULT);
                 }
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             }
         });
     }

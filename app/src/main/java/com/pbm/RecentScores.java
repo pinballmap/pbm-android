@@ -31,18 +31,18 @@ public class RecentScores extends PinballMapActivity {
 
 		new Thread(new Runnable() {
 	        public void run() {
-	        	try {
-					getLocationData();
-				} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException e) {
-					e.printStackTrace();
+			try {
+				getLocationData();
+			} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException e) {
+				e.printStackTrace();
+			}
+			RecentScores.super.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					ListView table = (ListView)findViewById(R.id.recentscorestable);
+					table.setAdapter(new ArrayAdapter<>(RecentScores.this, android.R.layout.simple_list_item_1, recentScores));
 				}
-		        RecentScores.super.runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						ListView table = (ListView)findViewById(R.id.recentscorestable);
-						table.setAdapter(new ArrayAdapter<>(RecentScores.this, android.R.layout.simple_list_item_1, recentScores));
-					}
-	        	});
+			});
 	        }
 	    }).start();
 	}
@@ -75,8 +75,8 @@ public class RecentScores extends PinballMapActivity {
 				Machine machine = lmx.getMachine(this);
 
 				String title = location.name + "'s " + machine.name + "<br />" +
-						ranks.get(rank) + " with " + formatter.format(score) + " by <b>" + initials + "</b>" + "<br />" +
-						"<small>" + scoreDate + "</small>";
+					ranks.get(rank) + " with " + formatter.format(score) + " by <b>" + initials + "</b>" + "<br />" +
+					"<small>" + scoreDate + "</small>";
 
 				recentScores.add(Html.fromHtml(title));
 			}

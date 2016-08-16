@@ -51,7 +51,7 @@ public class ScoresArrayAdapter extends ArrayAdapter<MachineScore> implements On
 		((PinballMapActivity) context).runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				Toast.makeText(context, "OK, thank you.", Toast.LENGTH_LONG).show();
+			Toast.makeText(context, "OK, thank you.", Toast.LENGTH_LONG).show();
 			}
 		});
 	}

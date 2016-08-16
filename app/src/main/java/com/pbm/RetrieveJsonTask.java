@@ -13,8 +13,7 @@ public class RetrieveJsonTask extends AsyncTask<String, Void, String> {
 
 	private OnTaskCompleted listener;
 
-	public RetrieveJsonTask() {
-	}
+	public RetrieveJsonTask() {}
 
 	public RetrieveJsonTask(OnTaskCompleted listener) {
 		this.listener = listener;

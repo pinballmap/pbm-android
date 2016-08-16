@@ -22,26 +22,26 @@ public class LookupByOperator extends PinballMapActivity {
 		
 		logAnalyticsHit("com.pbm.LookupByOperator");
 
-		PBMApplication app = getPBMApplication();
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		Region region = app.getRegion(settings.getInt("region",  1));
+		Region region = getPBMApplication().getRegion(settings.getInt("region",  1));
 		List<Operator> operators = region.operators(this);
 		
-		ListView table = (ListView)findViewById(R.id.operatorTable);
-		table.setOnItemClickListener(new OnItemClickListener() {
+		ListView operatorTable = (ListView)findViewById(R.id.operatorTable);
+		operatorTable.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
-				Intent myIntent = new Intent();	
-				myIntent.putExtra("Operator", (Operator) parentView.getItemAtPosition(position));
-				myIntent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
-				startActivityForResult(myIntent, QUIT_RESULT);
+			Intent myIntent = new Intent();
+			myIntent.putExtra("Operator", (Operator) parentView.getItemAtPosition(position));
+			myIntent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
+
+			startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
 
 		sort(operators);
 
-		table.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, operators));
+		operatorTable.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, operators));
 		
-		setTable(table);
+		setTable(operatorTable);
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {

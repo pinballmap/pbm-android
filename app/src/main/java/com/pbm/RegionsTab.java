@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class RegionsTab extends Fragment implements LoaderManager.LoaderCallbacks<ArrayList<Region>> {
-	ListView table;
 	private RegionsPagerAdapter regionsPagerAdapter;
 	private ViewPager viewPager;
 
@@ -62,7 +61,7 @@ public class RegionsTab extends Fragment implements LoaderManager.LoaderCallback
 		Collections.sort(regionValues, new Comparator<Region>() {
 			@Override
 			public int compare(Region lhs, Region rhs) {
-				return lhs.formalName.compareTo(rhs.formalName);
+			return lhs.formalName.compareTo(rhs.formalName);
 			}
 		}); //TODO consider saving & restoring this to/from savedInstanceState
 		((RegionsFragment) this.regionsPagerAdapter.getItem(0)).setRegionValues(regionValues);
@@ -70,12 +69,10 @@ public class RegionsTab extends Fragment implements LoaderManager.LoaderCallback
 	}
 
 	@Override
-	public void onLoaderReset(Loader<ArrayList<Region>> loader) {
-
-	}
+	public void onLoaderReset(Loader<ArrayList<Region>> loader) {}
 
 	protected void updateLocation() {
-		((RegionsFragment) regionsPagerAdapter.getItem(1)).updateLocation(); // XXX hack
+		((RegionsFragment) regionsPagerAdapter.getItem(1)).updateLocation();
 	}
 
 	public static class RegionsPagerAdapter extends FragmentPagerAdapter {
@@ -168,13 +165,13 @@ public class RegionsTab extends Fragment implements LoaderManager.LoaderCallback
 				adapter.sort(new Comparator<Region>() {
 					@Override
 					public int compare(Region r1, Region r2) {
-						if (r1.distanceFromYou < r2.distanceFromYou) {
-							return -1;
-						}
-						if (r1.distanceFromYou > r2.distanceFromYou) {
-							return 1;
-						}
-						return 0;
+					if (r1.distanceFromYou < r2.distanceFromYou) {
+						return -1;
+					}
+					if (r1.distanceFromYou > r2.distanceFromYou) {
+						return 1;
+					}
+					return 0;
 					}
 
 				});
@@ -201,5 +198,4 @@ public class RegionsTab extends Fragment implements LoaderManager.LoaderCallback
 			startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
 		}
 	}
-
 }

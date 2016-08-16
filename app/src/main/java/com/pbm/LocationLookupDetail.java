@@ -22,7 +22,7 @@ public class LocationLookupDetail extends PinballMapActivity {
 	private LocationType locationType;
 	private Operator operator;
 	private ArrayList<Location> foundLocations = new ArrayList<>();
-	private ListView table;
+	private ListView locationLookupDetailTable;
 	private Parcelable listState;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,52 +34,55 @@ public class LocationLookupDetail extends PinballMapActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Bundle extras = getIntent().getExtras();
-		
 		if (extras != null) {
-			if (extras.containsKey("LocationType")) {
-				locationType = (LocationType) extras.get("LocationType");
-				setTitle(locationType.name);
-			} else if (extras.containsKey("Operator")) {
-				operator = (Operator) extras.get("Operator");
-				setTitle(operator.name);
-			} else if (extras.containsKey("Zone")) {
-				zone = (Zone) extras.get("Zone");
-				setTitle(zone.name);
-			} else if (extras.containsKey("City")) {
-				city = (String) extras.get("City");
-				setTitle(city);
-			}
+			initializeExtras(extras);
 		} else {
 			setTitle("Locations");
 		}
 		
 		logAnalyticsHit("com.pbm.LocationLookupDetail");
 
-		table = (ListView)findViewById(R.id.locationLookupDetailTable);
-		table.setFastScrollEnabled(true);
-		table.setTextFilterEnabled(true);
-		table.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		locationLookupDetailTable = (ListView)findViewById(R.id.locationLookupDetailTable);
+		locationLookupDetailTable.setFastScrollEnabled(true);
+		locationLookupDetailTable.setTextFilterEnabled(true);
+		locationLookupDetailTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Intent myIntent = new Intent();
-				com.pbm.Location location = foundLocations.get(position);
+			Intent myIntent = new Intent();
+			com.pbm.Location location = foundLocations.get(position);
 
-				myIntent.putExtra("Location", location);
-				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
-				startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
+			myIntent.putExtra("Location", location);
+			myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
+			startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
 			}
 		});
 
-		setTable(table);
-	}   
+		setTable(locationLookupDetailTable);
+	}
+
+	public void initializeExtras(Bundle extras) {
+		if (extras.containsKey("LocationType")) {
+			locationType = (LocationType) extras.get("LocationType");
+			setTitle(locationType.name);
+		} else if (extras.containsKey("Operator")) {
+			operator = (Operator) extras.get("Operator");
+			setTitle(operator.name);
+		} else if (extras.containsKey("Zone")) {
+			zone = (Zone) extras.get("Zone");
+			setTitle(zone.name);
+		} else if (extras.containsKey("City")) {
+			city = (String) extras.get("City");
+			setTitle(city);
+		}
+	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.map_menu, menu);
+
 	    return super.onCreateOptionsMenu(menu);
 	}
 
 	void loadLocationData() {
-		LocationListAdapter adapter = (LocationListAdapter) table.getAdapter();
 		foundLocations.clear();
 
 		PBMApplication app = getPBMApplication();
@@ -122,11 +125,10 @@ public class LocationLookupDetail extends PinballMapActivity {
 				return l1.name.compareTo(l2.name);
 			}
 		});
-        adapter = new LocationListAdapter(this, foundLocations);
-        table.setAdapter(adapter);
+        locationLookupDetailTable.setAdapter(new LocationListAdapter(this, foundLocations));
         
 		if (listState != null) {
-			table.onRestoreInstanceState(listState);
+			locationLookupDetailTable.onRestoreInstanceState(listState);
 		}
 	}
 
@@ -145,7 +147,7 @@ public class LocationLookupDetail extends PinballMapActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		listState = table.onSaveInstanceState();
+		listState = locationLookupDetailTable.onSaveInstanceState();
 		outState.putParcelable("listState", listState);
 	}
 

@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class CloseLocations extends PinballMapActivity {
-	private ListView table;
+	private ListView closeLocationsTable;
 
 	private List<com.pbm.Location> locationsForMap = new ArrayList<>();
 	private static final int maxMilesFromYourLocation = 20;
@@ -39,11 +39,11 @@ public class CloseLocations extends PinballMapActivity {
 		tracker.setScreenName("com.pbm.CloseLocations");
 		tracker.send(new HitBuilders.AppViewBuilder().build());
 
-		table = (ListView) findViewById(R.id.closeLocationsTable);
-		table.setEmptyView(findViewById(R.id.closeLocationsEmpty));
-		table.setFastScrollEnabled(true);
-		table.setTextFilterEnabled(true);
-		table.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		closeLocationsTable = (ListView) findViewById(R.id.closeLocationsTable);
+		closeLocationsTable.setEmptyView(findViewById(R.id.closeLocationsEmpty));
+		closeLocationsTable.setFastScrollEnabled(true);
+		closeLocationsTable.setTextFilterEnabled(true);
+		closeLocationsTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent myIntent = new Intent();
 				com.pbm.Location location = locationsForMap.get(position);
@@ -54,7 +54,7 @@ public class CloseLocations extends PinballMapActivity {
 			}
 		});
 
-		setTable(table);
+		setTable(closeLocationsTable);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -66,7 +66,7 @@ public class CloseLocations extends PinballMapActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		listState = table.onSaveInstanceState();
+		listState = closeLocationsTable.onSaveInstanceState();
 		outState.putParcelable("listState", listState);
 	}
 
@@ -113,9 +113,9 @@ public class CloseLocations extends PinballMapActivity {
 		}
 		LocationListAdapter adapter = new LocationListAdapter(this, locationsForMap);
 		adapter.sort(com.pbm.Location.byNearestDistance);
-		table.setAdapter(adapter);
+		closeLocationsTable.setAdapter(adapter);
 		if (listState != null) {
-			table.onRestoreInstanceState(listState);
+			closeLocationsTable.onRestoreInstanceState(listState);
 		}
 	}
 }

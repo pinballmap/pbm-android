@@ -25,21 +25,22 @@ public class LookupByCity extends PinballMapActivity {
 		Region region = app.getRegion(settings.getInt("region",  1));
 		List<String> cities = region.cities(this);
 		
-		ListView table = (ListView)findViewById(R.id.cityTable);
-		table.setOnItemClickListener(new OnItemClickListener() {
+		ListView cityTable = (ListView)findViewById(R.id.cityTable);
+		cityTable.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
-				Intent myIntent = new Intent();	
-				myIntent.putExtra("City", (String) parentView.getItemAtPosition(position));
-				myIntent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
-				startActivityForResult(myIntent, QUIT_RESULT);
+			Intent myIntent = new Intent();	
+			myIntent.putExtra("City", (String) parentView.getItemAtPosition(position));
+			myIntent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
+
+			startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
 
 		java.util.Collections.sort(cities);
 
-		table.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, cities));
+		cityTable.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, cities));
 		
-		setTable(table);
+		setTable(cityTable);
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {

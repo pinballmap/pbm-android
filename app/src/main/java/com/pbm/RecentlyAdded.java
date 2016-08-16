@@ -33,17 +33,17 @@ public class RecentlyAdded extends PinballMapActivity {
 
 		new Thread(new Runnable() {
 			public void run() {
-				try {
-					getLocationData();
-				} catch (UnsupportedEncodingException | InterruptedException | ExecutionException | JSONException e) {
-					e.printStackTrace();
+			try {
+				getLocationData();
+			} catch (UnsupportedEncodingException | InterruptedException | ExecutionException | JSONException e) {
+				e.printStackTrace();
+			}
+			RecentlyAdded.super.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					showTable(recentAdds);
 				}
-				RecentlyAdded.super.runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						showTable(recentAdds);
-					}
-				});
+			});
 			}
 		}).start();
 	}
@@ -82,23 +82,23 @@ public class RecentlyAdded extends PinballMapActivity {
 
 		table.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
-				Intent myIntent = new Intent();
-				Spanned spanned = (Spanned) parentView.getItemAtPosition(position);
-				String locationName = spanned.toString().split(" was added to ")[1];
-				locationName = locationName.split(" \\(")[0];
-				locationName = locationName.split("\n")[0];
+			Intent myIntent = new Intent();
+			Spanned spanned = (Spanned) parentView.getItemAtPosition(position);
+			String locationName = spanned.toString().split(" was added to ")[1];
+			locationName = locationName.split(" \\(")[0];
+			locationName = locationName.split("\n")[0];
 
-				PBMApplication app = getPBMApplication();
-				Location location = app.getLocationByName(locationName);
+			PBMApplication app = getPBMApplication();
+			Location location = app.getLocationByName(locationName);
 
-				if (location == null) {
-					Toast.makeText(getBaseContext(), "Sorry, can't find that location", Toast.LENGTH_LONG).show();
-					return;
-				}
+			if (location == null) {
+				Toast.makeText(getBaseContext(), "Sorry, can't find that location", Toast.LENGTH_LONG).show();
+				return;
+			}
 
-				myIntent.putExtra("Location", location);
-				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
-				startActivityForResult(myIntent, QUIT_RESULT);
+			myIntent.putExtra("Location", location);
+			myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
+			startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
 

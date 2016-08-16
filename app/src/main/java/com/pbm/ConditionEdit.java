@@ -75,10 +75,13 @@ public class ConditionEdit extends PinballMapActivity implements OnTaskCompleted
 		final JSONObject jsonObject = new JSONObject(results);
 		if (jsonObject.has("location_machine")) {
 			JSONObject jsonLmx = jsonObject.getJSONObject("location_machine");
-			int id = jsonLmx.getInt("id");
-			int locationID = jsonLmx.getInt("location_id");
-			int machineID = jsonLmx.getInt("machine_id");
-			getPBMApplication().loadConditions(jsonLmx, id, locationID, machineID);
+
+			getPBMApplication().loadConditions(
+				jsonObject.getJSONObject("location_machine"),
+				jsonLmx.getInt("id"),
+				jsonLmx.getInt("location_id"),
+				jsonLmx.getInt("machine_id")
+			);
 		}
 	}
 }
