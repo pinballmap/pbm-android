@@ -18,21 +18,21 @@ public class SuggestLocation extends PinballMapActivity {
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.suggest_location);
-		TextView suggestLocationText = (TextView) findViewById(R.id.submit_location_id);
+		TextView suggestLocationText = (TextView) findViewById(R.id.submitLocationId);
 		suggestLocationText.setText("Submit A Location To The " + getPBMApplication().getRegion().formalName + " Map");
 		logAnalyticsHit("com.pbm.SuggestLocation");
 
 		PBMApplication app = getPBMApplication();
 		String[] machineNames = app.getMachineNamesWithMetadata();
 		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, machineNames);
-		MultiAutoCompleteTextView mactv = (MultiAutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView1);
-		mactv.setAdapter(adapter);
-		mactv.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+		MultiAutoCompleteTextView autoCompleteMachinesTextView = (MultiAutoCompleteTextView) findViewById(R.id.autoCompleteMachinesTextView);
+		autoCompleteMachinesTextView.setAdapter(adapter);
+		autoCompleteMachinesTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 	}
 
 	public void buttonOnClick(View view) throws UnsupportedEncodingException {
 		String locationName = ((EditText) findViewById(R.id.nameField)).getText().toString();
-		String machineNames = ((MultiAutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView1)).getText().toString();
+		String machineNames = ((MultiAutoCompleteTextView) findViewById(R.id.autoCompleteMachinesTextView)).getText().toString();
 
 		if (locationName != null && !locationName.isEmpty() && machineNames != null && !machineNames.isEmpty()) {
 			PBMApplication app = getPBMApplication();

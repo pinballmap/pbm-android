@@ -67,9 +67,6 @@ public class Location implements Serializable {
 		setMilesInfo(formatter.format(this.distanceFromYou) + " miles");
 
 	}
-	public void setDistance(float distance) {
-		this.distanceFromYou = distance;
-	}
 
 	public void setMilesInfo(String milesInfo) {
 		this.milesInfo = milesInfo;

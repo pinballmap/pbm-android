@@ -74,38 +74,38 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 	private void loadLocationEditData() {
 		new Thread(new Runnable() {
 			public void run() {
-				LocationEdit.super.runOnUiThread(new Runnable() {
-					public void run() {
-						phone.setText((location.phone.equals("null")) ? "" : location.phone);
-						website.setText((location.website.equals("null")) ? "" : location.website);
+			LocationEdit.super.runOnUiThread(new Runnable() {
+				public void run() {
+				phone.setText((location.phone.equals("null")) ? "" : location.phone);
+				website.setText((location.website.equals("null")) ? "" : location.website);
 
-						locationTypeSpinner = (Spinner) findViewById(R.id.locationTypeSpinner);
-						ArrayAdapter<String> locationTypeAdapter = new ArrayAdapter<>(
-								LocationEdit.this,
-								android.R.layout.simple_spinner_item,
-								locationTypeNames
-						);
-						locationTypeSpinner.setAdapter(locationTypeAdapter);
+				locationTypeSpinner = (Spinner) findViewById(R.id.locationTypeSpinner);
+				ArrayAdapter<String> locationTypeAdapter = new ArrayAdapter<>(
+					LocationEdit.this,
+					android.R.layout.simple_spinner_item,
+					locationTypeNames
+				);
+				locationTypeSpinner.setAdapter(locationTypeAdapter);
 
-						if (location.locationTypeID != 0) {
-							int locationTypeIndex = Arrays.asList(locationTypeIDs).indexOf(location.locationTypeID);
-							locationTypeSpinner.setSelection(locationTypeIndex);
-						}
+				if (location.locationTypeID != 0) {
+					int locationTypeIndex = Arrays.asList(locationTypeIDs).indexOf(location.locationTypeID);
+					locationTypeSpinner.setSelection(locationTypeIndex);
+				}
 
-						operatorSpinner = (Spinner) findViewById(R.id.operatorSpinner);
-						ArrayAdapter<String> operatorAdapter = new ArrayAdapter<>(
-							LocationEdit.this,
-								android.R.layout.simple_spinner_item,
-								operatorNames
-						);
-						operatorSpinner.setAdapter(operatorAdapter);
+				operatorSpinner = (Spinner) findViewById(R.id.operatorSpinner);
+				ArrayAdapter<String> operatorAdapter = new ArrayAdapter<>(
+					LocationEdit.this,
+					android.R.layout.simple_spinner_item,
+					operatorNames
+				);
+				operatorSpinner.setAdapter(operatorAdapter);
 
-						if (location.operatorID != 0) {
-							int operatorIndex = Arrays.asList(operatorIDs).indexOf(location.operatorID);
-							operatorSpinner.setSelection(operatorIndex);
-						}
-					}
-				});
+				if (location.operatorID != 0) {
+					int operatorIndex = Arrays.asList(operatorIDs).indexOf(location.operatorID);
+					operatorSpinner.setSelection(operatorIndex);
+				}
+				}
+			});
 			}
 		}).start();
 	}
@@ -113,33 +113,33 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 	private void updateLocation() {
 		new Thread(new Runnable() {
 			public void run() {
-				try {
-					String locationTypeName = (String) locationTypeSpinner.getSelectedItem();
-					String operatorName = (String) operatorSpinner.getSelectedItem();
-					int locationTypeID = locationTypes.get(locationTypeName);
-					int operatorID = operators.get(operatorName);
-					String phoneNumber = URLEncoder.encode(phone.getText().toString(), "UTF-8");
-					String locationWebsite = website.getText().toString();
+			try {
+				String locationTypeName = (String) locationTypeSpinner.getSelectedItem();
+				String operatorName = (String) operatorSpinner.getSelectedItem();
+				int locationTypeID = locationTypes.get(locationTypeName);
+				int operatorID = operators.get(operatorName);
+				String phoneNumber = URLEncoder.encode(phone.getText().toString(), "UTF-8");
+				String locationWebsite = website.getText().toString();
 
-					String locationTypeString = "";
-					if (locationTypeID != 0) {
-						locationTypeString = Integer.toString(locationTypeID);
-					}
-
-					String operatorString = "";
-					if (operatorID != 0) {
-						operatorString = Integer.toString(operatorID);
-					}
-
-					PBMApplication app = getPBMApplication();
-
-					new RetrieveJsonTask(LocationEdit.this).execute(
-						app.requestWithAuthDetails(regionlessBase + "locations/" + location.id + ".json?phone=" + phoneNumber + ";location_type=" + locationTypeString + ";operator_id=" + operatorString + ";website=" + URLDecoder.decode(locationWebsite, "UTF-8")),
-						"PUT"
-					).get();
-				} catch (InterruptedException | ExecutionException | UnsupportedEncodingException e) {
-					e.printStackTrace();
+				String locationTypeString = "";
+				if (locationTypeID != 0) {
+					locationTypeString = Integer.toString(locationTypeID);
 				}
+
+				String operatorString = "";
+				if (operatorID != 0) {
+					operatorString = Integer.toString(operatorID);
+				}
+
+				PBMApplication app = getPBMApplication();
+
+				new RetrieveJsonTask(LocationEdit.this).execute(
+					app.requestWithAuthDetails(regionlessBase + "locations/" + location.id + ".json?phone=" + phoneNumber + ";location_type=" + locationTypeString + ";operator_id=" + operatorString + ";website=" + URLDecoder.decode(locationWebsite, "UTF-8")),
+					"PUT"
+				).get();
+			} catch (InterruptedException | ExecutionException | UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 			}
 		}).start();
 	}
@@ -182,10 +182,10 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 
 			LocationEdit.super.runOnUiThread(new Runnable() {
 				public void run() {
-					Toast.makeText(getBaseContext(), "Thanks for updating that location!", Toast.LENGTH_LONG).show();
+				Toast.makeText(getBaseContext(), "Thanks for updating that location!", Toast.LENGTH_LONG).show();
 
-					setResult(REFRESH_RESULT);
-					LocationEdit.this.finish();
+				setResult(REFRESH_RESULT);
+				LocationEdit.this.finish();
 				}
 			});
 
@@ -195,17 +195,17 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 		if (jsonObject.has("errors")) {
 			LocationEdit.super.runOnUiThread(new Runnable() {
 				public void run() {
-					String error = null;
-					try {
-						error = URLDecoder.decode(jsonObject.getString("errors"), "UTF-8");
-						error = error.replace("\\/", "/");
-					} catch (JSONException | UnsupportedEncodingException e) {
-						e.printStackTrace();
-					}
+				String error = null;
+				try {
+					error = URLDecoder.decode(jsonObject.getString("errors"), "UTF-8");
+					error = error.replace("\\/", "/");
+				} catch (JSONException | UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
 
-					Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
+				Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
 
-					loadLocationEditData();
+				loadLocationEditData();
 				}
 			});
 		}

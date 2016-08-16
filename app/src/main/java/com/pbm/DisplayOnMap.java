@@ -35,14 +35,14 @@ public class DisplayOnMap extends PinballMapActivity implements OnMapReadyCallba
 
 		googleMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
 			public void onInfoWindowClick(Marker marker) {
-				Intent myIntent = new Intent();
+			Intent myIntent = new Intent();
 
-				PBMApplication app = getPBMApplication();
-				Location location = app.getLocationByName(marker.getTitle());
+			PBMApplication app = getPBMApplication();
+			Location location = app.getLocationByName(marker.getTitle());
 
-				myIntent.putExtra("Location", location);
-				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
-				startActivityForResult(myIntent, QUIT_RESULT);
+			myIntent.putExtra("Location", location);
+			myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
+			startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
 		Serializable serializedLocations = getIntent().getSerializableExtra("Locations");
@@ -54,6 +54,7 @@ public class DisplayOnMap extends PinballMapActivity implements OnMapReadyCallba
 					.snippet(location.numMachines(this) + " machines").position(position));
 			markers.add(marker);
 		}
+
 		if (markers.size() > 0) {
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
 			for (Marker marker : markers) {
@@ -91,6 +92,4 @@ public class DisplayOnMap extends PinballMapActivity implements OnMapReadyCallba
 				break;
 		}
 	}
-
-
 }

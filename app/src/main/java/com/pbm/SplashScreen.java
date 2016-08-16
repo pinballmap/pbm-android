@@ -26,8 +26,6 @@ public class SplashScreen extends PinballMapActivity {
 		final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 		PreferenceManager.setDefaultValues(this, PinballMapActivity.PREFS_NAME, 0, R.xml.preferences, false);
 		Integer prefRegion = settings.getInt("region", -1);
-		String authToken = settings.getString("authToken", "");
-		String username = settings.getString("username", "");
 
 		PBMApplication app = getPBMApplication();
 
@@ -41,21 +39,10 @@ public class SplashScreen extends PinballMapActivity {
                 closeOnMissingServer();
                 return;
             }
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
+		} catch (UnsupportedEncodingException | InterruptedException | ExecutionException | JSONException e) {
 			e.printStackTrace();
 		}
 
-		/*if (authToken.equals("")) {
-			Intent myIntent = new Intent();
-			myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			myIntent.setClassName("com.pbm", "com.pbm.Login");
-			startActivity(myIntent);*/
 		if (prefRegion != -1) {
 			Region region = app.getRegion(prefRegion);
 			setRegionBase(httpBase + apiPath + "region/" + region.name + "/");						

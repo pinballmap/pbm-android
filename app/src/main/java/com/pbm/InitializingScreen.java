@@ -27,7 +27,7 @@ public class InitializingScreen extends PinballMapActivity {
 		SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 		Region region = app.getRegion(settings.getInt("region", 1));
 
-		int resID = getResources().getIdentifier(getCityNamePath(region), null, null);
+		int resID = getResources().getIdentifier(getCityNameDrawablePath(region), null, null);
 		if (resID != 0) {
 			ImageView cityNameImage = (ImageView) findViewById(R.id.splash_image_city);
 			Drawable image = getResources().getDrawable(resID);
@@ -44,7 +44,8 @@ public class InitializingScreen extends PinballMapActivity {
 
 	}
 
-	private String getCityNamePath(Region region) {
+	// We only have logos for certain regions
+	private String getCityNameDrawablePath(Region region) {
 		String cityNamePath = "com.pbm:drawable/";
 		String cityName = region.name;
 

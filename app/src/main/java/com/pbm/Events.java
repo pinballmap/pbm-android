@@ -34,13 +34,14 @@ public class Events extends PinballMapActivity {
 		table.setFastScrollEnabled(true);
 		table.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
-				String link = eventLinks[position];
-				if ((link != null) && !link.equals("")) {
-					Intent intent = new Intent(Intent.ACTION_VIEW);
-					Uri uri = Uri.parse(eventLinks[position]);
-					intent.setData(uri);
-					startActivity(intent);
-				}
+			String link = eventLinks[position];
+			if ((link != null) && !link.equals("")) {
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				Uri uri = Uri.parse(eventLinks[position]);
+				intent.setData(uri);
+
+				startActivity(intent);
+			}
 			}
 		});
 
@@ -54,8 +55,8 @@ public class Events extends PinballMapActivity {
 				Events.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-					ListView table = (ListView) findViewById(R.id.eventsTable);
-					table.setAdapter(new ArrayAdapter<>(Events.this, android.R.layout.simple_list_item_1, events));
+					ListView eventsTable = (ListView) findViewById(R.id.eventsTable);
+					eventsTable.setAdapter(new ArrayAdapter<>(Events.this, android.R.layout.simple_list_item_1, events));
 					}
 				});
 			}

@@ -52,9 +52,7 @@ public class PBMApplication extends Application {
 		this.location = location;
 	}
 
-	public enum TrackerName {
-		APP_TRACKER
-	}
+	public enum TrackerName { APP_TRACKER }
 
 	private HashMap<Integer, com.pbm.Location> locations = new HashMap<>();
 	private HashMap<Integer, com.pbm.LocationType> locationTypes = new HashMap<>();
@@ -152,24 +150,12 @@ public class PBMApplication extends Application {
 		this.lmxConditions = lmxConditions;
 	}
 
-	public void setMachineScores(HashMap<Integer, MachineScore> machineScores) {
-		this.machineScores = machineScores;
-	}
-
-	void addMachineScore(Integer id, MachineScore score) { this.machineScores.put(id, score); }
-
-	public void setMachineScore(com.pbm.MachineScore score) {this.machineScores.put(score.getId(), score); }
-
-	public HashMap<Integer, MachineScore> getMachineScoresMap() {
-		return machineScores;
+	void addMachineScore(Integer id, MachineScore score) {
+		this.machineScores.put(id, score);
 	}
 
 	public ArrayList<MachineScore> getMachineScores() {
 		return new ArrayList<>(machineScores.values());
-	}
-
-	public MachineScore getMachineScoreById(Integer id) {
-		return this.machineScores.get(id);
 	}
 
 	public ArrayList<MachineScore> getMachineScoresByLMXId(Integer id) {
@@ -220,13 +206,21 @@ public class PBMApplication extends Application {
 		this.machines.put(id, machine);
 	}
 
-	void addOperator(Integer id, Operator operator) { this.operators.put(id, operator); }
+	void addOperator(Integer id, Operator operator) {
+		this.operators.put(id, operator);
+	}
 
-	public Operator getOperator(Integer id) { return operators.get(id); }
+	public Operator getOperator(Integer id) {
+		return operators.get(id);
+	}
 
-	public HashMap<Integer, com.pbm.Operator> getOperators() { return operators; }
+	public HashMap<Integer, com.pbm.Operator> getOperators() {
+		return operators;
+	}
 
-	void addLocationType(Integer id, LocationType name) { this.locationTypes.put(id, name); }
+	void addLocationType(Integer id, LocationType name) {
+		this.locationTypes.put(id, name);
+	}
 
 	public LocationType getLocationType(Integer id) {
 		return locationTypes.get(id);
@@ -328,7 +322,7 @@ public class PBMApplication extends Application {
 
 		Collections.sort(regionValues, new Comparator<Region>() {
 			public int compare(Region r1, Region r2) {
-				return r1.formalName.compareTo(r2.formalName);
+			return r1.formalName.compareTo(r2.formalName);
 			}
 		});
 
@@ -340,7 +334,7 @@ public class PBMApplication extends Application {
 
 		Collections.sort(locationValues, new Comparator<Location>() {
 			public int compare(Location l1, Location l2) {
-				return l1.name.compareTo(l2.name);
+			return l1.name.compareTo(l2.name);
 			}
 		});
 
@@ -358,14 +352,27 @@ public class PBMApplication extends Application {
 
 		Collections.sort(machineValues, new Comparator<Object>() {
 			public int compare(Object lhs, Object rhs) {
-				Machine m1 = (Machine) lhs;
-				Machine m2 = (Machine) rhs;
+			Machine m1 = (Machine) lhs;
+			Machine m2 = (Machine) rhs;
 
-				return m1.name.replaceAll("^(?i)The ", "").compareTo(m2.name.replaceAll("^(?i)The ", ""));
+			return m1.name.replaceAll("^(?i)The ", "").compareTo(m2.name.replaceAll("^(?i)The ", ""));
 			}
 		});
 
 		return machineValues;
+	}
+
+	public int getMachineIDFromMachineName(String name) throws InterruptedException, ExecutionException, JSONException {
+		int machineID = -1;
+
+		Machine machine = getMachineByName(name);
+		if (machine != null) {
+			machine.setExistsInRegion(true);
+
+			machineID = machine.id;
+		}
+
+		return machineID;
 	}
 
 	public String requestWithAuthDetails(String origRequest) {
@@ -394,7 +401,7 @@ public class PBMApplication extends Application {
 		machineScores.clear();
 
 		String json = new RetrieveJsonTask().execute(
-				requestWithAuthDetails(PinballMapActivity.regionBase + "machine_score_xrefs.json"), "GET"
+			requestWithAuthDetails(PinballMapActivity.regionBase + "machine_score_xrefs.json"), "GET"
 		).get();
 		if (json == null) {
 			return;
@@ -499,7 +506,7 @@ public class PBMApplication extends Application {
 		machines.clear();
 
 		String json = new RetrieveJsonTask().execute(
-            requestWithAuthDetails(PinballMapActivity.regionlessBase + "machines.json"), "GET"
+			requestWithAuthDetails(PinballMapActivity.regionlessBase + "machines.json"), "GET"
 		).get();
 
 		if (json == null) {
@@ -522,7 +529,6 @@ public class PBMApplication extends Application {
 					machineGroupId = "";
 				}
 
-
 				if ((id != null) && (name != null)) {
 					addMachine(Integer.parseInt(id), new Machine(Integer.parseInt(id), name, year, manufacturer, false, machineGroupId));
 				}
@@ -536,8 +542,8 @@ public class PBMApplication extends Application {
 		zones.clear();
 
 		String json = new RetrieveJsonTask().execute(
-            requestWithAuthDetails(PinballMapActivity.regionBase + "zones.json"), "GET"
-        ).get();
+			requestWithAuthDetails(PinballMapActivity.regionBase + "zones.json"), "GET"
+		).get();
 		if (json == null) {
 			return;
 		}
@@ -563,8 +569,8 @@ public class PBMApplication extends Application {
 		locations.clear();
 
 		String json = new RetrieveJsonTask().execute(
-            requestWithAuthDetails(PinballMapActivity.regionBase + "locations.json"), "GET"
-        ).get();
+			requestWithAuthDetails(PinballMapActivity.regionBase + "locations.json"), "GET"
+		).get();
 		if (json == null) {
 			return;
 		}
@@ -696,8 +702,8 @@ public class PBMApplication extends Application {
 					e.printStackTrace();
 				}
 			}
-			LocationMachineConditions machineConditions = new LocationMachineConditions(lmxID, machineID, lmxLocationID,
-					conditionList);
+			LocationMachineConditions machineConditions =
+					new LocationMachineConditions(lmxID, machineID, lmxLocationID, conditionList);
 			addLocationMachineConditions(lmxID, machineConditions);
 		}
 	}
@@ -753,5 +759,11 @@ public class PBMApplication extends Application {
 
 		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
 		listView.setLayoutParams(params);
+	}
+
+	public boolean userIsAuthenticated() {
+		final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+
+		return settings.getString("username", "").equals("") ? false : true;
 	}
 }

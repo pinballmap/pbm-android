@@ -62,4 +62,7 @@
     <string name="condition_text">Enter a Condition Report</string>
     <string name="edit_location">Edit Location</string>
     <string name="sign_up">SIGN UP so you can help keep your map up to date! THANKS!</string>
+    <string name="login_to_update">Login to update this location"</string>
+    <string name="login_to_add_condition">Login to leave a condition report</string>
+    <string name="login_to_add_score">Login to add your high score</string>
 </resources>

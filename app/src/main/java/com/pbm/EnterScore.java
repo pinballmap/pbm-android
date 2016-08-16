@@ -36,9 +36,9 @@ public class EnterScore extends PinballMapActivity implements OnTaskCompleted {
 		addScore.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				addScore.setEnabled(false);
-				EditText currText = (EditText) findViewById(R.id.score);
-				addScore(currText.getText().toString());
+			addScore.setEnabled(false);
+			EditText currText = (EditText) findViewById(R.id.score);
+			addScore(currText.getText().toString());
 			}
 		});
 	}
@@ -58,11 +58,11 @@ public class EnterScore extends PinballMapActivity implements OnTaskCompleted {
 
 				EnterScore.super.runOnUiThread(new Runnable() {
 					public void run() {
-						final EditText currText = (EditText) findViewById(R.id.score);
-						inputMethodManager.hideSoftInputFromWindow(currText.getWindowToken(), 0);
+					final EditText currText = (EditText) findViewById(R.id.score);
+					inputMethodManager.hideSoftInputFromWindow(currText.getWindowToken(), 0);
 
-						setResult(REFRESH_RESULT);
-						EnterScore.this.finish();
+					setResult(REFRESH_RESULT);
+					EnterScore.this.finish();
 					}
 				});
 			}
@@ -80,7 +80,10 @@ public class EnterScore extends PinballMapActivity implements OnTaskCompleted {
 
 			SimpleDateFormat df = new SimpleDateFormat("mm-dd-yyyy");
 
-			lmx.addScore(EnterScore.this, new MachineScore(id, lmx.id, df.format(new Date()), username, score));
+			lmx.addScore(
+				EnterScore.this,
+				new MachineScore(id, lmx.id, df.format(new Date()), username, score)
+			);
 		}
 	}
 }

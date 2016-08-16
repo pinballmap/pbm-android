@@ -19,6 +19,5 @@ public class RegionTabListener implements ActionBar.TabListener {
 		ft.remove(fragment);
 	}
 
-	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-	}
+	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {}
 }

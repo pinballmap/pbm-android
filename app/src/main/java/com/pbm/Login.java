@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -27,55 +26,61 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        final TextInputLayout usernameWrapper = (TextInputLayout) findViewById(R.id.usernameWrapper);
-        final TextInputLayout passwordWrapper = (TextInputLayout) findViewById(R.id.passwordWrapper);
-        usernameWrapper.setHint("Login");
-        passwordWrapper.setHint("Password");
+        initializeSignupButton();
+        initializeNoLoginButton();
+        initializeLoginButton();
+    }
 
-        Button signup = (Button) findViewById(R.id.signup);
-        signup.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-            Intent intent = new Intent();
-            intent.setClassName("com.pbm", "com.pbm.Signup");
-            startActivity(intent);
-            }
-        });
-
-        Button noLogin = (Button) findViewById(R.id.no_login);
-        noLogin.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                Log.i("GOT A CLICK", "GOT A CLICK");
-            Intent splashIntent = new Intent();
-            splashIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
-            startActivityForResult(splashIntent, PinballMapActivity.QUIT_RESULT);
-            }
-        });
-
-        Button btn = (Button) findViewById(R.id.btn);
-        btn.setOnClickListener(new View.OnClickListener() {
+    public void initializeSignupButton() {
+        Button signup = (TextView) findViewById(R.id.signup);
+        signup.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                try{
+                Intent intent = new Intent();
+                intent.setClassName("com.pbm", "com.pbm.Signup");
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void initializeNoLoginButton() {
+        Button noLogin = (Button) findViewById(R.id.no_login);
+        noLogin.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent splashIntent = new Intent();
+                splashIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
+                startActivityForResult(splashIntent, PinballMapActivity.QUIT_RESULT);
+            }
+        });
+    }
+
+    public void initializeLoginButton() {
+        Button loginButton = (Button) findViewById(R.id.loginButton);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                    TextInputLayout usernameWrapper = (TextInputLayout) findViewById(R.id.usernameWrapper);
+                    TextInputLayout passwordWrapper = (TextInputLayout) findViewById(R.id.passwordWrapper);
+
                     String json = new RetrieveJsonTask().execute(
-                            PinballMapActivity.regionlessBase +
-                                "users/auth_details.json?password=" + passwordWrapper.getEditText().getText().toString() +
-                                ";login=" + usernameWrapper.getEditText().getText().toString(),
-                            "GET"
+                        PinballMapActivity.regionlessBase +
+                            "users/auth_details.json?password=" + passwordWrapper.getEditText().getText().toString() +
+                            ";login=" + usernameWrapper.getEditText().getText().toString(),
+                        "GET"
                     ).get();
 
                     final JSONObject jsonObject = new JSONObject(json.toString());
-
                     if (jsonObject.has("errors")) {
                         Login.super.runOnUiThread(new Runnable() {
                             public void run() {
-                                String error = null;
-                                try {
-                                    error = URLDecoder.decode(jsonObject.getString("errors"), "UTF-8");
-                                    error = error.replace("\\/", "/");
-                                } catch (JSONException | UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                }
+                            String error = null;
+                            try {
+                                error = URLDecoder.decode(jsonObject.getString("errors"), "UTF-8");
+                                error = error.replace("\\/", "/");
+                            } catch (JSONException | UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
 
-                                Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
                             }
                         });
                     } else {
@@ -104,7 +109,7 @@ public class Login extends AppCompatActivity {
         View view = getCurrentFocus();
         if (view != null) {
             ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
-                    hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
 

@@ -18,7 +18,7 @@ import java.util.Comparator;
 public class MachineLookupDetail extends PinballMapActivity {
 	private Machine machine;
 	private ArrayList<Location> locationsWithMachine = new ArrayList<>();
-	private ListView table;
+	private ListView machineLookupDetailTable;
 	private Parcelable listState;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,9 +36,9 @@ public class MachineLookupDetail extends PinballMapActivity {
 
 		setTitle(machine.name);
 
-		table = (ListView) findViewById(R.id.machineLookupDetailTable);
-		table.setFastScrollEnabled(true);
-		table.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		machineLookupDetailTable = (ListView) findViewById(R.id.machineLookupDetailTable);
+		machineLookupDetailTable.setFastScrollEnabled(true);
+		machineLookupDetailTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent myIntent = new Intent();
 				com.pbm.Location location = locationsWithMachine.get(position);
@@ -51,7 +51,7 @@ public class MachineLookupDetail extends PinballMapActivity {
 
 		loadLocationData();
 
-		setTable(table);
+		setTable(machineLookupDetailTable);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -63,29 +63,28 @@ public class MachineLookupDetail extends PinballMapActivity {
 	private void loadLocationData() {
 		new Thread(new Runnable() {
 			public void run() {
-				MachineLookupDetail.super.runOnUiThread(new Runnable() {
-					public void run() {
-						locationsWithMachine = getLocationsWithMachine(machine);
+			MachineLookupDetail.super.runOnUiThread(new Runnable() {
+				public void run() {
+					locationsWithMachine = getLocationsWithMachine(machine);
 
-						if (locationsWithMachine != null) {
-							try {
-								Collections.sort(locationsWithMachine, new Comparator<Location>() {
-									public int compare(Location l1, Location l2) {
-										return l1.name.compareTo(l2.name);
-									}
-								});
-							} catch (java.lang.NullPointerException nep) {
-								nep.printStackTrace();
-							}
+					if (locationsWithMachine != null) {
+						try {
+							Collections.sort(locationsWithMachine, new Comparator<Location>() {
+								public int compare(Location l1, Location l2) {
+									return l1.name.compareTo(l2.name);
+								}
+							});
+						} catch (java.lang.NullPointerException nep) {
+							nep.printStackTrace();
+						}
 
-							table.setAdapter(new LocationListAdapter(MachineLookupDetail.this, locationsWithMachine));
-							if (listState != null) {
-								table.onRestoreInstanceState(listState);
-							}
-
+						machineLookupDetailTable.setAdapter(new LocationListAdapter(MachineLookupDetail.this, locationsWithMachine));
+						if (listState != null) {
+							machineLookupDetailTable.onRestoreInstanceState(listState);
 						}
 					}
-				});
+				}
+			});
 			}
 		}).start();
 	}
@@ -94,7 +93,7 @@ public class MachineLookupDetail extends PinballMapActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		listState = table.onSaveInstanceState();
+		listState = machineLookupDetailTable.onSaveInstanceState();
 		outState.putParcelable("listState", listState);
 	}
 

@@ -61,7 +61,7 @@ public class ConditionsArrayAdapter extends ArrayAdapter<Condition> implements O
 		((PinballMapActivity) context).runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				Toast.makeText(context, "OK, machine deleted.", Toast.LENGTH_LONG).show();
+			Toast.makeText(context, "OK, machine deleted.", Toast.LENGTH_LONG).show();
 			}
 		});
 	}

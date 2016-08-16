@@ -23,6 +23,7 @@ import java.util.concurrent.ExecutionException;
 
 public class LocationMachineEdit extends PinballMapActivity {
 	private Location location;
+	private Machine machine;
 	private LocationMachineXref lmx;
 	private ConditionsArrayAdapter conditionsAdapter;
 	private ScoresArrayAdapter scoresAdapter;
@@ -37,13 +38,21 @@ public class LocationMachineEdit extends PinballMapActivity {
 		logAnalyticsHit("com.pbm.LocationMachineEdit");
 
 		lmx = (LocationMachineXref) getIntent().getExtras().get("lmx");
-
 		location = lmx.getLocation(this);
-		final Machine machine = getPBMApplication().getMachine(lmx.machineID);
-		SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+		machine = getPBMApplication().getMachine(lmx.machineID);
 
 		setTitle(machine.name + " @ " + location.name);
 
+		SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+
+		initializeRemoveMachineButton();
+		initializeAddMachineConditionButton();
+		initializePintipsButton();
+		initializeAddScoreButton();
+		initializeOtherLocationsButton();
+	}
+
+	public void initializeRemoveMachineButton() {
 		Button removeMachine = (Button) findViewById(R.id.remove_machine_button);
 		removeHandler = new View.OnClickListener() {
 			@Override
@@ -52,9 +61,12 @@ public class LocationMachineEdit extends PinballMapActivity {
 			}
 		};
 		removeMachine.setOnClickListener(removeHandler);
+	}
+
+	public void initializeAddMachineConditionButton() {
 		Button addMachineCondition = (Button) findViewById(R.id.add_condition_button);
-		if (settings.getString("username", "").equals("")) {
-			addMachineCondition.setText("Login to leave a condition report");
+		if (!getPBMApplication().userIsAuthenticated()) {
+			addMachineCondition.setText(R.string.login_to_add_condition);
 		}
 		addMachineCondition.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -63,7 +75,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 				Intent myIntent = new Intent();
 
-				if (settings.getString("username", "").equals("")) {
+				if (!getPBMApplication().userIsAuthenticated()) {
 					myIntent.setClassName("com.pbm", "com.pbm.Login");
 				} else {
 					myIntent.setClassName("com.pbm", "com.pbm.ConditionEdit");
@@ -73,20 +85,25 @@ public class LocationMachineEdit extends PinballMapActivity {
 				startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
+	}
 
+	public void initializePintipsButton() {
 		Button pintips = (Button) findViewById(R.id.pintips);
 		pintips.setMovementMethod(LinkMovementMethod.getInstance());
+
 		String urlLookupTypeData = "";
-		if (machine.groupId != "") {
+		if (!machine.groupId.equals("")) {
 			urlLookupTypeData = "group/" + machine.groupId;
 		} else {
 			urlLookupTypeData = "machine/" + Integer.toString(machine.id);
 		}
 		pintips.setText(Html.fromHtml("<a href=\"http://pintips.net/pinmap/" + urlLookupTypeData + "\">View playing tips on pintips.net</a>"));
+	}
 
+	public void initializeAddScoreButton() {
 		Button addScore = (Button) findViewById(R.id.add_new_score);
-		if (settings.getString("username", "").equals("")) {
-			addScore.setText("Login to add your high score");
+		if (!getPBMApplication().userIsAuthenticated()) {
+			addScore.setText(R.string.login_to_add_score);
 		}
 		addScore.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -95,7 +112,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 				Intent myScoreIntent = new Intent();
 
-				if (settings.getString("username", "").equals("")) {
+				if (!getPBMApplication().userIsAuthenticated()) {
 					myScoreIntent.setClassName("com.pbm", "com.pbm.Login");
 				} else {
 					myScoreIntent.setClassName("com.pbm", "com.pbm.ConditionEdit");
@@ -105,7 +122,9 @@ public class LocationMachineEdit extends PinballMapActivity {
 				startActivityForResult(myScoreIntent, QUIT_RESULT);
 			}
 		});
+	}
 
+	public void initializeOtherLocationsButton() {
 		Button otherLocations = (Button) findViewById(R.id.other_locations);
 		otherLocations.setText("Lookup Other Locations With " + machine.name);
 		otherLocations.setOnClickListener(new View.OnClickListener() {
@@ -124,29 +143,30 @@ public class LocationMachineEdit extends PinballMapActivity {
 				.setIcon(android.R.drawable.ic_dialog_alert).setTitle("Remove this machine?").setMessage("Are you sure?")
 				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						new Thread(new Runnable() {
+					new Thread(new Runnable() {
+						public void run() {
+						try {
+							PBMApplication app = getPBMApplication();
+
+							location.removeMachine(LocationMachineEdit.this, lmx);
+							new RetrieveJsonTask().execute(
+								app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.id) + ".json"),
+								"DELETE"
+							).get();
+						} catch (InterruptedException | ExecutionException e) {
+							e.printStackTrace();
+						}
+
+						LocationMachineEdit.super.runOnUiThread(new Runnable() {
 							public void run() {
-								try {
-									PBMApplication app = getPBMApplication();
+							Toast.makeText(getBaseContext(), "OK, machine deleted.", Toast.LENGTH_LONG).show();
 
-									location.removeMachine(LocationMachineEdit.this, lmx);
-									new RetrieveJsonTask().execute(
-										app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.id) + ".json"), "DELETE"
-									).get();
-								} catch (InterruptedException | ExecutionException e) {
-									e.printStackTrace();
-								}
-
-								LocationMachineEdit.super.runOnUiThread(new Runnable() {
-									public void run() {
-										Toast.makeText(getBaseContext(), "OK, machine deleted.", Toast.LENGTH_LONG).show();
-
-										setResult(REFRESH_RESULT);
-										LocationMachineEdit.this.finish();
-									}
-								});
+							setResult(REFRESH_RESULT);
+							LocationMachineEdit.this.finish();
 							}
-						}).start();
+						});
+						}
+					}).start();
 					}
 				})
 				.setNegativeButton("No", null)
@@ -157,8 +177,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.location_machine_edit_menu, menu);
 
-		SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
-		if (settings.getString("username", "").equals("")) {
+		if (!getPBMApplication().userIsAuthenticated()) {
 			menu.removeItem(R.id.remove_button);
 		}
 
@@ -200,7 +219,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 		conditionsAdapter.sort(new Comparator<Condition>() {
 			@Override
 			public int compare(Condition lhs, Condition rhs) {
-				return rhs.getDate().compareTo(lhs.getDate());
+			return rhs.getDate().compareTo(lhs.getDate());
 			}
 		});
 
@@ -223,7 +242,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 		conditionsAdapter.sort(new Comparator<Condition>() {
 			@Override
 			public int compare(Condition lhs, Condition rhs) {
-				return rhs.getDate().compareTo(lhs.getDate());
+			return rhs.getDate().compareTo(lhs.getDate());
 			}
 		});
 	}
@@ -231,10 +250,10 @@ public class LocationMachineEdit extends PinballMapActivity {
 	public void activityRefreshResult() {
 		LocationMachineEdit.super.runOnUiThread(new Runnable() {
 			public void run() {
-				Toast.makeText(getBaseContext(), "Thanks for updating that machine.", Toast.LENGTH_LONG).show();
+			Toast.makeText(getBaseContext(), "Thanks for updating that machine.", Toast.LENGTH_LONG).show();
 
-				setResult(REFRESH_RESULT);
-				LocationMachineEdit.this.finish();
+			setResult(REFRESH_RESULT);
+			LocationMachineEdit.this.finish();
 			}
 		});
 	}

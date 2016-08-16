@@ -45,12 +45,14 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 		} else {
 			holder = (ViewHolder) row.getTag();
 		}
+
 		if (filteredLocationList.size() > 0) {
 			Location location = filteredLocationList.get(position);
 			holder.name.setText(Html.fromHtml("<b>" + location.name + "</b> " + "<i>(" + location.city + ")</i>"));
 			holder.distance.setText(location.milesInfo);
 			holder.numMachines.setText(Integer.toString(location.numMachines((PinballMapActivity) context)));
 		}
+
 		return row;
 	}
 
@@ -106,8 +108,7 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 		    clear();
 
 		    for (com.pbm.Location location : filteredLocationList) {
-		    	add(location);
-
+				add(location);
 		    }
 
 		    notifyDataSetChanged();

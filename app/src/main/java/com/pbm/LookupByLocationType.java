@@ -22,26 +22,26 @@ public class LookupByLocationType extends PinballMapActivity {
 		
 		logAnalyticsHit("com.pbm.LookupByLocationType");
 
-		PBMApplication app = getPBMApplication();
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		Region region = app.getRegion(settings.getInt("region",  1));
+		Region region = getPBMApplication().getRegion(settings.getInt("region",  1));
 		List<LocationType> locationTypes = region.locationTypes(this);
 		
-		ListView table = (ListView)findViewById(R.id.locationTypeTable);
-		table.setOnItemClickListener(new OnItemClickListener() {
+		ListView locationTypeTable = (ListView)findViewById(R.id.locationTypeTable);
+		locationTypeTable.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
-				Intent myIntent = new Intent();	
-				myIntent.putExtra("LocationType", (LocationType) parentView.getItemAtPosition(position));
-				myIntent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
-				startActivityForResult(myIntent, QUIT_RESULT);
+			Intent myIntent = new Intent();
+			myIntent.putExtra("LocationType", (LocationType) parentView.getItemAtPosition(position));
+			myIntent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
+
+			startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
 
 		sort(locationTypes);
 
-		table.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, locationTypes));
+		locationTypeTable.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, locationTypes));
 		
-		setTable(table);
+		setTable(locationTypeTable);
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
