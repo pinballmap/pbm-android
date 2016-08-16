@@ -19,19 +19,13 @@ import java.util.concurrent.ExecutionException;
 
 public class LocationEdit extends PinballMapActivity implements OnTaskCompleted {
 	private Location location;
-	private EditText phone;
-	private EditText website;
-	private TreeMap<String, Integer> operators;
-	private String[] operatorNames;
-	private Integer[] operatorIDs;
-	private Spinner locationTypeSpinner;
-	private Spinner operatorSpinner;
-	private String[] locationTypeNames;
-	private Integer[] locationTypeIDs;
-	private TreeMap<String, Integer> locationTypes;
+	private EditText phone, website, description;
+	private TreeMap<String, Integer> operators, locationTypes;
+	private String[] operatorNames, locationTypeNames;
+	private Integer[] operatorIDs, locationTypeIDs;
+	private Spinner locationTypeSpinner, operatorSpinner;
 
 	public void onCreate(Bundle savedInstanceState) {
-		PBMApplication app = getPBMApplication();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.location_edit);
 
@@ -40,26 +34,21 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 		location = (Location) getIntent().getExtras().get("Location");
 		setTitle("Edit Data At " + location.name);
 
-		locationTypes = new TreeMap<>();
-
-		LocationType blankLocationType = LocationType.blankLocationType();
-		locationTypes.put(blankLocationType.name, blankLocationType.id);
-		for (Object element : app.getLocationTypes().values()) {
-			LocationType locationType = (LocationType) element;
-
-			locationTypes.put(locationType.name, locationType.id);
-		}
-
-		locationTypeNames = locationTypes.keySet().toArray(new String[locationTypes.size()]);
-		locationTypeIDs = locationTypes.values().toArray(new Integer[locationTypes.size()]);
+		initializeLocationTypes();
+		initializeOperators();
 		phone = (EditText) findViewById(R.id.phoneNumber);
 		website = (EditText) findViewById(R.id.editWebsite);
+		description = (EditText) findViewById(R.id.editDescription);
 
+		loadLocationEditData();
+	}
+
+	public void initializeOperators() {
 		operators = new TreeMap<>();
 
 		Operator blankOperator = Operator.blankOperator();
 		operators.put(blankOperator.name, blankOperator.id);
-		for (Object element : app.getOperators().values()) {
+		for (Object element : getPBMApplication().getOperators().values()) {
 			Operator operator = (Operator) element;
 
 			operators.put(operator.name, operator.id);
@@ -67,8 +56,21 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 
 		operatorNames = operators.keySet().toArray(new String[operators.size()]);
 		operatorIDs = operators.values().toArray(new Integer[operators.size()]);
+	}
 
-		loadLocationEditData();
+	public void initializeLocationTypes() {
+		locationTypes = new TreeMap<>();
+
+		LocationType blankLocationType = LocationType.blankLocationType();
+		locationTypes.put(blankLocationType.name, blankLocationType.id);
+		for (Object element : getPBMApplication().getLocationTypes().values()) {
+			LocationType locationType = (LocationType) element;
+
+			locationTypes.put(locationType.name, locationType.id);
+		}
+
+		locationTypeNames = locationTypes.keySet().toArray(new String[locationTypes.size()]);
+		locationTypeIDs = locationTypes.values().toArray(new Integer[locationTypes.size()]);
 	}
 
 	private void loadLocationEditData() {
@@ -78,6 +80,7 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 				public void run() {
 				phone.setText((location.phone.equals("null")) ? "" : location.phone);
 				website.setText((location.website.equals("null")) ? "" : location.website);
+				description.setText((location.description.equals(("null")) ? "" : location.description));
 
 				locationTypeSpinner = (Spinner) findViewById(R.id.locationTypeSpinner);
 				ArrayAdapter<String> locationTypeAdapter = new ArrayAdapter<>(
@@ -116,10 +119,11 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 			try {
 				String locationTypeName = (String) locationTypeSpinner.getSelectedItem();
 				String operatorName = (String) operatorSpinner.getSelectedItem();
+				String phoneNumber = URLEncoder.encode(phone.getText().toString(), "UTF-8");
+				String locationDescription = URLEncoder.encode(description.getText().toString(), "utf-8");
+				String locationWebsite = website.getText().toString();
 				int locationTypeID = locationTypes.get(locationTypeName);
 				int operatorID = operators.get(operatorName);
-				String phoneNumber = URLEncoder.encode(phone.getText().toString(), "UTF-8");
-				String locationWebsite = website.getText().toString();
 
 				String locationTypeString = "";
 				if (locationTypeID != 0) {
@@ -134,7 +138,7 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 				PBMApplication app = getPBMApplication();
 
 				new RetrieveJsonTask(LocationEdit.this).execute(
-					app.requestWithAuthDetails(regionlessBase + "locations/" + location.id + ".json?phone=" + phoneNumber + ";location_type=" + locationTypeString + ";operator_id=" + operatorString + ";website=" + URLDecoder.decode(locationWebsite, "UTF-8")),
+					app.requestWithAuthDetails(regionlessBase + "locations/" + location.id + ".json?phone=" + phoneNumber + ";location_type=" + locationTypeString + ";operator_id=" + operatorString + ";website=" + URLDecoder.decode(locationWebsite, "UTF-8") + ";description=" + locationDescription),
 					"PUT"
 				).get();
 			} catch (InterruptedException | ExecutionException | UnsupportedEncodingException e) {
@@ -165,6 +169,7 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 
 			location.setPhone(jsonLocation.getString("phone"));
 			location.setWebsite(jsonLocation.getString("website"));
+			location.setDescription(jsonLocation.getString("description"));
 
 			if (!jsonLocation.getString("location_type_id").equals("null")) {
 				location.setLocationTypeID(jsonLocation.getInt("location_type_id"));

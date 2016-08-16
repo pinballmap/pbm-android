@@ -43,16 +43,15 @@ public class LocationDetail extends PinballMapActivity {
 
 		location = (Location) getIntent().getExtras().get("Location");
 
-		Button btn = (Button) findViewById(R.id.btn);
-		SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+		Button confirmLocationButton = (Button) findViewById(R.id.confirmLocationButton);
 		if (!getPBMApplication().userIsAuthenticated()) {
-			btn.setText(R.string.login_to_update);
+			confirmLocationButton.setText(R.string.login_to_update);
 		}
 
 		if (location != null) {
 			setTitle("");
 
-			btn.setOnClickListener(new View.OnClickListener() {
+			confirmLocationButton.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 				try{
 					final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
@@ -105,89 +104,97 @@ public class LocationDetail extends PinballMapActivity {
 	private void loadLocationData() {
 		new Thread(new Runnable() {
 			public void run() {
-			LocationDetail.super.runOnUiThread(new Runnable() {
-				public void run() {
-				lmxes = location.getLmxes(LocationDetail.this);
-				machines = location.getMachines(LocationDetail.this);
+				LocationDetail.super.runOnUiThread(new Runnable() {
+					public void run() {
+					lmxes = location.getLmxes(LocationDetail.this);
+					machines = location.getMachines(LocationDetail.this);
 
-				TextView locationName = (TextView) findViewById(R.id.locationName);
-				TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
-				TextView locationType = (TextView) findViewById(R.id.locationType);
-				TextView locationMetadata = (TextView) findViewById(R.id.locationMetadata);
-				TextView locationWebsite = (TextView) findViewById(R.id.website);
-				TextView locationPhone = (TextView) findViewById(R.id.locationPhone);
-				TextView locationOperator = (TextView) findViewById(R.id.operator);
+					TextView locationName = (TextView) findViewById(R.id.locationName);
+					TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
+					TextView locationType = (TextView) findViewById(R.id.locationType);
+					TextView locationMetadata = (TextView) findViewById(R.id.locationMetadata);
+					TextView locationWebsite = (TextView) findViewById(R.id.website);
+					TextView locationPhone = (TextView) findViewById(R.id.locationPhone);
+					TextView locationOperator = (TextView) findViewById(R.id.operator);
+					TextView locationDescription = (TextView) findViewById(R.id.description);
 
-				if (location.dateLastUpdated != null && !location.dateLastUpdated.equals("") && !location.dateLastUpdated.equals("null")) {
-					String lastUpdatedInfo = "Location last updated: " + location.dateLastUpdated;
+					if (location.dateLastUpdated != null && !location.dateLastUpdated.equals("") && !location.dateLastUpdated.equals("null")) {
+						String lastUpdatedInfo = "Location last updated: " + location.dateLastUpdated;
 
-					if (location.lastUpdatedByUsername != null && !location.lastUpdatedByUsername.equals("") && !location.lastUpdatedByUsername.equals("null")) {
-						lastUpdatedInfo = lastUpdatedInfo + " by " + location.lastUpdatedByUsername;
+						if (location.lastUpdatedByUsername != null && !location.lastUpdatedByUsername.equals("") && !location.lastUpdatedByUsername.equals("null")) {
+							lastUpdatedInfo = lastUpdatedInfo + " by " + location.lastUpdatedByUsername;
+						}
+
+						locationLastUpdated.setVisibility(View.VISIBLE);
+						locationLastUpdated.setText(lastUpdatedInfo);
+					} else {
+						locationLastUpdated.setVisibility(View.GONE);
 					}
 
-					locationLastUpdated.setVisibility(View.VISIBLE);
-					locationLastUpdated.setText(lastUpdatedInfo);
-				} else {
-					locationLastUpdated.setVisibility(View.GONE);
-				}
-
-				String locationTypeName = "";
-				LocationType type = location.getLocationType(LocationDetail.this);
-				if (type != null) {
-					locationTypeName = "(" + type.name + ")";
-				}
-
-				locationName.setText(location.name);
-				locationMetadata.setText(
-					TextUtils.join(", ", new String[]{location.street, location.city, location.state, location.zip})
-				);
-
-				if (location.phone != null && !location.phone.equals("") && !location.phone.equals("null")) {
-					locationPhone.setVisibility(View.VISIBLE);
-					locationPhone.setText(location.phone);
-				} else {
-					locationPhone.setVisibility(View.GONE);
-				}
-
-				if (!locationTypeName.equals("") && !locationTypeName.equals("null")) {
-					locationType.setVisibility(View.VISIBLE);
-					locationType.setText(locationTypeName);
-				} else {
-					locationType.setVisibility(View.GONE);
-				}
-
-				if (location.website != null && !location.website.equals("") && !location.website.equals("null")) {
-					locationWebsite.setVisibility(View.VISIBLE);
-					locationWebsite.setMovementMethod(LinkMovementMethod.getInstance());
-					locationWebsite.setText(location.website);
-				} else {
-					locationWebsite.setVisibility(View.GONE);
-				}
-
-				Operator operator = location.getOperator(getPBMActivity());
-				if (operator != null) {
-					locationOperator.setVisibility(View.VISIBLE);
-					locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.name));
-				} else {
-					locationOperator.setVisibility(View.GONE);
-				}
-
-				locationDetailTable = (ListView) findViewById(R.id.locationDetailTable);
-				locationDetailTable.setOnItemClickListener(new OnItemClickListener() {
-					public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
-					Machine machine = machines.get(position);
-
-					Intent myIntent = new Intent();
-					PBMApplication app = getPBMApplication();
-					myIntent.putExtra("lmx", app.getLmxFromMachine(machine, lmxes));
-					myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
-
-					startActivityForResult(myIntent, QUIT_RESULT);
+					String locationTypeName = "";
+					LocationType type = location.getLocationType(LocationDetail.this);
+					if (type != null) {
+						locationTypeName = "(" + type.name + ")";
 					}
-				});
 
-				updateTable();
-			}
+					locationName.setText(location.name);
+					locationMetadata.setText(
+						TextUtils.join(", ", new String[]{location.street, location.city, location.state, location.zip})
+					);
+
+					if (location.phone != null && !location.phone.equals("") && !location.phone.equals("null")) {
+						locationPhone.setVisibility(View.VISIBLE);
+						locationPhone.setText(location.phone);
+					} else {
+						locationPhone.setVisibility(View.GONE);
+					}
+
+					if (!locationTypeName.equals("") && !locationTypeName.equals("null")) {
+						locationType.setVisibility(View.VISIBLE);
+						locationType.setText(locationTypeName);
+					} else {
+						locationType.setVisibility(View.GONE);
+					}
+
+					if (location.website != null && !location.website.equals("") && !location.website.equals("null")) {
+						locationWebsite.setVisibility(View.VISIBLE);
+						locationWebsite.setMovementMethod(LinkMovementMethod.getInstance());
+						locationWebsite.setText(location.website);
+					} else {
+						locationWebsite.setVisibility(View.GONE);
+					}
+
+					if (location.description != null && !location.description.equals("") && !location.description.equals("null")) {
+						locationDescription.setVisibility(View.VISIBLE);
+						locationDescription.setText(location.description);
+					} else {
+						locationDescription.setVisibility(View.GONE);
+					}
+
+					Operator operator = location.getOperator(getPBMActivity());
+					if (operator != null) {
+						locationOperator.setVisibility(View.VISIBLE);
+						locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.name));
+					} else {
+						locationOperator.setVisibility(View.GONE);
+					}
+
+					locationDetailTable = (ListView) findViewById(R.id.locationDetailTable);
+					locationDetailTable.setOnItemClickListener(new OnItemClickListener() {
+						public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
+						Machine machine = machines.get(position);
+
+						Intent myIntent = new Intent();
+						PBMApplication app = getPBMApplication();
+						myIntent.putExtra("lmx", app.getLmxFromMachine(machine, lmxes));
+						myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
+
+						startActivityForResult(myIntent, QUIT_RESULT);
+						}
+					});
+
+					updateTable();
+				}
 			});
 			}
 		}).start();

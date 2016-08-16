@@ -4,7 +4,7 @@
                 android:layout_height="fill_parent"
     android:orientation="vertical"
     android:background="#FEFBF8"
-    android:padding="10dp">
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/editLocationText"
@@ -20,7 +20,7 @@
         android:gravity="center_horizontal" />
 
     <TextView
-        android:id="@+id/enterConditionHeader"
+        android:id="@+id/enterPhoneHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/enterConditionHeader"
+        android:layout_below="@+id/enterPhoneHeader"
         android:background="@drawable/textbox_bg"
         android:ems="10"
         android:inputType="phone"/>
@@ -61,6 +61,17 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/enterLocationTypeHeader" />
 
+    <TextView
+        android:id="@+id/enterWebsiteHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/locationTypeSpinner"
+        android:layout_marginTop="16dp"
+        android:text="@string/website"
+        android:textSize="20sp"/>
+
     <EditText
         android:id="@+id/editWebsite"
         android:layout_width="fill_parent"
@@ -74,15 +85,39 @@
         android:labelFor="@+id/editWebsite"/>
 
     <TextView
-        android:id="@+id/enterOperator"
+        android:id="@+id/enterDescriptionHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/editWebsite"
         android:layout_marginTop="16dp"
+        android:text="@string/description"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/editDescription"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/enterDescriptionHeader"
+        android:background="@drawable/textbox_bg"
+        android:ems="10"
+        android:inputType="textUri"
+        android:labelFor="@+id/editDescription"/>
+
+    <TextView
+        android:id="@+id/enterOperator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/editDescription"
+        android:layout_marginTop="16dp"
         android:text="@string/enter_operator"
         android:textSize="20sp"/>
+
     <Spinner
         android:id="@+id/operatorSpinner"
         android:layout_width="fill_parent"
@@ -108,16 +143,5 @@
         android:background="@drawable/input_btn"
         android:textColor="#FFFFFF"
         android:textSize="22sp" />
-
-    <TextView
-        android:id="@+id/enterWebsiteHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/locationTypeSpinner"
-        android:layout_marginTop="16dp"
-        android:text="@string/website"
-        android:textSize="20sp"/>
 
 </RelativeLayout>
