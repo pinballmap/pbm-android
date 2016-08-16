@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -32,7 +31,7 @@ public class Login extends AppCompatActivity {
     }
 
     public void initializeSignupButton() {
-        Button signup = (TextView) findViewById(R.id.signup);
+        Button signup = (Button) findViewById(R.id.signup);
         signup.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent();

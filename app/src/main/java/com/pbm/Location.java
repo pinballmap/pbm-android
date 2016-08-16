@@ -12,13 +12,13 @@ public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public int id, zoneID, locationTypeID, operatorID;
 	public String name, street, city, state, zip, phone, lat, lon, website, milesInfo,
-			lastUpdatedByUsername, dateLastUpdated;
+			lastUpdatedByUsername, dateLastUpdated, description;
 	public float distanceFromYou;
 
 	public Location(int id, String name, String lat, String lon, int zoneID, String street,
 					String city, String state, String zip, String phone, int locationTypeID,
 					String website, int operatorID, String dateLastUpdated,
-					String lastUpdatedByUsername
+					String lastUpdatedByUsername, String description
 	) {
 		this.id = id;
 		this.name = name;
@@ -35,6 +35,7 @@ public class Location implements Serializable {
 		this.operatorID = operatorID;
 		this.dateLastUpdated = dateLastUpdated;
 		this.lastUpdatedByUsername = lastUpdatedByUsername;
+		this.description = description;
 	}
 
 	protected static Comparator<Location> byNearestDistance = new Comparator<com.pbm.Location>() {
@@ -44,6 +45,8 @@ public class Location implements Serializable {
 			return distanceFromYou1.compareTo(distanceFromYou2);
 		}
 	};
+
+	public void setDescription(String description) { this.description = description; }
 
 	public void setWebsite(String website) {
 		this.website = website;

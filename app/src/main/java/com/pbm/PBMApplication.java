@@ -592,6 +592,7 @@ public class PBMApplication extends Application {
 			String state = location.getString("state");
 			String website = location.getString("website");
 			String lastUpdatedByUsername = location.getString("last_updated_by_username");
+			String description = location.getString("description");
 
 			String dateLastUpdated = null;
 			if (location.has("date_last_updated") && !location.getString("date_last_updated").equals("null")) {
@@ -630,7 +631,7 @@ public class PBMApplication extends Application {
 				Location newLocation =
 						new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip,
 								phone, locationTypeID, website, operatorID, dateLastUpdated,
-								lastUpdatedByUsername);
+								lastUpdatedByUsername, description);
 				addLocation(id, newLocation);
 			}
 

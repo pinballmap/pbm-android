@@ -91,10 +91,19 @@
                 android:paddingRight="0dip"
                 android:textColor="#333333"
                 android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/operator"
+                android:paddingLeft="10dip"
+                android:paddingRight="0dip"
+                android:textColor="#333333"
+                android:textSize="15sp"/>
         </RelativeLayout>
 
         <Button
-            android:id="@+id/btn"
+            android:id="@+id/confirmLocationButton"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/locationData"
@@ -112,7 +121,7 @@
             android:id="@+id/spacer"
             android:layout_width="fill_parent"
             android:layout_height="4dip"
-            android:layout_below="@+id/btn"
+            android:layout_below="@+id/confirmLocationButton"
             android:background="#a77e51"/>
 
         <ListView
