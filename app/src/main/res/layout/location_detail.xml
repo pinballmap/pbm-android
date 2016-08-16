@@ -38,15 +38,18 @@
                 android:background="#FCF3EA"
                 android:textStyle="italic"
                 android:paddingLeft="10sp"
-                android:paddingBottom="5sp" />
+                android:paddingRight="10sp"
+                android:paddingBottom="3sp" />
 
             <TextView
                 android:id="@+id/locationMetadata"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/locationLastUpdated"
-                android:paddingEnd="0dip"
+                android:paddingEnd="10dip"
+                android:paddingRight="10dip"
                 android:paddingStart="10dip"
+                android:paddingLeft="10dip"
                 android:textSize="18sp"/>
 
             <TextView
@@ -55,41 +58,48 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/locationMetadata"
                 android:autoLink="phone"
-                android:paddingEnd="0dip"
+                android:paddingEnd="10dip"
+                android:paddingRight="10dip"
                 android:paddingStart="10dip"
+                android:paddingLeft="10dip"
                 android:textSize="18sp"/>
-
-            <TextView
-                android:id="@+id/locationType"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/locationPhone"
-                android:paddingEnd="0dip"
-                android:paddingStart="10dip"
-                android:textColor="#333333"
-                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/website"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/locationType"
+                android:layout_below="@+id/locationPhone"
                 android:autoLink="web"
                 android:linksClickable="true"
-                android:paddingEnd="0dip"
+                android:paddingEnd="10dip"
+                android:paddingRight="10dip"
                 android:paddingStart="10dip"
+                android:paddingLeft="10dip"
                 android:textColor="#333333"
                 android:textSize="15sp"
                 android:layout_gravity="left"
                 android:paddingBottom="4dip" />
+
+            <TextView
+                android:id="@+id/locationType"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/website"
+                android:paddingEnd="10dip"
+                android:paddingRight="10dip"
+                android:paddingStart="10dip"
+                android:paddingLeft="10dip"
+                android:textColor="#666666"
+                android:textSize="15sp"/>
+
             <TextView
                 android:id="@+id/operator"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/website"
+                android:layout_below="@+id/locationType"
                 android:paddingLeft="10dip"
-                android:paddingRight="0dip"
-                android:textColor="#333333"
+                android:paddingRight="10dip"
+                android:textColor="#666666"
                 android:textSize="15sp"/>
             <TextView
                 android:id="@+id/description"
@@ -97,9 +107,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/operator"
                 android:paddingLeft="10dip"
-                android:paddingRight="0dip"
-                android:textColor="#333333"
-                android:textSize="15sp"/>
+                android:paddingRight="10dip"
+                android:textColor="#888888"
+                android:textSize="15sp"
+                android:textStyle="italic" />
         </RelativeLayout>
 
         <Button

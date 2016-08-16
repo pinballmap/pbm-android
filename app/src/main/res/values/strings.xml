@@ -54,7 +54,7 @@
     <string name="quit">Quit</string>
     <string name="logout">Logout</string>
     <string name="login">Login</string>
-    <string name="description">Description</string>
+    <string name="description">Location Description</string>
     <string name="sample_machine_name">Machine (Chicago Coin, 2048)</string>
     <string name="sample_condition_from_user">machine notes blkasl asdlk jasdlk sd sdlsdk sjskj fksdj skdfsd</string>
     <string name="loading_regions">Loading regions</string>
@@ -62,7 +62,7 @@
     <string name="score_text">Enter Your Score</string>
     <string name="condition_text">Enter a Condition Report</string>
     <string name="edit_location">Edit Location</string>
-    <string name="sign_up">SIGN UP so you can help keep your map up to date! THANKS!</string>
+    <string name="sign_up">SIGN UP and help keep your map up to date! THANKS!</string>
     <string name="login_to_update">Login to update this location"</string>
     <string name="login_to_add_condition">Login to leave a condition report</string>
     <string name="login_to_add_score">Login to add your high score</string>

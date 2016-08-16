@@ -67,12 +67,12 @@ public class LocationDetail extends PinballMapActivity {
 							app.requestWithAuthDetails(PinballMapActivity.regionlessBase + "locations/" + location.id + "/confirm.json"),
 							"PUT"
 						).get();
-						Toast.makeText(getBaseContext(), "Thanks for confirming that list!", Toast.LENGTH_LONG).show();
+						Toast.makeText(getBaseContext(), "Thanks for confirming this spot!", Toast.LENGTH_LONG).show();
 
 						location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
 						location.lastUpdatedByUsername = settings.getString("username", "");
 
-						String lastUpdatedInfo = "Location last updated: " + location.dateLastUpdated + " by " + location.lastUpdatedByUsername;
+						String lastUpdatedInfo = "Last updated: " + location.dateLastUpdated + " by " + location.lastUpdatedByUsername;
 
 						TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
 						locationLastUpdated.setVisibility(View.VISIBLE);
@@ -134,7 +134,7 @@ public class LocationDetail extends PinballMapActivity {
 					String locationTypeName = "";
 					LocationType type = location.getLocationType(LocationDetail.this);
 					if (type != null) {
-						locationTypeName = "(" + type.name + ")";
+						locationTypeName = type.name;
 					}
 
 					locationName.setText(location.name);
@@ -151,7 +151,7 @@ public class LocationDetail extends PinballMapActivity {
 
 					if (!locationTypeName.equals("") && !locationTypeName.equals("null")) {
 						locationType.setVisibility(View.VISIBLE);
-						locationType.setText(locationTypeName);
+						locationType.setText(Html.fromHtml("<i><b>Location Type:</b></i> " + locationTypeName));
 					} else {
 						locationType.setVisibility(View.GONE);
 					}
@@ -166,7 +166,7 @@ public class LocationDetail extends PinballMapActivity {
 
 					if (location.description != null && !location.description.equals("") && !location.description.equals("null")) {
 						locationDescription.setVisibility(View.VISIBLE);
-						locationDescription.setText(location.description);
+						locationDescription.setText(Html.fromHtml("<i><b>Description:</b></i> " + location.description));
 					} else {
 						locationDescription.setVisibility(View.GONE);
 					}
@@ -174,7 +174,7 @@ public class LocationDetail extends PinballMapActivity {
 					Operator operator = location.getOperator(getPBMActivity());
 					if (operator != null) {
 						locationOperator.setVisibility(View.VISIBLE);
-						locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.name));
+						locationOperator.setText(Html.fromHtml("<i><b>Operated By:</b></i> " + operator.name));
 					} else {
 						locationOperator.setVisibility(View.GONE);
 					}
