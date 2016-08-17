@@ -569,8 +569,10 @@ public class PBMApplication extends Application {
 		locations.clear();
 
 		String json = new RetrieveJsonTask().execute(
-			requestWithAuthDetails(PinballMapActivity.regionBase + "locations.json"), "GET"
+			requestWithAuthDetails(PinballMapActivity.regionBase + "locations.json"),
+			"GET"
 		).get();
+
 		if (json == null) {
 			return;
 		}
@@ -682,6 +684,7 @@ public class PBMApplication extends Application {
 			@SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 			dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 			ArrayList<Condition> conditionList = new ArrayList<>();
+
 			for (int conditionIndex = 0; conditionIndex < conditions.length(); conditionIndex++) {
 				JSONObject pastCondition = conditions.getJSONObject(conditionIndex);
 
@@ -693,7 +696,8 @@ public class PBMApplication extends Application {
 				}
 
 				try {
-					conditionList.add(new Condition(pastCondition.getInt("id"),
+					conditionList.add(
+						new Condition(pastCondition.getInt("id"),
 						dateFormat.parse(pastCondition.getString("updated_at")),
 						pastCondition.getString("comment"),
 						lmxID,
@@ -703,6 +707,7 @@ public class PBMApplication extends Application {
 					e.printStackTrace();
 				}
 			}
+
 			LocationMachineConditions machineConditions =
 					new LocationMachineConditions(lmxID, machineID, lmxLocationID, conditionList);
 			addLocationMachineConditions(lmxID, machineConditions);
