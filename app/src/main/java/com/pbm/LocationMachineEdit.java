@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -115,7 +114,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 				if (!getPBMApplication().userIsAuthenticated()) {
 					myScoreIntent.setClassName("com.pbm", "com.pbm.Login");
 				} else {
-					myScoreIntent.setClassName("com.pbm", "com.pbm.ConditionEdit");
+					myScoreIntent.setClassName("com.pbm", "com.pbm.EnterScore");
 					myScoreIntent.putExtra("lmx", lmx);
 				}
 
