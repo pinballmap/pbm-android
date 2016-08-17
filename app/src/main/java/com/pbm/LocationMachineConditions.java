@@ -13,9 +13,7 @@ import java.util.ArrayList;
 public class LocationMachineConditions implements Serializable {
 	private static final long serialVersionUID = -42859653323636935L;
 
-	private int id;
-	private int machineID;
-	private int locationID;
+	private int id, machineID, locationID;
 	private ArrayList<Condition> conditions;
 
 	public LocationMachineConditions(int id, int machineID, int locationID, ArrayList<Condition> conditions) {
@@ -48,5 +46,4 @@ public class LocationMachineConditions implements Serializable {
 			conditions.remove(condition);
 		}
 	}
-
 }

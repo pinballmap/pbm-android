@@ -46,8 +46,9 @@ public class LocationMachineXref implements Serializable {
 		app.addMachineScore(id, score);
 	}
 
-	public void setCondition(Activity activity, String condition) {
+	public void setCondition(Activity activity, String condition, String lastUpdatedByUsername) {
 		this.condition = condition;
+		this.lastUpdatedByUsername = lastUpdatedByUsername;
 
 		@SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		this.conditionDate = format.format(new Date());

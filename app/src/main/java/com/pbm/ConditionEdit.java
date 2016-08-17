@@ -1,6 +1,7 @@
 package com.pbm;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,11 +36,14 @@ public class ConditionEdit extends PinballMapActivity implements OnTaskCompleted
 		new Thread(new Runnable() {
 			public void run() {
 				try {
-					lmx.setCondition(ConditionEdit.this, condition);
+					final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+
+					lmx.setCondition(ConditionEdit.this, condition, settings.getString("username", ""));
 					PBMApplication app = getPBMApplication();
 
 					new RetrieveJsonTask(ConditionEdit.this).execute(
-						app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + lmx.id + ".json?condition=" + URLEncoder.encode(condition, "UTF8")), "PUT"
+						app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + lmx.id + ".json?condition=" + URLEncoder.encode(condition, "UTF8")),
+						"PUT"
 					).get();
 				} catch (InterruptedException | ExecutionException | UnsupportedEncodingException e) {
 					e.printStackTrace();
@@ -47,11 +51,11 @@ public class ConditionEdit extends PinballMapActivity implements OnTaskCompleted
 
 				ConditionEdit.super.runOnUiThread(new Runnable() {
 					public void run() {
-						final EditText currText = (EditText) findViewById(R.id.condition);
-						inputMethodManager.hideSoftInputFromWindow(currText.getWindowToken(), 0);
+					final EditText currText = (EditText) findViewById(R.id.condition);
+					inputMethodManager.hideSoftInputFromWindow(currText.getWindowToken(), 0);
 
-						setResult(REFRESH_RESULT);
-						ConditionEdit.this.finish();
+					setResult(REFRESH_RESULT);
+					ConditionEdit.this.finish();
 					}
 				});
 			}
