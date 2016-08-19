@@ -34,9 +34,9 @@ public class Login extends AppCompatActivity {
         Button signup = (Button) findViewById(R.id.signup);
         signup.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClassName("com.pbm", "com.pbm.Signup");
-                startActivity(intent);
+            Intent intent = new Intent();
+            intent.setClassName("com.pbm", "com.pbm.Signup");
+            startActivity(intent);
             }
         });
     }
@@ -45,9 +45,10 @@ public class Login extends AppCompatActivity {
         Button noLogin = (Button) findViewById(R.id.no_login);
         noLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent splashIntent = new Intent();
-                splashIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
-                startActivityForResult(splashIntent, PinballMapActivity.QUIT_RESULT);
+            Intent splashIntent = new Intent();
+            splashIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
+            splashIntent.putExtra("isGuestLogin", true);
+            startActivityForResult(splashIntent, PinballMapActivity.QUIT_RESULT);
             }
         });
     }
@@ -56,50 +57,50 @@ public class Login extends AppCompatActivity {
         Button loginButton = (Button) findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                try {
-                    TextInputLayout usernameWrapper = (TextInputLayout) findViewById(R.id.usernameWrapper);
-                    TextInputLayout passwordWrapper = (TextInputLayout) findViewById(R.id.passwordWrapper);
+            try {
+                TextInputLayout usernameWrapper = (TextInputLayout) findViewById(R.id.usernameWrapper);
+                TextInputLayout passwordWrapper = (TextInputLayout) findViewById(R.id.passwordWrapper);
 
-                    String json = new RetrieveJsonTask().execute(
-                        PinballMapActivity.regionlessBase +
-                            "users/auth_details.json?password=" + passwordWrapper.getEditText().getText().toString() +
-                            ";login=" + usernameWrapper.getEditText().getText().toString(),
-                        "GET"
-                    ).get();
+                String json = new RetrieveJsonTask().execute(
+                    PinballMapActivity.regionlessBase +
+                        "users/auth_details.json?password=" + passwordWrapper.getEditText().getText().toString() +
+                        ";login=" + usernameWrapper.getEditText().getText().toString(),
+                    "GET"
+                ).get();
 
-                    final JSONObject jsonObject = new JSONObject(json.toString());
-                    if (jsonObject.has("errors")) {
-                        Login.super.runOnUiThread(new Runnable() {
-                            public void run() {
-                            String error = null;
-                            try {
-                                error = URLDecoder.decode(jsonObject.getString("errors"), "UTF-8");
-                                error = error.replace("\\/", "/");
-                            } catch (JSONException | UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
+                final JSONObject jsonObject = new JSONObject(json.toString());
+                if (jsonObject.has("errors")) {
+                    Login.super.runOnUiThread(new Runnable() {
+                        public void run() {
+                        String error = null;
+                        try {
+                            error = URLDecoder.decode(jsonObject.getString("errors"), "UTF-8");
+                            error = error.replace("\\/", "/");
+                        } catch (JSONException | UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
 
-                            Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    } else {
-                        JSONObject userObject = new JSONObject(jsonObject.getJSONObject("user").toString());
-                        final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
-                        SharedPreferences.Editor editor = settings.edit();
-                        editor.putString("authToken", userObject.getString("authentication_token"));
-                        editor.putString("username", userObject.getString("username"));
-                        editor.putString("email", userObject.getString("email"));
-                        editor.commit();
+                        Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else {
+                    JSONObject userObject = new JSONObject(jsonObject.getJSONObject("user").toString());
+                    final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("authToken", userObject.getString("authentication_token"));
+                    editor.putString("username", userObject.getString("username"));
+                    editor.putString("email", userObject.getString("email"));
+                    editor.commit();
 
-                        Intent splashIntent = new Intent();
-                        splashIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
-                        startActivityForResult(splashIntent, PinballMapActivity.QUIT_RESULT);
-                    }
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    Intent splashIntent = new Intent();
+                    splashIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
+                    startActivityForResult(splashIntent, PinballMapActivity.QUIT_RESULT);
                 }
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             }
         });
     }
