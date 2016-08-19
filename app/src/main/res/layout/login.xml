@@ -3,7 +3,7 @@
     android:background="@drawable/backrepeat"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_horizontal_margin"
+    android:padding="5dp"
     tools:context=".Login"
     android:orientation="vertical">
 
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="5dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -121,7 +121,7 @@
             android:id="@+id/or_text"
             android:layout_width="wrap_content"
             android:textColor="#6E5335"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
             android:text="Or"
             android:textSize="16sp"
@@ -130,8 +130,8 @@
             android:textStyle="italic" />
         <Button
             android:id="@+id/no_login"
-            android:layout_marginTop="20dp"
-            android:padding="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="2dp"
             android:background="@drawable/input_btn"
             android:layout_width="fill_parent"
             android:textColor="#cccccc"
@@ -145,14 +145,11 @@
             android:layout_width="wrap_content"
             android:textColor="#6E5335"
             android:layout_height="wrap_content"
-            android:text="Note: Can't update without logging in"
+            android:text="Note: You can't update without logging in"
             android:textSize="16sp"
             android:layout_gravity="center_horizontal"
             android:layout_centerHorizontal="true"
             android:textStyle="italic" />
-
-
     </LinearLayout>
-
 </LinearLayout>
 
