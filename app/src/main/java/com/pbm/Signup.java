@@ -24,6 +24,8 @@ public class Signup extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
+
+        setupSignUpButton();
     }
 
     public void setupSignUpButton() {
