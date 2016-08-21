@@ -5,10 +5,6 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -742,29 +738,6 @@ public class PBMApplication extends Application {
 			addRegion(Integer.parseInt(id), new Region(Integer.parseInt(id), name, formalName, motd, lat, lon, emailAddresses));
 		}
 		return true;
-	}
-
-	public void setListViewHeightBasedOnChildren(ListView listView) {
-		ListAdapter listAdapter = listView.getAdapter();
-		if (listAdapter == null) {
-			return;
-		}
-
-		int totalHeight = listView.getPaddingTop() + listView.getPaddingBottom();
-		for (int i = 0; i < listAdapter.getCount(); i++) {
-			View listItem = listAdapter.getView(i, null, listView);
-			if (listItem instanceof ViewGroup) {
-				listItem.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
-			}
-			listItem.measure(View.MeasureSpec.AT_MOST, View.MeasureSpec.UNSPECIFIED);
-			//totalHeight += listItem.getMeasuredHeight();
-			totalHeight += 350;
-		}
-
-		ViewGroup.LayoutParams params = listView.getLayoutParams();
-
-		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-		listView.setLayoutParams(params);
 	}
 
 	public boolean userIsAuthenticated() {
