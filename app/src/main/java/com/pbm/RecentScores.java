@@ -39,8 +39,8 @@ public class RecentScores extends PinballMapActivity {
 			RecentScores.super.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					ListView table = (ListView)findViewById(R.id.recentscorestable);
-					table.setAdapter(new ArrayAdapter<>(RecentScores.this, android.R.layout.simple_list_item_1, recentScores));
+				ListView table = (ListView)findViewById(R.id.recentscorestable);
+				table.setAdapter(new ArrayAdapter<>(RecentScores.this, android.R.layout.simple_list_item_1, recentScores));
 				}
 			});
 	        }
@@ -51,7 +51,8 @@ public class RecentScores extends PinballMapActivity {
 		PBMApplication app = getPBMApplication();
 
 		String json = new RetrieveJsonTask().execute(
-			app.requestWithAuthDetails(regionBase + "machine_score_xrefs.json?limit=" + NUM_RECENT_SCORES_TO_SHOW), "GET"
+			app.requestWithAuthDetails(regionBase + "machine_score_xrefs.json?limit=" + NUM_RECENT_SCORES_TO_SHOW),
+			"GET"
 		).get();
 
 		if (json == null) {

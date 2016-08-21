@@ -34,22 +34,27 @@ public class MachineLookupDetail extends PinballMapActivity {
 		Bundle extras = getIntent().getExtras();
 		machine = (Machine) extras.get("Machine");
 
-		setTitle(machine.name);
+		if (machine != null) {
+			setTitle(machine.name);
 
+			initializeMachineLookupDetailTable();
+			loadLocationData();
+		}
+	}
+
+	public void initializeMachineLookupDetailTable() {
 		machineLookupDetailTable = (ListView) findViewById(R.id.machineLookupDetailTable);
 		machineLookupDetailTable.setFastScrollEnabled(true);
 		machineLookupDetailTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Intent myIntent = new Intent();
-				com.pbm.Location location = locationsWithMachine.get(position);
+			Intent myIntent = new Intent();
+			com.pbm.Location location = locationsWithMachine.get(position);
 
-				myIntent.putExtra("Location", location);
-				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
-				startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
+			myIntent.putExtra("Location", location);
+			myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
+			startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
 			}
 		});
-
-		loadLocationData();
 
 		setTable(machineLookupDetailTable);
 	}
@@ -65,24 +70,24 @@ public class MachineLookupDetail extends PinballMapActivity {
 			public void run() {
 			MachineLookupDetail.super.runOnUiThread(new Runnable() {
 				public void run() {
-					locationsWithMachine = getLocationsWithMachine(machine);
+				locationsWithMachine = getLocationsWithMachine(machine);
 
-					if (locationsWithMachine != null) {
-						try {
-							Collections.sort(locationsWithMachine, new Comparator<Location>() {
-								public int compare(Location l1, Location l2) {
-									return l1.name.compareTo(l2.name);
-								}
-							});
-						} catch (java.lang.NullPointerException nep) {
-							nep.printStackTrace();
-						}
-
-						machineLookupDetailTable.setAdapter(new LocationListAdapter(MachineLookupDetail.this, locationsWithMachine));
-						if (listState != null) {
-							machineLookupDetailTable.onRestoreInstanceState(listState);
-						}
+				if (locationsWithMachine != null) {
+					try {
+						Collections.sort(locationsWithMachine, new Comparator<Location>() {
+							public int compare(Location l1, Location l2) {
+							return l1.name.compareTo(l2.name);
+							}
+						});
+					} catch (java.lang.NullPointerException nep) {
+						nep.printStackTrace();
 					}
+
+					machineLookupDetailTable.setAdapter(new LocationListAdapter(MachineLookupDetail.this, locationsWithMachine));
+					if (listState != null) {
+						machineLookupDetailTable.onRestoreInstanceState(listState);
+					}
+				}
 				}
 			});
 			}

@@ -23,7 +23,6 @@ import java.util.Comparator;
 
 public class RegionsTab extends Fragment implements LoaderManager.LoaderCallbacks<ArrayList<Region>> {
 	private RegionsPagerAdapter regionsPagerAdapter;
-	private ViewPager viewPager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,8 @@ public class RegionsTab extends Fragment implements LoaderManager.LoaderCallback
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		regionsPagerAdapter = new RegionsPagerAdapter(getChildFragmentManager());
-		viewPager = (ViewPager) getActivity().findViewById(R.id.region_pager);
+
+		ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.region_pager);
 		viewPager.setAdapter(regionsPagerAdapter);
 	}
 

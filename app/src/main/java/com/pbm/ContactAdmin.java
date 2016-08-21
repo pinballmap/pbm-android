@@ -24,7 +24,7 @@ public class ContactAdmin extends PinballMapActivity {
 	public void buttonOnClick(View view) throws UnsupportedEncodingException {
 		String message = ((EditText) findViewById(R.id.messageField)).getText().toString();
 
-		if (message != null && !message.isEmpty()) {
+		if (!message.isEmpty()) {
 			PBMApplication app = getPBMApplication();
 			Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 
@@ -41,7 +41,6 @@ public class ContactAdmin extends PinballMapActivity {
 				Toast.makeText(getBaseContext(), "Sorry, there was a server error. Please try again later.", Toast.LENGTH_LONG).show();
 				e.printStackTrace();
 			}
-
 		} else {
 			Toast.makeText(getBaseContext(), "Message is a required field.", Toast.LENGTH_LONG).show();
 		}

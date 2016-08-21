@@ -34,7 +34,7 @@ public class SuggestLocation extends PinballMapActivity {
 		String locationName = ((EditText) findViewById(R.id.nameField)).getText().toString();
 		String machineNames = ((MultiAutoCompleteTextView) findViewById(R.id.autoCompleteMachinesTextView)).getText().toString();
 
-		if (locationName != null && !locationName.isEmpty() && machineNames != null && !machineNames.isEmpty()) {
+		if (!locationName.isEmpty() && !machineNames.isEmpty()) {
 			PBMApplication app = getPBMApplication();
 			Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 

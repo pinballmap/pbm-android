@@ -36,19 +36,17 @@ public class DisplayOnMap extends PinballMapActivity implements OnMapReadyCallba
 		googleMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
 			public void onInfoWindowClick(Marker marker) {
 			Intent myIntent = new Intent();
-
-			PBMApplication app = getPBMApplication();
-			Location location = app.getLocationByName(marker.getTitle());
+			Location location = getPBMApplication().getLocationByName(marker.getTitle());
 
 			myIntent.putExtra("Location", location);
 			myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
 			startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
+
 		Serializable serializedLocations = getIntent().getSerializableExtra("Locations");
-		Object[] locations = (Object[]) serializedLocations;
-		for (int i = 0; i < locations.length; i++) {
-			Location location = (Location) locations[i];
+		Location[] locations = (Location[]) serializedLocations;
+		for (Location location : locations) {
 			LatLng position = new LatLng(Float.valueOf(location.lat), Float.valueOf(location.lon));
 			Marker marker = googleMap.addMarker(new MarkerOptions().title(location.name)
 					.snippet(location.numMachines(this) + " machines").position(position));

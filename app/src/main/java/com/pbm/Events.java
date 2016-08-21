@@ -7,7 +7,6 @@ import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -30,18 +29,22 @@ public class Events extends PinballMapActivity {
 
 		logAnalyticsHit("com.pbm.Events");
 
-		ListView table = (ListView) findViewById(R.id.eventsTable);
-		table.setFastScrollEnabled(true);
-		table.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
-			String link = eventLinks[position];
-			if ((link != null) && !link.equals("")) {
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				Uri uri = Uri.parse(eventLinks[position]);
-				intent.setData(uri);
+		initializeEventsTable();
+	}
 
-				startActivity(intent);
-			}
+	public void initializeEventsTable() {
+		ListView eventsTable = (ListView) findViewById(R.id.eventsTable);
+		eventsTable.setFastScrollEnabled(true);
+		eventsTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
+				String link = eventLinks[position];
+				if ((link != null) && !link.equals("")) {
+					Intent intent = new Intent(Intent.ACTION_VIEW);
+					Uri uri = Uri.parse(eventLinks[position]);
+					intent.setData(uri);
+
+					startActivity(intent);
+				}
 			}
 		});
 
@@ -55,8 +58,8 @@ public class Events extends PinballMapActivity {
 				Events.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-					ListView eventsTable = (ListView) findViewById(R.id.eventsTable);
-					eventsTable.setAdapter(new ArrayAdapter<>(Events.this, android.R.layout.simple_list_item_1, events));
+						ListView eventsTable = (ListView) findViewById(R.id.eventsTable);
+						eventsTable.setAdapter(new ArrayAdapter<>(Events.this, android.R.layout.simple_list_item_1, events));
 					}
 				});
 			}
@@ -64,10 +67,9 @@ public class Events extends PinballMapActivity {
 	}
 
 	public void getEventData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		PBMApplication app = getPBMApplication();
-
 		String json = new RetrieveJsonTask().execute(
-			app.requestWithAuthDetails(regionBase + "events.json"), "GET"
+			getPBMApplication().requestWithAuthDetails(regionBase + "events.json"),
+			"GET"
 		).get();
 
 		if (json == null) {
@@ -89,10 +91,7 @@ public class Events extends PinballMapActivity {
 			Location location = null;
 
 			if (!event.isNull("location_id")) {
-				Integer locationId = event.getInt("location_id");
-				if (locationId != null) {
-					location = getPBMApplication().getLocation(locationId);
-				}
+				location = getPBMApplication().getLocation(event.getInt("location_id"));
 			}
 
 			if (startDate.equals("null")) {

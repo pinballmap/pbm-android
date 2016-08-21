@@ -1,12 +1,12 @@
 package com.pbm;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class LocationMachineXref implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -26,8 +26,8 @@ public class LocationMachineXref implements Serializable {
 
 		String formattedConditionDate = "";
 		if (conditionDate != null && !conditionDate.equalsIgnoreCase("null")){
-			Date rawDate = new SimpleDateFormat("yyyy-MM-dd").parse(conditionDate);
-			formattedConditionDate = new SimpleDateFormat("MM/dd/yyyy").format(rawDate);
+			Date rawDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(conditionDate);
+			formattedConditionDate = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(rawDate);
 		}
 		this.conditionDate = formattedConditionDate;
 	}
@@ -50,7 +50,7 @@ public class LocationMachineXref implements Serializable {
 		this.condition = condition;
 		this.lastUpdatedByUsername = lastUpdatedByUsername;
 
-		@SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 		this.conditionDate = format.format(new Date());
 
 		PBMApplication app = (PBMApplication) activity.getApplication();

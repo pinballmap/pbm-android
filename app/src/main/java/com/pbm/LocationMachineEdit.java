@@ -24,8 +24,6 @@ public class LocationMachineEdit extends PinballMapActivity {
 	private Machine machine;
 	private LocationMachineXref lmx;
 	private ConditionsArrayAdapter conditionsAdapter;
-	private ScoresArrayAdapter scoresAdapter;
-	private View.OnClickListener removeHandler;
 	private final int NUMBER_OF_CONDITIONS_TO_SHOW = 5;
 	private final int NUMBER_OF_SCORES_TO_SHOW = 5;
 
@@ -36,26 +34,33 @@ public class LocationMachineEdit extends PinballMapActivity {
 		logAnalyticsHit("com.pbm.LocationMachineEdit");
 
 		lmx = (LocationMachineXref) getIntent().getExtras().get("lmx");
-		location = lmx.getLocation(this);
-		machine = getPBMApplication().getMachine(lmx.machineID);
 
-		setTitle(machine.name + " @ " + location.name);
+		if (lmx != null) {
+			location = lmx.getLocation(this);
+			machine = getPBMApplication().getMachine(lmx.machineID);
+		}
 
-		initializeRemoveMachineButton();
-		initializeAddMachineConditionButton();
-		initializePintipsButton();
-		initializeAddScoreButton();
-		initializeOtherLocationsButton();
+		if (location != null && machine != null){
+			setTitle(machine.name + " @ " + location.name);
+
+			initializeRemoveMachineButton();
+			initializeAddMachineConditionButton();
+			initializePintipsButton();
+			initializeAddScoreButton();
+			initializeOtherLocationsButton();
+		}
 	}
 
 	public void initializeRemoveMachineButton() {
 		Button removeMachine = (Button) findViewById(R.id.remove_machine_button);
-		removeHandler = new View.OnClickListener() {
+
+		View.OnClickListener removeHandler = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				removeMachineDialog();
 			}
 		};
+
 		removeMachine.setOnClickListener(removeHandler);
 	}
 
@@ -208,6 +213,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 		int scoreCount = scores.size() < NUMBER_OF_SCORES_TO_SHOW ? scores.size() : NUMBER_OF_SCORES_TO_SHOW;
 
+		ScoresArrayAdapter scoresAdapter;
 		scoresAdapter = new ScoresArrayAdapter(this, inflater, new ArrayList(scores.subList(0, scoreCount)));
 		listView.setAdapter(scoresAdapter);
 		conditionsAdapter.sort(new Comparator<Condition>() {

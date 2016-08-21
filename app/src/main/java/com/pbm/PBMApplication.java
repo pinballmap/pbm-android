@@ -1,6 +1,5 @@
 package com.pbm;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -24,6 +23,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 
@@ -419,8 +419,8 @@ public class PBMApplication extends Application {
 				if (score.has("created_at") && !score.getString("created_at").equals("null")) {
 					dateCreated = score.getString("created_at");
 
-					DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd");
-					DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy");
+					DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+					DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
 
 					String formattedDateCreated = "";
 					try {
@@ -446,8 +446,10 @@ public class PBMApplication extends Application {
 		operators.clear();
 
 		String json = new RetrieveJsonTask().execute(
-			requestWithAuthDetails(PinballMapActivity.regionBase + "operators.json"), "GET"
+			requestWithAuthDetails(PinballMapActivity.regionBase + "operators.json"),
+			"GET"
 		).get();
+
 		if (json == null) {
 			return;
 		}
@@ -474,8 +476,10 @@ public class PBMApplication extends Application {
 		locationTypes.clear();
 
 		String json = new RetrieveJsonTask().execute(
-			requestWithAuthDetails(PinballMapActivity.regionlessBase + "location_types.json"), "GET"
+			requestWithAuthDetails(PinballMapActivity.regionlessBase + "location_types.json"),
+			"GET"
 		).get();
+
 		if (json == null) {
 			return;
 		}
@@ -502,7 +506,8 @@ public class PBMApplication extends Application {
 		machines.clear();
 
 		String json = new RetrieveJsonTask().execute(
-			requestWithAuthDetails(PinballMapActivity.regionlessBase + "machines.json"), "GET"
+			requestWithAuthDetails(PinballMapActivity.regionlessBase + "machines.json"),
+			"GET"
 		).get();
 
 		if (json == null) {
@@ -540,6 +545,7 @@ public class PBMApplication extends Application {
 		String json = new RetrieveJsonTask().execute(
 			requestWithAuthDetails(PinballMapActivity.regionBase + "zones.json"), "GET"
 		).get();
+
 		if (json == null) {
 			return;
 		}
@@ -596,8 +602,8 @@ public class PBMApplication extends Application {
 			if (location.has("date_last_updated") && !location.getString("date_last_updated").equals("null")) {
 				dateLastUpdated = location.getString("date_last_updated");
 
-				DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd");
-				DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy");
+				DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+				DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
 
 				String formattedDateLastUpdated = "";
 				try {
@@ -677,7 +683,7 @@ public class PBMApplication extends Application {
 	void loadConditions(JSONObject lmx, int lmxID, int lmxLocationID, int machineID) throws JSONException {
 		if (lmx.has("machine_conditions")) {
 			JSONArray conditions = lmx.getJSONArray("machine_conditions");
-			@SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
 			dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 			ArrayList<Condition> conditionList = new ArrayList<>();
 
@@ -711,7 +717,11 @@ public class PBMApplication extends Application {
 	}
 
 	public boolean initializeRegions() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		String json = new RetrieveJsonTask().execute(PinballMapActivity.regionlessBase + "regions.json", "GET").get();
+		String json = new RetrieveJsonTask().execute(
+			PinballMapActivity.regionlessBase + "regions.json",
+			"GET"
+		).get();
+
 		if (json == null) {
 			return false;
 		}
@@ -743,6 +753,6 @@ public class PBMApplication extends Application {
 	public boolean userIsAuthenticated() {
 		final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 
-		return settings.getString("username", "").equals("") ? false : true;
+		return !settings.getString("username", "").equals("");
 	}
 }

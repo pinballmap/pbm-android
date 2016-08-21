@@ -45,12 +45,12 @@ public class CloseLocations extends PinballMapActivity {
 		closeLocationsTable.setTextFilterEnabled(true);
 		closeLocationsTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Intent myIntent = new Intent();
-				com.pbm.Location location = locationsForMap.get(position);
+			Intent myIntent = new Intent();
+			com.pbm.Location location = locationsForMap.get(position);
 
-				myIntent.putExtra("Location", location);
-				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
-				startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
+			myIntent.putExtra("Location", location);
+			myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
+			startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
 			}
 		});
 

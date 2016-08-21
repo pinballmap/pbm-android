@@ -24,17 +24,17 @@ public class SuggestRegion extends PinballMapActivity {
 		String email = ((EditText) findViewById(R.id.submitterEmailField)).getText().toString();
 		String regionName = ((EditText) findViewById(R.id.regionNameField)).getText().toString();
 
-		if (name != null && !name.isEmpty() && email != null && !email.isEmpty() && regionName != null && !regionName.isEmpty()) {
+		if (!name.isEmpty() && !email.isEmpty() && !regionName.isEmpty()) {
 			String url = regionlessBase + "regions/suggest.json?"
 					+ "region_name=" + URLEncoder.encode(regionName, "UTF-8")
 					+ ";name=" + URLEncoder.encode(name, "UTF-8")
 					+ ";email=" + URLEncoder.encode(email, "UTF-8")
 					+ ";comments=" + URLEncoder.encode(((EditText) findViewById(R.id.commentsField)).getText().toString(), "UTF-8");
 			try {
-				PBMApplication app = getPBMApplication();
-
-				new RetrieveJsonTask().execute(app.requestWithAuthDetails(url), "POST").get();
-
+				new RetrieveJsonTask().execute(
+					getPBMApplication().requestWithAuthDetails(url),
+					"POST"
+				).get();
 			} catch (ExecutionException | InterruptedException e) {
 				e.printStackTrace();
 			}

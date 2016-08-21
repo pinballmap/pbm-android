@@ -68,7 +68,7 @@ public class Login extends AppCompatActivity {
                     "GET"
                 ).get();
 
-                final JSONObject jsonObject = new JSONObject(json.toString());
+                final JSONObject jsonObject = new JSONObject(json);
                 if (jsonObject.has("errors")) {
                     Login.super.runOnUiThread(new Runnable() {
                         public void run() {
@@ -96,9 +96,7 @@ public class Login extends AppCompatActivity {
                     splashIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
                     startActivityForResult(splashIntent, PinballMapActivity.QUIT_RESULT);
                 }
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
+            } catch (InterruptedException | ExecutionException | JSONException e) {
                 e.printStackTrace();
             }
             }
