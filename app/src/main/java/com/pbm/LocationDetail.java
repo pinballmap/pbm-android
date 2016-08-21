@@ -6,14 +6,14 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class LocationDetail extends PinballMapActivity {
-	private ListView locationDetailTable;
-
 	private Location location;
 	private List<LocationMachineXref> lmxes = new ArrayList<>();
 	private List<Machine> machines = new ArrayList<>();
@@ -181,28 +179,14 @@ public class LocationDetail extends PinballMapActivity {
 					locationOperator.setVisibility(View.GONE);
 				}
 
-				locationDetailTable = (ListView) findViewById(R.id.locationDetailTable);
-				locationDetailTable.setOnItemClickListener(new OnItemClickListener() {
-					public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
-					Machine machine = machines.get(position);
-
-					Intent myIntent = new Intent();
-					PBMApplication app = getPBMApplication();
-					myIntent.putExtra("lmx", app.getLmxFromMachine(machine, lmxes));
-					myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
-
-					startActivityForResult(myIntent, QUIT_RESULT);
-					}
-				});
-
-				updateTable();
+				updateLMXTable();
 				}
 			});
 			}
 		}).start();
 	}
 
-	private void updateTable() {
+	private void updateLMXTable() {
 		try {
 			Collections.sort(machines, new Comparator<Machine>() {
 				public int compare(Machine m1, Machine m2) {
@@ -213,13 +197,9 @@ public class LocationDetail extends PinballMapActivity {
 			nep.printStackTrace();
 		}
 
-		if (machines != null) {
-			locationDetailTable.setFocusable(false);
-
-			locationDetailTable.setAdapter(new MachineDetailListAdapter(this, machines, location.getLMXMap(LocationDetail.this)));
-
-			PBMApplication app = getPBMApplication();
-			app.setListViewHeightBasedOnChildren(locationDetailTable);
+		LinearLayout lmxTable = (LinearLayout) findViewById(R.id.lmxTable);
+		for (Machine machine : machines) {
+			lmxTable.addView(getLMXView(getPBMApplication().getLmxFromMachine(machine, lmxes), lmxTable));
 		}
 	}
 
@@ -264,5 +244,57 @@ public class LocationDetail extends PinballMapActivity {
 			loadLocationData();
 			}
 		}).start();
+	}
+
+	public View getLMXView(final LocationMachineXref lmx, LinearLayout lmxTable) {
+		MachineViewHolder holder;
+		LayoutInflater layoutInflater = LayoutInflater.from(getBaseContext());
+
+		View row = layoutInflater.inflate(R.layout.machine_condition_view, lmxTable, false);
+		holder = new MachineViewHolder();
+		holder.name = (TextView) row.findViewById(R.id.machine_info);
+		holder.machineSelectButton = (ImageView) row.findViewById(R.id.machineSelectButton);
+		holder.condition = (TextView) row.findViewById(R.id.machine_condition);
+
+		row.setTag(holder);
+
+		Machine machine = lmx.getMachine(this);
+
+		holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>"));
+		String conditionText = "";
+		if (!lmx.condition.equals("null") && !lmx.condition.equals("")) {
+			conditionText += lmx.condition;
+			if (!lmx.conditionDate.equals("null") && !lmx.condition.equals("")) {
+				conditionText += '\n' + getBaseContext().getString(R.string.updated_on) + " " + lmx.conditionDate;
+			}
+
+			String lastUpdatedByUsername = lmx.lastUpdatedByUsername;
+			if(lastUpdatedByUsername != null && !lastUpdatedByUsername.isEmpty()) {
+				conditionText += " by " + lastUpdatedByUsername;
+			}
+
+			holder.condition.setText(conditionText);
+		} else {
+			holder.condition.setVisibility(View.GONE);
+		}
+
+		row.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				Intent myIntent = new Intent();
+				PBMApplication app = getPBMApplication();
+				myIntent.putExtra("lmx", lmx);
+				myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
+
+				startActivityForResult(myIntent, QUIT_RESULT);
+			}
+		});
+
+		return row;
+	}
+
+	class MachineViewHolder {
+		TextView name;
+		ImageView machineSelectButton;
+		TextView condition;
 	}
 }

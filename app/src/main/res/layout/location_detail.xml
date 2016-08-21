@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true" >
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:background="#FEFBF8">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/locationData"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -33,7 +33,6 @@
                 android:id="@+id/locationLastUpdated"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/locationName"
                 android:textSize="14sp"
                 android:background="#FCF3EA"
                 android:textStyle="italic"
@@ -45,7 +44,6 @@
                 android:id="@+id/locationMetadata"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/locationLastUpdated"
                 android:paddingEnd="10dip"
                 android:paddingRight="10dip"
                 android:paddingStart="10dip"
@@ -56,7 +54,6 @@
                 android:id="@+id/locationPhone"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/locationMetadata"
                 android:autoLink="phone"
                 android:paddingEnd="10dip"
                 android:paddingRight="10dip"
@@ -68,7 +65,6 @@
                 android:id="@+id/website"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/locationPhone"
                 android:autoLink="web"
                 android:linksClickable="true"
                 android:paddingEnd="10dip"
@@ -84,7 +80,6 @@
                 android:id="@+id/locationType"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/website"
                 android:paddingEnd="10dip"
                 android:paddingRight="10dip"
                 android:paddingStart="10dip"
@@ -96,7 +91,6 @@
                 android:id="@+id/operator"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/locationType"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
                 android:textColor="#666666"
@@ -105,19 +99,17 @@
                 android:id="@+id/description"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/operator"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
                 android:textColor="#888888"
                 android:textSize="15sp"
                 android:textStyle="italic" />
-        </RelativeLayout>
+        </LinearLayout>
 
         <Button
             android:id="@+id/confirmLocationButton"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/locationData"
             android:text="@string/location_confirm"
             android:textSize="12sp"
             android:textStyle="italic"
@@ -132,17 +124,13 @@
             android:id="@+id/spacer"
             android:layout_width="fill_parent"
             android:layout_height="4dip"
-            android:layout_below="@+id/confirmLocationButton"
             android:background="#a77e51"/>
 
-        <ListView
-            android:id="@+id/locationDetailTable"
+        <LinearLayout
+            android:id="@+id/lmxTable"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/spacer"
-            android:scrollbars="none"
-            android:padding="0px"
-            android:background="#FEFBF8">
-        </ListView>
-    </RelativeLayout>
+            android:background="#FEFBF8" />
+    </LinearLayout>
 </ScrollView>
