@@ -41,7 +41,6 @@ public class InitializingScreen extends PinballMapActivity {
 		super.onStart();
 		SplashThread splashThread = new SplashThread();
 		splashThread.start();
-
 	}
 
 	// We only have logos for certain regions

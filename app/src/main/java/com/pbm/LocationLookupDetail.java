@@ -122,7 +122,7 @@ public class LocationLookupDetail extends PinballMapActivity {
 
 		Collections.sort(foundLocations, new Comparator<Location>() {
 			public int compare(Location l1, Location l2) {
-				return l1.name.compareTo(l2.name);
+			return l1.name.compareTo(l2.name);
 			}
 		});
         locationLookupDetailTable.setAdapter(new LocationListAdapter(this, foundLocations));

@@ -20,9 +20,13 @@ public class LookupByZoneList extends PinballMapActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lookup_by_zone_list);
-		
+
 		logAnalyticsHit("com.pbm.LookupByZoneList");
 
+		initializeLocationLookupListTable();
+	}
+
+	public void initializeLocationLookupListTable() {
 		List<Zone> primaryZones = new ArrayList<>();
 		List<Zone> secondaryZones = new ArrayList<>();
 
@@ -48,7 +52,6 @@ public class LookupByZoneList extends PinballMapActivity {
 			}
 		}
 		
-	    /* TODO put breaks between these two lists*/
 		sort(primaryZones);
 		sort(secondaryZones);
 		primaryZones.addAll(secondaryZones);

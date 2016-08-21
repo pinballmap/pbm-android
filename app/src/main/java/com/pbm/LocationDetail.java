@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class LocationDetail extends PinballMapActivity {
@@ -65,15 +66,13 @@ public class LocationDetail extends PinballMapActivity {
 					intent.setClassName("com.pbm", "com.pbm.Login");
 					startActivityForResult(intent, QUIT_RESULT);
 				} else {
-					PBMApplication app = getPBMApplication();
-
 					new RetrieveJsonTask().execute(
-						app.requestWithAuthDetails(PinballMapActivity.regionlessBase + "locations/" + location.id + "/confirm.json"),
+						getPBMApplication().requestWithAuthDetails(PinballMapActivity.regionlessBase + "locations/" + location.id + "/confirm.json"),
 						"PUT"
 					).get();
 					Toast.makeText(getBaseContext(), "Thanks for confirming this spot!", Toast.LENGTH_LONG).show();
 
-					location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+					location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
 					location.lastUpdatedByUsername = settings.getString("username", "");
 
 					String lastUpdatedInfo = "Last updated: " + location.dateLastUpdated + " by " + location.lastUpdatedByUsername;
@@ -280,12 +279,12 @@ public class LocationDetail extends PinballMapActivity {
 
 		row.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				Intent myIntent = new Intent();
-				PBMApplication app = getPBMApplication();
-				myIntent.putExtra("lmx", lmx);
-				myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
+			Intent myIntent = new Intent();
+			PBMApplication app = getPBMApplication();
+			myIntent.putExtra("lmx", lmx);
+			myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
 
-				startActivityForResult(myIntent, QUIT_RESULT);
+			startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
 

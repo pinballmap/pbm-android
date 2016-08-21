@@ -45,17 +45,6 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	public static final int QUIT_RESULT = 42;
 	static final int RESET_RESULT = 23;
 	static final int REFRESH_RESULT = 30;
-	public static final int CONDITION_DATE = 0;
-	public static final int CONDITION = 1;
-	public static final int PROGRESS_DIALOG = 0;
-	public static final int MENU_SUGGEST_LOCATION = 0;
-	public static final int MENU_CONTACT_ADMIN = 1;
-	public static final int MENU_PREFS = 2;
-	public static final int MENU_SUGGEST_REGION = 3;
-	public static final int MENU_ABOUT = 4;
-	public static final int MENU_LOGOUT = 5;
-	public static final int MENU_QUIT = 6;
-	public static final int MENU_LOGIN = 7;
 	public static final int HTTP_RETRIES = 5;
 	public static final String PREFS_NAME = "pbmPrefs";
 	public static final float METERS_TO_MILES = (float) 0.000621371192;
@@ -134,9 +123,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 				if (!authToken.equals("") && region != -1) {
 					getPBMApplication().initializeData();
 				}
-			} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException e) {
-				e.printStackTrace();
-			} catch (ParseException e) {
+			} catch (UnsupportedEncodingException | ParseException | InterruptedException | JSONException | ExecutionException e) {
 				e.printStackTrace();
 			}
 		}

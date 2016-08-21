@@ -14,6 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class EnterScore extends PinballMapActivity implements OnTaskCompleted {
@@ -46,25 +47,24 @@ public class EnterScore extends PinballMapActivity implements OnTaskCompleted {
 	private void addScore(final String score) {
 		new Thread(new Runnable() {
 			public void run() {
-				try {
-					PBMApplication app = getPBMApplication();
+			try {
+				new RetrieveJsonTask(EnterScore.this).execute(
+					getPBMApplication().requestWithAuthDetails(regionlessBase + "machine_score_xrefs.json?location_machine_xref_id=" + lmx.id + ";score=" + URLEncoder.encode(score, "UTF8")),
+					"POST"
+				).get();
+			} catch (InterruptedException | ExecutionException | UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 
-					new RetrieveJsonTask(EnterScore.this).execute(
-						app.requestWithAuthDetails(regionlessBase + "machine_score_xrefs.json?location_machine_xref_id=" + lmx.id + ";score=" + URLEncoder.encode(score, "UTF8")), "POST"
-					).get();
-				} catch (InterruptedException | ExecutionException | UnsupportedEncodingException e) {
-					e.printStackTrace();
+			EnterScore.super.runOnUiThread(new Runnable() {
+				public void run() {
+				final EditText currText = (EditText) findViewById(R.id.score);
+				inputMethodManager.hideSoftInputFromWindow(currText.getWindowToken(), 0);
+
+				setResult(REFRESH_RESULT);
+				EnterScore.this.finish();
 				}
-
-				EnterScore.super.runOnUiThread(new Runnable() {
-					public void run() {
-					final EditText currText = (EditText) findViewById(R.id.score);
-					inputMethodManager.hideSoftInputFromWindow(currText.getWindowToken(), 0);
-
-					setResult(REFRESH_RESULT);
-					EnterScore.this.finish();
-					}
-				});
+			});
 			}
 		}).start();
 	}
@@ -78,7 +78,7 @@ public class EnterScore extends PinballMapActivity implements OnTaskCompleted {
 			long score = jsonLmx.getLong("score");
 			String username = jsonLmx.getString("username");
 
-			SimpleDateFormat df = new SimpleDateFormat("mm-dd-yyyy");
+			SimpleDateFormat df = new SimpleDateFormat("mm-dd-yyyy", Locale.getDefault());
 
 			lmx.addScore(
 				EnterScore.this,

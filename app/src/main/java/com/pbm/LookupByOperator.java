@@ -19,9 +19,13 @@ public class LookupByOperator extends PinballMapActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lookup_by_operator);
-		
+
 		logAnalyticsHit("com.pbm.LookupByOperator");
 
+		initializeOperatorTable();
+	}
+
+	public void initializeOperatorTable() {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		Region region = getPBMApplication().getRegion(settings.getInt("region",  1));
 		List<Operator> operators = region.operators(this);

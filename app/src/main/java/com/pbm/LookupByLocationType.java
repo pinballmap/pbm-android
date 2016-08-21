@@ -19,9 +19,13 @@ public class LookupByLocationType extends PinballMapActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lookup_by_location_type);
-		
+
 		logAnalyticsHit("com.pbm.LookupByLocationType");
 
+		initializeLocationTypeTable();
+	}
+
+	public void initializeLocationTypeTable() {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		Region region = getPBMApplication().getRegion(settings.getInt("region",  1));
 		List<LocationType> locationTypes = region.locationTypes(this);
@@ -29,11 +33,11 @@ public class LookupByLocationType extends PinballMapActivity {
 		ListView locationTypeTable = (ListView)findViewById(R.id.locationTypeTable);
 		locationTypeTable.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {	
-			Intent myIntent = new Intent();
-			myIntent.putExtra("LocationType", (LocationType) parentView.getItemAtPosition(position));
-			myIntent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
+				Intent myIntent = new Intent();
+				myIntent.putExtra("LocationType", (LocationType) parentView.getItemAtPosition(position));
+				myIntent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
 
-			startActivityForResult(myIntent, QUIT_RESULT);
+				startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
 

@@ -53,7 +53,8 @@ public class RecentlyAdded extends PinballMapActivity {
 		PBMApplication app = getPBMApplication();
 
 		String json = new RetrieveJsonTask().execute(
-			app.requestWithAuthDetails(regionBase + "location_machine_xrefs.json?limit=" + NUM_ADDED_TO_SHOW), "GET"
+			app.requestWithAuthDetails(regionBase + "location_machine_xrefs.json?limit=" + NUM_ADDED_TO_SHOW),
+			"GET"
 		).get();
 
 		if (json == null) {
