@@ -43,56 +43,58 @@ public class LocationDetail extends PinballMapActivity {
 
 		location = (Location) getIntent().getExtras().get("Location");
 
+		if (location != null) {
+			setTitle("");
+			setupConfirmLocationButton();
+			loadLocationData();
+		}
+	}
+
+	public void setupConfirmLocationButton() {
 		Button confirmLocationButton = (Button) findViewById(R.id.confirmLocationButton);
+
 		if (!getPBMApplication().userIsAuthenticated()) {
 			confirmLocationButton.setText(R.string.login_to_update);
 		}
 
-		if (location != null) {
-			setTitle("");
+		confirmLocationButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+			try{
+				final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 
-			confirmLocationButton.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v) {
-				try{
-					final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+				if (!getPBMApplication().userIsAuthenticated()) {
+					Intent intent = new Intent();
+					intent.setClassName("com.pbm", "com.pbm.Login");
+					startActivityForResult(intent, QUIT_RESULT);
+				} else {
+					PBMApplication app = getPBMApplication();
 
-					if (!getPBMApplication().userIsAuthenticated()) {
-						Intent intent = new Intent();
-						intent.setClassName("com.pbm", "com.pbm.Login");
-						startActivityForResult(intent, QUIT_RESULT);
-					} else {
-						PBMApplication app = getPBMApplication();
+					new RetrieveJsonTask().execute(
+						app.requestWithAuthDetails(PinballMapActivity.regionlessBase + "locations/" + location.id + "/confirm.json"),
+						"PUT"
+					).get();
+					Toast.makeText(getBaseContext(), "Thanks for confirming this spot!", Toast.LENGTH_LONG).show();
 
-						new RetrieveJsonTask().execute(
-							app.requestWithAuthDetails(PinballMapActivity.regionlessBase + "locations/" + location.id + "/confirm.json"),
-							"PUT"
-						).get();
-						Toast.makeText(getBaseContext(), "Thanks for confirming this spot!", Toast.LENGTH_LONG).show();
+					location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+					location.lastUpdatedByUsername = settings.getString("username", "");
 
-						location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
-						location.lastUpdatedByUsername = settings.getString("username", "");
+					String lastUpdatedInfo = "Last updated: " + location.dateLastUpdated + " by " + location.lastUpdatedByUsername;
 
-						String lastUpdatedInfo = "Last updated: " + location.dateLastUpdated + " by " + location.lastUpdatedByUsername;
-
-						TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
-						locationLastUpdated.setVisibility(View.VISIBLE);
-						locationLastUpdated.setText(lastUpdatedInfo);
-					}
-				} catch (InterruptedException | ExecutionException e) {
-					e.printStackTrace();
+					TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
+					locationLastUpdated.setVisibility(View.VISIBLE);
+					locationLastUpdated.setText(lastUpdatedInfo);
 				}
-				}
-			});
-
-			loadLocationData();
-		}
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+			}
+		});
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.location_detail_menu, menu);
 
-		SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 		if (!getPBMApplication().userIsAuthenticated()) {
 			menu.removeItem(R.id.add_machine_button);
 			menu.removeItem(R.id.edit_button);

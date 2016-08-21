@@ -3,7 +3,6 @@ package com.pbm;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -42,8 +41,6 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 		setTitle(machine.name + " @ " + location.name);
 
-		SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
-
 		initializeRemoveMachineButton();
 		initializeAddMachineConditionButton();
 		initializePintipsButton();
@@ -67,21 +64,20 @@ public class LocationMachineEdit extends PinballMapActivity {
 		if (!getPBMApplication().userIsAuthenticated()) {
 			addMachineCondition.setText(R.string.login_to_add_condition);
 		}
+
 		addMachineCondition.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+			Intent myIntent = new Intent();
 
-				Intent myIntent = new Intent();
+			if (!getPBMApplication().userIsAuthenticated()) {
+				myIntent.setClassName("com.pbm", "com.pbm.Login");
+			} else {
+				myIntent.setClassName("com.pbm", "com.pbm.ConditionEdit");
+				myIntent.putExtra("lmx", lmx);
+			}
 
-				if (!getPBMApplication().userIsAuthenticated()) {
-					myIntent.setClassName("com.pbm", "com.pbm.Login");
-				} else {
-					myIntent.setClassName("com.pbm", "com.pbm.ConditionEdit");
-					myIntent.putExtra("lmx", lmx);
-				}
-
-				startActivityForResult(myIntent, QUIT_RESULT);
+			startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
 	}
@@ -107,18 +103,16 @@ public class LocationMachineEdit extends PinballMapActivity {
 		addScore.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+			Intent myScoreIntent = new Intent();
 
-				Intent myScoreIntent = new Intent();
+			if (!getPBMApplication().userIsAuthenticated()) {
+				myScoreIntent.setClassName("com.pbm", "com.pbm.Login");
+			} else {
+				myScoreIntent.setClassName("com.pbm", "com.pbm.EnterScore");
+				myScoreIntent.putExtra("lmx", lmx);
+			}
 
-				if (!getPBMApplication().userIsAuthenticated()) {
-					myScoreIntent.setClassName("com.pbm", "com.pbm.Login");
-				} else {
-					myScoreIntent.setClassName("com.pbm", "com.pbm.EnterScore");
-					myScoreIntent.putExtra("lmx", lmx);
-				}
-
-				startActivityForResult(myScoreIntent, QUIT_RESULT);
+			startActivityForResult(myScoreIntent, QUIT_RESULT);
 			}
 		});
 	}
@@ -129,47 +123,48 @@ public class LocationMachineEdit extends PinballMapActivity {
 		otherLocations.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent myIntent = new Intent();
-				myIntent.putExtra("Machine", machine);
-				myIntent.setClassName("com.pbm", "com.pbm.MachineLookupDetail");
-				startActivityForResult(myIntent, QUIT_RESULT);
+			Intent myIntent = new Intent();
+			myIntent.putExtra("Machine", machine);
+			myIntent.setClassName("com.pbm", "com.pbm.MachineLookupDetail");
+
+			startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
 	}
 
 	private void removeMachineDialog() {
 		new AlertDialog.Builder(LocationMachineEdit.this)
-				.setIcon(android.R.drawable.ic_dialog_alert).setTitle("Remove this machine?").setMessage("Are you sure?")
-				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-					new Thread(new Runnable() {
-						public void run() {
-						try {
-							PBMApplication app = getPBMApplication();
+			.setIcon(android.R.drawable.ic_dialog_alert).setTitle("Remove this machine?").setMessage("Are you sure?")
+			.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+				new Thread(new Runnable() {
+					public void run() {
+					try {
+						PBMApplication app = getPBMApplication();
 
-							location.removeMachine(LocationMachineEdit.this, lmx);
-							new RetrieveJsonTask().execute(
-								app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.id) + ".json"),
-								"DELETE"
-							).get();
-						} catch (InterruptedException | ExecutionException e) {
-							e.printStackTrace();
-						}
-
-						LocationMachineEdit.super.runOnUiThread(new Runnable() {
-							public void run() {
-							Toast.makeText(getBaseContext(), "OK, machine deleted.", Toast.LENGTH_LONG).show();
-
-							setResult(REFRESH_RESULT);
-							LocationMachineEdit.this.finish();
-							}
-						});
-						}
-					}).start();
+						location.removeMachine(LocationMachineEdit.this, lmx);
+						new RetrieveJsonTask().execute(
+							app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.id) + ".json"),
+							"DELETE"
+						).get();
+					} catch (InterruptedException | ExecutionException e) {
+						e.printStackTrace();
 					}
-				})
-				.setNegativeButton("No", null)
-				.show();
+
+					LocationMachineEdit.super.runOnUiThread(new Runnable() {
+						public void run() {
+						Toast.makeText(getBaseContext(), "OK, machine deleted.", Toast.LENGTH_LONG).show();
+
+						setResult(REFRESH_RESULT);
+						LocationMachineEdit.this.finish();
+						}
+					});
+					}
+				}).start();
+				}
+			})
+			.setNegativeButton("No", null)
+			.show();
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -221,7 +216,6 @@ public class LocationMachineEdit extends PinballMapActivity {
 			return rhs.getDate().compareTo(lhs.getDate());
 			}
 		});
-
 	}
 
 	private void loadConditions() {
@@ -236,7 +230,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 		int conditionCount = conditions.size() < NUMBER_OF_CONDITIONS_TO_SHOW ? conditions.size() : NUMBER_OF_CONDITIONS_TO_SHOW;
 
-		conditionsAdapter = new ConditionsArrayAdapter(this, inflater, new ArrayList(conditions.subList(0, conditionCount)));
+		conditionsAdapter = new ConditionsArrayAdapter(this, inflater, new ArrayList(conditions.subList(conditions.size() - conditionCount, conditions.size())));
 		listView.setAdapter(conditionsAdapter);
 		conditionsAdapter.sort(new Comparator<Condition>() {
 			@Override
