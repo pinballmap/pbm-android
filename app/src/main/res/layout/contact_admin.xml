@@ -38,15 +38,15 @@
 
         <EditText
             android:id="@+id/submitterNameField"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
             android:layout_below="@+id/submitterNameTextView"
             android:inputType="text"
             android:background="@drawable/textbox_bg"
             android:ems="10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp" >
+            android:layout_marginRight="6dp" >
             <requestFocus/>
         </EditText>
 
@@ -63,15 +63,15 @@
 
         <EditText
             android:id="@+id/submitterEmailField"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:background="@drawable/textbox_bg"
             android:layout_below="@+id/submitterEmailTextView"
             android:ems="10"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="6dp" />
 
         <TextView
             android:id="@+id/messageTextView"
@@ -86,8 +86,8 @@
 
         <EditText
             android:id="@+id/messageField"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
             android:layout_below="@+id/messageTextView"
             android:background="@drawable/textbox_bg"
             android:inputType="textMultiLine"
@@ -95,7 +95,7 @@
             android:ems="10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="6dp" />
 
         <Button
             android:id="@+id/button1"

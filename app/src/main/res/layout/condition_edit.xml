@@ -28,9 +28,9 @@
         android:labelFor="@+id/condition"
         android:background="@drawable/textbox_bg"
         android:padding="15dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" />
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp" />
 
     <Button
         android:id="@+id/submitCondition"
