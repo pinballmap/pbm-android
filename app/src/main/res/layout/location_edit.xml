@@ -39,7 +39,11 @@
         android:layout_below="@+id/enterPhoneHeader"
         android:background="@drawable/textbox_bg"
         android:ems="10"
-        android:inputType="phone"/>
+        android:inputType="phone"
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginRight="6dp"/>
 
     <TextView
         android:id="@+id/enterLocationTypeHeader"
@@ -82,7 +86,11 @@
         android:background="@drawable/textbox_bg"
         android:ems="10"
         android:inputType="textUri"
-        android:labelFor="@+id/editWebsite"/>
+        android:labelFor="@+id/editWebsite"
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginRight="6dp" />
 
     <TextView
         android:id="@+id/enterDescriptionHeader"
@@ -105,7 +113,11 @@
         android:background="@drawable/textbox_bg"
         android:ems="10"
         android:inputType="textUri"
-        android:labelFor="@+id/editDescription"/>
+        android:labelFor="@+id/editDescription"
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginRight="6dp" />
 
     <TextView
         android:id="@+id/enterOperator"

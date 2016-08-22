@@ -36,14 +36,14 @@
         <EditText
             android:id="@+id/nameField"
             android:layout_below="@+id/nameTextView"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
             android:inputType="text"
             android:ems="10"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/textbox_bg"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="6dp"
             android:layout_marginBottom="10dp">
              <requestFocus/>
         </EditText>
@@ -61,14 +61,14 @@
         <EditText
             android:id="@+id/streetField"
             android:layout_below="@+id/streetTextView"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
             android:ems="10"
             android:inputType="textPostalAddress"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/textbox_bg"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="6dp"
             android:layout_marginBottom="10dp" />
 
         <TextView
@@ -85,13 +85,13 @@
             android:id="@+id/cityField"
             android:layout_below="@+id/cityTextView"
             android:inputType="text"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
             android:ems="10"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/textbox_bg"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="6dp"
             android:layout_marginBottom="10dp" />
 
         <TextView
@@ -108,13 +108,13 @@
             android:id="@+id/stateField"
             android:layout_below="@+id/stateTextView"
             android:inputType="text"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
             android:ems="10"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/textbox_bg"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="6dp"
             android:layout_marginBottom="10dp" />
 
         <TextView
@@ -131,13 +131,13 @@
             android:id="@+id/zipField"
             android:layout_below="@+id/zipTextView"
             android:inputType="text"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
             android:ems="10"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/textbox_bg"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="6dp"
             android:layout_marginBottom="10dp" />
 
         <TextView
@@ -156,10 +156,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/textbox_bg"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="6dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
             android:ems="10"
             android:inputType="phone"/>
 
@@ -177,13 +177,13 @@
             android:id="@+id/websiteField"
             android:layout_below="@+id/websiteTextView"
             android:inputType="text"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
             android:ems="10"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/textbox_bg"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="6dp"
             android:layout_marginBottom="10dp" />
 
         <TextView
@@ -199,14 +199,14 @@
         <EditText
             android:id="@+id/operatorField"
             android:layout_below="@+id/operatorTextView"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
             android:inputType="text"
             android:ems="10"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/textbox_bg"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="6dp"
             android:layout_marginBottom="10dp" />
 
         <TextView
@@ -222,14 +222,14 @@
         <EditText
             android:id="@+id/submitterNameField"
             android:layout_below="@+id/submitterNameTextView"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
             android:inputType="text"
             android:ems="10"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/textbox_bg"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="6dp"
             android:layout_marginBottom="10dp" />
 
         <TextView
@@ -245,14 +245,14 @@
         <EditText
             android:id="@+id/submitterEmailField"
             android:layout_below="@+id/submitterEmailTextView"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
             android:inputType="textEmailAddress"
             android:ems="10"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/textbox_bg"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="6dp"
             android:layout_marginBottom="10dp" />
 
         <TextView
@@ -260,7 +260,6 @@
             android:layout_below="@+id/submitterEmailField"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:labelFor="@+id/multiAutoCompleteTextView1"
             android:text="@string/machines"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -272,8 +271,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/textbox_bg"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginLeft="6dp"
             android:ems="10"
             android:maxWidth="300dp"
             android:width="300dp"/>

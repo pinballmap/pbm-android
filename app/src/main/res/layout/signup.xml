@@ -3,9 +3,9 @@
     android:background="@drawable/backrepeat"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
     tools:context=".Login"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -36,22 +36,29 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/usernameWrapper"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginRight="6dp">
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Username"
             android:background="@drawable/textbox_bg"
-            android:padding="10dp"
-            android:paddingLeft="10dp"/>
+            android:padding="10dp" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/emailWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp">
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginRight="6dp">
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
@@ -68,7 +75,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/usernameWrapper"
-            android:layout_marginTop="4dp">
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginRight="6dp">
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
@@ -85,7 +96,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/passwordWrapper"
-            android:layout_marginTop="4dp">
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginRight="6dp">
             <EditText
                 android:id="@+id/confirmPassword"
                 android:layout_width="match_parent"

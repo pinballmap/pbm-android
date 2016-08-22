@@ -5,19 +5,24 @@
     android:orientation="vertical"
 	android:background="#FCF3EA">
 
-	<TextView android:id="@+id/addNewText" android:layout_width="match_parent"
+	<TextView android:id="@+id/addNewText" android:layout_width="wrap_content"
 		android:text="@string/enter_machine"
 		android:textStyle="bold|italic" android:textSize="12sp"
 		android:labelFor="@+id/manualNewMachine"
 		android:layout_height="wrap_content"
-		android:layout_marginLeft="5dp"
-		android:layout_marginTop="5dp" />
+        android:layout_marginTop="6dp"
+        android:layout_gravity="center_horizontal" />
 
 	<AutoCompleteTextView
 	    android:id="@+id/manualNewMachineTextView"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:ems="10" >
+	    android:ems="10"
+		android:background="@drawable/textbox_bg"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp">
 
 	    <requestFocus />
 	</AutoCompleteTextView>
