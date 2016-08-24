@@ -264,12 +264,12 @@ public class LocationDetail extends PinballMapActivity {
 		if (!lmx.condition.equals("null") && !lmx.condition.equals("")) {
 			conditionText += lmx.condition;
 			if (!lmx.conditionDate.equals("null") && !lmx.condition.equals("")) {
-				conditionText += '\n' + "<i>" + getBaseContext().getString(R.string.updated_on) + "</i> " + lmx.conditionDate;
+				conditionText += "<br /><i>&nbsp;" + getBaseContext().getString(R.string.updated_on) + "</i> " + lmx.conditionDate;
 			}
 
 			String lastUpdatedByUsername = lmx.lastUpdatedByUsername;
 			if(lastUpdatedByUsername != null && !lastUpdatedByUsername.isEmpty()) {
-				conditionText += " <b>by " + lastUpdatedByUsername + "</b>";
+				conditionText += " by<b> " + lastUpdatedByUsername + "</b>";
 			}
 
 			holder.condition.setText(Html.fromHtml(conditionText));
