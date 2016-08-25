@@ -37,7 +37,7 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 	}
 
 	public void initializeManualNewMachineTextView() {
-		String[] machineNames = getPBMApplication().getMachineNames();
+		String[] machineNames = getPBMApplication().getMachineNamesWithMetadata();
 		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, machineNames);
 		AutoCompleteTextView manualNewMachineTextView = (AutoCompleteTextView) findViewById(R.id.manualNewMachineTextView);
 		manualNewMachineTextView.setAdapter(adapter);
@@ -51,28 +51,28 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 		final ArrayList<Machine> allMachines = getPBMApplication().getMachineValues(true);
 		addMachineTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(final AdapterView<?> parentView, View selectedView, final int position, long id) {
-				new Thread(new Runnable() {
-					public void run() {
-						Machine machine = allMachines.get(position);
-						machine.setExistsInRegion(true);
+			new Thread(new Runnable() {
+				public void run() {
+				Machine machine = allMachines.get(position);
+				machine.setExistsInRegion(true);
 
-						try {
-							new RetrieveJsonTask(AddMachine.this).execute(
-								getPBMApplication().requestWithAuthDetails(regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + machine.id),
-								"POST"
-							).get();
-						} catch (InterruptedException | ExecutionException e) {
-							e.printStackTrace();
-						}
-						AddMachine.super.runOnUiThread(new Runnable() {
-							public void run() {
-								Toast.makeText(getBaseContext(), "Thanks for adding that machine!", Toast.LENGTH_LONG).show();
-								setResult(REFRESH_RESULT);
-								AddMachine.this.finish();
-							}
-						});
+				try {
+					new RetrieveJsonTask(AddMachine.this).execute(
+						getPBMApplication().requestWithAuthDetails(regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + machine.id),
+						"POST"
+					).get();
+				} catch (InterruptedException | ExecutionException e) {
+					e.printStackTrace();
+				}
+				AddMachine.super.runOnUiThread(new Runnable() {
+					public void run() {
+					Toast.makeText(getBaseContext(), "Thanks for adding that machine!", Toast.LENGTH_LONG).show();
+					setResult(REFRESH_RESULT);
+					AddMachine.this.finish();
 					}
-				}).start();
+				});
+				}
+			}).start();
 			}
 		});
 
@@ -80,15 +80,19 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 	}
 
 	public void submitHandler(View view) {		
-		final String manualMachineName = ((AutoCompleteTextView) findViewById(R.id.manualNewMachineTextView)).getText().toString();
+		final String manualMachineMetadata = ((AutoCompleteTextView) findViewById(R.id.manualNewMachineTextView)).getText().toString();
 
-		if (manualMachineName.length() > 0) {
+		if (manualMachineMetadata.length() > 0) {
 			new Thread(new Runnable() {
 				public void run() {
 				try {
 					PBMApplication app = getPBMApplication();
 
-					int machineID = app.getMachineIDFromMachineName(manualMachineName);
+					String rawMetadata = manualMachineMetadata.substring(manualMachineMetadata.indexOf("[")+1, manualMachineMetadata.indexOf("]"));
+					String machineName = manualMachineMetadata.substring(0, manualMachineMetadata.indexOf("[")-1);
+					String[] metadata = rawMetadata.split("-");
+
+					int machineID = app.getMachineIDFromMachineMetadata(machineName.trim(), metadata[1].trim(), metadata[0].trim());
 					if (machineID != -1) {
 						new RetrieveJsonTask(AddMachine.this).execute(
 							app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + machineID),
@@ -96,7 +100,7 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 						).get();
 					} else {
 						new RetrieveJsonTask(AddMachine.this).execute(
-							app.requestWithAuthDetails(regionlessBase + "machines.json?machine_name=" + URLEncoder.encode(manualMachineName, "UTF8") + ";location_id=" + location.id),
+							app.requestWithAuthDetails(regionlessBase + "machines.json?machine_name=" + URLEncoder.encode(manualMachineMetadata, "UTF8") + ";location_id=" + location.id),
 							"POST"
 						).get();
 					}
@@ -106,8 +110,8 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 
 				AddMachine.super.runOnUiThread(new Runnable() {
 					public void run() {
-						setResult(REFRESH_RESULT);
-						AddMachine.this.finish();
+					setResult(REFRESH_RESULT);
+					AddMachine.this.finish();
 					}
 				});
 				}

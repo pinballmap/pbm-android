@@ -25,7 +25,7 @@ public class LocationMachineXref implements Serializable {
 		this.lastUpdatedByUsername = lastUpdatedByUsername;
 
 		String formattedConditionDate = "";
-		if (conditionDate != null && !conditionDate.equalsIgnoreCase("null")){
+		if (conditionDate != null && !conditionDate.equalsIgnoreCase("null") && !conditionDate.isEmpty()){
 			Date rawDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(conditionDate);
 			formattedConditionDate = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(rawDate);
 		}
