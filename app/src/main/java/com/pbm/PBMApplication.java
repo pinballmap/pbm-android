@@ -120,7 +120,7 @@ public class PBMApplication extends Application {
 
 		int i = 0;
 		for (Machine machine : machines.values()) {
-			names[i] = machine.name + " (" + machine.manufacturer + " - " + machine.year + ")";
+			names[i] = machine.name + " [" + machine.manufacturer + " - " + machine.year + "]";
 
 			i++;
 		}
@@ -267,11 +267,16 @@ public class PBMApplication extends Application {
 		return machines.get(id);
 	}
 
-	public Machine getMachineByName(String name) {
+	public Machine getMachineByMetadata(String name, String year, String manufacturer) {
 		ArrayList<Machine> machines = getMachineValues(true);
 		for (Object baseMachine : machines) {
 			Machine machine = (Machine) baseMachine;
-			if (machine.name.equalsIgnoreCase(name)) {
+
+			if (
+				machine.name.equalsIgnoreCase(name) &&
+				(!year.isEmpty() && machine.year.equalsIgnoreCase(year)) &&
+				(!manufacturer.isEmpty() && machine.manufacturer.equalsIgnoreCase(manufacturer))
+			) {
 				return machine;
 			}
 		}
@@ -358,10 +363,10 @@ public class PBMApplication extends Application {
 		return machineValues;
 	}
 
-	public int getMachineIDFromMachineName(String name) throws InterruptedException, ExecutionException, JSONException {
+	public int getMachineIDFromMachineMetadata(String name, String year, String manufacturer) throws InterruptedException, ExecutionException, JSONException {
 		int machineID = -1;
 
-		Machine machine = getMachineByName(name);
+		Machine machine = getMachineByMetadata(name, year, manufacturer);
 		if (machine != null) {
 			machine.setExistsInRegion(true);
 
