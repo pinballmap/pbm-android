@@ -197,6 +197,8 @@ public class LocationDetail extends PinballMapActivity {
 		}
 
 		LinearLayout lmxTable = (LinearLayout) findViewById(R.id.lmxTable);
+		lmxTable.removeAllViewsInLayout();
+		
 		for (Machine machine : machines) {
 			lmxTable.addView(getLMXView(getPBMApplication().getLmxFromMachine(machine, lmxes), lmxTable));
 		}
