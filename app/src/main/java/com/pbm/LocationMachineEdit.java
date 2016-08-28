@@ -3,6 +3,7 @@ package com.pbm;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -15,8 +16,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class LocationMachineEdit extends PinballMapActivity {
@@ -152,6 +156,11 @@ public class LocationMachineEdit extends PinballMapActivity {
 							app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.id) + ".json"),
 							"DELETE"
 						).get();
+
+						SharedPreferences settings = getBaseContext().getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+						location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
+						location.lastUpdatedByUsername = settings.getString("username", "");
+						app.setLocation(location.id, location);
 					} catch (InterruptedException | ExecutionException e) {
 						e.printStackTrace();
 					}
