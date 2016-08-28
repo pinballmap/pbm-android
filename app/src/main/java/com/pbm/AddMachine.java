@@ -1,5 +1,6 @@
 package com.pbm;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,7 +15,10 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
@@ -149,5 +153,10 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 			}
 			app.loadConditions(jsonLmx, id, locationID, machineID);
 		}
+
+		SharedPreferences settings = this.getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+		location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
+		location.lastUpdatedByUsername = settings.getString("username", "");
+		app.setLocation(location.id, location);
 	}
 }
