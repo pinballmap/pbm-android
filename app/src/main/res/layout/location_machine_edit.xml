@@ -119,7 +119,7 @@
         android:textColor="@android:color/white"
         android:text="Remove machine"
         android:layout_marginTop="20dp"
-        android:padding="15dp"/>
+        android:padding="15dp" />
 
 </LinearLayout>
 </ScrollView>

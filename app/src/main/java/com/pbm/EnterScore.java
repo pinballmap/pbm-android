@@ -78,7 +78,7 @@ public class EnterScore extends PinballMapActivity implements OnTaskCompleted {
 			long score = jsonLmx.getLong("score");
 			String username = jsonLmx.getString("username");
 
-			SimpleDateFormat df = new SimpleDateFormat("mm-dd-yyyy", Locale.getDefault());
+			SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
 
 			lmx.addScore(
 				EnterScore.this,
