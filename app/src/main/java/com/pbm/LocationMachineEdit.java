@@ -225,10 +225,11 @@ public class LocationMachineEdit extends PinballMapActivity {
 		ScoresArrayAdapter scoresAdapter;
 		scoresAdapter = new ScoresArrayAdapter(this, inflater, new ArrayList(scores.subList(0, scoreCount)));
 		listView.setAdapter(scoresAdapter);
-		conditionsAdapter.sort(new Comparator<Condition>() {
-			@Override
-			public int compare(Condition lhs, Condition rhs) {
-			return rhs.getDate().compareTo(lhs.getDate());
+		scoresAdapter.sort(new Comparator<MachineScore>() {
+			public int compare(MachineScore lhs, MachineScore rhs) {
+				return rhs.getScore() > lhs.getScore() ? 1 :
+						rhs.getScore() < lhs.getScore() ? -1 :
+						0;
 			}
 		});
 	}
