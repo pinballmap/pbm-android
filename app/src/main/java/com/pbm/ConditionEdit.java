@@ -13,6 +13,9 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class ConditionEdit extends PinballMapActivity implements OnTaskCompleted {
@@ -87,5 +90,11 @@ public class ConditionEdit extends PinballMapActivity implements OnTaskCompleted
 				jsonLmx.getInt("machine_id")
 			);
 		}
+
+		Location location = lmx.getLocation(this);
+		SharedPreferences settings = this.getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+		location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
+		location.lastUpdatedByUsername = settings.getString("username", "");
+		getPBMApplication().setLocation(location.id, location);
 	}
 }
