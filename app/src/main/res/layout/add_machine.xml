@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-	android:background="#FCF3EA">
+	android:background="#dcdcdc">
 
 	<TextView android:id="@+id/addNewText" android:layout_width="wrap_content"
 		android:text="@string/enter_machine"
@@ -44,5 +44,5 @@
 		android:layout_height="3dip" android:background="#a77e51" />
 	<ListView android:id="@+id/addMachineTable" android:paddingTop="5dip"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:background="#FEFBF8" />
+		android:background="#EFEFEF" />
 </LinearLayout>

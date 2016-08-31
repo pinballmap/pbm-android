@@ -19,7 +19,7 @@
     <string name="phone_number">Phone Number:</string>
     <string name="blank"> </string>
     <string name="city">City:</string>
-    <string name="name">Name:</string>
+    <string name="name">Location Name:</string>
     <string name="street">Street:</string>
     <string name="state">State:</string>
     <string name="phone">Phone:</string>

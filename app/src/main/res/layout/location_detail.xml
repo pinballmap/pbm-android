@@ -9,13 +9,13 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:background="#FEFBF8">
+        android:background="#EFEFEF">
 
         <LinearLayout
             android:id="@+id/locationData"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#FEFBF8"
+            android:background="#EFEFEF"
             android:orientation="vertical"
             android:layout_marginBottom="10dp">
 
@@ -26,15 +26,15 @@
                 android:padding="5sp"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:background="#ece2d8"
-                android:textColor="#6E5335" />
+                android:background="#d8f0f5"
+                android:textColor="#303030" />
 
             <TextView
                 android:id="@+id/locationLastUpdated"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:background="#FCF3EA"
+                android:background="#f7f7f7"
                 android:textStyle="italic"
                 android:paddingLeft="10sp"
                 android:paddingRight="10sp"
@@ -85,6 +85,7 @@
                 android:paddingStart="10dip"
                 android:paddingLeft="10dip"
                 android:textColor="#666666"
+                android:background="#f7f7f7"
                 android:textSize="15sp"/>
 
             <TextView
@@ -94,6 +95,7 @@
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
                 android:textColor="#666666"
+                android:background="#f7f7f7"
                 android:textSize="15sp"/>
             <TextView
                 android:id="@+id/description"
@@ -103,6 +105,7 @@
                 android:paddingRight="10dip"
                 android:textColor="#888888"
                 android:textSize="15sp"
+                android:background="#f7f7f7"
                 android:textStyle="italic" />
         </LinearLayout>
 
@@ -124,13 +127,13 @@
             android:id="@+id/spacer"
             android:layout_width="fill_parent"
             android:layout_height="4dip"
-            android:background="#a77e51"/>
+            android:background="#303030"/>
 
         <LinearLayout
             android:id="@+id/lmxTable"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#FEFBF8" />
+            android:background="#EFEFEF" />
     </LinearLayout>
 </ScrollView>

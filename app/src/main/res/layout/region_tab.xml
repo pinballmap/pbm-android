@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/select_region"
         android:textSize="18sp"
-        android:background="#FCF3EA"
+        android:background="#dcdcdc"
         android:autoText="true"
         android:padding="5dip" />
 
@@ -28,7 +28,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/spacer"
-        android:background="#FEFBF8">
+        android:background="#EFEFEF">
 
         <android.support.v4.view.PagerTabStrip
             android:layout_width="match_parent"

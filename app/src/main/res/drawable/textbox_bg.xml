@@ -7,7 +7,7 @@
         android:bottom="0dp">
         <shape>
             <solid
-                android:color="#ebeae9"/>
+                android:color="#fcfcfc"/>
             <corners
                 android:radius="0dp" />
             <padding
@@ -17,7 +17,7 @@
                 android:bottom="10dp" />
             <stroke
                 android:width="5dp"
-                android:color="#795c3b" />
+                android:color="#303030" />
         </shape>
     </item>
 </layer-list>
