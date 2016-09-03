@@ -2,13 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-    android:background="#FEFBF8">
+    android:background="#EFEFEF">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#FEFBF8"
+        android:background="#EFEFEF"
         android:padding="10dp">
 
         <TextView
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:text="@string/suggest_region"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#6E5335"
+            android:textColor="#303030"
             android:layout_centerHorizontal="true"
             android:padding="5dp"
             android:layout_marginBottom="10dp"
@@ -33,7 +33,7 @@
             android:textSize="16sp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:padding="10dp"
-            android:background="#FCF3EA" />
+            android:background="#dcdcdc" />
 
         <TextView
             android:id="@+id/submitterNameTextView"

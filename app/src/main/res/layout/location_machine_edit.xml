@@ -9,13 +9,12 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-    android:background="#FEFBF8">
+    android:background="#EFEFEF">
     <Button
         android:id="@+id/pintips"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_centerHorizontal="true"
         android:linksClickable="true"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
@@ -33,7 +32,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_centerHorizontal="true"
         android:text="Add a new condition report"
         android:textSize="15sp"
         android:padding="15dp"
@@ -49,8 +47,6 @@
         android:id="@android:id/empty"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft= "true"
-        android:layout_alignParentStart="true"
         android:layout_marginBottom="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
@@ -73,7 +69,6 @@
         android:textSize="15sp"
         android:padding="15dp"
         android:background="@drawable/input_btn"
-        android:layout_centerHorizontal="true"
         android:textColor="#FFFFFF" />
 
     <com.pbm.NonScrollListView
@@ -85,8 +80,6 @@
         android:id="@+id/empty_score"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft= "true"
-        android:layout_alignParentStart="true"
         android:layout_marginBottom="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
@@ -108,13 +101,11 @@
         android:padding="15dp"
         android:layout_margin="10dp"
         android:background="@drawable/input_btn"
-        android:layout_centerHorizontal="true"
         android:textColor="#FFFFFF" />
     <Button
         android:id="@+id/remove_machine_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:background="@android:color/holo_red_dark"
         android:textColor="@android:color/white"
         android:text="Remove machine"

@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="#FEFBF8"
+    android:background="#EFEFEF"
     android:padding="10dp">
 
     <TextView
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/edit_location"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#6E5335"
+        android:textColor="#303030"
         android:layout_centerHorizontal="true"
         android:padding="5dp"
         android:layout_marginBottom="10dp"

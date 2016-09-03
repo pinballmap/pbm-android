@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/backrepeat"
+    android:background="#EFEFEF"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Login"
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView android:id="@+id/logo" android:src="@drawable/pinballmapcom" android:contentDescription="Pinball Map"
+        <ImageView android:id="@+id/logo" android:src="@drawable/pinballmapcom_blue" android:contentDescription="Pinball Map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
@@ -34,7 +34,7 @@
             android:gravity="center"
             android:text="A User-Powered Pinball Locator"
             android:textSize="22sp"
-            android:textColor="#675032"
+            android:textColor="#A9A9A9"
             android:textStyle="bold"
             android:background="@drawable/header_bg" />
 
@@ -53,7 +53,7 @@
             android:gravity="center"
             android:text="Login to continue:"
             android:textSize="20sp"
-            android:textColor="#675a5a"
+            android:textColor="#545454"
             android:textStyle="italic"
             android:autoText="false"
             android:padding="4dp" />
@@ -131,7 +131,7 @@
         <TextView
             android:id="@+id/or_text"
             android:layout_width="wrap_content"
-            android:textColor="#6E5335"
+            android:textColor="#303030"
             android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
             android:text="Or"
@@ -154,7 +154,7 @@
         <TextView
             android:id="@+id/no_login_exp"
             android:layout_width="wrap_content"
-            android:textColor="#6E5335"
+            android:textColor="#303030"
             android:layout_height="wrap_content"
             android:text="Note: You can't update without logging in"
             android:textSize="16sp"
