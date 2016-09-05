@@ -76,14 +76,13 @@ public class DisplayOnMap extends PinballMapActivity implements OnMapReadyCallba
 		switch (resultCode) {
 			case PinballMapActivity.QUIT_RESULT:
 				setResult(PinballMapActivity.QUIT_RESULT);
-				super.finish();
-				this.finish();
+				android.os.Process.killProcess(android.os.Process.myPid());
 
 				break;
 			case PinballMapActivity.RESET_RESULT:
 				setResult(PinballMapActivity.RESET_RESULT);
-				super.finish();
-				this.finish();
+
+				android.os.Process.killProcess(android.os.Process.myPid());
 
 				break;
 			default:
