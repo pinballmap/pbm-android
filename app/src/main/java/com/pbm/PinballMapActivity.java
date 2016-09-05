@@ -203,8 +203,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 				return true;
 			case R.id.quit:
 				setResult(QUIT_RESULT);
-				super.finish();
-				this.finish();
+				android.os.Process.killProcess(android.os.Process.myPid());
 
 				return true;
 		}
@@ -231,8 +230,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	public void activityQuitResult() {
 		setResult(QUIT_RESULT);
 
-		super.finish();
-		this.finish();
+		android.os.Process.killProcess(android.os.Process.myPid());
 	}
 
 	public void activityResetResult() {
