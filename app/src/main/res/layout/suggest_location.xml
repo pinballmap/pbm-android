@@ -4,8 +4,8 @@
             android:layout_height="fill_parent"
     android:background="#EFEFEF">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="#EFEFEF"
@@ -27,7 +27,6 @@
             android:id="@+id/nameTextView"
             android:text="@string/name"
             android:labelFor="@+id/nameField"
-            android:layout_below="@+id/submitLocationId"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +34,6 @@
 
         <EditText
             android:id="@+id/nameField"
-            android:layout_below="@+id/nameTextView"
             android:layout_marginStart="6dp"
             android:layout_marginLeft="6dp"
             android:inputType="text"
@@ -50,7 +48,6 @@
 
         <TextView
             android:id="@+id/streetTextView"
-            android:layout_below="@+id/nameField"
             android:text="@string/street"
             android:labelFor="@+id/streetField"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -60,7 +57,6 @@
 
         <EditText
             android:id="@+id/streetField"
-            android:layout_below="@+id/streetTextView"
             android:layout_marginStart="6dp"
             android:layout_marginLeft="6dp"
             android:ems="10"
@@ -73,7 +69,6 @@
 
         <TextView
             android:id="@+id/cityTextView"
-            android:layout_below="@+id/streetField"
             android:text="@string/city"
             android:labelFor="@+id/cityField"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -83,7 +78,6 @@
 
         <EditText
             android:id="@+id/cityField"
-            android:layout_below="@+id/cityTextView"
             android:inputType="text"
             android:layout_marginStart="6dp"
             android:layout_marginLeft="6dp"
@@ -96,7 +90,6 @@
 
         <TextView
             android:id="@+id/stateTextView"
-            android:layout_below="@+id/cityField"
             android:text="@string/state"
             android:labelFor="@+id/stateField"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -106,7 +99,6 @@
 
         <EditText
             android:id="@+id/stateField"
-            android:layout_below="@+id/stateTextView"
             android:inputType="text"
             android:layout_marginStart="6dp"
             android:layout_marginLeft="6dp"
@@ -119,7 +111,6 @@
 
         <TextView
             android:id="@+id/zipTextView"
-            android:layout_below="@+id/stateField"
             android:text="@string/zip"
             android:labelFor="@+id/zipField"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -129,7 +120,6 @@
 
         <EditText
             android:id="@+id/zipField"
-            android:layout_below="@+id/zipTextView"
             android:inputType="text"
             android:layout_marginStart="6dp"
             android:layout_marginLeft="6dp"
@@ -142,7 +132,6 @@
 
         <TextView
             android:id="@+id/phoneTextView"
-            android:layout_below="@+id/zipField"
             android:text="@string/phone"
             android:labelFor="@+id/phoneField"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -152,7 +141,6 @@
 
         <EditText
             android:id="@+id/phoneField"
-            android:layout_below="@+id/phoneTextView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/textbox_bg"
@@ -165,7 +153,6 @@
 
         <TextView
             android:id="@+id/websiteTextView"
-            android:layout_below="@+id/phoneField"
             android:text="@string/website"
             android:labelFor="@+id/websiteField"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -175,7 +162,6 @@
 
         <EditText
             android:id="@+id/websiteField"
-            android:layout_below="@+id/websiteTextView"
             android:inputType="text"
             android:layout_marginStart="6dp"
             android:layout_marginLeft="6dp"
@@ -188,7 +174,6 @@
 
         <TextView
             android:id="@+id/operatorTextView"
-            android:layout_below="@+id/websiteField"
             android:text="@string/operator"
             android:labelFor="@+id/operatorField"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -198,7 +183,6 @@
 
         <EditText
             android:id="@+id/operatorField"
-            android:layout_below="@+id/operatorTextView"
             android:layout_marginStart="6dp"
             android:layout_marginLeft="6dp"
             android:inputType="text"
@@ -208,56 +192,8 @@
             android:background="@drawable/textbox_bg"
             android:layout_marginRight="6dp"
             android:layout_marginBottom="10dp" />
-
-        <TextView
-            android:id="@+id/submitterNameTextView"
-            android:layout_below="@+id/operatorField"
-            android:text="@string/submitter_name"
-            android:labelFor="@+id/submitterNameField"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/submitterNameField"
-            android:layout_below="@+id/submitterNameTextView"
-            android:layout_marginStart="6dp"
-            android:layout_marginLeft="6dp"
-            android:inputType="text"
-            android:ems="10"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/textbox_bg"
-            android:layout_marginRight="6dp"
-            android:layout_marginBottom="10dp" />
-
-        <TextView
-            android:id="@+id/submitterEmailTextView"
-            android:layout_below="@+id/submitterNameField"
-            android:text="@string/submitter_email"
-            android:labelFor="@+id/submitterEmailField"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/submitterEmailField"
-            android:layout_below="@+id/submitterEmailTextView"
-            android:layout_marginStart="6dp"
-            android:layout_marginLeft="6dp"
-            android:inputType="textEmailAddress"
-            android:ems="10"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/textbox_bg"
-            android:layout_marginRight="6dp"
-            android:layout_marginBottom="10dp" />
-
         <TextView
             android:id="@+id/machinesTextView"
-            android:layout_below="@+id/submitterEmailField"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:labelFor="@+id/multiAutoCompleteTextView1"
@@ -267,7 +203,6 @@
 
         <MultiAutoCompleteTextView
             android:id="@+id/autoCompleteMachinesTextView"
-            android:layout_below="@+id/machinesTextView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/textbox_bg"
@@ -279,7 +214,6 @@
 
         <Button
             android:id="@+id/submitButton"
-            android:layout_below="@+id/autoCompleteMachinesTextView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -289,5 +223,5 @@
             android:background="@drawable/input_btn"
             android:textColor="#FFFFFF" />
 
-    </RelativeLayout>
+    </LinearLayout>
 </ScrollView>
