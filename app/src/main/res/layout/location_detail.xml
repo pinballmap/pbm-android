@@ -26,7 +26,7 @@
                 android:padding="5sp"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:background="#d8f0f5"
+                android:background="#d3ecff"
                 android:textColor="#303030" />
 
             <TextView
