@@ -160,6 +160,12 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 				startActivityForResult(aboutIntent, QUIT_RESULT);
 
 				return true;
+			case R.id.donate:
+				Intent donateIntent = new Intent();
+				donateIntent.setClassName("com.pbm", "com.pbm.Donate");
+				startActivityForResult(donateIntent, QUIT_RESULT);
+
+				return true;
 			case R.id.contact_admin:
 				Intent contactIntent = new Intent();
 				String contactClassName = getPBMApplication().userIsAuthenticated() ? "com.pbm.ContactAdmin" : "com.pbm.Login";

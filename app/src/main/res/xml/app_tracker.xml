@@ -19,6 +19,9 @@
     <screenName name="com.pbm.DisplayOnMap">
         Display on Map
     </screenName>
+    <screenName name="com.pbm.Donate">
+        Donate
+    </screenName>
     <screenName name="com.pbm.Events">
         Events
     </screenName>
