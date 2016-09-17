@@ -66,4 +66,20 @@
     <string name="login_to_update">Login to update this location"</string>
     <string name="login_to_add_condition">Login to leave a condition report</string>
     <string name="login_to_add_score">Login to add your high score</string>
+    <string name="donate"><![CDATA[
+        <p>
+            <span>Since 2007,</span>we\'ve spent countless evenings and weekends building, maintaining, and enhancing Pinball Map. It\'s a fun project, and we\'re grateful that so many people find it useful. We\'re committed to continuing to improve the site.
+        </p>
+        <p>But as the site has grown in popularity and scope, the infrastructure costs have also grown. They are pretty modest, but they still take a bite out of our wallets.</p>
+        <p>To help us defray these costs, we made the decision to ask for donations. We\'ve never made money off of this site, and we want it to remain ad-free.</p>
+        <p>Here are the costs, and thus our annual donation goals:</p>
+        <ul>
+            <li>$110/year - Dreamhost</li>
+            <li>$20/year - Domain</li>
+            <li>$192/year - Database + SSL Encryption</li>
+            <li>$100/year - Apple Developer Fee</li>
+            <li>GRAND TOTAL: $422</li>
+        </ul>
+        <p>If you like Pinball Map and want to help support it, you have our heartfelt thanks!</p>
+    ]]></string>
 </resources>

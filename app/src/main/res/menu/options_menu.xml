@@ -24,6 +24,10 @@
         android:title="@string/about"
         pbm:showAsAction="never"/>
     <item
+        android:id="@+id/donate"
+        android:title="Donate"
+        pbm:showAsAction="never"/>
+    <item
         android:id="@+id/logout"
         android:title="@string/logout"
         pbm:showAsAction="never"/>
