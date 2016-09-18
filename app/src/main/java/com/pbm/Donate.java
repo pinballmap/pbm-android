@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,10 +48,6 @@ public class Donate extends PinballMapActivity {
 			}
 		});
 	}   
-
-	public boolean onCreateOptionsMenu(Menu menu) {
-		return false;
-	}
 
 	private static String readTrimRawTextFile(Context ctx, int resId) {
 		InputStream inputStream = ctx.getResources().openRawResource(resId);
