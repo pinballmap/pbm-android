@@ -1,7 +1,6 @@
 package com.pbm;
 
 import android.os.Bundle;
-import android.view.Menu;
 
 public class About extends PinballMapActivity {
 	public void onCreate(Bundle savedInstanceState) {
@@ -10,8 +9,4 @@ public class About extends PinballMapActivity {
 
         logAnalyticsHit("com.pbm.About");
 	}   
-
-	public boolean onCreateOptionsMenu(Menu menu) {
-		return false;
-	}
-} 
+}
