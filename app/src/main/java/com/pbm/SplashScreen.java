@@ -86,9 +86,7 @@ public class SplashScreen extends PinballMapActivity {
 		}
 	}
 
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		menu.removeItem(R.id.prefs);
-		return super.onPrepareOptionsMenu(menu);
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return false;
 	}
 }

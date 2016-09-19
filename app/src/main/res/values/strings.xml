@@ -52,6 +52,7 @@
     <string name="suggest_region">Suggest A New Region</string>
     <string name="about">About</string>
     <string name="quit">Quit</string>
+    <string name="profile">Your Profile</string>
     <string name="logout">Logout</string>
     <string name="login">Login</string>
     <string name="description">Location Description</string>

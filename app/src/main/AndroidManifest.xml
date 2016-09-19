@@ -292,6 +292,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Profile"
+            android:label="Profile"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.pbm.Profile" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".Donate"
             android:label="Donate"
             android:screenOrientation="portrait">

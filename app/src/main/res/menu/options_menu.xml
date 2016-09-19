@@ -15,6 +15,10 @@
         android:title="@string/change_region"
         pbm:showAsAction="never"/>
     <item
+        android:id="@+id/profile"
+        android:title="@string/profile"
+        pbm:showAsAction="never"/>
+    <item
         android:id="@+id/suggest_region"
         android:title="@string/suggest_region"
         pbm:showAsAction="never"/>
