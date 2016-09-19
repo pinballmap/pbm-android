@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollViewId"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true" >
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/usernameTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/createdAtTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/numMachinesAddedTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/numMachinesRemovedTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/numLocationsEditedTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/numLocationsSuggestedTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/numLmxCommentsLeftTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp" />
+        <ListView android:id="@+id/locationsEditedTable"
+            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <ListView android:id="@+id/highScoresTable"
+            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    </LinearLayout>
+</ScrollView>

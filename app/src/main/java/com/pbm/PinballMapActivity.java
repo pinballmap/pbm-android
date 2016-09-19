@@ -154,6 +154,13 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 				startActivityForResult(myIntent, QUIT_RESULT);
 
 				return true;
+			case R.id.profile:
+				Intent profileIntent = new Intent();
+				String profileClassName = getPBMApplication().userIsAuthenticated() ? "com.pbm.Profile" : "com.pbm.Login";
+				profileIntent.setClassName("com.pbm", profileClassName);
+				startActivityForResult(profileIntent, QUIT_RESULT);
+
+				return true;
 			case R.id.about:
 				Intent aboutIntent = new Intent();
 				aboutIntent.setClassName("com.pbm", "com.pbm.About");
@@ -194,6 +201,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
                 editor.putString("authToken", "");
 				editor.putString("username", "");
 				editor.putString("email", "");
+				editor.putString("id", "");
 				editor.commit();
 
 				Intent loginIntent = new Intent();

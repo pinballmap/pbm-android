@@ -90,6 +90,7 @@ public class Login extends AppCompatActivity {
                     editor.putString("authToken", userObject.getString("authentication_token"));
                     editor.putString("username", userObject.getString("username"));
                     editor.putString("email", userObject.getString("email"));
+                    editor.putString("id", userObject.getString("id"));
                     editor.commit();
 
                     Intent splashIntent = new Intent();
