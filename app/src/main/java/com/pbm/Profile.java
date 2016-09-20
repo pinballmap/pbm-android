@@ -80,13 +80,13 @@ public class Profile extends PinballMapActivity {
 						usernameTextView = (TextView) findViewById(R.id.usernameTextView);
 
 
-						numMachinesAddedTextView.setText(numMachinesAdded + " Machines Added");
-						numMachinesRemovedTextView.setText(numMachinesRemoved + " Machines Removed");
-						numLocationsEditedTextView.setText(numLocationsEdited + " Locations Edited");
-						numLocationsSuggestedTextView.setText(numLocationsSuggested + " Locations Suggested");
-						numLmxCommentsLeftTextView.setText(numLmxCommentsLeft + " Conditions Left");
+						numMachinesAddedTextView.setText(numMachinesAdded);
+						numMachinesRemovedTextView.setText(numMachinesRemoved);
+						numLocationsEditedTextView.setText(numLocationsEdited);
+						numLocationsSuggestedTextView.setText(numLocationsSuggested);
+						numLmxCommentsLeftTextView.setText(numLmxCommentsLeft);
 						usernameTextView.setText(username);
-						createdAtTextView.setText("Member Since: " + createdAt);
+						createdAtTextView.setText(createdAt);
 
 						locationsEditedTable.setAdapter(new LocationListAdapter(Profile.this, locationsEdited));
 						highScoresTable.setAdapter(new ArrayAdapter<>(Profile.this, android.R.layout.simple_list_item_1, highScores));
