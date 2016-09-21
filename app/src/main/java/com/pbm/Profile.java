@@ -3,6 +3,8 @@ package com.pbm;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,8 +20,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class Profile extends PinballMapActivity {
@@ -96,7 +98,13 @@ public class Profile extends PinballMapActivity {
 						createdAtTextView.setText(createdAt);
 
 						locationsEditedTable.setAdapter(new LocationListAdapter(Profile.this, locationsEdited));
-						highScoresTable.setAdapter(new ArrayAdapter<>(Profile.this, android.R.layout.simple_list_item_1, highScores));
+
+						Spanned[] htmlHighScores = new Spanned[highScores.size()];
+						for(int i = 0 ; i < highScores.size(); i++) {
+							htmlHighScores[i] = Html.fromHtml(highScores.get(i));
+						}
+
+						highScoresTable.setAdapter(new ArrayAdapter<CharSequence>(Profile.this, android.R.layout.simple_list_item_1, htmlHighScores));
 					}
 				});
 			}
@@ -149,8 +157,8 @@ public class Profile extends PinballMapActivity {
 		for (int i = 0; i < jsonHighScores.length(); i++) {
 			JSONArray jsonScore = jsonHighScores.getJSONArray(i);
 
-			String scoreText = jsonScore.getString(MACHINE_NAME_INDEX) + " " +
-					jsonScore.getString(SCORE_INDEX) + " at " + jsonScore.getString(LOCATION_NAME_INDEX) +
+			String scoreText = jsonScore.getString(MACHINE_NAME_INDEX) + "<br />" +
+					jsonScore.getString(SCORE_INDEX) + "<br /> at " + jsonScore.getString(LOCATION_NAME_INDEX) +
 					" on " + jsonScore.getString(SCORE_DATE_INDEX);
 			highScores.add(scoreText);
 		}
