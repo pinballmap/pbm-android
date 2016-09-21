@@ -72,7 +72,7 @@ public class PBMMenu extends PinballMapActivity {
 		}
 
 		ListView table = (ListView) findViewById(R.id.maintable);
-		final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mainMenuItems);
+		final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.custom_list_item_1, mainMenuItems);
 
 		table.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {

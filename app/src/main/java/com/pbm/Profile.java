@@ -104,7 +104,7 @@ public class Profile extends PinballMapActivity {
 							htmlHighScores[i] = Html.fromHtml(highScores.get(i));
 						}
 
-						highScoresTable.setAdapter(new ArrayAdapter<CharSequence>(Profile.this, android.R.layout.simple_list_item_1, htmlHighScores));
+						highScoresTable.setAdapter(new ArrayAdapter<CharSequence>(Profile.this, R.layout.custom_list_item_1, htmlHighScores));
 					}
 				});
 			}
@@ -157,8 +157,8 @@ public class Profile extends PinballMapActivity {
 		for (int i = 0; i < jsonHighScores.length(); i++) {
 			JSONArray jsonScore = jsonHighScores.getJSONArray(i);
 
-			String scoreText = jsonScore.getString(MACHINE_NAME_INDEX) + "<br />" +
-					jsonScore.getString(SCORE_INDEX) + "<br /> at " + jsonScore.getString(LOCATION_NAME_INDEX) +
+			String scoreText = "<u>" + jsonScore.getString(MACHINE_NAME_INDEX) + "</u><br /><b>" +
+					jsonScore.getString(SCORE_INDEX) + "</b><br /> at " + jsonScore.getString(LOCATION_NAME_INDEX) +
 					" on " + jsonScore.getString(SCORE_DATE_INDEX);
 			highScores.add(scoreText);
 		}

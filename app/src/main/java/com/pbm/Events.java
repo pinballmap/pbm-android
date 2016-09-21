@@ -59,7 +59,7 @@ public class Events extends PinballMapActivity {
 					@Override
 					public void run() {
 						ListView eventsTable = (ListView) findViewById(R.id.eventsTable);
-						eventsTable.setAdapter(new ArrayAdapter<>(Events.this, android.R.layout.simple_list_item_1, events));
+						eventsTable.setAdapter(new ArrayAdapter<>(Events.this, R.layout.custom_list_item_1, events));
 					}
 				});
 			}

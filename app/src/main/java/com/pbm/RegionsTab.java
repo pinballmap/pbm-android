@@ -134,7 +134,7 @@ public class RegionsTab extends Fragment implements LoaderManager.LoaderCallback
 			}
 			setEmptyText(this.getString(R.string.loading_regions));
 			setListShown(true);
-			adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, regionValues);
+			adapter = new ArrayAdapter<>(getActivity(), R.layout.custom_list_item_1, regionValues);
 			setListAdapter(adapter);
 			updateLocation();
 		}

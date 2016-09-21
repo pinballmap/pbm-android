@@ -43,7 +43,7 @@ public class LookupByOperator extends PinballMapActivity {
 
 		sort(operators);
 
-		operatorTable.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, operators));
+		operatorTable.setAdapter(new ArrayAdapter<>(this, R.layout.custom_list_item_1, operators));
 		
 		setTable(operatorTable);
 	}

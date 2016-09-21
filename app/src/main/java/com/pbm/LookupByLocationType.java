@@ -43,7 +43,7 @@ public class LookupByLocationType extends PinballMapActivity {
 
 		sort(locationTypes);
 
-		locationTypeTable.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, locationTypes));
+		locationTypeTable.setAdapter(new ArrayAdapter<>(this, R.layout.custom_list_item_1, locationTypes));
 		
 		setTable(locationTypeTable);
 	}

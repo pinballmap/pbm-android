@@ -72,7 +72,7 @@ public class RecentlyAdded extends PinballMapActivity {
 			LocationMachineXref lmx = app.getLmx(id);
 
 			String textToShow = "<b>" + lmx.getMachine(this).name + "</b> was added to <b>" + lmx.getLocation(this).name + "</b> (" + lmx.getLocation(this).city + ")";
-			textToShow += "<br /><small>Added on " + createdAt + "</small>";
+			textToShow += "<br /><small>" + createdAt + "</small>";
 
 			recentAdds.add(Html.fromHtml(textToShow));
 		}
@@ -103,6 +103,6 @@ public class RecentlyAdded extends PinballMapActivity {
 			}
 		});
 
-		table.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, locations));
+		table.setAdapter(new ArrayAdapter<>(this, R.layout.custom_list_item_1, locations));
 	}
 }

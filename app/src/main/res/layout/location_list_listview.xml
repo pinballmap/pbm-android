@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:paddingLeft="5dip"
+                android:paddingLeft="15dip"
                 android:paddingRight="5dip"
     android:background="#EFEFEF">
 
@@ -14,7 +14,8 @@
         android:layout_toStartOf="@+id/numMachines"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:layout_marginTop="5dp" />
 
     <TextView
         android:id="@+id/numMachines"
@@ -35,7 +36,8 @@
         android:layout_width="100dip"
         android:layout_height="wrap_content"
         android:layout_below="@+id/machine_info"
-        android:textSize="15sp"/>
+        android:textSize="15sp"
+        android:layout_marginBottom="5dp"/>
 
     <TextView
         android:id="@+id/locationCity"

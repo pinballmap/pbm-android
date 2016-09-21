@@ -3,14 +3,16 @@
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
     android:id="@+id/machineListRow"
-    android:paddingLeft="5dip"
+    android:paddingLeft="15dip"
     android:paddingRight="5dip">
 
     <TextView
         android:id="@+id/machine_info"
         android:layout_width="330dip"
         android:layout_height="wrap_content"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
 
     <ImageView
         android:id="@+id/machineSelectButton"
