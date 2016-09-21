@@ -82,7 +82,6 @@
                 android:id="@+id/numMachinesRemovedTextView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="5"
                 android:textSize="24sp"
                 android:padding="5sp"
                 android:textColor="#F53240"
