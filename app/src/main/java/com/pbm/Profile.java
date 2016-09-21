@@ -14,7 +14,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 public class Profile extends PinballMapActivity {
@@ -64,6 +69,8 @@ public class Profile extends PinballMapActivity {
 					getProfileData();
 				} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException e) {
 					e.printStackTrace();
+				} catch (ParseException e) {
+					e.printStackTrace();
 				}
 				Profile.super.runOnUiThread(new Runnable() {
 					@Override
@@ -96,7 +103,7 @@ public class Profile extends PinballMapActivity {
 		}).start();
 	}
 
-	public void getProfileData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+	public void getProfileData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
 		PBMApplication app = getPBMApplication();
 
 		final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
@@ -120,7 +127,11 @@ public class Profile extends PinballMapActivity {
 		numLocationsSuggested = jsonProfile.getString("num_locations_suggested");
 		numLmxCommentsLeft = jsonProfile.getString("num_lmx_comments_left");
 
-		createdAt = jsonProfile.getString("created_at").split("T")[0];
+		String rawCreatedAt = jsonProfile.getString("created_at").split("T")[0];
+		DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+		DateFormat outputDF = new SimpleDateFormat("MMM-dd-yyyy", Locale.getDefault());
+		Date dateCreatedAt = inputDF.parse(rawCreatedAt);
+		createdAt = outputDF.format(dateCreatedAt);
 
 		JSONArray jsonLocationsEdited = jsonProfile.getJSONArray("profile_list_of_edited_locations");
 		for (int i = 0; i < jsonLocationsEdited.length(); i++) {
