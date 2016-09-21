@@ -9,7 +9,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp" >
+        android:padding="10dp"
+        android:background="#EFEFEF">
         <TextView
             android:id="@+id/usernameTextView"
             android:layout_width="fill_parent"
@@ -40,14 +41,16 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp" />
         </LinearLayout>
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="5dp">
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/profile_border">
             <TextView
                 android:id="@+id/numMachinesAddedTextView"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:padding="5sp"
@@ -57,30 +60,23 @@
                 android:id="@+id/numMachinesAddedLabel"
                 android:text=" Machines Added"
                 android:labelFor="@+id/numMachinesAddedTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="65dp"
                 android:paddingRight="0dp"/>
-        </LinearLayout>
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/profile_border">
-            <TextView
-                android:id="@+id/spacer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/profile_border" />
         </RelativeLayout>
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="15dp">
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/profile_border">
             <TextView
                 android:id="@+id/numMachinesRemovedTextView"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:padding="5sp"
@@ -90,30 +86,23 @@
                 android:id="@+id/numMachinesRemovedLabel"
                 android:text=" Machines Removed"
                 android:labelFor="@+id/numMachinesRemovedTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="65dp"
                 android:paddingRight="0dp" />
-        </LinearLayout>
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/profile_border">
-            <TextView
-                android:id="@+id/spacer1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/profile_border" />
         </RelativeLayout>
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="15dp">
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/profile_border">
             <TextView
                 android:id="@+id/numLocationsEditedTextView"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:padding="5sp"
@@ -123,30 +112,23 @@
                 android:id="@+id/numLocationsEditedLabel"
                 android:text=" Locations Edited"
                 android:labelFor="@+id/numLocationsEditedTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="65dp"
                 android:paddingRight="0dp" />
-        </LinearLayout>
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/profile_border">
-            <TextView
-                android:id="@+id/spacer2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/profile_border" />
         </RelativeLayout>
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="15dp">
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/profile_border">
             <TextView
                 android:id="@+id/numLocationsSuggestedTextView"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:padding="5sp"
@@ -156,30 +138,23 @@
                 android:id="@+id/numLocationsSuggestedLabel"
                 android:text=" Locations Suggested"
                 android:labelFor="@+id/numLocationsSuggestedTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="65dp"
                 android:paddingRight="0dp"/>
-        </LinearLayout>
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/profile_border">
-            <TextView
-                android:id="@+id/spacer3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/profile_border" />
         </RelativeLayout>
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="15dp">
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/profile_border">
             <TextView
                 android:id="@+id/numLmxCommentsLeftTextView"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:padding="5sp"
@@ -189,24 +164,41 @@
                 android:id="@+id/numLmxCommentsLeftLabel"
                 android:text=" Conditions Left"
                 android:labelFor="@+id/numLmxCommentsLeftTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="65dp"
                 android:paddingRight="0dp"/>
-        </LinearLayout>
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/profile_border">
-            <TextView
-                android:id="@+id/spacer4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/profile_border" />
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/locationsEditedLabel"
+            android:text="Locations Edited:"
+            android:labelFor="@+id/locationsEditedTable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:background="#d3ecff"
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp" />
+
         <ListView android:id="@+id/locationsEditedTable"
             android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/highScoresLabel"
+            android:text="High Scores"
+            android:labelFor="@+id/highScoresTable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:background="#d3ecff"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:padding="5dp" />
+
         <ListView android:id="@+id/highScoresTable"
             android:layout_width="wrap_content" android:layout_height="wrap_content" />
     </LinearLayout>

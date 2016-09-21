@@ -12,7 +12,7 @@
         android:bottom="3dp">
         <shape>
             <solid
-                android:color="#FFFFFF"/>
+                android:color="#EFEFEF"/>
             <corners
                 android:radius="0dp" />
             <padding

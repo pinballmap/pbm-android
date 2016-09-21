@@ -22,6 +22,6 @@
         android:layout_alignParentRight="true"
         android:layout_toEndOf="@+id/machine_info"
         android:layout_toRightOf="@+id/machine_info"
-        android:src="@drawable/machine_icon"/>
+        android:src="@drawable/ic_machine_icon"/>
 
 </RelativeLayout>

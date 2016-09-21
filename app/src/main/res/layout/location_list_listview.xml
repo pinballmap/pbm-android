@@ -18,8 +18,8 @@
 
     <TextView
         android:id="@+id/numMachines"
-        android:layout_width="20sp"
-        android:layout_height="20sp"
+        android:layout_width="30sp"
+        android:layout_height="30sp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
@@ -28,7 +28,7 @@
         android:shadowColor="@android:color/white"
         android:textColor="@android:color/white"
         android:text="887"
-        android:textSize="12sp"/>
+        android:textSize="13sp"/>
 
     <TextView
         android:id="@+id/distance"

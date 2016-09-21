@@ -2,8 +2,8 @@
 <resources>
 	<style name="Theme.CustomTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
 		<item name="android:windowActionBar">false</item>
-        <item name="colorAccent">#303030</item>
-        <item name="android:textColorLink">#303030</item>
+        <item name="colorAccent">#666666</item>
+        <item name="android:textColorLink">#666666</item>
 	</style>
 	<style name="spinner_style">
 		<item name="android:layout_width">fill_parent</item>
