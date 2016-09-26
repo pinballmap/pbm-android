@@ -141,8 +141,11 @@
             android:onClick="buttonOnClick"
             android:text="@string/submit_text"
             android:background="@drawable/input_btn"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"/>
+            android:textColor="#d3ecff"
+            android:textSize="20sp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"/>
 
     </RelativeLayout>
 </ScrollView>

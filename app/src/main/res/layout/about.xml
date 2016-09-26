@@ -4,7 +4,7 @@
 	android:background="#000000">
 	<TextView android:id="@+id/aboutText" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:textSize="20sp"
-		android:textColor="#FFFFFF" android:textStyle="bold"
+		android:textColor="#d3ecff" android:textStyle="bold"
 		android:text="@string/about_text"
 		android:background="#F53240" />
 	<ImageView android:id="@+id/sass" android:src="@drawable/sassy" android:contentDescription="@string/sass_description"

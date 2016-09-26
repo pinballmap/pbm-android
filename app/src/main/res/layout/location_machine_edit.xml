@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:linksClickable="true"
-        android:textColor="#FFFFFF"
+        android:textColor="#d3ecff"
         android:textSize="15sp"
         android:padding="15dp"
         android:text="View playing tips on pintips.net"
@@ -25,7 +25,7 @@
         android:id="@+id/spacer"
         android:layout_width="fill_parent"
         android:layout_height="1dip"
-        android:background="#a77e51" />
+        android:background="#F53240" />
 
     <Button
         android:id="@+id/add_condition_button"
@@ -36,7 +36,7 @@
         android:textSize="15sp"
         android:padding="15dp"
         android:background="@drawable/input_btn"
-        android:textColor="#FFFFFF" />
+        android:textColor="#d3ecff" />
 
     <com.pbm.NonScrollListView
         android:id="@android:id/list"
@@ -57,7 +57,7 @@
         android:id="@+id/spacer2"
         android:layout_width="fill_parent"
         android:layout_height="1dip"
-        android:background="#a77e51"
+        android:background="#F53240"
         android:layout_marginTop="10dp" />
 
     <Button
@@ -69,7 +69,7 @@
         android:textSize="15sp"
         android:padding="15dp"
         android:background="@drawable/input_btn"
-        android:textColor="#FFFFFF" />
+        android:textColor="#d3ecff" />
 
     <com.pbm.NonScrollListView
         android:id="@+id/score_list"
@@ -90,7 +90,7 @@
         android:id="@+id/spacer3"
         android:layout_width="fill_parent"
         android:layout_height="1dip"
-        android:background="#a77e51"
+        android:background="#F53240"
         android:layout_marginTop="10dp" />
 
     <Button
@@ -101,7 +101,7 @@
         android:padding="15dp"
         android:layout_margin="10dp"
         android:background="@drawable/input_btn"
-        android:textColor="#FFFFFF" />
+        android:textColor="#d3ecff" />
     <Button
         android:id="@+id/remove_machine_button"
         android:layout_width="fill_parent"

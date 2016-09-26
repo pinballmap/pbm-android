@@ -47,7 +47,10 @@
         android:layout_alignParentEnd="false"
         android:layout_centerHorizontal="true"
         android:background="@drawable/input_btn"
-        android:textColor="#FFFFFF"
+        android:textColor="#d3ecff"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="3dp"
         android:textSize="18sp"
         android:layout_marginTop="10dp" />
 </RelativeLayout>

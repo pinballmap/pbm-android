@@ -124,7 +124,7 @@
             android:textStyle="italic"
             android:background="@drawable/input_btn"
             android:layout_centerHorizontal="true"
-            android:textColor="#FFFFFF"
+            android:textColor="#d3ecff"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"

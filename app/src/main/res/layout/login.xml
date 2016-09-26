@@ -34,9 +34,7 @@
             android:gravity="center"
             android:text="A User-Powered Pinball Locator"
             android:textSize="22sp"
-            android:textColor="#F53240"
-            android:textStyle="bold"
-            android:background="@drawable/header_bg" />
+            android:textColor="#F53240" />
 
     </RelativeLayout>
 
@@ -114,7 +112,9 @@
             android:text="Login"
             android:textSize="18sp"
             android:background="@drawable/input_btn"
-            android:textColor="#ffffff" />
+            android:textColor="#d3ecff"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp" />
 
         <Button
             android:id="@+id/signup"
@@ -123,10 +123,12 @@
             android:layout_height="wrap_content"
             android:text="Not a user? Sign up here"
             android:padding="10dp"
-            android:textColor="#ffffff"
+            android:textColor="#d3ecff"
             android:textSize="18sp"
             android:background="@drawable/input_btn"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp" />
 
         <TextView
             android:id="@+id/or_text"
@@ -150,7 +152,9 @@
             android:text="Continue without logging in..."
             android:textSize="18sp"
             android:layout_gravity="center_horizontal"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp" />
         <TextView
             android:id="@+id/no_login_exp"
             android:layout_width="wrap_content"

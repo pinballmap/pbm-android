@@ -221,7 +221,10 @@
             android:text="@string/submit_text"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/input_btn"
-            android:textColor="#FFFFFF" />
+            android:textColor="#d3ecff"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"/>
 
     </LinearLayout>
 </ScrollView>
