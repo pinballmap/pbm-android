@@ -17,9 +17,9 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#303030"
+            android:textStyle="bold"
             android:padding="5dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/header_bg"
             android:gravity="center_horizontal" />
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"

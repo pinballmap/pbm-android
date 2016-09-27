@@ -79,8 +79,7 @@
             android:inputType="textEmailAddress"
             android:hint="Login"
             android:background="@drawable/textbox_bg"
-            android:padding="10dp"
-            android:paddingLeft="10dp" />
+            android:padding="10dp" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -100,35 +99,38 @@
             android:inputType="textPassword"
             android:hint="Password"
             android:background="@drawable/textbox_bg"
-            android:padding="10dp"
-            android:paddingLeft="10dp" />
+            android:padding="10dp" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/loginButton"
             android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Login"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:background="@drawable/input_btn"
-            android:textColor="#d3ecff"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp" />
+            android:height="36dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginBottom="5dp"
+            android:elevation="2dp"
+            android:layout_gravity="center_horizontal" />
 
         <Button
             android:id="@+id/signup"
-            android:layout_marginTop="20dp"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Not a user? Sign up here"
-            android:padding="10dp"
-            android:textColor="#d3ecff"
-            android:textSize="18sp"
             android:background="@drawable/input_btn"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp" />
+            android:textSize="20sp"
+            android:height="36dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="20dp"
+            android:elevation="2dp"
+            android:layout_gravity="center_horizontal" />
 
         <TextView
             android:id="@+id/or_text"
@@ -144,17 +146,18 @@
         <Button
             android:id="@+id/no_login"
             android:layout_marginTop="5dp"
-            android:padding="2dp"
-            android:background="@drawable/input_btn"
-            android:layout_width="fill_parent"
-            android:textColor="#cccccc"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Continue without logging in..."
             android:textSize="18sp"
             android:layout_gravity="center_horizontal"
-            android:layout_centerHorizontal="true"
             android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp" />
+            android:layout_marginRight="6dp"
+            android:height="36dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_margin="5dp"
+            android:elevation="2dp" />
         <TextView
             android:id="@+id/no_login_exp"
             android:layout_width="wrap_content"

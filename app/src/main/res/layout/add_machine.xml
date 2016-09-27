@@ -34,11 +34,14 @@
 	    android:clickable="true"
 	    android:onClick="submitHandler"
 	    android:text="@string/add_machine"
-		android:textSize="18dip"
+		android:textSize="22sp"
+		android:height="36dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
 		android:layout_margin="5dp"
 		android:layout_gravity="center_horizontal"
-		android:textColor="#d3ecff"
-		android:background="@drawable/input_btn" />
+		android:background="@drawable/input_btn"
+        android:elevation="2dp" />
 
 	<TextView android:layout_width="fill_parent" android:id="@+id/spacer"
 		android:layout_height="3dip" android:background="#F53240" />

@@ -16,8 +16,8 @@
         android:layout_centerHorizontal="true"
         android:padding="5dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/header_bg"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/condition"
@@ -34,23 +34,18 @@
 
     <Button
         android:id="@+id/submitCondition"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/condition"
         android:onClick="clickHandler"
         android:text="@string/submit"
-        android:layout_alignWithParentIfMissing="false"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentBottom="false"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentEnd="false"
         android:layout_centerHorizontal="true"
         android:background="@drawable/input_btn"
-        android:textColor="#d3ecff"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginBottom="3dp"
-        android:textSize="18sp"
-        android:layout_marginTop="10dp" />
+        android:textSize="22sp"
+        android:height="36dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:elevation="2dp" />
 </RelativeLayout>

@@ -25,12 +25,11 @@
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:background="#d3ecff"
                 android:textColor="#303030"
-                android:paddingLeft="8sp"
-                android:paddingTop="5sp"
-                android:paddingRight="5sp"
-                android:paddingBottom="5sp" />
+                android:paddingLeft="8dp"
+                android:paddingTop="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="0dp" />
 
             <TextView
                 android:id="@+id/locationMetadata"
@@ -117,18 +116,19 @@
 
         <Button
             android:id="@+id/confirmLocationButton"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/location_confirm"
-            android:textSize="13sp"
             android:textStyle="italic"
             android:background="@drawable/input_btn"
-            android:layout_centerHorizontal="true"
-            android:textColor="#d3ecff"
+            android:textSize="13sp"
+            android:height="36dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="5dp" />
+            android:elevation="2dp"
+            android:layout_gravity="center_horizontal" />
 
         <LinearLayout
             android:id="@+id/lmxTable"

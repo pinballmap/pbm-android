@@ -20,8 +20,8 @@
             android:textColor="#303030"
             android:layout_centerHorizontal="true"
             android:padding="5dp"
+            android:textStyle="bold"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/header_bg"
             android:gravity="center_horizontal" />
 
         <TextView
@@ -134,18 +134,20 @@
 
         <Button
             android:id="@+id/button1"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/commentsField"
-            android:layout_marginTop="10dp"
             android:onClick="buttonOnClick"
             android:text="@string/submit_text"
             android:background="@drawable/input_btn"
-            android:textColor="#d3ecff"
-            android:textSize="20sp"
-            android:layout_marginBottom="3dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"/>
+            android:textSize="22sp"
+            android:height="36dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="20dp"
+            android:elevation="2dp"
+            android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>
 </ScrollView>
