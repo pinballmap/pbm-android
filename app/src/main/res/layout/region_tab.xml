@@ -12,31 +12,23 @@
         android:layout_height="wrap_content"
         android:text="@string/select_region"
         android:textSize="18sp"
-        android:background="#dcdcdc"
-        android:autoText="true"
+        android:background="#EFEFEF"
         android:padding="5dip" />
-
-    <TextView
-        android:id="@+id/spacer"
-        android:layout_width="fill_parent"
-        android:layout_height="3dip"
-        android:layout_below="@+id/greeting"
-        android:background="#000000"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/region_pager"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/spacer"
+        android:layout_below="@+id/greeting"
         android:background="#EFEFEF">
 
         <android.support.v4.view.PagerTabStrip
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:background="@color/material_blue_grey_900"
+            android:background="#d3ecff"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:textColor="#fff"/>
+            android:textColor="#F53240"/>
     </android.support.v4.view.ViewPager>
 </RelativeLayout>

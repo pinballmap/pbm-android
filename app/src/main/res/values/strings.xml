@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Pinball Map</string>
-    <string name="select_region">PinballMap.com is a crowdsourced pinball locator, with over 7,500 public pinball machines and over 70 regions</string>
+    <string name="select_region">PinballMap.com contains over 80 distinct regional pinball maps. Find yours, and help keep it up to date!</string>
     <string name="splash_image_desc">Splash Image</string>
     <string name="splash_image_city_desc">City Splash Image</string>
     <string name="about_text">\tPinballMap.com\n\t\tScott Wainstock\n\t\tRyan Gratzer\n\t\tBrian Dols\n\n\tArtwork\n\t\tDrew Marshall\n\n\tSpecial Thanks\n\t\tCleo, Sassy, Solomon,\n\t\tBawb, and Brian Hanifin</string>
