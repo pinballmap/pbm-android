@@ -67,7 +67,7 @@
     <string name="login_to_update">Login to update this location"</string>
     <string name="login_to_add_condition">Login to leave a condition report</string>
     <string name="login_to_add_score">Login to add your high score</string>
-    <string name="donate_head">Donate</string>
+    <string name="donate_head">Donate to Pinball Map</string>
     <string name="donate"><![CDATA[
         <p>Since 2007, we\'ve spent countless evenings and weekends building, maintaining, and enhancing Pinball Map. We\'re grateful that so many people find it useful.</p>
         <p>But as the site has grown in popularity and scope, the infrastructure costs have also grown. To help us defray these costs, we\'re asking for donations. We\'ve never made money off of this site, and we want it to remain ad-free.</p>
