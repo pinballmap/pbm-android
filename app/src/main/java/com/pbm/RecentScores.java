@@ -38,7 +38,7 @@ public class RecentScores extends PinballMapActivity {
 				@Override
 				public void run() {
 					ListView recentScoresTable = (ListView)findViewById(R.id.recentscorestable);
-					recentScoresTable.setAdapter(new ArrayAdapter<>(RecentScores.this, android.R.layout.simple_list_item_1, recentScores));
+					recentScoresTable.setAdapter(new ArrayAdapter<>(RecentScores.this, R.layout.custom_list_item_1, recentScores));
 				}
 			});
 	        }
@@ -72,9 +72,9 @@ public class RecentScores extends PinballMapActivity {
 				Location location = lmx.getLocation(this);
 				Machine machine = lmx.getMachine(this);
 
-				String title = location.name + "'s " + machine.name + "<br />" +
+				String title = "<u>" + machine.name + "</u><br />" +
 					formatter.format(score) + " by <b>" + username + "</b>" + "<br />" +
-					"<small>" + scoreDate + "</small>";
+					"<small>at " + location.name + " on " + scoreDate + "</small>";
 
 				recentScores.add(Html.fromHtml(title));
 			}

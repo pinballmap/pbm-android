@@ -20,7 +20,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:contentDescription="@string/machine_button_desc"
-        android:src="@drawable/machine_icon"/>
+        android:src="@drawable/ic_machine_icon"/>
 
     <LinearLayout
         android:id="@+id/drp"

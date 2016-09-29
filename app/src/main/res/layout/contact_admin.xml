@@ -21,7 +21,6 @@
             android:text="@string/contact_admin"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"
-            android:background="@drawable/header_bg"
             android:padding="10dp"
             android:gravity="center_horizontal" />
 
@@ -104,18 +103,16 @@
             android:onClick="buttonOnClick"
             android:text="@string/submit_text"
             android:layout_gravity="center_horizontal"
-            android:layout_width="fill_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="false"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="false"
-            android:layout_alignWithParentIfMissing="false"
-            android:layout_alignParentRight="false"
-            android:layout_alignParentEnd="false"
+            android:height="36dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:background="@drawable/input_btn"
-            android:textColor="#FFFFFF"
-            android:textSize="22sp"/>
+            android:textSize="22sp"
+            android:layout_marginBottom="5dp"
+            android:elevation="2dp" />
 
     </RelativeLayout>
 </ScrollView>

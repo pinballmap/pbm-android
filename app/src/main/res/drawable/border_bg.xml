@@ -21,8 +21,8 @@
                 android:right="0dp"
                 android:bottom="0dp" />
             <stroke
-                android:width="5dp"
-                android:color="#cbcbcb" />
+                android:width="3dp"
+                android:color="#a9a9a9" />
         </shape>
     </item>
 </layer-list>

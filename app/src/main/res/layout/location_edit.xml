@@ -16,7 +16,7 @@
         android:layout_centerHorizontal="true"
         android:padding="5dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/header_bg"
+        android:textStyle="bold"
         android:gravity="center_horizontal" />
 
     <TextView
@@ -141,19 +141,19 @@
 
     <Button
         android:id="@+id/submitLocationEdit"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentLeft="false"
+        android:layout_below="@+id/operatorSpinner"
+        android:layout_centerHorizontal="true"
         android:onClick="clickHandler"
         android:text="@string/submit"
-        android:layout_alignParentTop="false"
-        android:layout_alignWithParentIfMissing="false"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentEnd="false"
         android:background="@drawable/input_btn"
-        android:textColor="#FFFFFF"
-        android:textSize="22sp" />
+        android:textSize="22sp"
+        android:height="36dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:elevation="2dp" />
 
 </RelativeLayout>

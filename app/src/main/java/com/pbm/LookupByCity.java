@@ -41,7 +41,7 @@ public class LookupByCity extends PinballMapActivity {
 
 		java.util.Collections.sort(cities);
 
-		cityTable.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, cities));
+		cityTable.setAdapter(new ArrayAdapter<>(this, R.layout.custom_list_item_1, cities));
 
 		setTable(cityTable);
 	}

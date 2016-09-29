@@ -17,28 +17,19 @@
             android:layout_height="wrap_content"
             android:background="#EFEFEF"
             android:orientation="vertical"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="5dp">
 
             <TextView
                 android:id="@+id/locationName"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:padding="5sp"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:background="#d3ecff"
-                android:textColor="#303030" />
-
-            <TextView
-                android:id="@+id/locationLastUpdated"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:background="#f7f7f7"
-                android:textStyle="italic"
-                android:paddingLeft="10sp"
-                android:paddingRight="10sp"
-                android:paddingBottom="3sp" />
+                android:textColor="#303030"
+                android:paddingLeft="8dp"
+                android:paddingTop="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="0dp" />
 
             <TextView
                 android:id="@+id/locationMetadata"
@@ -48,7 +39,8 @@
                 android:paddingRight="10dip"
                 android:paddingStart="10dip"
                 android:paddingLeft="10dip"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:textColor="#303030"/>
 
             <TextView
                 android:id="@+id/locationPhone"
@@ -59,7 +51,7 @@
                 android:paddingRight="10dip"
                 android:paddingStart="10dip"
                 android:paddingLeft="10dip"
-                android:textSize="18sp"/>
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/website"
@@ -71,9 +63,7 @@
                 android:paddingRight="10dip"
                 android:paddingStart="10dip"
                 android:paddingLeft="10dip"
-                android:textColor="#333333"
                 android:textSize="15sp"
-                android:layout_gravity="left"
                 android:paddingBottom="4dip" />
 
             <TextView
@@ -107,27 +97,38 @@
                 android:textSize="15sp"
                 android:background="#f7f7f7"
                 android:textStyle="italic" />
-        </LinearLayout>
 
-        <Button
-            android:id="@+id/confirmLocationButton"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/location_confirm"
-            android:textSize="12sp"
-            android:textStyle="italic"
-            android:background="@drawable/input_btn"
-            android:layout_centerHorizontal="true"
-            android:textColor="#FFFFFF"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp" />
+            <TextView
+                android:id="@+id/locationLastUpdated"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textStyle="italic"
+                android:gravity="center_horizontal"
+                android:textColor="#666666" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/spacer"
             android:layout_width="fill_parent"
             android:layout_height="4dip"
             android:background="#303030"/>
+
+        <Button
+            android:id="@+id/confirmLocationButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location_confirm"
+            android:textStyle="italic"
+            android:background="@drawable/input_btn"
+            android:textSize="13sp"
+            android:height="36dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:elevation="2dp"
+            android:layout_gravity="center_horizontal" />
 
         <LinearLayout
             android:id="@+id/lmxTable"

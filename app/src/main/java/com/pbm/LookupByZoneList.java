@@ -56,7 +56,7 @@ public class LookupByZoneList extends PinballMapActivity {
 		sort(secondaryZones);
 		primaryZones.addAll(secondaryZones);
 
-		locationLookupListTable.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, primaryZones));
+		locationLookupListTable.setAdapter(new ArrayAdapter<>(this, R.layout.custom_list_item_1, primaryZones));
 		
 		setTable(locationLookupListTable);
 	}

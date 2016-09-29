@@ -42,7 +42,7 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 
 	public void initializeManualNewMachineTextView() {
 		String[] machineNames = getPBMApplication().getMachineNamesWithMetadata();
-		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, machineNames);
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.custom_list_item_1, machineNames);
 		AutoCompleteTextView manualNewMachineTextView = (AutoCompleteTextView) findViewById(R.id.manualNewMachineTextView);
 		manualNewMachineTextView.setAdapter(adapter);
 	}

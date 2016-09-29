@@ -24,7 +24,7 @@ public class SuggestLocation extends PinballMapActivity {
 
 		PBMApplication app = getPBMApplication();
 		String[] machineNames = app.getMachineNamesWithMetadata();
-		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, machineNames);
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.custom_list_item_1, machineNames);
 		MultiAutoCompleteTextView autoCompleteMachinesTextView = (MultiAutoCompleteTextView) findViewById(R.id.autoCompleteMachinesTextView);
 		autoCompleteMachinesTextView.setAdapter(adapter);
 		autoCompleteMachinesTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
