@@ -34,7 +34,7 @@ public class PBMMenu extends PinballMapActivity {
 		rootPID = this.getTaskId();
 		setTitle(getPBMApplication().getRegion().formalName + " " + getString(R.string.app_name));
 		setContentView(R.layout.main);
-		getSupportActionBar().setIcon(R.drawable.icon);
+		getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
 	}
 
