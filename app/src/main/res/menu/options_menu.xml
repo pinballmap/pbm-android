@@ -2,10 +2,14 @@
       xmlns:pbm="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/profile"
+        android:title="@string/profile"
+        android:icon="@drawable/ic_profile_icon"
+        pbm:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/contact_admin"
         android:title="@string/contact_region_admin"
-        android:icon="@drawable/ic_live_help_white_48dp"
-        pbm:showAsAction="ifRoom"/>
+        pbm:showAsAction="never"/>
     <item
         android:id="@+id/suggest_location"
         android:title="@string/suggest_location"
@@ -15,14 +19,9 @@
         android:title="@string/change_region"
         pbm:showAsAction="never"/>
     <item
-        android:id="@+id/profile"
-        android:title="@string/profile"
-        pbm:showAsAction="never"/>
-    <item
         android:id="@+id/suggest_region"
         android:title="@string/suggest_region"
         pbm:showAsAction="never"/>
-
     <item
         android:id="@+id/about"
         android:title="@string/about"
