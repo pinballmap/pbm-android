@@ -3,8 +3,8 @@
     <item android:state_pressed="true"
         android:left="0dp"
         android:right="0dp"
-        android:top="3dp"
-        android:bottom="3dp">
+        android:top="0dp"
+        android:bottom="0dp">
         <shape>
             <solid
                 android:color="#A9A9A9"/>
@@ -20,8 +20,8 @@
 <item
     android:left="0dp"
     android:right="0dp"
-    android:top="3dp"
-    android:bottom="3dp">
+    android:top="0dp"
+    android:bottom="0dp">
     <shape>
         <solid
             android:color="#d3ecff"/>

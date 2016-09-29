@@ -116,6 +116,7 @@
         android:padding="15dp"
         android:layout_margin="10dp"
         android:background="@drawable/input_btn"
+        android:layout_gravity="center_horizontal"
         android:textSize="15sp"
         android:height="36dp"
         android:paddingLeft="20dp"
@@ -127,7 +128,7 @@
         android:id="@+id/remove_machine_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_red_dark"
+        android:background="#F53240"
         android:textColor="@android:color/white"
         android:text="Remove machine"
         android:layout_marginTop="20dp"
@@ -135,7 +136,6 @@
         android:height="36dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:layout_marginBottom="5dp"
         android:elevation="2dp"
         android:layout_gravity="center_horizontal" />
 
