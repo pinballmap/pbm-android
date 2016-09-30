@@ -72,14 +72,14 @@ public class LocationDetail extends PinballMapActivity {
 					).get();
 					Toast.makeText(getBaseContext(), "Thanks for confirming this spot!", Toast.LENGTH_LONG).show();
 
-					location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
+					location.dateLastUpdated = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
 					location.lastUpdatedByUsername = settings.getString("username", "");
 
 					String lastUpdatedInfo = location.dateLastUpdated + " by ";
 
 					TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
 					locationLastUpdated.setVisibility(View.VISIBLE);
-					locationLastUpdated.setText(Html.fromHtml("<b>Location last updated:</> " + lastUpdatedInfo + "<b>" + location.lastUpdatedByUsername + "</b>"));
+					locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</> " + lastUpdatedInfo + "<b>" + location.lastUpdatedByUsername + "</b>"));
 				}
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
@@ -117,6 +117,7 @@ public class LocationDetail extends PinballMapActivity {
 				TextView locationOperator = (TextView) findViewById(R.id.operator);
 				TextView locationDescription = (TextView) findViewById(R.id.description);
 
+                    location.dateLastUpdated = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
 				if (location.dateLastUpdated != null && !location.dateLastUpdated.equals("") && !location.dateLastUpdated.equals("null")) {
 					String lastUpdatedInfo = location.dateLastUpdated;
 
@@ -125,7 +126,7 @@ public class LocationDetail extends PinballMapActivity {
 					}
 
 					locationLastUpdated.setVisibility(View.VISIBLE);
-					locationLastUpdated.setText(Html.fromHtml("<b>Location last updated:</b> " + lastUpdatedInfo));
+					locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</b> " + lastUpdatedInfo));
 				} else {
 					locationLastUpdated.setVisibility(View.GONE);
 				}
