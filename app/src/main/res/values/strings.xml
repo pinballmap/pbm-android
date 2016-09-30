@@ -40,7 +40,7 @@
     <string name="submitter_email">Your Email:</string>
     <string name="contact_admin">Send a message to your region\'s admin!</string>
     <string name="message">Message:</string>
-    <string name="submit_a_region">When requesting a new map for your area, please describe WHY one should be added. Does your region have an active pinball scene? Leagues? How many locations have pinball machines? Are you keeping track of them already? Would you be willing to act as the regional administrator, to help curate your map\'s data? The more details give us, the better your request sounds!</string>
+    <string name="submit_a_region">When requesting a new map for your area, please describe WHY one should be added. Does your region have an active pinball scene? Leagues? How many locations have pinball machines? Are you keeping track of them already? Would you be willing to act as the regional administrator, to help curate your map\'s data? The more details you give us, the better your request sounds!</string>
     <string name="comments">Comments:</string>
     <string name="region_name">Region Name:</string>
     <string name="updated_on">Updated on:</string>
