@@ -36,10 +36,59 @@
             android:background="#dcdcdc" />
 
         <TextView
+            android:id="@+id/submitterNameTextView"
+            android:text="@string/submitter_name"
+            android:layout_below="@+id/submit_region_id"
+            android:labelFor="@+id/submitterNameField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp" />
+
+        <EditText
+            android:id="@+id/submitterNameField"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_below="@+id/submitterNameTextView"
+            android:inputType="text"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="6dp" >
+            <requestFocus/>
+        </EditText>
+
+        <TextView
+            android:id="@+id/submitterEmailTextView"
+            android:text="@string/submitter_email"
+            android:layout_below="@+id/submitterNameField"
+            android:labelFor="@+id/submitterEmailField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp" />
+
+        <EditText
+            android:id="@+id/submitterEmailField"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_below="@+id/submitterEmailTextView"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="6dp" />
+
+
+        <TextView
             android:id="@+id/regionNameTextView"
             android:text="@string/region_name"
             android:labelFor="@+id/regionNameField"
-            android:layout_below="@+id/submit_region_id"
+            android:layout_below="@+id/submitterEmailField"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,9 +105,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/textbox_bg"
-            android:layout_marginRight="6dp" >
-            <requestFocus/>
-        </EditText>
+            android:layout_marginRight="6dp" />
 
         <TextView
             android:id="@+id/commentsTextView"
