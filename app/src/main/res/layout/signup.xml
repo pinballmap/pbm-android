@@ -116,6 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign Up"
+            android:textColor="#7c7c7c"
             android:textSize="22sp"
             android:background="@drawable/input_btn"
             android:minHeight="36dp"

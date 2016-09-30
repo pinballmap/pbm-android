@@ -147,6 +147,7 @@
         android:layout_centerHorizontal="true"
         android:onClick="clickHandler"
         android:text="@string/submit"
+        android:textColor="#7c7c7c"
         android:background="@drawable/input_btn"
         android:textSize="22sp"
         android:minHeight="36dp"

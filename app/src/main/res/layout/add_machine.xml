@@ -34,6 +34,7 @@
 	    android:clickable="true"
 	    android:onClick="submitHandler"
 	    android:text="@string/add_machine"
+		android:textColor="#7c7c7c"
 		android:textSize="22sp"
 		android:minHeight="36dp"
 		android:paddingBottom="8dp"

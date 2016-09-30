@@ -59,7 +59,7 @@
     <string name="sample_machine_name">Machine (Chicago Coin, 2048)</string>
     <string name="sample_condition_from_user">machine notes blkasl asdlk jasdlk sd sdlsdk sjskj fksdj skdfsd</string>
     <string name="loading_regions">Loading regions</string>
-    <string name="location_confirm">Confirm that this machine list is up to date</string>
+    <string name="location_confirm">Confirm location is up to date</string>
     <string name="score_text">Enter Your Score</string>
     <string name="condition_text">Enter a Condition Report</string>
     <string name="edit_location">Edit Location</string>

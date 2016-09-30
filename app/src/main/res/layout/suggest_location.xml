@@ -217,6 +217,7 @@
             android:layout_height="wrap_content"
             android:onClick="buttonOnClick"
             android:text="@string/submit_text"
+            android:textColor="#7c7c7c"
             android:background="@drawable/input_btn"
             android:textSize="22sp"
             android:minHeight="36dp"
