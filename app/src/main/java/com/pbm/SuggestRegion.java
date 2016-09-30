@@ -20,15 +20,11 @@ public class SuggestRegion extends PinballMapActivity {
 	}
 
 	public void buttonOnClick(View view) throws UnsupportedEncodingException {
-		String name = ((EditText) findViewById(R.id.submitterNameField)).getText().toString();
-		String email = ((EditText) findViewById(R.id.submitterEmailField)).getText().toString();
 		String regionName = ((EditText) findViewById(R.id.regionNameField)).getText().toString();
 
-		if (!name.isEmpty() && !email.isEmpty() && !regionName.isEmpty()) {
+		if (!regionName.isEmpty()) {
 			String url = regionlessBase + "regions/suggest.json?"
 					+ "region_name=" + URLEncoder.encode(regionName, "UTF-8")
-					+ ";name=" + URLEncoder.encode(name, "UTF-8")
-					+ ";email=" + URLEncoder.encode(email, "UTF-8")
 					+ ";comments=" + URLEncoder.encode(((EditText) findViewById(R.id.commentsField)).getText().toString(), "UTF-8");
 			try {
 				new RetrieveJsonTask().execute(
@@ -43,7 +39,7 @@ public class SuggestRegion extends PinballMapActivity {
 			setResult(REFRESH_RESULT);
 			SuggestRegion.this.finish();
 		} else {
-			Toast.makeText(getBaseContext(), "Your name, email address, and a suggested region name are required fields.", Toast.LENGTH_LONG).show();
+			Toast.makeText(getBaseContext(), "A suggested region name is a required fields.", Toast.LENGTH_LONG).show();
 		}
 	}
 }
