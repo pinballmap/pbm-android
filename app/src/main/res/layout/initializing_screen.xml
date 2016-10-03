@@ -3,7 +3,7 @@
 	android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="#000000">
 	<ImageView android:id="@+id/splash_image" android:src="@drawable/splash_image"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:scaleType="fitCenter" android:gravity="center"
+		android:scaleType="fitCenter" android:gravity="center" android:background="#000000"
 		android:contentDescription="@string/splash_image_desc" />
 	<ImageView android:id="@+id/splash_image_city"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"

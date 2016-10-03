@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:text="@string/select_region"
         android:textSize="18sp"
-        android:background="#EFEFEF"
+        android:textColor="#303030"
+        android:background="#FFFFFF"
         android:padding="5dip" />
 
     <android.support.v4.view.ViewPager
@@ -20,7 +21,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/greeting"
-        android:background="#EFEFEF">
+        android:background="#EFEFEF"
+        android:textColor="#303030">
 
         <android.support.v4.view.PagerTabStrip
             android:layout_width="match_parent"
