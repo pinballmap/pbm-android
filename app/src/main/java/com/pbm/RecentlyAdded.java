@@ -17,8 +17,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class RecentlyAdded extends PinballMapActivity {
@@ -37,8 +42,10 @@ public class RecentlyAdded extends PinballMapActivity {
 				getLocationData();
 			} catch (UnsupportedEncodingException | InterruptedException | ExecutionException | JSONException e) {
 				e.printStackTrace();
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
-			RecentlyAdded.super.runOnUiThread(new Runnable() {
+				RecentlyAdded.super.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
 					showTable(recentAdds);
@@ -48,7 +55,7 @@ public class RecentlyAdded extends PinballMapActivity {
 		}).start();
 	}
 
-	public void getLocationData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+	public void getLocationData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
 		int NUM_ADDED_TO_SHOW = 20;
 		PBMApplication app = getPBMApplication();
 
@@ -68,8 +75,13 @@ public class RecentlyAdded extends PinballMapActivity {
 			JSONObject lmxJson = lmxes.getJSONObject(i);
 
 			int id = lmxJson.getInt("id");
-			String createdAt = lmxJson.getString("created_at").split("T")[0];
+			String rawCreatedAt = lmxJson.getString("created_at").split("T")[0];
 			LocationMachineXref lmx = app.getLmx(id);
+
+			DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+			DateFormat outputDF = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
+			Date dateCreatedAt = inputDF.parse(rawCreatedAt);
+			String createdAt = outputDF.format(dateCreatedAt);
 
 			String textToShow = "<b>" + lmx.getMachine(this).name + "</b> was added to <b>" + lmx.getLocation(this).name + "</b> (" + lmx.getLocation(this).city + ")";
 			textToShow += "<br /><small>" + createdAt + "</small>";
