@@ -31,7 +31,6 @@ public class InitializingScreen extends PinballMapActivity {
 		SplashThread splashThread = new SplashThread();
 		splashThread.start();
 	}
-	
 
 	private class SplashThread extends Thread {
 		public void run() {
