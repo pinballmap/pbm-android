@@ -11,9 +11,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class RecentScores extends PinballMapActivity {
@@ -33,8 +38,10 @@ public class RecentScores extends PinballMapActivity {
 				getLocationData();
 			} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException e) {
 				e.printStackTrace();
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
-			RecentScores.super.runOnUiThread(new Runnable() {
+				RecentScores.super.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
 					ListView recentScoresTable = (ListView)findViewById(R.id.recentscorestable);
@@ -45,7 +52,7 @@ public class RecentScores extends PinballMapActivity {
 	    }).start();
 	}
 
-	public void getLocationData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+	public void getLocationData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
 		PBMApplication app = getPBMApplication();
 
 		String json = new RetrieveJsonTask().execute(
@@ -68,9 +75,15 @@ public class RecentScores extends PinballMapActivity {
 				LocationMachineXref lmx = app.getLmx(lmxID);
 				long score = msx.getLong("score");
 				String username = msx.getString("username");
-				String scoreDate = msx.getString("created_at").split("T")[0];
+				String rawScoreDate = msx.getString("created_at").split("T")[0];
 				Location location = lmx.getLocation(this);
 				Machine machine = lmx.getMachine(this);
+
+				DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+				DateFormat outputDF = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
+				Date dateCreatedAt = inputDF.parse(rawScoreDate);
+				String scoreDate = outputDF.format(dateCreatedAt);
+
 
 				String title = "<u>" + machine.name + "</u><br />" +
 					formatter.format(score) + " by <b>" + username + "</b>" + "<br />" +
