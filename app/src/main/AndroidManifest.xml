@@ -417,10 +417,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCeIu8smOy2xbRUmiQV316CfQGjk_mbXAs" />
-        <!-- key for bdols -->
-        <!-- <meta-data -->
-        <!-- android:name="com.google.android.geo.API_KEY" -->
-        <!-- android:value="AIzaSyCyBrhDoLxIC8kQl_KKUIue-nGawWj44TE"/> -->
     </application>
 
 </manifest>
