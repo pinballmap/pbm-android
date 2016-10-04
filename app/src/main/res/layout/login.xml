@@ -33,7 +33,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="A User-Powered Pinball Locator"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textColor="#F53240" />
 
     </RelativeLayout>
@@ -79,7 +79,7 @@
             android:inputType="textEmailAddress"
             android:hint="Login"
             android:background="@drawable/textbox_bg"
-            android:padding="10dp" />
+            android:padding="8dp" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -99,7 +99,7 @@
             android:inputType="textPassword"
             android:hint="Password"
             android:background="@drawable/textbox_bg"
-            android:padding="10dp" />
+            android:padding="8dp" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
@@ -111,9 +111,11 @@
             android:textColor="#7c7c7c"
             android:textSize="20sp"
             android:background="@drawable/input_btn"
-            android:height="36dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:minHeight="36dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:layout_marginBottom="5dp"
             android:elevation="2dp"
             android:layout_gravity="center_horizontal" />
@@ -126,9 +128,11 @@
             android:textColor="#7c7c7c"
             android:background="@drawable/input_btn"
             android:textSize="20sp"
-            android:height="36dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:minHeight="36dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="20dp"
             android:elevation="2dp"
@@ -155,10 +159,12 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
-            android:height="36dp"
             android:textColor="#7c7c7c"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:minHeight="36dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:layout_margin="5dp"
             android:elevation="2dp" />
         <TextView
