@@ -16,8 +16,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#EFEFEF"
-            android:orientation="vertical"
-            android:layout_marginBottom="5dp">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/locationName"
@@ -74,8 +73,7 @@
                 android:paddingRight="10dip"
                 android:paddingStart="10dip"
                 android:paddingLeft="10dip"
-                android:textColor="#666666"
-                android:background="#f7f7f7"
+                android:textColor="#888888"
                 android:textSize="15sp"/>
 
             <TextView
@@ -84,8 +82,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:textColor="#666666"
-                android:background="#f7f7f7"
+                android:textColor="#888888"
                 android:textSize="15sp"/>
             <TextView
                 android:id="@+id/description"
@@ -95,7 +92,6 @@
                 android:paddingRight="10dip"
                 android:textColor="#888888"
                 android:textSize="15sp"
-                android:background="#f7f7f7"
                 android:textStyle="italic" />
 
             <TextView
@@ -104,15 +100,17 @@
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
                 android:textStyle="italic"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/updated_on_bg"
                 android:gravity="center_horizontal"
-                android:textColor="#666666" />
+                android:textColor="#5a5a5a" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/spacer"
             android:layout_width="fill_parent"
-            android:layout_height="4dip"
-            android:background="#303030"/>
+            android:layout_height="3dip"
+            android:background="#7c7c7c"/>
 
         <Button
             android:id="@+id/confirmLocationButton"
@@ -122,11 +120,12 @@
             android:textStyle="italic"
             android:background="@drawable/input_btn"
             android:textSize="13sp"
-            android:height="36dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:minHeight="36dp"
+            android:textColor="#7c7c7c"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:elevation="2dp"
             android:layout_gravity="center_horizontal" />
 

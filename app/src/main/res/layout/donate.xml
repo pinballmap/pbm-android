@@ -12,7 +12,6 @@
         android:text="@string/donate_head"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold"
-        android:background="@drawable/header_bg"
         android:padding="10dp"
         android:gravity="center_horizontal"
         android:layout_marginBottom="10dp"/>

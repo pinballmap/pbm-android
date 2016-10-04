@@ -4,7 +4,12 @@
 		<item name="android:windowActionBar">false</item>
         <item name="colorAccent">#666666</item>
         <item name="android:textColorLink">#666666</item>
+        <item name="colorPrimary">#A9A9A9</item>
+        <item name="colorPrimaryDark">#303030</item>
 	</style>
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/background_splash</item>
+    </style>
 	<style name="spinner_style">
 		<item name="android:layout_width">fill_parent</item>
 		<item name="android:layout_height">wrap_content</item>

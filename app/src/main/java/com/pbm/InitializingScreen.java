@@ -23,17 +23,6 @@ public class InitializingScreen extends PinballMapActivity {
 
 		setSupportProgressBarIndeterminateVisibility(true);
 
-		PBMApplication app = getPBMApplication();
-		SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
-		Region region = app.getRegion(settings.getInt("region", 1));
-
-		int resID = getResources().getIdentifier(getCityNameDrawablePath(region), null, null);
-		if (resID != 0) {
-			ImageView cityNameImage = (ImageView) findViewById(R.id.splash_image_city);
-			Drawable image = getResources().getDrawable(resID);
-			cityNameImage.setImageDrawable(image);
-		}
-
 	}
 
 	@Override
@@ -42,21 +31,7 @@ public class InitializingScreen extends PinballMapActivity {
 		SplashThread splashThread = new SplashThread();
 		splashThread.start();
 	}
-
-	// We only have logos for certain regions
-	private String getCityNameDrawablePath(Region region) {
-		String cityNamePath = "com.pbm:drawable/";
-		String cityName = region.name;
-
-		if (cityName.equals("")) {
-			cityName = "portland_city";
-		} else {
-			cityName += "_city";
-		}
-
-		cityNamePath += cityName;
-		return cityNamePath;
-	}
+	
 
 	private class SplashThread extends Thread {
 		public void run() {

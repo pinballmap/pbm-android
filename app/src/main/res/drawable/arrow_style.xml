@@ -3,11 +3,11 @@
 
     <item><layer-list>
         <item><shape>
-            <gradient android:angle="90" android:endColor="#ebeae9" android:startColor="#f3fafc" android:type="linear" />
+            <gradient android:angle="90" android:endColor="#FFFFFF" android:startColor="#EFEFEF" android:type="linear" />
 
-            <stroke android:width="5dp" android:color="#303030" />
+            <stroke android:width="3dp" android:color="#A9A9A9" />
 
-            <padding android:bottom="5dp" android:left="3dp" android:right="10dp" android:top="5dp" />
+            <padding android:bottom="10dp" android:left="3dp" android:right="10dp" android:top="10dp" />
         </shape></item>
         <item ><bitmap android:gravity="right" android:src="@drawable/ic_arrow" />
         </item>

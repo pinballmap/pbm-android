@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView android:id="@+id/logo" android:src="@drawable/pinballmapcom_blue" android:contentDescription="Pinball Map"
+        <ImageView android:id="@+id/logo" android:src="@mipmap/pinballmapcom" android:contentDescription="Pinball Map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
@@ -108,6 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Login"
+            android:textColor="#7c7c7c"
             android:textSize="20sp"
             android:background="@drawable/input_btn"
             android:height="36dp"
@@ -122,6 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Not a user? Sign up here"
+            android:textColor="#7c7c7c"
             android:background="@drawable/input_btn"
             android:textSize="20sp"
             android:height="36dp"
@@ -154,6 +156,7 @@
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:height="36dp"
+            android:textColor="#7c7c7c"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:layout_margin="5dp"

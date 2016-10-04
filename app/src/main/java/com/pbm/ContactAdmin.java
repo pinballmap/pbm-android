@@ -29,12 +29,11 @@ public class ContactAdmin extends PinballMapActivity {
 			Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 
 			String url = regionlessBase + "regions/contact.json?region_id=" + region.id
-					+ ";message=" + URLEncoder.encode(message, "UTF-8")
-					+ ";name=" + URLEncoder.encode(((EditText) findViewById(R.id.submitterNameField)).getText().toString(), "UTF-8")
-					+ ";email=" + URLEncoder.encode(((EditText) findViewById(R.id.submitterEmailField)).getText().toString(), "UTF-8");
+					+ ";message=" + URLEncoder.encode(message, "UTF-8");
+
 			try {
 				new RetrieveJsonTask().execute(app.requestWithAuthDetails(url), "POST").get();
-				Toast.makeText(getBaseContext(), "Thank you for that submission! We'll be in touch.", Toast.LENGTH_LONG).show();
+				Toast.makeText(getBaseContext(), "Thank you for that message! We'll be in touch.", Toast.LENGTH_LONG).show();
 				setResult(REFRESH_RESULT);
 				ContactAdmin.this.finish();
 			} catch (InterruptedException | ExecutionException e) {
