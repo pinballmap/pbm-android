@@ -151,7 +151,7 @@ public class LocationDetail extends PinballMapActivity {
 
 				if (!locationTypeName.equals("") && !locationTypeName.equals("null")) {
 					locationType.setVisibility(View.VISIBLE);
-					locationType.setText(Html.fromHtml("<i><b>Location Type:</b></i> " + locationTypeName));
+					locationType.setText(Html.fromHtml("<i>Location Type:</i> " + locationTypeName));
 				} else {
 					locationType.setVisibility(View.GONE);
 				}
@@ -166,7 +166,7 @@ public class LocationDetail extends PinballMapActivity {
 
 				if (location.description != null && !location.description.equals("") && !location.description.equals("null")) {
 					locationDescription.setVisibility(View.VISIBLE);
-					locationDescription.setText(Html.fromHtml("<i><b>Description:</b></i> " + location.description));
+					locationDescription.setText(Html.fromHtml("<i>Description:</i> " + location.description));
 				} else {
 					locationDescription.setVisibility(View.GONE);
 				}
@@ -174,7 +174,7 @@ public class LocationDetail extends PinballMapActivity {
 				Operator operator = location.getOperator(getPBMActivity());
 				if (operator != null) {
 					locationOperator.setVisibility(View.VISIBLE);
-					locationOperator.setText(Html.fromHtml("<i><b>Operated By:</b></i> " + operator.name));
+					locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.name));
 				} else {
 					locationOperator.setVisibility(View.GONE);
 				}
