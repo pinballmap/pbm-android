@@ -3,12 +3,12 @@
     android:layout_width="fill_parent" android:layout_height="fill_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    android:background="#EFEFEF">
+    android:background="@color/background">
     <TextView
         android:id="@+id/aboutText01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#7c7c7c"
+        android:textColor="@color/lightText"
         android:text="@string/pbm_web"
         android:textSize="18sp"
         android:layout_margin="5dp"
@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Blog"
-        android:textColor="#7c7c7c"
+        android:textColor="@color/lightText"
         android:textSize="18sp"
         android:layout_margin="5dp"
         android:elevation="2dp"
@@ -31,7 +31,7 @@
         android:id="@+id/aboutEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#7c7c7c"
+        android:textColor="@color/lightText"
         android:text="Feedback: pinballmap@posteo.org"
         android:textSize="18sp"
         android:layout_margin="5dp"
@@ -42,7 +42,7 @@
         android:id="@+id/aboutRate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#7c7c7c"
+        android:textColor="@color/lightText"
         android:text="Rate us on Google Play"
         android:textSize="18sp"
         android:layout_margin="5dp"
@@ -57,7 +57,7 @@
         android:textSize="18sp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-		android:textColor="#7c7c7c"
+		android:textColor="@color/lightText"
 		android:text="@string/about_text" />
 	<ImageView
         android:id="@+id/sass"

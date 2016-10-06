@@ -22,7 +22,7 @@
                 android:bottom="0dp" />
             <stroke
                 android:width="3dp"
-                android:color="#a9a9a9" />
+                android:color="@color/colorPrimary" />
         </shape>
     </item>
 </layer-list>

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/select_region"
         android:textSize="18sp"
-        android:textColor="#303030"
+        android:textColor="@color/darkText"
         android:background="#FFFFFF"
         android:padding="5dip" />
 
@@ -21,16 +21,16 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/greeting"
-        android:background="#EFEFEF"
-        android:textColor="#303030">
+        android:background="@color/background"
+        android:textColor="@color/darkText">
 
         <android.support.v4.view.PagerTabStrip
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:background="#d3ecff"
+            android:background="@color/blue100"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:textColor="#F53240"/>
+            android:textColor="@color/red100"/>
     </android.support.v4.view.ViewPager>
 </RelativeLayout>

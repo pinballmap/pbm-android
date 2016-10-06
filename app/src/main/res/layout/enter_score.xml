@@ -3,7 +3,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
-    android:background="#EFEFEF"
+    android:background="@color/background"
     android:padding="10dp">
 
     <TextView
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/score_text"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#303030"
+        android:textColor="@color/darkText"
         android:layout_centerHorizontal="true"
         android:padding="5dp"
         android:gravity="center_horizontal"
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/score"
         android:text="@string/submit"
-        android:textColor="#7c7c7c"
+        android:textColor="@color/lightText"
         android:background="@drawable/input_btn"
         android:layout_centerHorizontal="true"
         android:textSize="22sp"

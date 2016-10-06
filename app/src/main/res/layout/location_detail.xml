@@ -9,13 +9,13 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:background="#EFEFEF">
+        android:background="@color/background">
 
         <LinearLayout
             android:id="@+id/locationData"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#EFEFEF"
+            android:background="@color/background"
             android:orientation="vertical">
 
             <TextView
@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:textColor="#303030"
+                android:textColor="@color/darkText"
                 android:paddingLeft="8dp"
                 android:paddingTop="5dp"
                 android:paddingRight="5dp"
@@ -39,7 +39,7 @@
                 android:paddingStart="10dip"
                 android:paddingLeft="10dip"
                 android:textSize="18sp"
-                android:textColor="#303030"/>
+                android:textColor="@color/darkText"/>
 
             <TextView
                 android:id="@+id/locationPhone"
@@ -73,7 +73,7 @@
                 android:paddingRight="10dip"
                 android:paddingStart="10dip"
                 android:paddingLeft="10dip"
-                android:textColor="#888888"
+                android:textColor="@color/medText"
                 android:textSize="15sp"/>
 
             <TextView
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:textColor="#888888"
+                android:textColor="@color/medText"
                 android:textSize="15sp"/>
             <TextView
                 android:id="@+id/description"
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:textColor="#888888"
+                android:textColor="@color/medText"
                 android:textSize="15sp"
                 android:textStyle="italic" />
 
@@ -110,7 +110,7 @@
             android:id="@+id/spacer"
             android:layout_width="fill_parent"
             android:layout_height="3dip"
-            android:background="#7c7c7c"/>
+            android:background="@color/lightText"/>
 
         <Button
             android:id="@+id/confirmLocationButton"
@@ -121,7 +121,7 @@
             android:background="@drawable/input_btn"
             android:textSize="13sp"
             android:minHeight="36dp"
-            android:textColor="#7c7c7c"
+            android:textColor="@color/lightText"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_marginBottom="5dp"
@@ -134,6 +134,6 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#EFEFEF" />
+            android:background="@color/background" />
     </LinearLayout>
 </ScrollView>

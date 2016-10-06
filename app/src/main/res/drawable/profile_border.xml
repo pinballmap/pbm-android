@@ -12,7 +12,7 @@
         android:bottom="3dp">
         <shape>
             <solid
-                android:color="#EFEFEF"/>
+                android:color="@color/background"/>
             <corners
                 android:radius="0dp" />
             <padding
@@ -22,7 +22,7 @@
                 android:bottom="0dp" />
             <stroke
                 android:width="2dp"
-                android:color="#F53240" />
+                android:color="@color/red100" />
         </shape>
     </item>
 </layer-list>

@@ -10,7 +10,6 @@
     android:paddingBottom="10dip"
     android:paddingRight="10dip">
 
-
     <ImageView
         android:id="@+id/machineSelectButton"
         android:layout_width="32dip"
@@ -40,7 +39,7 @@
             android:layout_height="wrap_content"
             android:text="@string/sample_machine_name"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#303030"
+            android:textColor="@color/darkText"
             android:paddingLeft="5dp" />
 
         <TextView
