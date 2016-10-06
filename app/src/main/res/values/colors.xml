@@ -13,4 +13,5 @@
     <color name="medText">#888888</color>
     <color name="medBackground">#DCDCDC</color>
     <color name="blue100">#d3ecff</color>
+    <color name="white">#FFFFFF</color>
 </resources>
