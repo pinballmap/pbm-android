@@ -9,17 +9,16 @@
     card_view:cardCornerRadius="3dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp">
-<RelativeLayout
-    android:id="@+id/machineListRow"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/border_bg"
-    android:paddingLeft="10dip"
-    android:paddingTop="10dip"
-    android:paddingBottom="10dip"
-    android:paddingRight="10dip">
-
+    <RelativeLayout
+        android:id="@+id/machineListRow"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_bg"
+        android:paddingLeft="10dip"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"
+        android:paddingRight="10dip">
     <ImageView
         android:id="@+id/machineSelectButton"
         android:layout_width="32dip"
@@ -41,7 +40,6 @@
         android:layout_toStartOf="@+id/machineSelectButton"
         android:orientation="vertical">
 
-
         <TextView
             android:id="@+id/machine_info"
             android:layout_width="fill_parent"
@@ -60,5 +58,5 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:background="@drawable/machine_bg" />
     </LinearLayout>
-</RelativeLayout>
+    </RelativeLayout>
 </android.support.v7.widget.CardView>
