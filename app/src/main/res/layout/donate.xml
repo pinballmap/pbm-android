@@ -3,12 +3,12 @@
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
 	android:orientation="vertical"
     android:padding="10dp"
-    android:background="#EFEFEF"
+    android:background="@color/background"
 	>
     <TextView android:id="@+id/donateHead"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textColor="#303030"
+        android:textColor="@color/darkText"
         android:text="@string/donate_head"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold"
@@ -27,7 +27,7 @@
 	<TextView android:id="@+id/donateText"
         android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-        android:background="#DCDCDC"
+        android:background="@color/medBackground"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp" />

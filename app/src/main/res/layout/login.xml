@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#EFEFEF"
+    android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Login"
@@ -34,7 +34,7 @@
             android:gravity="center"
             android:text="A User-Powered Pinball Locator"
             android:textSize="20sp"
-            android:textColor="#F53240" />
+            android:textColor="@color/red100" />
 
     </RelativeLayout>
 
@@ -108,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Login"
-            android:textColor="#7c7c7c"
+            android:textColor="@color/lightText"
             android:textSize="20sp"
             android:background="@drawable/input_btn"
             android:minHeight="36dp"
@@ -125,7 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Not a user? Sign up here"
-            android:textColor="#7c7c7c"
+            android:textColor="@color/lightText"
             android:background="@drawable/input_btn"
             android:textSize="20sp"
             android:minHeight="36dp"
@@ -141,7 +141,7 @@
         <TextView
             android:id="@+id/or_text"
             android:layout_width="wrap_content"
-            android:textColor="#303030"
+            android:textColor="@color/darkText"
             android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
             android:text="Or"
@@ -159,7 +159,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
-            android:textColor="#7c7c7c"
+            android:textColor="@color/lightText"
             android:minHeight="36dp"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
@@ -170,7 +170,7 @@
         <TextView
             android:id="@+id/no_login_exp"
             android:layout_width="wrap_content"
-            android:textColor="#303030"
+            android:textColor="@color/darkText"
             android:layout_height="wrap_content"
             android:text="Note: You can't update without logging in"
             android:textSize="16sp"

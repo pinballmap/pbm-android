@@ -10,13 +10,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp"
-        android:background="#EFEFEF">
+        android:background="@color/background">
         <TextView
             android:id="@+id/usernameTextView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#303030"
+            android:textColor="@color/darkText"
             android:textStyle="bold"
             android:padding="5dp"
             android:layout_marginBottom="10dp"
@@ -54,8 +54,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:padding="5sp"
-                android:textColor="#F53240"
-                android:background="#d3ecff" />
+                android:textColor="@color/red100"
+                android:background="@color/blue100" />
             <TextView
                 android:id="@+id/numMachinesAddedLabel"
                 android:text=" Machines Added"
@@ -80,8 +80,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:padding="5sp"
-                android:textColor="#F53240"
-                android:background="#d3ecff"/>
+                android:textColor="@color/red100"
+                android:background="@color/blue100"/>
             <TextView
                 android:id="@+id/numMachinesRemovedLabel"
                 android:text=" Machines Removed"
@@ -106,8 +106,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:padding="5sp"
-                android:textColor="#F53240"
-                android:background="#d3ecff"/>
+                android:textColor="@color/red100"
+                android:background="@color/blue100"/>
             <TextView
                 android:id="@+id/numLocationsEditedLabel"
                 android:text=" Locations Edited"
@@ -132,8 +132,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:padding="5sp"
-                android:textColor="#F53240"
-                android:background="#d3ecff" />
+                android:textColor="@color/red100"
+                android:background="@color/blue100" />
             <TextView
                 android:id="@+id/numLocationsSuggestedLabel"
                 android:text=" Locations Suggested"
@@ -158,8 +158,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:padding="5sp"
-                android:textColor="#F53240"
-                android:background="#d3ecff" />
+                android:textColor="@color/red100"
+                android:background="@color/blue100" />
             <TextView
                 android:id="@+id/numLmxCommentsLeftLabel"
                 android:text=" Conditions Left"
