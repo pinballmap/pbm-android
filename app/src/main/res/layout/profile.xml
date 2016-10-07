@@ -180,15 +180,15 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:padding="5dp"
-            android:layout_marginLeft="65dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/profile_border_blue"/>
-
+            android:background="@color/blue100"/>
+        
         <com.pbm.NonScrollListView
             android:id="@+id/locationsEditedTable"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:background="@drawable/profile_border"
+            android:background="@color/background"
             android:paddingBottom="5dp" />
 
         <TextView
@@ -198,14 +198,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:background="@drawable/profile_border_blue"
-            android:layout_marginLeft="65dp"
+            android:background="@color/blue100"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             android:padding="5dp" />
 
         <com.pbm.NonScrollListView
             android:id="@+id/highScoresTable"
-            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:background="@color/background" />
     </LinearLayout>
 </ScrollView>
