@@ -48,27 +48,19 @@
         android:background="@drawable/input_btn"
         android:elevation="2dp" />
 
-    <android.support.v7.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        card_view:cardUseCompatPadding="true"
-        card_view:cardElevation="2dp"
-        card_view:cardCornerRadius="3dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp">
         <LinearLayout
             android:id="@+id/conditionsContainer"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/border_bg"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
         <com.pbm.NonScrollListView
             android:id="@android:id/list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"/>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
 
     <TextView
         android:id="@android:id/empty"
@@ -103,27 +95,19 @@
         android:layout_marginTop="10dp"
         android:elevation="2dp" />
 
-    <android.support.v7.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        card_view:cardUseCompatPadding="true"
-        card_view:cardElevation="2dp"
-        card_view:cardCornerRadius="3dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp">
         <LinearLayout
             android:id="@+id/scoresContainer"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/border_bg"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
         <com.pbm.NonScrollListView
             android:id="@+id/score_list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
         </LinearLayout>
-    </android.support.v7.widget.CardView>
 
     <TextView
         android:id="@+id/empty_score"
