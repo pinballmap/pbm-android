@@ -185,7 +185,8 @@
             android:layout_marginBottom="5dp"
             android:background="@drawable/profile_border_blue"/>
 
-        <ListView android:id="@+id/locationsEditedTable"
+        <com.pbm.NonScrollListView
+            android:id="@+id/locationsEditedTable"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:background="@drawable/profile_border"
             android:paddingBottom="5dp" />
@@ -203,7 +204,8 @@
             android:layout_marginBottom="5dp"
             android:padding="5dp" />
 
-        <ListView android:id="@+id/highScoresTable"
+        <com.pbm.NonScrollListView
+            android:id="@+id/highScoresTable"
             android:layout_width="wrap_content" android:layout_height="wrap_content" />
     </LinearLayout>
 </ScrollView>
