@@ -187,7 +187,8 @@
 
         <ListView android:id="@+id/locationsEditedTable"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:background="@drawable/profile_border"/>
+            android:background="@drawable/profile_border"
+            android:paddingBottom="5dp" />
 
         <TextView
             android:id="@+id/highScoresLabel"
