@@ -31,7 +31,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/_score"
-            android:text="Created on:"
+            android:text="Scored on:"
             android:textColor="#999999"
             android:textStyle="italic"
             android:paddingBottom="2dp"
