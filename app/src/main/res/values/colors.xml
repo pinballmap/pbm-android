@@ -2,5 +2,16 @@
 <resources>
 
     <color name="splash_bg">#fee4e6</color>
-
+    <color name="colorAccent">#666666</color>
+    <color name="textColorLink">#666666</color>
+    <color name="colorPrimary">#A9A9A9</color>
+    <color name="colorPrimaryDark">#303030</color>
+    <color name="lightText">#7c7c7c</color>
+    <color name="background">#EFEFEF</color>
+    <color name="red100">#F53240</color>
+    <color name="darkText">#303030</color>
+    <color name="medText">#888888</color>
+    <color name="medBackground">#DCDCDC</color>
+    <color name="blue100">#d3ecff</color>
+    <color name="white">#FFFFFF</color>
 </resources>

@@ -17,7 +17,7 @@
                 android:bottom="10dp" />
             <stroke
                 android:width="3dp"
-                android:color="#A9A9A9" />
+                android:color="@color/colorPrimary" />
         </shape>
     </item>
 </layer-list>

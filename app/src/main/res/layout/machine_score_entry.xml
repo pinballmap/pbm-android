@@ -2,14 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-    android:background="#EFEFEF">
+    android:background="@color/background">
 
     <RelativeLayout
         android:id="@+id/score_container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp">
-
+        android:background="@color/white"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp">
 
         <TextView
             android:id="@+id/_score"
@@ -29,7 +31,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/_score"
-            android:text="Created on:"
+            android:text="Scored on:"
             android:textColor="#999999"
             android:textStyle="italic"
             android:paddingBottom="2dp"

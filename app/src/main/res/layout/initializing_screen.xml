@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/splash_layout"
 	android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="#000000">
-	<ImageView android:id="@+id/splash_image" android:src="@mipmap/ic_init"
+	<ImageView android:id="@+id/splash_image" android:src="@mipmap/ic_init_grey"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:scaleType="fitCenter" android:gravity="center" android:background="#000000"
+		android:scaleType="fitCenter" android:gravity="center" android:background="@color/colorPrimary"
 		android:contentDescription="@string/splash_image_desc" />
 </RelativeLayout>

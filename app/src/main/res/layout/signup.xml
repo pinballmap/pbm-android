@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#EFEFEF"
+    android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Login"
@@ -18,7 +18,7 @@
             android:layout_centerInParent="true"
             android:text="@string/sign_up"
             android:textSize="18sp"
-            android:textColor="#F53240"
+            android:textColor="@color/red100"
             android:padding="5dp"
             android:layout_marginBottom="10dp"
             android:gravity="center_horizontal" />
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:hint="Username"
             android:background="@drawable/textbox_bg"
-            android:padding="10dp" />
+            android:padding="8dp" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -65,7 +65,7 @@
                 android:inputType="textEmailAddress"
                 android:hint="Email"
                 android:background="@drawable/textbox_bg"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:paddingLeft="10dp"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -86,7 +86,7 @@
             android:inputType="textPassword"
             android:hint="Password"
             android:background="@drawable/textbox_bg"
-            android:padding="10dp"
+            android:padding="8dp"
             android:paddingLeft="10dp"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -107,7 +107,7 @@
                 android:inputType="textPassword"
                 android:hint="Confirm Password"
                 android:background="@drawable/textbox_bg"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:paddingLeft="10dp"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -116,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign Up"
-            android:textColor="#7c7c7c"
+            android:textColor="@color/lightText"
             android:textSize="22sp"
             android:background="@drawable/input_btn"
             android:minHeight="36dp"

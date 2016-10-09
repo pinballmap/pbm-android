@@ -113,6 +113,8 @@ public class Profile extends PinballMapActivity {
 
 	public void getProfileData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
 		PBMApplication app = getPBMApplication();
+		TextView locationsEditedText = (TextView) findViewById(R.id.locationsEditedLabel);
+        locationsEditedText.setText("Locations Edited in " + getPBMApplication().getRegion().formalName + " :");
 
 		final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 		String id = settings.getString("id", "");

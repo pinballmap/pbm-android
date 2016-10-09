@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="#EFEFEF"
+    android:background="@color/background"
     android:padding="10dp">
 
     <TextView
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/edit_location"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#303030"
+        android:textColor="@color/darkText"
         android:layout_centerHorizontal="true"
         android:padding="5dp"
         android:layout_marginBottom="10dp"
@@ -147,7 +147,7 @@
         android:layout_centerHorizontal="true"
         android:onClick="clickHandler"
         android:text="@string/submit"
-        android:textColor="#7c7c7c"
+        android:textColor="@color/lightText"
         android:background="@drawable/input_btn"
         android:textSize="22sp"
         android:minHeight="36dp"

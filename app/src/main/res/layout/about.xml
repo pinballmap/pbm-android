@@ -1,14 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:background="#000000">
-	<TextView android:id="@+id/aboutText" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:textSize="20sp"
-		android:textColor="#d3ecff" android:textStyle="bold"
-		android:text="@string/about_text"
-		android:background="#F53240" />
-	<ImageView android:id="@+id/sass" android:src="@drawable/sassy" android:contentDescription="@string/sass_description"
-		android:layout_below="@+id/aboutText" android:layout_width="fill_parent"
-		android:layout_height="fill_parent" android:layout_gravity="bottom"
-		android:background="#F53240" />
-</RelativeLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@color/background">
+    <TextView
+        android:id="@+id/aboutText01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/lightText"
+        android:text="@string/pbm_web"
+        android:textSize="18sp"
+        android:layout_margin="5dp"
+        android:elevation="2dp"
+        android:autoLink="web"
+        android:linksClickable="true"
+        android:layout_gravity="center_horizontal" />
+    <TextView
+        android:id="@+id/aboutBlog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Blog"
+        android:textColor="@color/lightText"
+        android:textSize="18sp"
+        android:layout_margin="5dp"
+        android:elevation="2dp"
+        android:linksClickable="true"
+        android:layout_gravity="center_horizontal" />
+    <TextView
+        android:id="@+id/aboutEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/lightText"
+        android:text="Feedback: pinballmap@posteo.org"
+        android:textSize="18sp"
+        android:layout_margin="5dp"
+        android:elevation="2dp"
+        android:linksClickable="true"
+        android:layout_gravity="center_horizontal"/>
+    <TextView
+        android:id="@+id/aboutRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/lightText"
+        android:text="Rate us on Google Play"
+        android:textSize="18sp"
+        android:layout_margin="5dp"
+        android:elevation="2dp"
+        android:linksClickable="true"
+        android:layout_gravity="center_horizontal"/>
+
+	<TextView
+		android:id="@+id/aboutText"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+		android:textColor="@color/lightText"
+		android:text="@string/about_text" />
+	<ImageView
+        android:id="@+id/sass"
+        android:src="@drawable/sassy"
+        android:contentDescription="@string/sass_description"
+		android:layout_below="@+id/aboutText"
+        android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+        android:layout_gravity="bottom" />
+</LinearLayout>

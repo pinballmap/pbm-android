@@ -9,7 +9,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="#EFEFEF">
+                android:background="@color/background">
     <Button
         android:id="@+id/pintips"
         android:layout_width="wrap_content"
@@ -17,7 +17,7 @@
         android:layout_margin="10dp"
         android:linksClickable="true"
         android:text="View playing tips on pintips.net"
-        android:textColor="#7c7c7c"
+        android:textColor="@color/lightText"
         android:background="@drawable/input_btn"
         android:textSize="15sp"
         android:minHeight="36dp"
@@ -30,7 +30,7 @@
         android:id="@+id/spacer"
         android:layout_width="fill_parent"
         android:layout_height="1dip"
-        android:background="#F53240" />
+        android:background="@color/red100" />
 
     <Button
         android:id="@+id/add_condition_button"
@@ -39,7 +39,7 @@
         android:layout_margin="10dp"
         android:layout_gravity="center_horizontal"
         android:text="Add a new condition report"
-        android:textColor="#7c7c7c"
+        android:textColor="@color/lightText"
         android:textSize="15sp"
         android:minHeight="36dp"
         android:padding="10dp"
@@ -48,10 +48,19 @@
         android:background="@drawable/input_btn"
         android:elevation="2dp" />
 
-    <com.pbm.NonScrollListView
-        android:id="@android:id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:id="@+id/conditionsContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/border_bg"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+        <com.pbm.NonScrollListView
+            android:id="@android:id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+        </LinearLayout>
 
     <TextView
         android:id="@android:id/empty"
@@ -60,14 +69,14 @@
         android:layout_marginBottom="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:text="No conditions"/>
 
     <TextView
         android:id="@+id/spacer2"
         android:layout_width="fill_parent"
         android:layout_height="1dip"
-        android:background="#F53240"
+        android:background="@color/red100"
         android:layout_marginTop="10dp" />
 
     <Button
@@ -76,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="Add Your High Score"
-        android:textColor="#7c7c7c"
+        android:textColor="@color/lightText"
         android:layout_gravity="center_horizontal"
         android:textSize="15sp"
         android:background="@drawable/input_btn"
@@ -86,10 +95,19 @@
         android:layout_marginTop="10dp"
         android:elevation="2dp" />
 
-    <com.pbm.NonScrollListView
-        android:id="@+id/score_list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:id="@+id/scoresContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/border_bg"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+        <com.pbm.NonScrollListView
+            android:id="@+id/score_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        </LinearLayout>
 
     <TextView
         android:id="@+id/empty_score"
@@ -98,14 +116,13 @@
         android:layout_marginBottom="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:text="No scores"/>
-
     <TextView
         android:id="@+id/spacer3"
         android:layout_width="fill_parent"
         android:layout_height="1dip"
-        android:background="#F53240"
+        android:background="@color/red100"
         android:layout_marginTop="10dp" />
 
     <Button
@@ -113,7 +130,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lookup Other Locations With MACHINE NAME"
-        android:textColor="#7c7c7c"
+        android:textColor="@color/lightText"
         android:layout_margin="10dp"
         android:background="@drawable/input_btn"
         android:layout_gravity="center_horizontal"
@@ -127,7 +144,7 @@
         android:id="@+id/remove_machine_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#F53240"
+        android:background="@color/red100"
         android:textColor="@android:color/white"
         android:text="Remove machine"
         android:layout_marginTop="20dp"

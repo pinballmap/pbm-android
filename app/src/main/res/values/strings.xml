@@ -4,7 +4,9 @@
     <string name="select_region">PinballMap.com contains over 80 distinct regional pinball maps. Find yours, and help keep it up to date!</string>
     <string name="splash_image_desc">Splash Image</string>
     <string name="splash_image_city_desc">City Splash Image</string>
-    <string name="about_text">\tPinballMap.com\n\t\tScott Wainstock\n\t\tRyan Gratzer\n\t\tBrian Dols\n\n\tArtwork\n\t\tDrew Marshall\n\n\tSpecial Thanks\n\t\tCleo, Sassy, Solomon,\n\t\tBawb, and Brian Hanifin</string>
+    <string name="about_head">About Pinball Map</string>
+    <string name="pbm_web"><a href="http://pinballmap.com">pinballmap.com</a></string>
+    <string name="about_text">\tMade By\n\t\tScott Wainstock\n\t\tRyan Gratzer\n\t\tBrian Dols\n\n\tArtwork\n\t\tDrew Marshall</string>
     <string name="sass_description">A beautiful kitten</string>
     <string name="enter_machine">Enter the machine name, or select it from the list</string>
     <string name="enter_condition">Click the box below to enter a machine description</string>
