@@ -51,6 +51,7 @@ public class Profile extends PinballMapActivity {
     @SuppressWarnings("deprecation")
 	public void initializeProfileData() {
 		locationsEditedTable = (NonScrollListView) findViewById(R.id.locationsEditedTable);
+        locationsEditedTable.setFocusable(false);
 		locationsEditedTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent myIntent = new Intent();
@@ -63,6 +64,7 @@ public class Profile extends PinballMapActivity {
 		});
 
 		highScoresTable = (NonScrollListView) findViewById(R.id.highScoresTable);
+        highScoresTable.setFocusable(false);
 
 		new Thread(new Runnable() {
 			public void run() {
