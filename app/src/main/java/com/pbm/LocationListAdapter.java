@@ -1,6 +1,7 @@
 package com.pbm;
 
 import android.content.Context;
+import android.os.Build;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,8 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 		this.locations = new ArrayList<>(locations);
 		this.filteredLocationList = new ArrayList<>(locations);
 	}
-	
+
+    @SuppressWarnings("deprecation")
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		View row = convertView;
@@ -48,7 +50,11 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 
 		if (filteredLocationList.size() > 0) {
 			Location location = filteredLocationList.get(position);
-			holder.name.setText(Html.fromHtml("<b>" + location.name + "</b> " + "<i>(" + location.city + ")</i>"));
+            if (Build.VERSION.SDK_INT >= 24) {
+                holder.name.setText(Html.fromHtml("<b>" + location.name + "</b> " + "<i>(" + location.city + ")</i>",Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
+            } else {
+                holder.name.setText(Html.fromHtml("<b>" + location.name + "</b> " + "<i>(" + location.city + ")</i>")); // or for older api
+            }
 			holder.distance.setText(location.milesInfo);
 			holder.numMachines.setText(Integer.toString(location.numMachines((PinballMapActivity) context)));
 		}

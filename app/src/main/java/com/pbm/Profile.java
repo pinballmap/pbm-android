@@ -2,6 +2,7 @@ package com.pbm;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -47,6 +48,7 @@ public class Profile extends PinballMapActivity {
 		initializeProfileData();
 	}
 
+    @SuppressWarnings("deprecation")
 	public void initializeProfileData() {
 		locationsEditedTable = (NonScrollListView) findViewById(R.id.locationsEditedTable);
 		locationsEditedTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -97,9 +99,16 @@ public class Profile extends PinballMapActivity {
 						locationsEditedTable.setAdapter(new LocationListAdapter(Profile.this, locationsEdited));
 
 						Spanned[] htmlHighScores = new Spanned[highScores.size()];
-						for(int i = 0 ; i < highScores.size(); i++) {
-							htmlHighScores[i] = Html.fromHtml(highScores.get(i));
-						}
+                        if (Build.VERSION.SDK_INT >= 24) {
+                            for(int i = 0 ; i < highScores.size(); i++) {
+                                htmlHighScores[i] = Html.fromHtml(highScores.get(i),Html.FROM_HTML_MODE_LEGACY);
+                            }
+                        } else {
+                            for(int i = 0 ; i < highScores.size(); i++) {
+                                htmlHighScores[i] = Html.fromHtml(highScores.get(i));
+                            }
+                        }
+
 
 						highScoresTable.setAdapter(new ArrayAdapter<CharSequence>(Profile.this, R.layout.custom_list_item_1, htmlHighScores));
 					}
