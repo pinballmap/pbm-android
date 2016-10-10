@@ -19,6 +19,7 @@
             android:textColor="@color/darkText"
             android:textStyle="bold"
             android:padding="5dp"
+            android:background="@color/blue100"
             android:layout_marginBottom="10dp"
             android:gravity="center_horizontal" />
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -183,14 +184,24 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
-            android:background="@color/blue100"/>
-        
+            android:background="@color/medBackground"/>
+        <android.support.v7.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            card_view:cardUseCompatPadding="true"
+            card_view:cardElevation="2dp"
+            card_view:cardCornerRadius="3dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/blue100">
         <com.pbm.NonScrollListView
             android:id="@+id/locationsEditedTable"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:background="@color/background"
             android:paddingBottom="5dp" />
-
+        </android.support.v7.widget.CardView>
         <TextView
             android:id="@+id/highScoresLabel"
             android:text="High Scores:"
@@ -198,15 +209,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:background="@color/blue100"
+            android:background="@color/medBackground"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             android:padding="5dp" />
-
+        <android.support.v7.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            card_view:cardUseCompatPadding="true"
+            card_view:cardElevation="2dp"
+            card_view:cardCornerRadius="3dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/blue100">
         <com.pbm.NonScrollListView
             android:id="@+id/highScoresTable"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:background="@color/background" />
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 </ScrollView>

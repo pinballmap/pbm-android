@@ -8,7 +8,6 @@ import android.text.Spanned;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -32,7 +31,7 @@ public class Profile extends PinballMapActivity {
 	private final int LOCATION_NAME_INDEX = 0;
 	private final int SCORE_DATE_INDEX = 3;
 
-	ListView locationsEditedTable, highScoresTable;
+	NonScrollListView locationsEditedTable, highScoresTable;
 	TextView numMachinesAddedTextView, numMachinesRemovedTextView, numLocationsEditedTextView, numLocationsSuggestedTextView,
 		numLmxCommentsLeftTextView, createdAtTextView, usernameTextView;
 	String numMachinesAdded, numMachinesRemoved, numLocationsEdited, numLocationsSuggested, numLmxCommentsLeft, createdAt;
@@ -49,8 +48,7 @@ public class Profile extends PinballMapActivity {
 	}
 
 	public void initializeProfileData() {
-		locationsEditedTable = (ListView) findViewById(R.id.locationsEditedTable);
-		locationsEditedTable.setFastScrollEnabled(true);
+		locationsEditedTable = (NonScrollListView) findViewById(R.id.locationsEditedTable);
 		locationsEditedTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent myIntent = new Intent();
@@ -62,8 +60,7 @@ public class Profile extends PinballMapActivity {
 			}
 		});
 
-		highScoresTable = (ListView) findViewById(R.id.highScoresTable);
-		highScoresTable.setFastScrollEnabled(true);
+		highScoresTable = (NonScrollListView) findViewById(R.id.highScoresTable);
 
 		new Thread(new Runnable() {
 			public void run() {
@@ -114,7 +111,7 @@ public class Profile extends PinballMapActivity {
 	public void getProfileData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
 		PBMApplication app = getPBMApplication();
 		TextView locationsEditedText = (TextView) findViewById(R.id.locationsEditedLabel);
-        locationsEditedText.setText("Locations Edited in " + getPBMApplication().getRegion().formalName + " :");
+        locationsEditedText.setText("Locations Edited in " + getPBMApplication().getRegion().formalName + ":");
 
 		final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 		String id = settings.getString("id", "");
