@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -17,6 +18,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+@SuppressWarnings("deprecation")
 public class Donate extends PinballMapActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -25,7 +27,11 @@ public class Donate extends PinballMapActivity {
         logAnalyticsHit("com.pbm.Donate");
 
 		TextView donateText  = (TextView) findViewById(R.id.donateText);
-		donateText.setText(Html.fromHtml(getString(R.string.donate)));
+        if (Build.VERSION.SDK_INT >= 24) {
+            donateText.setText(Html.fromHtml(getString(R.string.donate),Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
+        } else {
+            donateText.setText(Html.fromHtml(getString(R.string.donate))); // or for older api
+        }
 
 		ImageView paypalButton = (ImageView)findViewById(R.id.donateButton);
 

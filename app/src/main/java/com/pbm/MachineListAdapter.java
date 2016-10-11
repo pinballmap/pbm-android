@@ -1,6 +1,7 @@
 package com.pbm;
 
 import android.content.Context;
+import android.os.Build;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 		this.disableSelectImage = disableSelectImage;
 	}
 
+    @SuppressWarnings("deprecation")
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		MachineViewHolder holder;
 		View row = convertView;
@@ -46,7 +48,11 @@ public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 		}
 
 		Machine machine = filteredMachineList.get(position);
-		holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>"));
+		if (Build.VERSION.SDK_INT >= 24) {
+            holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>",Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
+		} else {
+            holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>")); // or for older api
+		}
 
 		if (disableSelectImage) {
 			holder.machineSelectButton.setVisibility(View.INVISIBLE);

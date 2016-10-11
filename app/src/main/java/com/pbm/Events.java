@@ -2,6 +2,7 @@ package com.pbm;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -66,6 +67,7 @@ public class Events extends PinballMapActivity {
 		}).start();
 	}
 
+    @SuppressWarnings("deprecation")
 	public void getEventData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
 		String json = new RetrieveJsonTask().execute(
 			getPBMApplication().requestWithAuthDetails(regionBase + "events.json"),
@@ -112,7 +114,12 @@ public class Events extends PinballMapActivity {
 				eventLinks[i] = link;
 			}
 
-			Spanned eventTextSpanned = Html.fromHtml(eventText);
+            Spanned eventTextSpanned;
+            if (Build.VERSION.SDK_INT >= 24) {
+                eventTextSpanned = Html.fromHtml(eventText,Html.FROM_HTML_MODE_LEGACY);
+            } else {
+                eventTextSpanned = Html.fromHtml(eventText);
+            }
 			events.add(eventTextSpanned);
 		}
 	}
