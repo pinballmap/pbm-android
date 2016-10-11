@@ -2,6 +2,7 @@ package com.pbm;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -49,6 +50,7 @@ public class LocationDetail extends PinballMapActivity {
 		}
 	}
 
+    @SuppressWarnings("deprecation")
 	public void setupConfirmLocationButton() {
 		Button confirmLocationButton = (Button) findViewById(R.id.confirmLocationButton);
 
@@ -79,7 +81,11 @@ public class LocationDetail extends PinballMapActivity {
 
 					TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
 					locationLastUpdated.setVisibility(View.VISIBLE);
-					locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</> " + lastUpdatedInfo + "<b>" + location.lastUpdatedByUsername + "</b>"));
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</> " + lastUpdatedInfo + "<b>" + location.lastUpdatedByUsername + "</b>",Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
+                    } else {
+                        locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</> " + lastUpdatedInfo + "<b>" + location.lastUpdatedByUsername + "</b>")); // or for older api
+                    }
 				}
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
@@ -100,6 +106,7 @@ public class LocationDetail extends PinballMapActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+    @SuppressWarnings("deprecation")
 	private void loadLocationData() {
 		new Thread(new Runnable() {
 			public void run() {
@@ -126,7 +133,11 @@ public class LocationDetail extends PinballMapActivity {
 					}
 
 					locationLastUpdated.setVisibility(View.VISIBLE);
-					locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</b> " + lastUpdatedInfo));
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</b> " + lastUpdatedInfo,Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
+                    } else {
+                        locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</b> " + lastUpdatedInfo)); // or for older api
+                    }
 				} else {
 					locationLastUpdated.setVisibility(View.GONE);
 				}
@@ -151,7 +162,11 @@ public class LocationDetail extends PinballMapActivity {
 
 				if (!locationTypeName.equals("") && !locationTypeName.equals("null")) {
 					locationType.setVisibility(View.VISIBLE);
-					locationType.setText(Html.fromHtml("<i>Location Type:</i> " + locationTypeName));
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        locationType.setText(Html.fromHtml("<i>Location Type:</i> " + locationTypeName,Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
+                    } else {
+                        locationType.setText(Html.fromHtml("<i>Location Type:</i> " + locationTypeName)); // or for older api
+                    }
 				} else {
 					locationType.setVisibility(View.GONE);
 				}
@@ -166,7 +181,12 @@ public class LocationDetail extends PinballMapActivity {
 
 				if (location.description != null && !location.description.equals("") && !location.description.equals("null")) {
 					locationDescription.setVisibility(View.VISIBLE);
-					locationDescription.setText(Html.fromHtml("<i>Description:</i> " + location.description));
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        locationDescription.setText(Html.fromHtml("<i>Description:</i> " + location.description,Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
+                    } else {
+                        locationDescription.setText(Html.fromHtml("<i>Description:</i> " + location.description)); // or for older api
+                    }
+
 				} else {
 					locationDescription.setVisibility(View.GONE);
 				}
@@ -174,7 +194,12 @@ public class LocationDetail extends PinballMapActivity {
 				Operator operator = location.getOperator(getPBMActivity());
 				if (operator != null) {
 					locationOperator.setVisibility(View.VISIBLE);
-					locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.name));
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.name,Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
+                    } else {
+                        locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.name)); // or for older api
+                    }
+
 				} else {
 					locationOperator.setVisibility(View.GONE);
 				}
@@ -248,6 +273,7 @@ public class LocationDetail extends PinballMapActivity {
 		}).start();
 	}
 
+    @SuppressWarnings("deprecation")
 	public View getLMXView(final LocationMachineXref lmx, LinearLayout lmxTable) {
 		MachineViewHolder holder;
 		LayoutInflater layoutInflater = LayoutInflater.from(getBaseContext());
@@ -262,7 +288,12 @@ public class LocationDetail extends PinballMapActivity {
 
 		Machine machine = lmx.getMachine(this);
 
-		holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>"));
+        if (Build.VERSION.SDK_INT >= 24) {
+            holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>",Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
+        } else {
+            holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>")); // or for older api
+        }
+
 		String conditionText = "";
 		if (!lmx.condition.equals("null") && !lmx.condition.equals("")) {
 			conditionText += lmx.condition;
@@ -275,7 +306,12 @@ public class LocationDetail extends PinballMapActivity {
 				conditionText += " by<b> " + lastUpdatedByUsername + "</b>";
 			}
 
-			holder.condition.setText(Html.fromHtml(conditionText));
+            if (Build.VERSION.SDK_INT >= 24) {
+                holder.condition.setText(Html.fromHtml(conditionText,Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
+            } else {
+                holder.condition.setText(Html.fromHtml(conditionText)); // or for older api
+            }
+
 		} else {
 			holder.condition.setVisibility(View.GONE);
 		}

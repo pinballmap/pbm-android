@@ -2,13 +2,13 @@ package com.pbm;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -32,7 +32,7 @@ public class Profile extends PinballMapActivity {
 	private final int LOCATION_NAME_INDEX = 0;
 	private final int SCORE_DATE_INDEX = 3;
 
-	ListView locationsEditedTable, highScoresTable;
+	NonScrollListView locationsEditedTable, highScoresTable;
 	TextView numMachinesAddedTextView, numMachinesRemovedTextView, numLocationsEditedTextView, numLocationsSuggestedTextView,
 		numLmxCommentsLeftTextView, createdAtTextView, usernameTextView;
 	String numMachinesAdded, numMachinesRemoved, numLocationsEdited, numLocationsSuggested, numLmxCommentsLeft, createdAt;
@@ -48,9 +48,10 @@ public class Profile extends PinballMapActivity {
 		initializeProfileData();
 	}
 
+    @SuppressWarnings("deprecation")
 	public void initializeProfileData() {
-		locationsEditedTable = (ListView) findViewById(R.id.locationsEditedTable);
-		locationsEditedTable.setFastScrollEnabled(true);
+		locationsEditedTable = (NonScrollListView) findViewById(R.id.locationsEditedTable);
+        locationsEditedTable.setFocusable(false);
 		locationsEditedTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent myIntent = new Intent();
@@ -62,8 +63,8 @@ public class Profile extends PinballMapActivity {
 			}
 		});
 
-		highScoresTable = (ListView) findViewById(R.id.highScoresTable);
-		highScoresTable.setFastScrollEnabled(true);
+		highScoresTable = (NonScrollListView) findViewById(R.id.highScoresTable);
+        highScoresTable.setFocusable(false);
 
 		new Thread(new Runnable() {
 			public void run() {
@@ -100,9 +101,16 @@ public class Profile extends PinballMapActivity {
 						locationsEditedTable.setAdapter(new LocationListAdapter(Profile.this, locationsEdited));
 
 						Spanned[] htmlHighScores = new Spanned[highScores.size()];
-						for(int i = 0 ; i < highScores.size(); i++) {
-							htmlHighScores[i] = Html.fromHtml(highScores.get(i));
-						}
+                        if (Build.VERSION.SDK_INT >= 24) {
+                            for(int i = 0 ; i < highScores.size(); i++) {
+                                htmlHighScores[i] = Html.fromHtml(highScores.get(i),Html.FROM_HTML_MODE_LEGACY);
+                            }
+                        } else {
+                            for(int i = 0 ; i < highScores.size(); i++) {
+                                htmlHighScores[i] = Html.fromHtml(highScores.get(i));
+                            }
+                        }
+
 
 						highScoresTable.setAdapter(new ArrayAdapter<CharSequence>(Profile.this, R.layout.custom_list_item_1, htmlHighScores));
 					}
@@ -114,7 +122,7 @@ public class Profile extends PinballMapActivity {
 	public void getProfileData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
 		PBMApplication app = getPBMApplication();
 		TextView locationsEditedText = (TextView) findViewById(R.id.locationsEditedLabel);
-        locationsEditedText.setText("Locations Edited in " + getPBMApplication().getRegion().formalName + " :");
+        locationsEditedText.setText("Locations Edited in " + getPBMApplication().getRegion().formalName + ":");
 
 		final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 		String id = settings.getString("id", "");

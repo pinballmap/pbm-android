@@ -1,5 +1,6 @@
 package com.pbm;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -52,6 +53,7 @@ public class RecentScores extends PinballMapActivity {
 	    }).start();
 	}
 
+    @SuppressWarnings("deprecation")
 	public void getLocationData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
 		PBMApplication app = getPBMApplication();
 
@@ -89,7 +91,11 @@ public class RecentScores extends PinballMapActivity {
 					formatter.format(score) + " by <b>" + username + "</b>" + "<br />" +
 					"<small>at " + location.name + " on " + scoreDate + "</small>";
 
-				recentScores.add(Html.fromHtml(title));
+				if (Build.VERSION.SDK_INT >= 24) {
+                    recentScores.add(Html.fromHtml(title,Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
+				} else {
+                    recentScores.add(Html.fromHtml(title)); // or for older api
+				}
 			}
 		}
 	}
