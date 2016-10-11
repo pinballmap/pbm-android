@@ -203,6 +203,15 @@
             android:paddingBottom="5dp" />
         </android.support.v7.widget.CardView>
         <TextView
+            android:id="@+id/emptyLocations"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/none_yet"/>
+        <TextView
             android:id="@+id/highScoresLabel"
             android:text="High Scores:"
             android:labelFor="@+id/highScoresTable"
@@ -230,5 +239,14 @@
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:background="@color/background" />
         </android.support.v7.widget.CardView>
+        <TextView
+            android:id="@+id/emptyScores"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/none_yet"/>
     </LinearLayout>
 </ScrollView>

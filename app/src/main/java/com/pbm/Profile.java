@@ -78,41 +78,44 @@ public class Profile extends PinballMapActivity {
 				Profile.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
-						String username = settings.getString("username", "");
+					final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+					String username = settings.getString("username", "");
 
-						numMachinesAddedTextView = (TextView) findViewById(R.id.numMachinesAddedTextView);
-						numMachinesRemovedTextView = (TextView) findViewById(R.id.numMachinesRemovedTextView);
-						numLocationsEditedTextView = (TextView) findViewById(R.id.numLocationsEditedTextView);
-						numLocationsSuggestedTextView = (TextView) findViewById(R.id.numLocationsSuggestedTextView);
-						numLmxCommentsLeftTextView = (TextView) findViewById(R.id.numLmxCommentsLeftTextView);
-						createdAtTextView = (TextView) findViewById(R.id.createdAtTextView);
-						usernameTextView = (TextView) findViewById(R.id.usernameTextView);
+					View emptyScoresView = findViewById(R.id.emptyScores);
+					View emptyLocationsView = findViewById(R.id.emptyLocations);
 
+					numMachinesAddedTextView = (TextView) findViewById(R.id.numMachinesAddedTextView);
+					numMachinesRemovedTextView = (TextView) findViewById(R.id.numMachinesRemovedTextView);
+					numLocationsEditedTextView = (TextView) findViewById(R.id.numLocationsEditedTextView);
+					numLocationsSuggestedTextView = (TextView) findViewById(R.id.numLocationsSuggestedTextView);
+					numLmxCommentsLeftTextView = (TextView) findViewById(R.id.numLmxCommentsLeftTextView);
+					createdAtTextView = (TextView) findViewById(R.id.createdAtTextView);
+					usernameTextView = (TextView) findViewById(R.id.usernameTextView);
 
-						numMachinesAddedTextView.setText(numMachinesAdded);
-						numMachinesRemovedTextView.setText(numMachinesRemoved);
-						numLocationsEditedTextView.setText(numLocationsEdited);
-						numLocationsSuggestedTextView.setText(numLocationsSuggested);
-						numLmxCommentsLeftTextView.setText(numLmxCommentsLeft);
-						usernameTextView.setText(username);
-						createdAtTextView.setText(createdAt);
+					numMachinesAddedTextView.setText(numMachinesAdded);
+					numMachinesRemovedTextView.setText(numMachinesRemoved);
+					numLocationsEditedTextView.setText(numLocationsEdited);
+					numLocationsSuggestedTextView.setText(numLocationsSuggested);
+					numLmxCommentsLeftTextView.setText(numLmxCommentsLeft);
+					usernameTextView.setText(username);
+					createdAtTextView.setText(createdAt);
 
-						locationsEditedTable.setAdapter(new LocationListAdapter(Profile.this, locationsEdited));
+					locationsEditedTable.setEmptyView(emptyLocationsView);
+					locationsEditedTable.setAdapter(new LocationListAdapter(Profile.this, locationsEdited));
 
-						Spanned[] htmlHighScores = new Spanned[highScores.size()];
-                        if (Build.VERSION.SDK_INT >= 24) {
-                            for(int i = 0 ; i < highScores.size(); i++) {
-                                htmlHighScores[i] = Html.fromHtml(highScores.get(i),Html.FROM_HTML_MODE_LEGACY);
-                            }
-                        } else {
-                            for(int i = 0 ; i < highScores.size(); i++) {
-                                htmlHighScores[i] = Html.fromHtml(highScores.get(i));
-                            }
-                        }
+					Spanned[] htmlHighScores = new Spanned[highScores.size()];
+					if (Build.VERSION.SDK_INT >= 24) {
+						for(int i = 0 ; i < highScores.size(); i++) {
+							htmlHighScores[i] = Html.fromHtml(highScores.get(i),Html.FROM_HTML_MODE_LEGACY);
+						}
+					} else {
+						for(int i = 0 ; i < highScores.size(); i++) {
+							htmlHighScores[i] = Html.fromHtml(highScores.get(i));
+						}
+					}
 
-
-						highScoresTable.setAdapter(new ArrayAdapter<CharSequence>(Profile.this, R.layout.custom_list_item_1, htmlHighScores));
+					highScoresTable.setEmptyView(emptyScoresView);
+					highScoresTable.setAdapter(new ArrayAdapter<CharSequence>(Profile.this, R.layout.custom_list_item_1, htmlHighScores));
 					}
 				});
 			}
