@@ -181,7 +181,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:padding="5dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="0dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             android:background="@color/medBackground"/>
@@ -196,21 +196,28 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:background="@color/blue100">
+            <RelativeLayout
+                android:id="@+id/locationsEditedWrapper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/blue100"
+                android:padding="5dp">
+                <TextView
+                    android:id="@+id/emptyLocations"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/none_yet"/>
         <com.pbm.NonScrollListView
             android:id="@+id/locationsEditedTable"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:background="@color/background"
             android:paddingBottom="5dp" />
+            </RelativeLayout>
         </android.support.v7.widget.CardView>
-        <TextView
-            android:id="@+id/emptyLocations"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="30dp"
-            android:text="@string/none_yet"/>
         <TextView
             android:id="@+id/highScoresLabel"
             android:text="High Scores:"
@@ -219,7 +226,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:background="@color/medBackground"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="0dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             android:padding="5dp" />
@@ -234,19 +241,26 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:background="@color/blue100">
+            <RelativeLayout
+                android:id="@+id/highScoresWrapper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/blue100"
+                android:padding="5dp">
+                <TextView
+                    android:id="@+id/emptyScores"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/none_yet"/>
         <com.pbm.NonScrollListView
             android:id="@+id/highScoresTable"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:background="@color/background" />
+            </RelativeLayout>
         </android.support.v7.widget.CardView>
-        <TextView
-            android:id="@+id/emptyScores"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="30dp"
-            android:text="@string/none_yet"/>
     </LinearLayout>
 </ScrollView>

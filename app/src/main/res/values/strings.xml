@@ -33,7 +33,7 @@
     <string name="submit_text"> Submit </string>
     <string name="machine_button_desc">Click to edit machine</string>
     <string name="map_button">Show on map</string>
-    <string name="edit_button">Edit location</string>
+    <string name="edit_button">Edit Location Info</string>
     <string name="nav_button">Show navigation directions</string>
     <string name="add_machine_button">Add a machine</string>
     <string name="remove_button">Remove machine</string>
