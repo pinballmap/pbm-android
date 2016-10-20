@@ -162,7 +162,9 @@ public class Profile extends PinballMapActivity {
 			int currentRegionId = getSharedPreferences(PREFS_NAME, 0).getInt("region", -1);
 
 			if (locationRegionId == currentRegionId) {
-				locationsEdited.add(app.getLocation(locationId));
+				Location location = app.getLocation(locationId);
+				location.setDistance(this.getLocation());
+				locationsEdited.add(location);
 			}
 		}
 
