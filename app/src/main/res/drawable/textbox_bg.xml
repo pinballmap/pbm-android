@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:top="0dp"
+        android:top="4dp"
         android:left="0dp"
         android:right="0dp"
-        android:bottom="0dp">
+        android:bottom="4dp">
         <shape>
             <solid
                 android:color="#fcfcfc"/>
@@ -12,9 +12,9 @@
                 android:radius="0dp" />
             <padding
                 android:left="10dp"
-                android:top="10dp"
+                android:top="14dp"
                 android:right="10dp"
-                android:bottom="10dp" />
+                android:bottom="14dp" />
             <stroke
                 android:width="3dp"
                 android:color="@color/colorPrimary" />
