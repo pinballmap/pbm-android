@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
@@ -381,6 +383,10 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 			locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 			locationRequest.setInterval(60000 * 60);
 			locationRequest.setFastestInterval(60000);
+		}
+		if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			// TODO refactor into something more useful
+			throw new IllegalStateException();
 		}
 		setLocation(LocationServices.FusedLocationApi.getLastLocation(googleApiClient));
 		LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);

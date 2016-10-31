@@ -79,4 +79,5 @@
         <p>If you like Pinball Map and want to help support it, you have our heartfelt thanks! - Scott and Ryan</p>
     ]]></string>
     <string name="none_yet">None yet</string>
+    <string name="please_allow_location_permission">Please enable the Location permission inside the settings</string>
 </resources>

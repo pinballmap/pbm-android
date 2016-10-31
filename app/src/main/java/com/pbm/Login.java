@@ -3,8 +3,13 @@ package com.pbm;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
@@ -19,15 +24,57 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.concurrent.ExecutionException;
 
-public class Login extends AppCompatActivity {
+public class Login extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
+
+    private boolean shouldCheckPermission = true;
+    private static final int PERMISSION_RESULT = 1;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if(grantResults[0] == PackageManager.PERMISSION_DENIED){
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+                final Intent i = new Intent();
+                i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                i.addCategory(Intent.CATEGORY_DEFAULT);
+                i.setData(Uri.parse("package:" + getPackageName()));
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                startActivity(i);
+                Toast.makeText(this, R.string.please_allow_location_permission, Toast.LENGTH_LONG).show();
+                shouldCheckPermission = true;
+            } else
+                requestLocationPermission();
+        }
+    }
+
+    private boolean requestLocationPermission() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_RESULT);
+            return false;
+        }
+        return true;
+    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestLocationPermission();
+        shouldCheckPermission = false;
         setContentView(R.layout.login);
-
         initializeSignupButton();
         initializeNoLoginButton();
         initializeLoginButton();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(shouldCheckPermission){
+            requestLocationPermission();
+        }
+        shouldCheckPermission = false;
     }
 
     public void initializeSignupButton() {
