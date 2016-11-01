@@ -78,8 +78,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="Login"
-            android:background="@drawable/textbox_bg"
-            android:padding="8dp" />
+            android:background="@drawable/textbox_bg" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -98,8 +97,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:hint="Password"
-            android:background="@drawable/textbox_bg"
-            android:padding="8dp" />
+            android:background="@drawable/textbox_bg" />
         </android.support.design.widget.TextInputLayout>
 
         <Button

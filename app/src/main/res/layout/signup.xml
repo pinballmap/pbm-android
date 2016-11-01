@@ -18,7 +18,7 @@
             android:layout_centerInParent="true"
             android:text="@string/sign_up"
             android:textSize="18sp"
-            android:textColor="@color/red100"
+            android:textColor="@color/colorPrimaryDark"
             android:padding="5dp"
             android:layout_marginBottom="10dp"
             android:gravity="center_horizontal" />
@@ -45,8 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Username"
-            android:background="@drawable/textbox_bg"
-            android:padding="8dp" />
+            android:background="@drawable/textbox_bg" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -65,7 +64,6 @@
                 android:inputType="textEmailAddress"
                 android:hint="Email"
                 android:background="@drawable/textbox_bg"
-                android:padding="8dp"
                 android:paddingLeft="10dp"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -86,7 +84,6 @@
             android:inputType="textPassword"
             android:hint="Password"
             android:background="@drawable/textbox_bg"
-            android:padding="8dp"
             android:paddingLeft="10dp"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -107,7 +104,6 @@
                 android:inputType="textPassword"
                 android:hint="Confirm Password"
                 android:background="@drawable/textbox_bg"
-                android:padding="8dp"
                 android:paddingLeft="10dp"/>
         </android.support.design.widget.TextInputLayout>
 
