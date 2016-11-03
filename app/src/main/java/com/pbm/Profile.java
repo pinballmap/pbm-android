@@ -1,7 +1,9 @@
 package com.pbm;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -123,6 +125,7 @@ public class Profile extends PinballMapActivity {
 	}
 
 	public void getProfileData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
+        final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		PBMApplication app = getPBMApplication();
 		TextView locationsEditedText = (TextView) findViewById(R.id.locationsEditedLabel);
         locationsEditedText.setText("Locations Edited in " + getPBMApplication().getRegion().formalName + ":");
@@ -153,7 +156,6 @@ public class Profile extends PinballMapActivity {
 		DateFormat outputDF = new SimpleDateFormat("MMM-dd-yyyy", Locale.getDefault());
 		Date dateCreatedAt = inputDF.parse(rawCreatedAt);
 		createdAt = outputDF.format(dateCreatedAt);
-
 		JSONArray jsonLocationsEdited = jsonProfile.getJSONArray("profile_list_of_edited_locations");
 		for (int i = 0; i < jsonLocationsEdited.length(); i++) {
 			JSONArray jsonLocation = jsonLocationsEdited.getJSONArray(i);
@@ -163,7 +165,9 @@ public class Profile extends PinballMapActivity {
 
 			if (locationRegionId == currentRegionId) {
 				Location location = app.getLocation(locationId);
-				location.setDistance(this.getLocation());
+				if ( lm.isProviderEnabled( LocationManager.GPS_PROVIDER ) ){
+                    location.setDistance(this.getLocation());
+                }
 				locationsEdited.add(location);
 			}
 		}
