@@ -165,7 +165,10 @@ public class Profile extends PinballMapActivity {
 
 			if (locationRegionId == currentRegionId) {
 				Location location = app.getLocation(locationId);
-				if ( lm.isProviderEnabled( LocationManager.GPS_PROVIDER ) ){
+				if ( lm.isProviderEnabled( LocationManager.GPS_PROVIDER) ){
+                    location.setDistance(this.getLocation());
+                }
+                if ( lm.isProviderEnabled( LocationManager.NETWORK_PROVIDER) ){
                     location.setDistance(this.getLocation());
                 }
 				locationsEdited.add(location);
