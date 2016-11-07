@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@color/background"
+	>
+
+    <Button
+        android:id="@+id/storeLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:linksClickable="true"
+        android:text="Visit the Pinball Map Store"
+        android:textColor="@color/lightText"
+        android:background="@drawable/input_btn"
+        android:textSize="15sp"
+        android:minHeight="36dp"
+        android:padding="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:elevation="2dp"
+        android:layout_gravity="center_horizontal" />
+
+	<TextView android:id="@+id/storeText"
+        android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/store"
+        android:background="@color/medBackground"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:layout_marginBottom="10dp"/>
+
+    <ImageView
+        android:id="@+id/sass"
+        android:src="@drawable/shirt"
+        android:contentDescription="@string/sass_description"
+        android:layout_below="@+id/aboutText"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="bottom" />
+</LinearLayout>
