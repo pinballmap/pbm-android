@@ -82,4 +82,7 @@
     <string name="store">Because it\'s quicker to update a website than an app, we kindly request that you visit the web store to see what we have on offer. Last we checked, we have t-shirts for sale!</string>
     <string name="none_yet">None yet</string>
     <string name="please_allow_location_permission">Please enable the Location permission inside Settings > App > Permissions</string>
+    <string name="permission_required_toast">Permission is required to access this feature</string>
+    <string name="location_permission_denied">Location permission is needed. Please try again and grant access to use the location</string>
+    <string name="permission_rationale_location">Access to the location service is required, which shows your current location on the map.</string>
 </resources>
