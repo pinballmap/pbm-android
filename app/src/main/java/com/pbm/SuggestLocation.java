@@ -19,7 +19,7 @@ public class SuggestLocation extends PinballMapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.suggest_location);
 		TextView suggestLocationText = (TextView) findViewById(R.id.submitLocationId);
-		suggestLocationText.setText("Submit A Location To The " + getPBMApplication().getRegion().formalName + " Map");
+		suggestLocationText.setText("Submit a location to the " + getPBMApplication().getRegion().formalName + "Pinball Map");
 		logAnalyticsHit("com.pbm.SuggestLocation");
 
 		PBMApplication app = getPBMApplication();
