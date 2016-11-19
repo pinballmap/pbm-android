@@ -116,8 +116,8 @@ public class LocationDetail extends PinballMapActivity {
 				public void run() {
 				lmxes = location.getLmxes(LocationDetail.this);
 				machines = location.getMachines(LocationDetail.this);
-                    final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                    PBMApplication app = getPBMApplication();
+				final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                PBMApplication app = getPBMApplication();
 
 				TextView locationName = (TextView) findViewById(R.id.locationName);
 				TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
@@ -127,7 +127,7 @@ public class LocationDetail extends PinballMapActivity {
 				TextView locationPhone = (TextView) findViewById(R.id.locationPhone);
 				TextView locationOperator = (TextView) findViewById(R.id.operator);
 				TextView locationDescription = (TextView) findViewById(R.id.description);
-                    TextView locationDistance = (TextView) findViewById(R.id.distance);
+                TextView locationDistance = (TextView) findViewById(R.id.distance);
 
                     location.dateLastUpdated = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
 				if (location.dateLastUpdated != null && !location.dateLastUpdated.equals("") && !location.dateLastUpdated.equals("null")) {
@@ -207,24 +207,25 @@ public class LocationDetail extends PinballMapActivity {
 				} else {
 					locationOperator.setVisibility(View.GONE);
 				}
-                    if ( lm.isProviderEnabled( LocationManager.GPS_PROVIDER) ) {
-                        if (Build.VERSION.SDK_INT >= 24) {
-                            locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo, Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
-                        } else {
-                            locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo)); // or for older api
-                        }
+
+                if ( lm.isProviderEnabled( LocationManager.GPS_PROVIDER) ) {
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo, Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
                     } else {
-                        locationDistance.setVisibility(View.GONE);
+                        locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo)); // or for older api
                     }
-                    if ( lm.isProviderEnabled( LocationManager.NETWORK_PROVIDER) ){
-                        if (Build.VERSION.SDK_INT >= 24) {
-                            locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo, Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
-                        } else {
-                            locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo)); // or for older api
-                        }
+                } else {
+                    locationDistance.setVisibility(View.GONE);
+				}
+                if ( lm.isProviderEnabled( LocationManager.NETWORK_PROVIDER) ) {
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo, Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
                     } else {
-                        locationDistance.setVisibility(View.GONE);
+                        locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo)); // or for older api
                     }
+                } else {
+                    locationDistance.setVisibility(View.GONE);
+                }
 
 				updateLMXTable();
 				}
