@@ -65,7 +65,7 @@
     <string name="score_text">Enter Your Score</string>
     <string name="condition_text">Enter a Condition Report</string>
     <string name="edit_location">Edit Location</string>
-    <string name="sign_up">SIGN UP and help keep your map up to date! THANKS!</string>
+    <string name="sign_up">SIGN UP and help keep your map up to date! Thanks!</string>
     <string name="login_to_update">Login to update this location"</string>
     <string name="login_to_add_condition">Login to leave a condition report</string>
     <string name="login_to_add_score">Login to add your high score</string>
@@ -78,6 +78,11 @@
         <p>GRAND TOTAL: $422</p>
         <p>If you like Pinball Map and want to help support it, you have our heartfelt thanks! - Scott and Ryan</p>
     ]]></string>
+    <string name="store_head">Stuff for Sale</string>
+    <string name="store">Because it\'s quicker to update a website than an app, we kindly request that you visit the web store to see what we have on offer. Last we checked, we have t-shirts for sale!</string>
     <string name="none_yet">None yet</string>
-    <string name="please_allow_location_permission">Please enable the Location permission inside the settings</string>
+    <string name="please_allow_location_permission">Please enable the Location permission inside Settings > App > Permissions</string>
+    <string name="permission_required_toast">Permission is required to access this feature</string>
+    <string name="location_permission_denied">Location permission is needed. Please try again and grant access to use the location</string>
+    <string name="permission_rationale_location">Access to the location service is required, which shows your current location on the map.</string>
 </resources>

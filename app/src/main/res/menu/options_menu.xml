@@ -31,6 +31,10 @@
         android:title="Donate"
         pbm:showAsAction="never"/>
     <item
+        android:id="@+id/store"
+        android:title="Store"
+        pbm:showAsAction="never"/>
+    <item
         android:id="@+id/logout"
         android:title="@string/logout"
         pbm:showAsAction="never"/>

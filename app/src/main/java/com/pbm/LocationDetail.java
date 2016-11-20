@@ -1,7 +1,9 @@
 package com.pbm;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -114,6 +116,8 @@ public class LocationDetail extends PinballMapActivity {
 				public void run() {
 				lmxes = location.getLmxes(LocationDetail.this);
 				machines = location.getMachines(LocationDetail.this);
+				final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                PBMApplication app = getPBMApplication();
 
 				TextView locationName = (TextView) findViewById(R.id.locationName);
 				TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
@@ -123,6 +127,7 @@ public class LocationDetail extends PinballMapActivity {
 				TextView locationPhone = (TextView) findViewById(R.id.locationPhone);
 				TextView locationOperator = (TextView) findViewById(R.id.operator);
 				TextView locationDescription = (TextView) findViewById(R.id.description);
+                TextView locationDistance = (TextView) findViewById(R.id.distance);
 
                     location.dateLastUpdated = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
 				if (location.dateLastUpdated != null && !location.dateLastUpdated.equals("") && !location.dateLastUpdated.equals("null")) {
@@ -203,6 +208,25 @@ public class LocationDetail extends PinballMapActivity {
 					locationOperator.setVisibility(View.GONE);
 				}
 
+                if ( lm.isProviderEnabled( LocationManager.GPS_PROVIDER) ) {
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo, Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
+                    } else {
+                        locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo)); // or for older api
+                    }
+                } else {
+                    locationDistance.setVisibility(View.GONE);
+				}
+                if ( lm.isProviderEnabled( LocationManager.NETWORK_PROVIDER) ) {
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo, Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
+                    } else {
+                        locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo)); // or for older api
+                    }
+                } else {
+                    locationDistance.setVisibility(View.GONE);
+                }
+
 				updateLMXTable();
 				}
 			});
@@ -223,7 +247,7 @@ public class LocationDetail extends PinballMapActivity {
 
 		LinearLayout lmxTable = (LinearLayout) findViewById(R.id.lmxTable);
 		lmxTable.removeAllViewsInLayout();
-		
+
 		for (Machine machine : machines) {
 			lmxTable.addView(getLMXView(getPBMApplication().getLmxFromMachine(machine, lmxes), lmxTable));
 		}

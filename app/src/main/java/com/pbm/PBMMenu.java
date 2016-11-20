@@ -1,7 +1,11 @@
 package com.pbm;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -43,9 +47,21 @@ public class PBMMenu extends PinballMapActivity {
 		super.onStart();
 
 		PBMApplication app = getPBMApplication();
+        final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 
 		final List<String> mainMenuItems = new ArrayList<>();
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                mainMenuItems.add(CLOSEST_LOCATIONS);
+            }
+        }
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                mainMenuItems.add(CLOSEST_LOCATIONS);
+            }
+        }
+
 		mainMenuItems.add(LOOKUP_BY_LOCATION);
 		mainMenuItems.add(LOOKUP_BY_MACHINE);
 		mainMenuItems.add(LOOKUP_BY_CITY);
@@ -65,7 +81,6 @@ public class PBMMenu extends PinballMapActivity {
 		mainMenuItems.add(RECENTLY_ADDED);
 		mainMenuItems.add(RECENT_HIGH_SCORES);
 		mainMenuItems.add(EVENTS);
-		mainMenuItems.add(CLOSEST_LOCATIONS);
 
 		if (region != null && region.motd != null && !(region.motd.equals(""))) {
 			Toast.makeText(getBaseContext(), region.motd, Toast.LENGTH_LONG).show();

@@ -92,6 +92,14 @@
                 android:textColor="@color/medText"
                 android:textSize="15sp"
                 android:textStyle="italic" />
+            <TextView
+                android:id="@+id/distance"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:textColor="@color/medText"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/locationLastUpdated"

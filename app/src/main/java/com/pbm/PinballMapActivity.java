@@ -175,6 +175,12 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 				startActivityForResult(donateIntent, QUIT_RESULT);
 
 				return true;
+			case R.id.store:
+				Intent storeIntent = new Intent();
+				storeIntent.setClassName("com.pbm", "com.pbm.Store");
+				startActivityForResult(storeIntent, QUIT_RESULT);
+
+				return true;
 			case R.id.contact_admin:
 				Intent contactIntent = new Intent();
 				String contactClassName = getPBMApplication().userIsAuthenticated() ? "com.pbm.ContactAdmin" : "com.pbm.Login";
@@ -386,10 +392,10 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 		}
 		if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			// TODO refactor into something more useful
-			throw new IllegalStateException();
+		} else {
+			setLocation(LocationServices.FusedLocationApi.getLastLocation(googleApiClient));
+			LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
 		}
-		setLocation(LocationServices.FusedLocationApi.getLastLocation(googleApiClient));
-		LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
 	}
 
 	@Override

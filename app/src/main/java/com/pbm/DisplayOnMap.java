@@ -1,14 +1,19 @@
 package com.pbm;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.MapFragment;
+import android.support.annotation.NonNull;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -18,55 +23,126 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DisplayOnMap extends PinballMapActivity implements OnMapReadyCallback {
+public class DisplayOnMap extends PinballMapActivity implements
+        GoogleMap.OnMyLocationButtonClickListener,
+        OnMapReadyCallback,
+        ActivityCompat.OnRequestPermissionsResultCallback {
 	private ArrayList<Marker> markers = new ArrayList<>();
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private boolean mPermissionDenied = false;
+    private GoogleMap mMap;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.display_on_map);
 		logAnalyticsHit("com.pbm.DisplayOnMap");
-		MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-		mapFragment.getMapAsync(this);
+        MapFragment mapFragment =
+                (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 	}
 
 	@Override
-	public void onMapReady(GoogleMap googleMap) {
-		googleMap.setMyLocationEnabled(true);
+	public void onMapReady(GoogleMap map) {
+        mMap = map;
 
-		googleMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
-			public void onInfoWindowClick(Marker marker) {
-			Intent myIntent = new Intent();
-			Location location = getPBMApplication().getLocationByName(marker.getTitle());
+        mMap.setOnMyLocationButtonClickListener(this);
+        enableMyLocation();
 
-			myIntent.putExtra("Location", location);
-			myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
-			startActivityForResult(myIntent, QUIT_RESULT);
-			}
-		});
+        Serializable serializedLocations = getIntent().getSerializableExtra("Locations");
+        Location[] locations = (Location[]) serializedLocations;
+        for (Location location : locations) {
+            LatLng position = new LatLng(Float.valueOf(location.lat), Float.valueOf(location.lon));
+            Marker marker = mMap.addMarker(new MarkerOptions().title(location.name)
+                    .snippet(location.numMachines(this) + " machines").position(position));
+            markers.add(marker);
+        }
 
-		Serializable serializedLocations = getIntent().getSerializableExtra("Locations");
-		Location[] locations = (Location[]) serializedLocations;
-		for (Location location : locations) {
-			LatLng position = new LatLng(Float.valueOf(location.lat), Float.valueOf(location.lon));
-			Marker marker = googleMap.addMarker(new MarkerOptions().title(location.name)
-					.snippet(location.numMachines(this) + " machines").position(position));
-			markers.add(marker);
-		}
+        if (markers.size() > 0) {
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (Marker marker : markers) {
+                builder.include(marker.getPosition());
+            }
+            LatLngBounds bounds = builder.build();
 
-		if (markers.size() > 0) {
-			LatLngBounds.Builder builder = new LatLngBounds.Builder();
-			for (Marker marker : markers) {
-				builder.include(marker.getPosition());
-			}
-			LatLngBounds bounds = builder.build();
+            int width = getResources().getDisplayMetrics().widthPixels;
+            int height = getResources().getDisplayMetrics().heightPixels;
 
-			int width = getResources().getDisplayMetrics().widthPixels;
-			int height = getResources().getDisplayMetrics().heightPixels;
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, 5);
+            map.animateCamera(cu);
+        }
 
-			CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, 5);
-			googleMap.animateCamera(cu);
-		}
+        map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+            public void onInfoWindowClick(Marker marker) {
+                Intent myIntent = new Intent();
+                Location location = getPBMApplication().getLocationByName(marker.getTitle());
+
+                myIntent.putExtra("Location", location);
+                myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
+                startActivityForResult(myIntent, QUIT_RESULT);
+            }
+        });
+
 	}
+
+    /**
+     * Enables the My Location layer if the fine location permission has been granted.
+     */
+    private void enableMyLocation() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission to access the location is missing.
+            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION, true);
+        } else if (mMap != null) {
+            // Access to the location has been granted to the app.
+            mMap.setMyLocationEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+        // Return false so that we don't consume the event and the default behavior still occurs
+        // (the camera animates to the user's current position).
+        return false;
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
+            return;
+        }
+
+        if (PermissionUtils.isPermissionGranted(permissions, grantResults,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // Enable the my location layer if the permission has been granted.
+            enableMyLocation();
+        } else {
+            // Display the missing permission error dialog when the fragments resume.
+            mPermissionDenied = true;
+        }
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        if (mPermissionDenied) {
+            // Permission was not granted, display error dialog.
+            showMissingPermissionError();
+            mPermissionDenied = false;
+        }
+    }
+
+    /**
+     * Displays a dialog with error message explaining that the location permission is missing.
+     */
+    private void showMissingPermissionError() {
+        PermissionUtils.PermissionDeniedDialog
+                .newInstance(true).show(getSupportFragmentManager(), "dialog");
+    }
+
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		return false;

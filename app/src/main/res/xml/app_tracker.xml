@@ -22,6 +22,9 @@
     <screenName name="com.pbm.Donate">
         Donate
     </screenName>
+    <screenName name="com.pbm.Store">
+        Store
+    </screenName>
     <screenName name="com.pbm.Events">
         Events
     </screenName>
