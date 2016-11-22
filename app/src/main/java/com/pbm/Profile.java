@@ -3,9 +3,11 @@ package com.pbm;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
@@ -163,15 +165,17 @@ public class Profile extends PinballMapActivity {
 			int locationRegionId = jsonLocation.getInt(LOCATION_REGION_ID_INDEX);
 			int currentRegionId = getSharedPreferences(PREFS_NAME, 0).getInt("region", -1);
 
-			if (locationRegionId == currentRegionId) {
-				Location location = app.getLocation(locationId);
-				if ( lm.isProviderEnabled( LocationManager.GPS_PROVIDER) ){
-                    location.setDistance(this.getLocation());
-                }
-                if ( lm.isProviderEnabled( LocationManager.NETWORK_PROVIDER) ){
-                    location.setDistance(this.getLocation());
-                }
-				locationsEdited.add(location);
+				if (locationRegionId == currentRegionId) {
+					Location location = app.getLocation(locationId);
+					if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+						if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+							location.setDistance(this.getLocation());
+						}
+						if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+							location.setDistance(this.getLocation());
+						}
+				}
+					locationsEdited.add(location);
 			}
 		}
 

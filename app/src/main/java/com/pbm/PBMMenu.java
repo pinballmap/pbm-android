@@ -52,15 +52,14 @@ public class PBMMenu extends PinballMapActivity {
 
 		final List<String> mainMenuItems = new ArrayList<>();
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                mainMenuItems.add(CLOSEST_LOCATIONS);
-            }
-        }
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                mainMenuItems.add(CLOSEST_LOCATIONS);
-            }
-        }
+			if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+				mainMenuItems.add(CLOSEST_LOCATIONS);
+			} else {
+				if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+					mainMenuItems.add(CLOSEST_LOCATIONS);
+				}
+			}
+		}
 
 		mainMenuItems.add(LOOKUP_BY_LOCATION);
 		mainMenuItems.add(LOOKUP_BY_MACHINE);
