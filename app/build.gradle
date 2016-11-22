@@ -19,7 +19,7 @@ android {
             buildConfigField "String", "SERVER_URL", '"http://pinballmapstaging.herokuapp.com/"'
             buildConfigField "long", "DATA_EXPIRY_TIME_IN_MS", "86400000"
 
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
