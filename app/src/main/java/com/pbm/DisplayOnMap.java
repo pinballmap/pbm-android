@@ -3,6 +3,7 @@ package com.pbm;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.Menu;
@@ -13,7 +14,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.MapFragment;
-import android.support.annotation.NonNull;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DisplayOnMap extends PinballMapActivity implements
         GoogleMap.OnMyLocationButtonClickListener,
@@ -49,7 +50,8 @@ public class DisplayOnMap extends PinballMapActivity implements
         enableMyLocation();
 
         Serializable serializedLocations = getIntent().getSerializableExtra("Locations");
-        Location[] locations = (Location[]) serializedLocations;
+        Object[] arrayDataObject = (Object[]) serializedLocations;
+        Location[] locations = Arrays.copyOf(arrayDataObject, arrayDataObject.length,Location[].class);
         for (Location location : locations) {
             LatLng position = new LatLng(Float.valueOf(location.lat), Float.valueOf(location.lon));
             Marker marker = mMap.addMarker(new MarkerOptions().title(location.name)
