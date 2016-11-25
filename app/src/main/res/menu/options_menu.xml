@@ -1,49 +1,49 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:pbm="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/profile"
         android:title="@string/profile"
         android:icon="@drawable/ic_profile_icon"
-        pbm:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/contact_admin"
         android:title="@string/contact_region_admin"
-        pbm:showAsAction="never"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/suggest_location"
         android:title="@string/suggest_location"
-        pbm:showAsAction="never"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/prefs"
         android:title="@string/change_region"
-        pbm:showAsAction="never"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/suggest_region"
         android:title="@string/suggest_region"
-        pbm:showAsAction="never"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/about"
         android:title="@string/about"
-        pbm:showAsAction="never"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/donate"
         android:title="Donate"
-        pbm:showAsAction="never"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/store"
         android:title="Store"
-        pbm:showAsAction="never"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/logout"
         android:title="@string/logout"
-        pbm:showAsAction="never"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/login"
         android:title="@string/login"
-        pbm:showAsAction="never"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/quit"
         android:title="@string/quit"
-        pbm:showAsAction="never"/>
+        app:showAsAction="never"/>
 </menu>

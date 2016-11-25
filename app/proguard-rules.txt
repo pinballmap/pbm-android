@@ -72,3 +72,6 @@
 -keepclasseswithmembers class * {
     @android.support.annotation.Keep <init>(...);
 }
+
+-keep class android.support.** { *; }
+-keep interface android.support.** { *; }
