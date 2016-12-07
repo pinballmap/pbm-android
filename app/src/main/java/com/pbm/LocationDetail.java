@@ -309,6 +309,7 @@ public class LocationDetail extends PinballMapActivity {
 		holder.name = (TextView) row.findViewById(R.id.machine_info);
 		holder.machineSelectButton = (ImageView) row.findViewById(R.id.machineSelectButton);
 		holder.condition = (TextView) row.findViewById(R.id.machine_condition);
+		holder.conditionMeta = (TextView) row.findViewById(R.id.machine_condition_meta);
 
 		row.setTag(holder);
 
@@ -321,25 +322,29 @@ public class LocationDetail extends PinballMapActivity {
         }
 
 		String conditionText = "";
+		String conditionTextMeta = "";
 		if (!lmx.condition.equals("null") && !lmx.condition.equals("")) {
 			conditionText += lmx.condition;
 			if (!lmx.conditionDate.equals("null") && !lmx.condition.equals("")) {
-				conditionText += "<br /><i>&nbsp;" + getBaseContext().getString(R.string.updated_on) + "</i> " + lmx.conditionDate;
+				conditionTextMeta += "<i>" + getBaseContext().getString(R.string.updated_on) + "</i> " + lmx.conditionDate;
 			}
 
 			String lastUpdatedByUsername = lmx.lastUpdatedByUsername;
 			if(lastUpdatedByUsername != null && !lastUpdatedByUsername.isEmpty()) {
-				conditionText += " by<b> " + lastUpdatedByUsername + "</b>";
+				conditionTextMeta += " by<b> " + lastUpdatedByUsername + "</b>";
 			}
 
             if (Build.VERSION.SDK_INT >= 24) {
-                holder.condition.setText(Html.fromHtml(conditionText,Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
+                holder.condition.setText(Html.fromHtml(conditionText,Html.FROM_HTML_MODE_LEGACY));
+				holder.conditionMeta.setText(Html.fromHtml(conditionTextMeta,Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
             } else {
-                holder.condition.setText(Html.fromHtml(conditionText)); // or for older api
+                holder.condition.setText(Html.fromHtml(conditionText));
+				holder.conditionMeta.setText(Html.fromHtml(conditionTextMeta));// or for older api
             }
 
 		} else {
 			holder.condition.setVisibility(View.GONE);
+			holder.conditionMeta.setVisibility(View.GONE);
 		}
 
 		row.setOnClickListener(new View.OnClickListener() {
@@ -360,5 +365,6 @@ public class LocationDetail extends PinballMapActivity {
 		TextView name;
 		ImageView machineSelectButton;
 		TextView condition;
+		TextView conditionMeta;
 	}
 }

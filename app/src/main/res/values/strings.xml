@@ -45,7 +45,7 @@
     <string name="submit_a_region">When requesting a new map for your area, please describe WHY one should be added. Does your region have an active pinball scene? Leagues? How many locations have pinball machines? Are you keeping track of them already? Would you be willing to act as the regional administrator, to help curate your map\'s data? The more details you give us, the better your request sounds!</string>
     <string name="comments">Comments:</string>
     <string name="region_name">Region Name:</string>
-    <string name="updated_on">Updated on:</string>
+    <string name="updated_on">Updated:</string>
     <string name="sort_alphabetically">Sorted Alphabetically</string>
     <string name="sort_by_distance">Sorted by Distance</string>
     <string name="contact_region_admin">Contact Region Admin</string>
@@ -59,7 +59,8 @@
     <string name="login">Login</string>
     <string name="description">Location Description</string>
     <string name="sample_machine_name">Machine (Chicago Coin, 2048)</string>
-    <string name="sample_condition_from_user">machine notes blkasl asdlk jasdlk sd sdlsdk sjskj fksdj skdfsd</string>
+    <string name="sample_condition_from_user">machine notes </string>
+    <string name="sample_condition_meta">Updated 10/23/16 by howdybro</string>
     <string name="loading_regions">Loading regions</string>
     <string name="location_confirm">Confirm location is up to date</string>
     <string name="score_text">Enter Your Score</string>
