@@ -35,6 +35,7 @@ public class Profile extends PinballMapActivity {
 	private final int SCORE_INDEX = 2;
 	private final int LOCATION_NAME_INDEX = 0;
 	private final int SCORE_DATE_INDEX = 3;
+	private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
 	NonScrollListView locationsEditedTable, highScoresTable;
 	TextView numMachinesAddedTextView, numMachinesRemovedTextView, numLocationsEditedTextView, numLocationsSuggestedTextView,
@@ -174,7 +175,10 @@ public class Profile extends PinballMapActivity {
 						if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 							location.setDistance(this.getLocation());
 						}
-				}
+					} else {
+						PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+							android.Manifest.permission.ACCESS_FINE_LOCATION, true);
+					}
 					locationsEdited.add(location);
 			}
 		}
