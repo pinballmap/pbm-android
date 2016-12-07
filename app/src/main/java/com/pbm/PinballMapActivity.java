@@ -50,7 +50,6 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	public static final int HTTP_RETRIES = 5;
 	public static final String PREFS_NAME = "pbmPrefs";
 	public static final float METERS_TO_MILES = (float) 0.000621371192;
-	private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
 	public static String httpBase = BuildConfig.SERVER_URL; // see build.gradle
 	public static String apiPath = "api/v1/";
@@ -392,8 +391,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 			locationRequest.setFastestInterval(60000);
 		}
 		if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
-				android.Manifest.permission.ACCESS_FINE_LOCATION, true);
+			// TODO refactor into something more useful
 		} else {
 			setLocation(LocationServices.FusedLocationApi.getLastLocation(googleApiClient));
 			LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
