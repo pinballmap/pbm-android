@@ -51,12 +51,20 @@
 
         <TextView
             android:id="@+id/machine_condition"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:text="@string/sample_condition_from_user"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:background="@drawable/machine_bg" />
+            android:background="@drawable/machine_bg"/>
+        <TextView
+            android:id="@+id/machine_condition_meta"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:paddingLeft="10dp"
+            android:text="@string/sample_condition_meta"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
     </LinearLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>
