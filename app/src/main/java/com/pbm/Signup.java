@@ -73,6 +73,7 @@ public class Signup extends AppCompatActivity {
                     editor.putString("username", userObject.getString("username"));
                     editor.putString("email", userObject.getString("email"));
                     editor.commit();
+                    Toast.makeText(getBaseContext(), "A confirmation link has been emailed to you. Follow the link to activate your account.", Toast.LENGTH_LONG).show();
 
                     Intent splashIntent = new Intent();
                     splashIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
