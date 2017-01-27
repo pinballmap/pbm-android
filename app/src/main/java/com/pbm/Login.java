@@ -24,7 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.concurrent.ExecutionException;
 
-public class Login extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
+public class Login extends PinballMapActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
 
     private boolean shouldCheckPermission = true;
     private static final int PERMISSION_RESULT = 1;
@@ -117,20 +117,20 @@ public class Login extends AppCompatActivity implements ActivityCompat.OnRequest
 
                 final JSONObject jsonObject = new JSONObject(json);
                 if (jsonObject.has("errors")) {
-                    Login.super.runOnUiThread(new Runnable() {
-                        public void run() {
-                        String error = null;
-                        try {
-                            error = URLDecoder.decode(jsonObject.getString("errors"), "UTF-8");
-                            error = error.replace("\\/", "/");
-                        } catch (JSONException | UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
+					Login.super.runOnUiThread(new Runnable() {
+						public void run() {
+							String error = null;
+							try {
+								error = URLDecoder.decode(jsonObject.getString("errors"), "UTF-8");
+								error = error.replace("\\/", "/");
+							} catch (JSONException | UnsupportedEncodingException e) {
+								e.printStackTrace();
+							}
 
-                        Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
-                        }
-                    });
-                } else {
+							Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
+						}
+					});
+				} else {
                     JSONObject userObject = new JSONObject(jsonObject.getJSONObject("user").toString());
                     final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
