@@ -66,18 +66,11 @@ public class Signup extends AppCompatActivity {
                         }
                     });
                 } else {
-                    JSONObject userObject = new JSONObject(jsonObject.getJSONObject("user").toString());
-                    final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.putString("authToken", userObject.getString("authentication_token"));
-                    editor.putString("username", userObject.getString("username"));
-                    editor.putString("email", userObject.getString("email"));
-                    editor.commit();
                     Toast.makeText(getBaseContext(), "A confirmation link has been emailed to you. Follow the link to activate your account.", Toast.LENGTH_LONG).show();
 
-                    Intent splashIntent = new Intent();
-                    splashIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
-                    startActivityForResult(splashIntent, PinballMapActivity.QUIT_RESULT);
+					Intent loginIntent = new Intent();
+					loginIntent.setClassName("com.pbm", "com.pbm.Login");
+					startActivityForResult(loginIntent, PinballMapActivity.QUIT_RESULT);
                 }
             } catch (InterruptedException | ExecutionException | JSONException e) {
                 e.printStackTrace();
