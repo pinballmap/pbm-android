@@ -131,7 +131,6 @@ public class LocationDetail extends PinballMapActivity {
 				TextView locationDescription = (TextView) findViewById(R.id.description);
                 TextView locationDistance = (TextView) findViewById(R.id.distance);
 
-                    location.dateLastUpdated = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
 				if (location.dateLastUpdated != null && !location.dateLastUpdated.equals("") && !location.dateLastUpdated.equals("null")) {
 					String lastUpdatedInfo = location.dateLastUpdated;
 
