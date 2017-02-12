@@ -19,7 +19,6 @@ public class Preferences extends PinballMapActivity {
 		editor.commit();
 
 		Intent myIntent = new Intent();
-		myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		myIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
 		startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
 	}
