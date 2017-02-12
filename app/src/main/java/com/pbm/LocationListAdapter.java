@@ -50,11 +50,7 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 
 		if (filteredLocationList.size() > 0) {
 			Location location = filteredLocationList.get(position);
-            if (Build.VERSION.SDK_INT >= 24) {
-                holder.name.setText(Html.fromHtml("<b>" + location.name + "</b> " + "<i>(" + location.city + ")</i>",Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
-            } else {
-                holder.name.setText(Html.fromHtml("<b>" + location.name + "</b> " + "<i>(" + location.city + ")</i>")); // or for older api
-            }
+                holder.name.setText(Html.fromHtml("<b>" + location.name + "</b> " + "<i>(" + location.city + ")</i>"));
 			holder.distance.setText(location.milesInfo);
 			holder.numMachines.setText(Integer.toString(location.numMachines((PinballMapActivity) context)));
 		}

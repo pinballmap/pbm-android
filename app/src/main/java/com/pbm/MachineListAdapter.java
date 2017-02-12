@@ -48,11 +48,7 @@ public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 		}
 
 		Machine machine = filteredMachineList.get(position);
-		if (Build.VERSION.SDK_INT >= 24) {
-            holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>",Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
-		} else {
             holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>")); // or for older api
-		}
 
 		if (disableSelectImage) {
 			holder.machineSelectButton.setVisibility(View.INVISIBLE);

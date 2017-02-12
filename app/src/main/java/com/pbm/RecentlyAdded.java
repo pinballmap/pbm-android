@@ -88,11 +88,7 @@ public class RecentlyAdded extends PinballMapActivity {
 			String textToShow = "<b>" + lmx.getMachine(this).name + "</b> was added to <b>" + lmx.getLocation(this).name + "</b> (" + lmx.getLocation(this).city + ")";
 			textToShow += "<br /><small>" + createdAt + "</small>";
 
-            if (Build.VERSION.SDK_INT >= 24) {
-                recentAdds.add(Html.fromHtml(textToShow,Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
-            } else {
-                recentAdds.add(Html.fromHtml(textToShow)); // or for older api
-            }
+                recentAdds.add(Html.fromHtml(textToShow));
 		}
 	}
 

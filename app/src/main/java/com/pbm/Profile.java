@@ -108,15 +108,9 @@ public class Profile extends PinballMapActivity {
 					locationsEditedTable.setAdapter(new LocationListAdapter(Profile.this, locationsEdited));
 
 					Spanned[] htmlHighScores = new Spanned[highScores.size()];
-					if (Build.VERSION.SDK_INT >= 24) {
-						for(int i = 0 ; i < highScores.size(); i++) {
-							htmlHighScores[i] = Html.fromHtml(highScores.get(i),Html.FROM_HTML_MODE_LEGACY);
-						}
-					} else {
 						for(int i = 0 ; i < highScores.size(); i++) {
 							htmlHighScores[i] = Html.fromHtml(highScores.get(i));
 						}
-					}
 
 					highScoresTable.setEmptyView(emptyScoresView);
 					highScoresTable.setAdapter(new ArrayAdapter<CharSequence>(Profile.this, R.layout.custom_list_item_1, htmlHighScores));
