@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -42,6 +43,9 @@ public class RegionsTab extends Fragment implements LoaderManager.LoaderCallback
 
 		ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.region_pager);
 		viewPager.setAdapter(regionsPagerAdapter);
+
+		TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tab_layout);
+		tabLayout.setupWithViewPager(viewPager);
 	}
 
 	@Override

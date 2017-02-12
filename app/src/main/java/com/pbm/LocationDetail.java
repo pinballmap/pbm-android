@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.text.Html;
@@ -85,11 +84,7 @@ public class LocationDetail extends PinballMapActivity {
 
 					TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
 					locationLastUpdated.setVisibility(View.VISIBLE);
-                    if (Build.VERSION.SDK_INT >= 24) {
-                        locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</> " + lastUpdatedInfo + "<b>" + location.lastUpdatedByUsername + "</b>",Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
-                    } else {
-                        locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</> " + lastUpdatedInfo + "<b>" + location.lastUpdatedByUsername + "</b>")); // or for older api
-                    }
+                    locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</> " + lastUpdatedInfo + "<b>" + location.lastUpdatedByUsername + "</b>"));
 				}
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
@@ -139,11 +134,7 @@ public class LocationDetail extends PinballMapActivity {
 					}
 
 					locationLastUpdated.setVisibility(View.VISIBLE);
-                    if (Build.VERSION.SDK_INT >= 24) {
-                        locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</b> " + lastUpdatedInfo,Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
-                    } else {
-                        locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</b> " + lastUpdatedInfo)); // or for older api
-                    }
+					locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</b> " + lastUpdatedInfo));
 				} else {
 					locationLastUpdated.setVisibility(View.GONE);
 				}
@@ -168,11 +159,7 @@ public class LocationDetail extends PinballMapActivity {
 
 				if (!locationTypeName.equals("") && !locationTypeName.equals("null")) {
 					locationType.setVisibility(View.VISIBLE);
-                    if (Build.VERSION.SDK_INT >= 24) {
-                        locationType.setText(Html.fromHtml("<i>Location Type:</i> " + locationTypeName,Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
-                    } else {
-                        locationType.setText(Html.fromHtml("<i>Location Type:</i> " + locationTypeName)); // or for older api
-                    }
+                        locationType.setText(Html.fromHtml("<i>Location Type:</i> " + locationTypeName));
 				} else {
 					locationType.setVisibility(View.GONE);
 				}
@@ -187,11 +174,7 @@ public class LocationDetail extends PinballMapActivity {
 
 				if (location.description != null && !location.description.equals("") && !location.description.equals("null")) {
 					locationDescription.setVisibility(View.VISIBLE);
-                    if (Build.VERSION.SDK_INT >= 24) {
-                        locationDescription.setText(Html.fromHtml("<i>Description:</i> " + location.description,Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
-                    } else {
-                        locationDescription.setText(Html.fromHtml("<i>Description:</i> " + location.description)); // or for older api
-                    }
+                        locationDescription.setText(Html.fromHtml("<i>Description:</i> " + location.description));
 
 				} else {
 					locationDescription.setVisibility(View.GONE);
@@ -200,29 +183,17 @@ public class LocationDetail extends PinballMapActivity {
 				Operator operator = location.getOperator(getPBMActivity());
 				if (operator != null) {
 					locationOperator.setVisibility(View.VISIBLE);
-                    if (Build.VERSION.SDK_INT >= 24) {
-                        locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.name,Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
-                    } else {
-                        locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.name)); // or for older api
-                    }
+                        locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.name));
 				} else {
 					locationOperator.setVisibility(View.GONE);
 				}
 
 					if (ActivityCompat.checkSelfPermission(LocationDetail.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(LocationDetail.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 						if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-							if (Build.VERSION.SDK_INT >= 24) {
-								locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo, Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
-							} else {
-								locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo)); // or for older api
-							}
+								locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo));
 						} else {
 							if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-								if (Build.VERSION.SDK_INT >= 24) {
-									locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo, Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
-								} else {
-									locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo)); // or for older api
-								}
+								    locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo)); // or for older api
 							}
 						}
 					} else {
@@ -314,11 +285,7 @@ public class LocationDetail extends PinballMapActivity {
 
 		Machine machine = lmx.getMachine(this);
 
-        if (Build.VERSION.SDK_INT >= 24) {
-            holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>",Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
-        } else {
-            holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>")); // or for older api
-        }
+            holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>"));
 
 		String conditionText = "";
 		String conditionTextMeta = "";
@@ -333,13 +300,8 @@ public class LocationDetail extends PinballMapActivity {
 				conditionTextMeta += " by<b> " + lastUpdatedByUsername + "</b>";
 			}
 
-            if (Build.VERSION.SDK_INT >= 24) {
-                holder.condition.setText(Html.fromHtml(conditionText,Html.FROM_HTML_MODE_LEGACY));
-				holder.conditionMeta.setText(Html.fromHtml(conditionTextMeta,Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
-            } else {
                 holder.condition.setText(Html.fromHtml(conditionText));
-				holder.conditionMeta.setText(Html.fromHtml(conditionTextMeta));// or for older api
-            }
+				holder.conditionMeta.setText(Html.fromHtml(conditionTextMeta));
 
 		} else {
 			holder.condition.setVisibility(View.GONE);

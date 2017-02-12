@@ -91,11 +91,7 @@ public class RecentScores extends PinballMapActivity {
 					formatter.format(score) + " by <b>" + username + "</b>" + "<br />" +
 					"<small>at " + location.name + " on " + scoreDate + "</small>";
 
-				if (Build.VERSION.SDK_INT >= 24) {
-                    recentScores.add(Html.fromHtml(title,Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
-				} else {
-                    recentScores.add(Html.fromHtml(title)); // or for older api
-				}
+                    recentScores.add(Html.fromHtml(title));
 			}
 		}
 	}

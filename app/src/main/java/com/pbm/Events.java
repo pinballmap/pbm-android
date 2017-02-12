@@ -115,11 +115,7 @@ public class Events extends PinballMapActivity {
 			}
 
             Spanned eventTextSpanned;
-            if (Build.VERSION.SDK_INT >= 24) {
-                eventTextSpanned = Html.fromHtml(eventText,Html.FROM_HTML_MODE_LEGACY);
-            } else {
-                eventTextSpanned = Html.fromHtml(eventText);
-            }
+            eventTextSpanned = Html.fromHtml(eventText);
 			events.add(eventTextSpanned);
 		}
 	}

@@ -103,11 +103,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 		} else {
 			urlLookupTypeData = "machine/" + Integer.toString(machine.id);
 		}
-		if (Build.VERSION.SDK_INT >= 24) {
-            pintips.setText(Html.fromHtml("<a href=\"http://pintips.net/pinmap/" + urlLookupTypeData + "\">View playing tips on pintips.net</a>",Html.FROM_HTML_MODE_LEGACY)); // for 24 api and more
-		} else {
-            pintips.setText(Html.fromHtml("<a href=\"http://pintips.net/pinmap/" + urlLookupTypeData + "\">View playing tips on pintips.net</a>")); // or for older api
-		}
+            pintips.setText(Html.fromHtml("<a href=\"http://pintips.net/pinmap/" + urlLookupTypeData + "\">View playing tips on pintips.net</a>"));
 	}
 
 	public void initializeAddScoreButton() {
