@@ -22,5 +22,14 @@
 		<item name="android:paddingBottom">5dp</item>
 		<item name="android:popupBackground">#DFFFFFFF</item>
 	</style>
+	<style name="CustomTabLayoutStyle" parent="Base.Widget.Design.TabLayout">
+		<item name="tabSelectedTextColor">@color/red100</item>
+		<item name="tabIndicatorColor">@color/textColorLink</item>
+        <item name="tabTextAppearance">@style/CustomTabTexStyle</item>
+	</style>
+    <style name="CustomTabTexStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/medText</item>
+    </style>
 
 </resources>
