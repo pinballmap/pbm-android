@@ -49,13 +49,20 @@ public class SplashScreen extends PinballMapActivity {
 			myIntent.setClassName("com.pbm", "com.pbm.Login");
 			startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
 		} else if (prefRegion != -1) {
-			Region region = app.getRegion(prefRegion);
-			setRegionBase(httpBase + apiPath + "region/" + region.name + "/");						
+			if (app.getRegion(prefRegion) != null) {
+				Region region = app.getRegion(prefRegion);
+				setRegionBase(httpBase + apiPath + "region/" + region.name + "/");
 
-			Intent myIntent = new Intent();	
-			myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			myIntent.setClassName("com.pbm", "com.pbm.InitializingScreen");
-			startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
+				Intent myIntent = new Intent();
+				myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				myIntent.setClassName("com.pbm", "com.pbm.InitializingScreen");
+				startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
+			} else {
+				regionsTab = new RegionsTab();
+				FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+				fragmentTransaction.replace(R.id.region_fragment, regionsTab);
+				fragmentTransaction.commit();
+			}
 		} else {
 			regionsTab = new RegionsTab();
 			FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
