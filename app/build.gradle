@@ -12,11 +12,11 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "String", "SERVER_URL", '"http://pinballmapstaging.herokuapp.com/"'
+            buildConfigField "String", "SERVER_URL", '"https://pinballmap.com/"'
             buildConfigField "long", "DATA_EXPIRY_TIME_IN_MS", "3600000"
         }
         release {
-            buildConfigField "String", "SERVER_URL", '"http://pinballmapstaging.herokuapp.com/"'
+            buildConfigField "String", "SERVER_URL", '"https://pinballmap.com/"'
             buildConfigField "long", "DATA_EXPIRY_TIME_IN_MS", "86400000"
 
             minifyEnabled true
