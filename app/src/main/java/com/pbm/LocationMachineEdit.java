@@ -58,17 +58,28 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 	public void initializeRemoveMachineButton() {
 		Button removeMachine = (Button) findViewById(R.id.remove_machine_button);
+		if (!getPBMApplication().userIsAuthenticated()) {
+			removeMachine.setText(R.string.login_to_remove_machine);
+		}
 
 		View.OnClickListener removeHandler = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				removeMachineDialog();
+				Intent myIntent = new Intent();
+
+				if (!getPBMApplication().userIsAuthenticated()) {
+					myIntent.setClassName("com.pbm", "com.pbm.Login");
+				} else {
+					removeMachineDialog();
+				}
+
+				startActivityForResult(myIntent, QUIT_RESULT);
+
 			}
 		};
 
 		removeMachine.setOnClickListener(removeHandler);
 	}
-
 	public void initializeAddMachineConditionButton() {
 		Button addMachineCondition = (Button) findViewById(R.id.add_condition_button);
 		if (!getPBMApplication().userIsAuthenticated()) {
