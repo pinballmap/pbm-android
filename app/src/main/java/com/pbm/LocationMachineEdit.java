@@ -69,11 +69,10 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 				if (!getPBMApplication().userIsAuthenticated()) {
 					myIntent.setClassName("com.pbm", "com.pbm.Login");
+                    startActivityForResult(myIntent, QUIT_RESULT);
 				} else {
 					removeMachineDialog();
 				}
-
-				startActivityForResult(myIntent, QUIT_RESULT);
 
 			}
 		};
