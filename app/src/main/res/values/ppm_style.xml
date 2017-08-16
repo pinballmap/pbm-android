@@ -31,5 +31,11 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/medText</item>
     </style>
+    <style name="websiteOutIcon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:drawableLeft">@drawable/ic_action_open_in_new_black</item>
+    </style>
 
 </resources>

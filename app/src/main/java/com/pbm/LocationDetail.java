@@ -167,7 +167,8 @@ public class LocationDetail extends PinballMapActivity {
 				if (location.website != null && !location.website.equals("") && !location.website.equals("null")) {
 					locationWebsite.setVisibility(View.VISIBLE);
 					locationWebsite.setMovementMethod(LinkMovementMethod.getInstance());
-					locationWebsite.setText(location.website);
+					locationWebsite.setText(Html.fromHtml("<a href=\""+ location.website +"\">WEBSITE</a>"));
+					locationWebsite.setClickable(true);
 				} else {
 					locationWebsite.setVisibility(View.GONE);
 				}
