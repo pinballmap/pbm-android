@@ -62,6 +62,7 @@
                 android:paddingLeft="10dip"
                 android:textSize="15sp"
                 android:paddingBottom="4dip"
+                android:text="@string/website_link"
                 android:drawableRight="@drawable/ic_action_open_in_new_black"
                 android:drawablePadding="5dip" />
 
