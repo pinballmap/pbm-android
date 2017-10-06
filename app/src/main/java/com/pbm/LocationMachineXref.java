@@ -1,6 +1,8 @@
 package com.pbm;
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -55,5 +57,16 @@ public class LocationMachineXref implements Serializable {
 
 		PBMApplication app = (PBMApplication) activity.getApplication();
 		app.setLmx(this);
+	}
+
+	public static LocationMachineXref newFromDBCursor(Cursor cursor) throws ParseException {
+		return new LocationMachineXref(
+				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_ID)),
+				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_LOCATION_ID)),
+				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_MACHINE_ID)),
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION)),
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION_DATE)),
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_LAST_UPDATED_BY_USERNAME))
+		);
 	}
 }

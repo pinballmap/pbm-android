@@ -2,6 +2,7 @@ package com.pbm;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,8 @@ import org.json.JSONException;
 
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.ExecutionException;
+
+import static java.security.AccessController.getContext;
 
 public class SplashScreen extends PinballMapActivity {
 	private RegionsTab regionsTab;

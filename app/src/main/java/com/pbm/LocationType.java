@@ -1,7 +1,8 @@
 package com.pbm;
 
+import android.database.Cursor;
+
 import java.io.Serializable;
-import java.lang.String;
 
 public class LocationType implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -19,5 +20,12 @@ public class LocationType implements Serializable {
 	
 	public String toString() {
 		return name;
+	}
+
+	public static LocationType newFromDBCursor(Cursor cursor) {
+		return new LocationType(
+				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationTypeContract.COLUMN_ID)),
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationTypeContract.COLUMN_NAME))
+		);
 	}
 }

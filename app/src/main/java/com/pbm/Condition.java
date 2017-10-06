@@ -1,18 +1,19 @@
 package com.pbm;
 
+import android.database.Cursor;
+
 import java.io.Serializable;
-import java.util.Date;
 
 public class Condition implements Serializable {
 	private static final long serialVersionUID = 2470212492505135031L;
-	private final Date date;
 
-	private final String description;
-	private int lmxId;
-	private final int id;
-	private final String username;
+	private final String date;
+	public final String description;
+	public int lmxId;
+	public final int id;
+	public final String username;
 
-	public Condition(int id, Date date, String description, int lmxId, String username) {
+	public Condition(int id, String date, String description, int lmxId, String username) {
 		this.id = id;
 		this.date = date;
 		this.description = description;
@@ -24,7 +25,7 @@ public class Condition implements Serializable {
 		return description;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
@@ -35,4 +36,14 @@ public class Condition implements Serializable {
 	public int getLmxId() { return lmxId; }
 
 	public String getUsername() { return username; }
+
+	public static Condition newFromDBCursor(Cursor cursor) {
+		return new Condition(
+				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_ID)),
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_DATE)),
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_DESCRIPTION)),
+				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_LOCATION_MACHINE_XREF_ID)),
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_USERNAME))
+		);
+	}
 }

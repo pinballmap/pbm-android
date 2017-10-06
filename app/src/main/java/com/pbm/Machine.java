@@ -1,7 +1,8 @@
 package com.pbm;
 
+import android.database.Cursor;
+
 import java.io.Serializable;
-import java.lang.String;
 
 public class Machine implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -47,5 +48,16 @@ public class Machine implements Serializable {
 
 	public String metaData() {
 		return "(" + manufacturer + ", " + year + ")";
+	}
+
+	public static Machine newFromDBCursor(Cursor cursor) {
+		return new Machine(
+				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_ID)),
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_NAME)),
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_YEAR)),
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_MANUFACTURER)),
+				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_EXISTS_IN_REGION)) > 0,
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_GROUP_ID))
+		);
 	}
 }

@@ -1,5 +1,7 @@
 package com.pbm;
 
+import android.database.Cursor;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,8 +15,8 @@ public class Region implements Serializable, JSONConverter<Region> {
 	public String name;
 	public String formalName;
 	public String motd;
-	private String lat;
-	private String lon;
+	public String lat;
+	public String lon;
 	public float distanceFromYou;
 	private List<String> emailAddresses = new ArrayList<>();
 
@@ -127,5 +129,17 @@ public class Region implements Serializable, JSONConverter<Region> {
 		}
 
 		return locationTypes;
+	}
+
+	public static Region newFromDBCursor(Cursor cursor) {
+		return new Region(
+				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.RegionContract.COLUMN_ID)),
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.RegionContract.COLUMN_NAME)),
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.RegionContract.COLUMN_FORMAL_NAME)),
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.RegionContract.COLUMN_MOTD)),
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.RegionContract.COLUMN_LAT)),
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.RegionContract.COLUMN_LON)),
+				null
+		);
 	}
 }
