@@ -1,7 +1,10 @@
 package com.pbm;
 
 import android.app.Application;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -24,7 +27,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 
 public class PBMApplication extends Application {
@@ -50,17 +52,9 @@ public class PBMApplication extends Application {
 
 	public enum TrackerName { APP_TRACKER }
 
-	private HashMap<Integer, com.pbm.Location> locations = new HashMap<>();
-	private HashMap<Integer, com.pbm.LocationType> locationTypes = new HashMap<>();
-	private HashMap<Integer, com.pbm.Machine> machines = new HashMap<>();
-	private HashMap<Integer, com.pbm.LocationMachineXref> lmxes = new HashMap<>();
-	private HashMap<Integer, com.pbm.LocationMachineConditions> lmxConditions = new HashMap<>();
-	private HashMap<Integer, com.pbm.MachineScore> machineScores = new HashMap<>();
-	private HashMap<Integer, com.pbm.Zone> zones = new HashMap<>();
-	private HashMap<Integer, com.pbm.Region> regions = new HashMap<>();
-	private HashMap<Integer, com.pbm.Operator> operators = new HashMap<>();
-
 	private HashMap<TrackerName, Tracker> mTrackers = new HashMap<>();
+
+	private PBMDbHelper dbHelper = new PBMDbHelper(getBaseContext());
 
 	synchronized Tracker getTracker() {
 		if (!mTrackers.containsKey(TrackerName.APP_TRACKER)) {
@@ -72,28 +66,273 @@ public class PBMApplication extends Application {
 		return mTrackers.get(TrackerName.APP_TRACKER);
 	}
 
-	public void setLocations(HashMap<Integer, com.pbm.Location> locations) {
-		this.locations = locations;
+	public HashMap<Integer, com.pbm.Location> getLocations() {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		Cursor cursor = db.query(
+				PBMContract.RegionContract.TABLE_NAME,
+				PBMContract.RegionContract.PROJECTION,
+				null,
+				null,
+				null,
+				null,
+				null
+		);
+
+		HashMap hashMap = new HashMap();
+		while(cursor.moveToNext()) {
+			com.pbm.Location location = com.pbm.Location.newFromDBCursor(cursor);
+			hashMap.put(location.id, location);
+		}
+		cursor.close();
+
+		return hashMap;
 	}
 
-	public void setLocation(Integer index, com.pbm.Location location) {
-		this.locations.put(index, location);
+	public HashMap<Integer, com.pbm.Machine> getMachines() {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		Cursor cursor = db.query(
+				PBMContract.MachineContract.TABLE_NAME,
+				PBMContract.MachineContract.PROJECTION,
+				null,
+				null,
+				null,
+				null,
+				null
+		);
+
+		HashMap hashMap = new HashMap();
+		while(cursor.moveToNext()) {
+			Machine machine = Machine.newFromDBCursor(cursor);
+			hashMap.put(machine.id, machine);
+		}
+		cursor.close();
+
+		return hashMap;
+	}
+
+	public HashMap<Integer, com.pbm.LocationMachineXref> getLmxes() throws ParseException {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		Cursor cursor = db.query(
+				PBMContract.LocationMachineXrefContract.TABLE_NAME,
+				PBMContract.LocationMachineXrefContract.PROJECTION,
+				null,
+				null,
+				null,
+				null,
+				null
+		);
+
+		HashMap hashMap = new HashMap();
+		while(cursor.moveToNext()) {
+			LocationMachineXref lmx = LocationMachineXref.newFromDBCursor(cursor);
+			hashMap.put(lmx.id, lmx);
+		}
+		cursor.close();
+
+		return hashMap;
+	}
+
+	public ArrayList<MachineScore> getMachineScores() {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		Cursor cursor = db.query(
+				PBMContract.MachineScoreContract.TABLE_NAME,
+				PBMContract.MachineScoreContract.PROJECTION,
+				null,
+				null,
+				null,
+				null,
+				null
+		);
+
+		ArrayList<MachineScore> arrayList = new ArrayList<>();
+		while(cursor.moveToNext()) {
+			arrayList.add(MachineScore.newDBFromCursor(cursor));
+		}
+		cursor.close();
+
+		return arrayList;
+	}
+
+	public LocationMachineConditions getLmxConditionsByID(Integer id) throws ParseException {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		LocationMachineXref lmx = getLmx(id);
+
+		String selection = PBMContract.ConditionContract.COLUMN_LOCATION_MACHINE_XREF_ID + " = ?";
+		String[] selectionArgs = { id.toString() };
+
+		Cursor cursor = db.query(
+				PBMContract.ConditionContract.TABLE_NAME,
+				PBMContract.ConditionContract.PROJECTION,
+				selection,
+				selectionArgs,
+				null,
+				null,
+				null
+		);
+
+		ArrayList<Condition> conditions = new ArrayList<>();
+		while(cursor.moveToNext()) {
+			conditions.add(Condition.newFromDBCursor(cursor));
+		}
+		cursor.close();
+
+		return new LocationMachineConditions(lmx.id, lmx.machineID, lmx.locationID, conditions);
+	}
+
+	public HashMap<Integer, com.pbm.Zone> getZones() {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		Cursor cursor = db.query(
+				PBMContract.ZoneContract.TABLE_NAME,
+				PBMContract.ZoneContract.PROJECTION,
+				null,
+				null,
+				null,
+				null,
+				null
+		);
+
+		HashMap hashMap = new HashMap();
+		while(cursor.moveToNext()) {
+			Zone zone = Zone.newFromDBCursor(cursor);
+			hashMap.put(zone.id, zone);
+		}
+		cursor.close();
+
+		return hashMap;
+	}
+
+	public HashMap<Integer, com.pbm.LocationType> getLocationTypes() {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		Cursor cursor = db.query(
+				PBMContract.LocationTypeContract.TABLE_NAME,
+				PBMContract.LocationTypeContract.PROJECTION,
+				null,
+				null,
+				null,
+				null,
+				null
+		);
+
+		HashMap hashMap = new HashMap();
+		while(cursor.moveToNext()) {
+			LocationType locationType = LocationType.newFromDBCursor(cursor);
+			hashMap.put(locationType.id, locationType);
+		}
+		cursor.close();
+
+		return hashMap;
+	}
+
+	public HashMap<Integer, com.pbm.Region> getRegions() {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		Cursor cursor = db.query(
+				PBMContract.RegionContract.TABLE_NAME,
+				PBMContract.RegionContract.PROJECTION,
+				null,
+				null,
+				null,
+				null,
+				null
+		);
+
+		HashMap hashMap = new HashMap();
+		while(cursor.moveToNext()) {
+			Region region = Region.newFromDBCursor(cursor);
+			hashMap.put(region.id, region);
+		}
+		cursor.close();
+
+		return hashMap;
+	}
+
+	public HashMap<Integer, com.pbm.Operator> getOperators() {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		Cursor cursor = db.query(
+				PBMContract.OperatorContract.TABLE_NAME,
+				PBMContract.OperatorContract.PROJECTION,
+				null,
+				null,
+				null,
+				null,
+				null
+		);
+
+		HashMap hashMap = new HashMap();
+		while (cursor.moveToNext()) {
+			Operator operator = Operator.newFromDBCursor(cursor);
+
+			hashMap.put(operator.id, operator);
+		}
+		cursor.close();
+
+		return hashMap;
+	}
+
+	public void updateLocation(com.pbm.Location location) {
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(PBMContract.LocationContract.COLUMN_ZONE_ID, location.zoneID);
+		values.put(PBMContract.LocationContract.COLUMN_LOCATION_TYPE_ID, location.locationTypeID);
+		values.put(PBMContract.LocationContract.COLUMN_OPERATOR_ID, location.operatorID);
+		values.put(PBMContract.LocationContract.COLUMN_NAME, location.name);
+		values.put(PBMContract.LocationContract.COLUMN_STREET, location.street);
+		values.put(PBMContract.LocationContract.COLUMN_CITY, location.city);
+		values.put(PBMContract.LocationContract.COLUMN_STATE, location.state);
+		values.put(PBMContract.LocationContract.COLUMN_ZIP, location.zip);
+		values.put(PBMContract.LocationContract.COLUMN_PHONE, location.phone);
+		values.put(PBMContract.LocationContract.COLUMN_LAT, location.lat);
+		values.put(PBMContract.LocationContract.COLUMN_LON, location.lon);
+		values.put(PBMContract.LocationContract.COLUMN_WEBSITE, location.website);
+		values.put(PBMContract.LocationContract.COLUMN_MILES_INFO, location.milesInfo);
+		values.put(PBMContract.LocationContract.COLUMN_LAST_UPDATED_BY_USERNAME, location.lastUpdatedByUsername);
+		values.put(PBMContract.LocationContract.COLUMN_DATE_LAST_UPDATED, location.dateLastUpdated);
+		values.put(PBMContract.LocationContract.COLUMN_DESCRIPTION, location.description);
+		values.put(PBMContract.LocationContract.COLUMN_DISTANCE_FROM_YOU, location.distanceFromYou);
+
+		String selection = PBMContract.LocationContract.COLUMN_ID + "= ?";
+		String[] selectionArgs = { String.valueOf(location.id) };
+
+		db.update(
+				PBMContract.LocationContract.TABLE_NAME,
+				values,
+				selection,
+				selectionArgs
+		);
+	}
+
+	public void updateLmx(LocationMachineXref lmx) {
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_MACHINE_ID, lmx.machineID);
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_LOCATION_ID, lmx.locationID);
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION, lmx.condition);
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION_DATE, lmx.conditionDate);
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_LAST_UPDATED_BY_USERNAME, lmx.lastUpdatedByUsername);
+
+		String selection = PBMContract.LocationMachineXrefContract.COLUMN_ID + "= ?";
+		String[] selectionArgs = { String.valueOf(lmx.id) };
+
+		db.update(
+				PBMContract.LocationMachineXrefContract.TABLE_NAME,
+				values,
+				selection,
+				selectionArgs
+		);
 	}
 
 	public Region getRegion() {
 		return getRegion(getSharedPreferences(PinballMapActivity.PREFS_NAME, 0).getInt("region", -1));
-	}
-
-	public HashMap<Integer, com.pbm.Location> getLocations() {
-		return locations;
-	}
-
-	public void setMachines(HashMap<Integer, com.pbm.Machine> machines) {
-		this.machines = machines;
-	}
-
-	HashMap<Integer, com.pbm.Machine> getMachines() {
-		return machines;
 	}
 
 	public String[] getMachineNames() {
@@ -130,28 +369,30 @@ public class PBMApplication extends Application {
 		return names;
 	}
 
-	public void setZones(HashMap<Integer, com.pbm.Zone> zones) {
-		this.zones = zones;
+	void addMachineCondition(Integer id, Condition machineCondition) {
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(PBMContract.ConditionContract.COLUMN_ID, machineCondition.getId());
+		values.put(PBMContract.ConditionContract.COLUMN_DATE, machineCondition.getDate());
+		values.put(PBMContract.ConditionContract.COLUMN_DESCRIPTION, machineCondition.getDescription());
+		values.put(PBMContract.ConditionContract.COLUMN_LOCATION_MACHINE_XREF_ID, machineCondition.getLmxId());
+		values.put(PBMContract.ConditionContract.COLUMN_USERNAME, machineCondition.getUsername());
+
+		db.insert(PBMContract.ConditionContract.TABLE_NAME, null, values);
 	}
 
-	public HashMap<Integer, com.pbm.LocationMachineXref> getLmxes() {
-		return lmxes;
-	}
+	void addMachineScore(Integer id, MachineScore machineScore) {
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-	public void setLmxes(HashMap<Integer, com.pbm.LocationMachineXref> lmxes) {
-		this.lmxes = lmxes;
-	}
+		ContentValues values = new ContentValues();
+		values.put(PBMContract.MachineScoreContract.COLUMN_ID, machineScore.getId());
+		values.put(PBMContract.MachineScoreContract.COLUMN_LOCATION_MACHINE_XREF_ID, machineScore.getLmxId());
+		values.put(PBMContract.MachineScoreContract.COLUMN_USERNAME, machineScore.getUsername());
+		values.put(PBMContract.MachineScoreContract.COLUMN_SCORE, machineScore.getScore());
+		values.put(PBMContract.MachineScoreContract.COLUMN_DATE_CREATED, machineScore.getDate());
 
-	public void setLmxConditions(HashMap<Integer, LocationMachineConditions> lmxConditions) {
-		this.lmxConditions = lmxConditions;
-	}
-
-	void addMachineScore(Integer id, MachineScore score) {
-		this.machineScores.put(id, score);
-	}
-
-	public ArrayList<MachineScore> getMachineScores() {
-		return new ArrayList<>(machineScores.values());
+		db.insert(PBMContract.MachineScoreContract.TABLE_NAME, null, values);
 	}
 
 	public ArrayList<MachineScore> getMachineScoresByLMXId(Integer id) {
@@ -166,76 +407,137 @@ public class PBMApplication extends Application {
 		return scores;
 	}
 
-	public void setLmx(com.pbm.LocationMachineXref lmx) {
-		this.lmxes.put(lmx.id, lmx);
-	}
-
 	public void removeLmx(LocationMachineXref lmx) {
-		this.lmxes.remove(lmx.id);
-	}
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-	public HashMap<Integer, LocationMachineConditions> getLmxConditionsMap() {
-		return lmxConditions;
-	}
-
-	public ArrayList<LocationMachineConditions> getLmxConditions() {
-		return new ArrayList<>(lmxConditions.values());
-	}
-
-	public LocationMachineConditions getLmxConditionsByID(Integer id) {
-		return lmxConditions.get(id);
-	}
-
-	public void removeLocationMachine(Integer id) {
-		lmxConditions.remove(id);
-	}
-
-	public HashMap<Integer, com.pbm.Zone> getZones() {
-		return zones;
+		String selection = PBMContract.LocationMachineXrefContract.COLUMN_ID + " = ?";
+		String[] selectionArgs = { Integer.toString(lmx.id) };
+		db.delete(PBMContract.LocationMachineXrefContract.TABLE_NAME, selection, selectionArgs);
 	}
 
 	void addLocation(Integer id, Location location) {
-		this.locations.put(id, location);
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(PBMContract.LocationContract.COLUMN_ID, location.id);
+		values.put(PBMContract.LocationContract.COLUMN_ZONE_ID, location.zoneID);
+		values.put(PBMContract.LocationContract.COLUMN_LOCATION_TYPE_ID, location.locationTypeID);
+		values.put(PBMContract.LocationContract.COLUMN_OPERATOR_ID, location.operatorID);
+		values.put(PBMContract.LocationContract.COLUMN_NAME, location.name);
+		values.put(PBMContract.LocationContract.COLUMN_STREET, location.street);
+		values.put(PBMContract.LocationContract.COLUMN_CITY, location.city);
+		values.put(PBMContract.LocationContract.COLUMN_STATE, location.state);
+		values.put(PBMContract.LocationContract.COLUMN_ZIP, location.zip);
+		values.put(PBMContract.LocationContract.COLUMN_PHONE, location.phone);
+		values.put(PBMContract.LocationContract.COLUMN_LAT, location.lat);
+		values.put(PBMContract.LocationContract.COLUMN_LON, location.lon);
+		values.put(PBMContract.LocationContract.COLUMN_WEBSITE, location.website);
+		values.put(PBMContract.LocationContract.COLUMN_MILES_INFO, location.milesInfo);
+		values.put(PBMContract.LocationContract.COLUMN_LAST_UPDATED_BY_USERNAME, location.lastUpdatedByUsername);
+		values.put(PBMContract.LocationContract.COLUMN_DATE_LAST_UPDATED, location.dateLastUpdated);
+		values.put(PBMContract.LocationContract.COLUMN_DESCRIPTION, location.description);
+		values.put(PBMContract.LocationContract.COLUMN_DISTANCE_FROM_YOU, location.distanceFromYou);
+
+		db.insert(PBMContract.LocationContract.TABLE_NAME, null, values);
 	}
 
 	public void addMachine(Integer id, Machine machine) {
-		this.machines.put(id, machine);
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(PBMContract.MachineContract.COLUMN_ID, machine.id);
+		values.put(PBMContract.MachineContract.COLUMN_NAME, machine.name);
+		values.put(PBMContract.MachineContract.COLUMN_YEAR, machine.year);
+		values.put(PBMContract.MachineContract.COLUMN_MANUFACTURER, machine.manufacturer);
+		values.put(PBMContract.MachineContract.COLUMN_GROUP_ID, machine.groupId);
+		values.put(PBMContract.MachineContract.COLUMN_NUM_LOCATIONS, machine.numLocations);
+		values.put(PBMContract.MachineContract.COLUMN_EXISTS_IN_REGION, machine.existsInRegion);
+
+		db.insert(PBMContract.MachineContract.TABLE_NAME, null, values);
 	}
 
 	void addOperator(Integer id, Operator operator) {
-		this.operators.put(id, operator);
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(PBMContract.OperatorContract.COLUMN_ID, operator.id);
+		values.put(PBMContract.OperatorContract.COLUMN_NAME, operator.name);
+
+		db.insert(PBMContract.OperatorContract.TABLE_NAME, null, values);
 	}
 
 	public Operator getOperator(Integer id) {
-		return operators.get(id);
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		String selection = PBMContract.OperatorContract.COLUMN_ID + " = ?";
+		String[] selectionArgs = { id.toString() };
+
+		Cursor cursor = db.query(
+				PBMContract.OperatorContract.TABLE_NAME,
+				PBMContract.OperatorContract.PROJECTION,
+				selection,
+				selectionArgs,
+				null,
+				null,
+				null
+		);
+
+		Operator operator = null;
+		while(cursor.moveToNext()) {
+			operator = Operator.newFromDBCursor(cursor);
+		}
+		cursor.close();
+
+		return operator;
 	}
 
-	public HashMap<Integer, com.pbm.Operator> getOperators() {
-		return operators;
-	}
+	void addLocationType(Integer id, LocationType locationType) {
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-	void addLocationType(Integer id, LocationType name) {
-		this.locationTypes.put(id, name);
+		ContentValues values = new ContentValues();
+		values.put(PBMContract.LocationTypeContract.COLUMN_ID, locationType.id);
+		values.put(PBMContract.LocationTypeContract.COLUMN_NAME, locationType.name);
+
+		db.insert(PBMContract.LocationTypeContract.TABLE_NAME, null, values);
 	}
 
 	public LocationType getLocationType(Integer id) {
-		return locationTypes.get(id);
-	}
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-	public HashMap<Integer, com.pbm.LocationType> getLocationTypes() {
-		return locationTypes;
-	}
+		String selection = PBMContract.LocationTypeContract.COLUMN_ID + " = ?";
+		String[] selectionArgs = { id.toString() };
 
-	public void setLocationTypes(HashMap<Integer, com.pbm.LocationType> locationTypes) {
-		this.locationTypes = locationTypes;
+		Cursor cursor = db.query(
+				PBMContract.LocationTypeContract.TABLE_NAME,
+				PBMContract.LocationTypeContract.PROJECTION,
+				selection,
+				selectionArgs,
+				null,
+				null,
+				null
+		);
+
+		LocationType locationType = null;
+		while(cursor.moveToNext()) {
+			locationType = LocationType.newFromDBCursor(cursor);
+		}
+		cursor.close();
+
+		return locationType;
 	}
 
 	public void addLocationMachineXref(Integer id, LocationMachineXref lmx) {
-		this.lmxes.put(id, lmx);
-	}
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-	public void addLocationMachineConditions(Integer id, LocationMachineConditions locationMachineConditions) {
-		this.lmxConditions.put(id, locationMachineConditions);
+		ContentValues values = new ContentValues();
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_ID, lmx.id);
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_MACHINE_ID, lmx.machineID);
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_LOCATION_ID, lmx.locationID);
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION, lmx.condition);
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION_DATE, lmx.conditionDate);
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_LAST_UPDATED_BY_USERNAME, lmx.lastUpdatedByUsername);
+
+		db.insert(PBMContract.LocationMachineXrefContract.TABLE_NAME, null, values);
 	}
 
 	public LocationMachineXref getLmxFromMachine(Machine machine, List<LocationMachineXref> lmxes) {
@@ -248,11 +550,32 @@ public class PBMApplication extends Application {
 		return null;
 	}
 
-	public LocationMachineXref getLmx(Integer id) {
-		return lmxes.get(id);
+	public LocationMachineXref getLmx(Integer id) throws ParseException {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		String selection = PBMContract.LocationMachineXrefContract.COLUMN_ID + " = ?";
+		String[] selectionArgs = { id.toString() };
+
+		Cursor cursor = db.query(
+				PBMContract.LocationMachineXrefContract.TABLE_NAME,
+				PBMContract.LocationMachineXrefContract.PROJECTION,
+				selection,
+				selectionArgs,
+				null,
+				null,
+				null
+		);
+
+		LocationMachineXref lmx = null;
+		while(cursor.moveToNext()) {
+			lmx = LocationMachineXref.newFromDBCursor(cursor);
+		}
+		cursor.close();
+
+		return lmx;
 	}
 
-	public int numMachinesForLocation(Location location) {
+	public int numMachinesForLocation(Location location) throws ParseException {
 		int numMachines = 0;
 		for (LocationMachineXref lmx : getLmxes().values()) {
 			if (lmx.locationID == location.id) {
@@ -264,7 +587,28 @@ public class PBMApplication extends Application {
 	}
 
 	public Machine getMachine(Integer id) {
-		return machines.get(id);
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		String selection = PBMContract.MachineContract.COLUMN_ID + " = ?";
+		String[] selectionArgs = { id.toString() };
+
+		Cursor cursor = db.query(
+				PBMContract.MachineContract.TABLE_NAME,
+				PBMContract.MachineContract.PROJECTION,
+				selection,
+				selectionArgs,
+				null,
+				null,
+				null
+		);
+
+		Machine machine = null;
+		while(cursor.moveToNext()) {
+			machine = Machine.newFromDBCursor(cursor);
+		}
+		cursor.close();
+
+		return machine;
 	}
 
 	public Machine getMachineByMetadata(String name, String year, String manufacturer) {
@@ -294,28 +638,80 @@ public class PBMApplication extends Application {
 		return null;
 	}
 
-	public Location getLocation(Integer id) {
-		return locations.get(id);
+	public com.pbm.Location getLocation(Integer id) {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		String selection = PBMContract.LocationContract.COLUMN_ID + " = ?";
+		String[] selectionArgs = { id.toString() };
+
+		Cursor cursor = db.query(
+				PBMContract.RegionContract.TABLE_NAME,
+				PBMContract.RegionContract.PROJECTION,
+				selection,
+				selectionArgs,
+				null,
+				null,
+				null
+		);
+
+		com.pbm.Location location = null;
+		while(cursor.moveToNext()) {
+			location = com.pbm.Location.newFromDBCursor(cursor);
+		}
+		cursor.close();
+
+		return location;
 	}
 
 	public Region getRegion(Integer id) {
-		return regions.get(id);
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		String selection = PBMContract.RegionContract.COLUMN_ID + " = ?";
+		String[] selectionArgs = { id.toString() };
+
+		Cursor cursor = db.query(
+				PBMContract.RegionContract.TABLE_NAME,
+				PBMContract.RegionContract.PROJECTION,
+				selection,
+				selectionArgs,
+				null,
+				null,
+				null
+		);
+
+		Region region = null;
+		while(cursor.moveToNext()) {
+			region = Region.newFromDBCursor(cursor);
+		}
+		cursor.close();
+
+		return region;
 	}
 
 	void addZone(Integer id, Zone zone) {
-		this.zones.put(id, zone);
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(PBMContract.ZoneContract.COLUMN_ID, zone.id);
+		values.put(PBMContract.ZoneContract.COLUMN_NAME, zone.name);
+		values.put(PBMContract.ZoneContract.COLUMN_IS_PRIMARY, zone.isPrimary);
+
+		db.insert(PBMContract.ZoneContract.TABLE_NAME, null, values);
 	}
 
 	public void addRegion(Integer id, Region region) {
-		this.regions.put(id, region);
-	}
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-	public void setRegions(HashMap<Integer, com.pbm.Region> regions) {
-		this.regions = regions;
-	}
+		ContentValues values = new ContentValues();
+		values.put(PBMContract.RegionContract.COLUMN_ID, region.id);
+		values.put(PBMContract.RegionContract.COLUMN_NAME, region.name);
+		values.put(PBMContract.RegionContract.COLUMN_FORMAL_NAME, region.formalName);
+		values.put(PBMContract.RegionContract.COLUMN_MOTD, region.motd);
+		values.put(PBMContract.RegionContract.COLUMN_LAT, region.lat);
+		values.put(PBMContract.RegionContract.COLUMN_LON, region.lon);
+		values.put(PBMContract.RegionContract.COLUMN_DISTANCE_FROM_YOU, region.distanceFromYou);
 
-	public HashMap<Integer, com.pbm.Region> getRegions() {
-		return regions;
+		db.insert(PBMContract.RegionContract.TABLE_NAME, null, values);
 	}
 
 	public ArrayList<Region> getRegionValues() {
@@ -399,8 +795,6 @@ public class PBMApplication extends Application {
 	}
 
 	void initializeMachineScores() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		machineScores.clear();
-
 		String json = new RetrieveJsonTask().execute(
 			requestWithAuthDetails(PinballMapActivity.regionBase + "machine_score_xrefs.json"), "GET"
 		).get();
@@ -448,8 +842,6 @@ public class PBMApplication extends Application {
 	}
 
 	void initializeOperators() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		operators.clear();
-
 		String json = new RetrieveJsonTask().execute(
 			requestWithAuthDetails(PinballMapActivity.regionBase + "operators.json"),
 			"GET"
@@ -478,8 +870,6 @@ public class PBMApplication extends Application {
 	}
 
 	void initializeLocationTypes() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		locationTypes.clear();
-
 		String json = new RetrieveJsonTask().execute(
 			requestWithAuthDetails(PinballMapActivity.regionlessBase + "location_types.json"),
 			"GET"
@@ -508,8 +898,6 @@ public class PBMApplication extends Application {
 	}
 
 	void initializeAllMachines() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		machines.clear();
-
 		String json = new RetrieveJsonTask().execute(
 			requestWithAuthDetails(PinballMapActivity.regionlessBase + "machines.json"),
 			"GET"
@@ -545,8 +933,6 @@ public class PBMApplication extends Application {
 	}
 
 	void initializeZones() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		zones.clear();
-
 		String json = new RetrieveJsonTask().execute(
 			requestWithAuthDetails(PinballMapActivity.regionBase + "zones.json"), "GET"
 		).get();
@@ -572,9 +958,6 @@ public class PBMApplication extends Application {
 	}
 
 	void initializeLocations() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
-		lmxes.clear();
-		locations.clear();
-
 		String json = new RetrieveJsonTask().execute(
 			requestWithAuthDetails(PinballMapActivity.regionBase + "locations.json"),
 			"GET"
@@ -688,8 +1071,6 @@ public class PBMApplication extends Application {
 	void loadConditions(JSONObject lmx, int lmxID, int lmxLocationID, int machineID) throws JSONException {
 		if (lmx.has("machine_conditions")) {
 			JSONArray conditions = lmx.getJSONArray("machine_conditions");
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
-			dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 			ArrayList<Condition> conditionList = new ArrayList<>();
 
 			for (int conditionIndex = 0; conditionIndex < conditions.length(); conditionIndex++) {
@@ -702,22 +1083,15 @@ public class PBMApplication extends Application {
 					pastConditionUsername = "";
 				}
 
-				try {
-					conditionList.add(
-						new Condition(pastCondition.getInt("id"),
-						dateFormat.parse(pastCondition.getString("updated_at")),
-						pastCondition.getString("comment"),
-						lmxID,
-						pastConditionUsername
-					));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
+				Condition machineCondition = new Condition(
+					pastCondition.getInt("id"),
+					pastCondition.getString("updated_at"),
+					pastCondition.getString("comment"),
+					lmxID,
+					pastConditionUsername
+				);
+				addMachineCondition(machineCondition.id, machineCondition);
 			}
-
-			LocationMachineConditions machineConditions =
-					new LocationMachineConditions(lmxID, machineID, lmxLocationID, conditionList);
-			addLocationMachineConditions(lmxID, machineConditions);
 		}
 	}
 

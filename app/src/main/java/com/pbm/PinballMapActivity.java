@@ -64,13 +64,6 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 		super.onSaveInstanceState(outState);
 		outState.putString("regionBase", regionBase);
 		outState.putLong("datatimestamp", getPBMApplication().getDataLoadTimestamp());
-		outState.putSerializable("locations", getPBMApplication().getLocations());
-		outState.putSerializable("locationTypes", getPBMApplication().getLocationTypes());
-		outState.putSerializable("machines", getPBMApplication().getMachines());
-		outState.putSerializable("lmxes", getPBMApplication().getLmxes());
-		outState.putSerializable("lmxConditions", getPBMApplication().getLmxConditionsMap());
-		outState.putSerializable("zones", getPBMApplication().getZones());
-		outState.putSerializable("regions", getPBMApplication().getRegions());
 	}
 
 	@Override
@@ -81,13 +74,6 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 		if (savedInstanceState != null) {
 			regionBase = savedInstanceState.getString("regionBase");
 			PBMApplication pbm = getPBMApplication();
-			pbm.setLocations((java.util.HashMap<Integer, Location>) savedInstanceState.getSerializable("locations"));
-			pbm.setLocationTypes((java.util.HashMap<Integer, LocationType>) savedInstanceState.getSerializable("locationTypes"));
-			pbm.setMachines((java.util.HashMap<Integer, Machine>) savedInstanceState.getSerializable("machines"));
-			pbm.setLmxes((java.util.HashMap<Integer, LocationMachineXref>) savedInstanceState.getSerializable("lmxes"));
-			pbm.setLmxConditions((java.util.HashMap<Integer, LocationMachineConditions>) savedInstanceState.getSerializable("lmxConditions"));
-			pbm.setZones((java.util.HashMap<Integer, Zone>) savedInstanceState.getSerializable("zones"));
-			pbm.setRegions((java.util.HashMap<Integer, Region>) savedInstanceState.getSerializable("regions"));
 			pbm.setDataLoadTimestamp(savedInstanceState.getLong("datatimestamp"));
 		}
 	}

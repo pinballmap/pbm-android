@@ -1,7 +1,8 @@
 package com.pbm;
 
+import android.database.Cursor;
+
 import java.io.Serializable;
-import java.lang.String;
 
 public class Zone implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -20,5 +21,13 @@ public class Zone implements Serializable {
 	
 	public static Zone allZone() {
 		return new Zone(0, "All", 0);
+	}
+
+	public static Zone newFromDBCursor(Cursor cursor) {
+		return new Zone(
+				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.ZoneContract.COLUMN_ID)),
+				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.ZoneContract.COLUMN_NAME)),
+				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.ZoneContract.COLUMN_IS_PRIMARY))
+		);
 	}
 }
