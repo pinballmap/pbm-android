@@ -29,6 +29,7 @@
     <string name="machines">Machines:</string>
     <string name="operator">Operator:</string>
     <string name="website">Website:</string>
+    <string name="website_link">Website</string>
     <string name="submit_a_location">Submit a Location to the Map</string>
     <string name="submit_text"> Submit </string>
     <string name="machine_button_desc">Click to edit machine</string>
