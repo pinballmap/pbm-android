@@ -2,7 +2,6 @@ package com.pbm;
 
 import android.app.Activity;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -56,7 +55,7 @@ public class LocationMachineXref implements Serializable {
 		this.conditionDate = format.format(new Date());
 
 		PBMApplication app = (PBMApplication) activity.getApplication();
-		app.setLmx(this);
+		app.updateLmx(this);
 	}
 
 	public static LocationMachineXref newFromDBCursor(Cursor cursor) throws ParseException {
