@@ -5,6 +5,7 @@ import android.database.Cursor;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -77,7 +78,7 @@ public class Location implements Serializable {
 		this.milesInfo = milesInfo;
 	}
 
-	public int numMachines(PinballMapActivity activity) {
+	public int numMachines(PinballMapActivity activity) throws ParseException {
 		PBMApplication app = activity.getPBMApplication();
 		return app.numMachinesForLocation(this);
 	}
@@ -86,7 +87,7 @@ public class Location implements Serializable {
 		return milesInfo != null ? name + " " + milesInfo : name;
 	}
 
-	public List<LocationMachineXref> getLmxes(PinballMapActivity activity) {
+	public List<LocationMachineXref> getLmxes(PinballMapActivity activity) throws ParseException {
 		List<LocationMachineXref> locationLmxes = new ArrayList<>();
 		PBMApplication app = activity.getPBMApplication();
 
@@ -99,7 +100,7 @@ public class Location implements Serializable {
 		return locationLmxes;
 	}
 
-	public TreeMap<Integer, LocationMachineXref> getLMXMap(PinballMapActivity activity) {
+	public TreeMap<Integer, LocationMachineXref> getLMXMap(PinballMapActivity activity) throws ParseException {
 		TreeMap<Integer, LocationMachineXref> lmxes = new TreeMap<>();
 		PBMApplication app = activity.getPBMApplication();
 		for (LocationMachineXref lmx : app.getLmxes().values()) {
@@ -110,7 +111,7 @@ public class Location implements Serializable {
 		return lmxes;
 	}
 
-	public List<Machine> getMachines(PinballMapActivity activity) {
+	public List<Machine> getMachines(PinballMapActivity activity) throws ParseException {
 		List<Machine> machinesFromLmxes = new ArrayList<>();
 		PBMApplication app = activity.getPBMApplication();
 

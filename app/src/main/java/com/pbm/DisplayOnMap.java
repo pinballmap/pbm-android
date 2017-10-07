@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -54,8 +55,13 @@ public class DisplayOnMap extends PinballMapActivity implements
         Location[] locations = Arrays.copyOf(arrayDataObject, arrayDataObject.length,Location[].class);
         for (Location location : locations) {
             LatLng position = new LatLng(Float.valueOf(location.lat), Float.valueOf(location.lon));
-            Marker marker = mMap.addMarker(new MarkerOptions().title(location.name)
-                    .snippet(location.numMachines(this) + " machines").position(position));
+            Marker marker = null;
+            try {
+                marker = mMap.addMarker(new MarkerOptions().title(location.name)
+                        .snippet(location.numMachines(this) + " machines").position(position));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             markers.add(marker);
         }
 

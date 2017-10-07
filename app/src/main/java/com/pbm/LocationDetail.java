@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -111,8 +112,12 @@ public class LocationDetail extends PinballMapActivity {
 			public void run() {
 			LocationDetail.super.runOnUiThread(new Runnable() {
 				public void run() {
-				lmxes = location.getLmxes(LocationDetail.this);
-				machines = location.getMachines(LocationDetail.this);
+					try {
+						lmxes = location.getLmxes(LocationDetail.this);
+						machines = location.getMachines(LocationDetail.this);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
 				final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 PBMApplication app = getPBMApplication();
 
@@ -262,8 +267,12 @@ public class LocationDetail extends PinballMapActivity {
 			public void run() {
 			PBMApplication app = getPBMApplication();
 			location = app.getLocation(location.id);
-			lmxes = location.getLmxes(LocationDetail.this);
-			machines = location.getMachines(LocationDetail.this);
+				try {
+					lmxes = location.getLmxes(LocationDetail.this);
+					machines = location.getMachines(LocationDetail.this);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 
 			loadLocationData();
 			}

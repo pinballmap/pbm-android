@@ -157,6 +157,6 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 		SharedPreferences settings = this.getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 		location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
 		location.lastUpdatedByUsername = settings.getString("username", "");
-		app.setLocation(location.id, location);
+		app.updateLocation(location);
 	}
 }
