@@ -314,6 +314,28 @@ public class PBMApplication extends Application {
 		);
 	}
 
+	public void updateMachine(Machine machine) {
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(PBMContract.MachineContract.COLUMN_NAME, machine.name);
+		values.put(PBMContract.MachineContract.COLUMN_YEAR, machine.year);
+		values.put(PBMContract.MachineContract.COLUMN_MANUFACTURER, machine.manufacturer);
+		values.put(PBMContract.MachineContract.COLUMN_EXISTS_IN_REGION, machine.existsInRegion);
+		values.put(PBMContract.MachineContract.COLUMN_GROUP_ID, machine.groupId);
+		values.put(PBMContract.MachineContract.COLUMN_NUM_LOCATIONS, machine.numLocations);
+
+		String selection = PBMContract.LocationContract.COLUMN_ID + "= ?";
+		String[] selectionArgs = { String.valueOf(machine.id) };
+
+		db.update(
+				PBMContract.MachineContract.TABLE_NAME,
+				values,
+				selection,
+				selectionArgs
+		);
+	}
+
 	public void updateLmx(LocationMachineXref lmx) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -1060,6 +1082,7 @@ public class PBMApplication extends Application {
 
 					if (machine != null) {
 						machine.setExistsInRegion(true);
+						updateMachine(machine);
 
 						addLocationMachineXref(
 							lmxID,
