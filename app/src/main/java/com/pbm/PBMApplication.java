@@ -2,6 +2,7 @@ package com.pbm;
 
 import android.app.Application;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -33,6 +34,7 @@ public class PBMApplication extends Application {
 
 	private long dataLoadTimestamp;
 	private android.location.Location location;
+	private PBMDbHelper dbHelper;
 
 	public long getDataLoadTimestamp() {
 		return dataLoadTimestamp;
@@ -54,7 +56,9 @@ public class PBMApplication extends Application {
 
 	private HashMap<TrackerName, Tracker> mTrackers = new HashMap<>();
 
-	private PBMDbHelper dbHelper = new PBMDbHelper(getBaseContext());
+	public void setDbHelper(Context context) {
+		this.dbHelper = new PBMDbHelper(context);
+	}
 
 	synchronized Tracker getTracker() {
 		if (!mTrackers.containsKey(TrackerName.APP_TRACKER)) {
@@ -70,8 +74,8 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 
 		Cursor cursor = db.query(
-				PBMContract.RegionContract.TABLE_NAME,
-				PBMContract.RegionContract.PROJECTION,
+				PBMContract.LocationContract.TABLE_NAME,
+				PBMContract.LocationContract.PROJECTION,
 				null,
 				null,
 				null,

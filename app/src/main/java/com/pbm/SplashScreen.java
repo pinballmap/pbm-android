@@ -31,6 +31,7 @@ public class SplashScreen extends PinballMapActivity {
 		Integer prefRegion = settings.getInt("region", -1);
 
 		PBMApplication app = getPBMApplication();
+		app.setDbHelper(getBaseContext());
 
 		if (!haveInternet(getBaseContext())) {
 			closeWithNoInternet();

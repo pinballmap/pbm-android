@@ -213,6 +213,7 @@ public final class PBMContract {
                 COLUMN_LOCATION_MACHINE_XREF_ID + " INTEGER, " +
                 COLUMN_USERNAME + " TEXT, " +
                 COLUMN_DATE_CREATED + " TEXT, " +
+                COLUMN_SCORE + " TEXT, " +
                 COLUMN_EXISTS_IN_REGION + " TEXT" + ")";
 
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -222,6 +223,7 @@ public final class PBMContract {
                 COLUMN_LOCATION_MACHINE_XREF_ID,
                 COLUMN_USERNAME,
                 COLUMN_DATE_CREATED,
+                COLUMN_SCORE,
                 COLUMN_EXISTS_IN_REGION
         };
     }
