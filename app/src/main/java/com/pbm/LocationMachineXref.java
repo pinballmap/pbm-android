@@ -27,8 +27,7 @@ public class LocationMachineXref implements Serializable {
 
 		String formattedConditionDate = "";
 		if (conditionDate != null && !conditionDate.equalsIgnoreCase("null") && !conditionDate.isEmpty()){
-			Date rawDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(conditionDate);
-			formattedConditionDate = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(rawDate);
+			formattedConditionDate = conditionDate;
 		}
 		this.conditionDate = formattedConditionDate;
 	}
@@ -60,12 +59,12 @@ public class LocationMachineXref implements Serializable {
 
 	public static LocationMachineXref newFromDBCursor(Cursor cursor) throws ParseException {
 		return new LocationMachineXref(
-				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_ID)),
-				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_LOCATION_ID)),
-				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_MACHINE_ID)),
-				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION)),
-				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION_DATE)),
-				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_LAST_UPDATED_BY_USERNAME))
+			cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_ID)),
+			cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_LOCATION_ID)),
+			cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_MACHINE_ID)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION_DATE)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_LAST_UPDATED_BY_USERNAME))
 		);
 	}
 }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -70,9 +71,13 @@ public class MachineLookupDetail extends PinballMapActivity {
 			public void run() {
 			MachineLookupDetail.super.runOnUiThread(new Runnable() {
 				public void run() {
-				locationsWithMachine = getLocationsWithMachine(machine);
+					try {
+						locationsWithMachine = getLocationsWithMachine(machine);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
 
-				if (locationsWithMachine != null) {
+					if (locationsWithMachine != null) {
 					try {
 						Collections.sort(locationsWithMachine, new Comparator<Location>() {
 							public int compare(Location l1, Location l2) {
@@ -109,7 +114,7 @@ public class MachineLookupDetail extends PinballMapActivity {
 		Log.d("com.pbm", "done");
 	}
 
-	ArrayList<Location> getLocationsWithMachine(Machine machine) {
+	ArrayList<Location> getLocationsWithMachine(Machine machine) throws ParseException {
 		ArrayList<Location> locations = new ArrayList<>();
 
 		PBMApplication app = getPBMApplication();

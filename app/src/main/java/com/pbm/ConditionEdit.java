@@ -85,9 +85,7 @@ public class ConditionEdit extends PinballMapActivity implements OnTaskCompleted
 
 			getPBMApplication().loadConditions(
 				jsonObject.getJSONObject("location_machine"),
-				jsonLmx.getInt("id"),
-				jsonLmx.getInt("location_id"),
-				jsonLmx.getInt("machine_id")
+				jsonLmx.getInt("id")
 			);
 		}
 
@@ -95,6 +93,6 @@ public class ConditionEdit extends PinballMapActivity implements OnTaskCompleted
 		SharedPreferences settings = this.getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 		location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
 		location.lastUpdatedByUsername = settings.getString("username", "");
-		getPBMApplication().setLocation(location.id, location);
+		getPBMApplication().updateLocation(location);
 	}
 }

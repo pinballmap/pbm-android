@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -17,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -172,7 +172,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 						SharedPreferences settings = getBaseContext().getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 						location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
 						location.lastUpdatedByUsername = settings.getString("username", "");
-						app.setLocation(location.id, location);
+						app.updateLocation(location);
 					} catch (InterruptedException | ExecutionException e) {
 						e.printStackTrace();
 					}
@@ -217,7 +217,11 @@ public class LocationMachineEdit extends PinballMapActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		loadConditions();
+		try {
+			loadConditions();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		loadScores();
 	}
 
@@ -246,7 +250,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 		});
 	}
 
-	private void loadConditions() {
+	private void loadConditions() throws ParseException {
 		Log.d("com.pbm", "location Machine edit resume");
 		NonScrollListView listView = (NonScrollListView) findViewById(android.R.id.list);
 		View emptyView = findViewById(android.R.id.empty);

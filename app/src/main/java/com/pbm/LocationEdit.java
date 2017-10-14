@@ -183,7 +183,7 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 				location.setOperatorID(Operator.blankOperator().id);
 			}
 
-			app.setLocation(location.id, location);
+			app.updateLocation(location);
 
 			LocationEdit.super.runOnUiThread(new Runnable() {
 				public void run() {

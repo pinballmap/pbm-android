@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -111,10 +112,13 @@ public class LocationDetail extends PinballMapActivity {
 			public void run() {
 			LocationDetail.super.runOnUiThread(new Runnable() {
 				public void run() {
-				lmxes = location.getLmxes(LocationDetail.this);
-				machines = location.getMachines(LocationDetail.this);
+				try {
+					lmxes = location.getLmxes(LocationDetail.this);
+					machines = location.getMachines(LocationDetail.this);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                PBMApplication app = getPBMApplication();
 
 				TextView locationName = (TextView) findViewById(R.id.locationName);
 				TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
@@ -189,17 +193,17 @@ public class LocationDetail extends PinballMapActivity {
 					locationOperator.setVisibility(View.GONE);
 				}
 
-					if (ActivityCompat.checkSelfPermission(LocationDetail.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(LocationDetail.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-						if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-								locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo));
-						} else {
-							if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-								    locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo)); // or for older api
-							}
-						}
+				if (ActivityCompat.checkSelfPermission(LocationDetail.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(LocationDetail.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+					if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+							locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo));
 					} else {
-						locationDistance.setVisibility(View.GONE);
+						if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+								locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo)); // or for older api
+						}
 					}
+				} else {
+					locationDistance.setVisibility(View.GONE);
+				}
 
 				updateLMXTable();
 				}
@@ -262,8 +266,12 @@ public class LocationDetail extends PinballMapActivity {
 			public void run() {
 			PBMApplication app = getPBMApplication();
 			location = app.getLocation(location.id);
-			lmxes = location.getLmxes(LocationDetail.this);
-			machines = location.getMachines(LocationDetail.this);
+				try {
+					lmxes = location.getLmxes(LocationDetail.this);
+					machines = location.getMachines(LocationDetail.this);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 
 			loadLocationData();
 			}

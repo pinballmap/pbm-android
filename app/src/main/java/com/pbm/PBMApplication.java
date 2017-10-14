@@ -2,6 +2,7 @@ package com.pbm;
 
 import android.app.Application;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -33,6 +34,7 @@ public class PBMApplication extends Application {
 
 	private long dataLoadTimestamp;
 	private android.location.Location location;
+	private PBMDbHelper dbHelper;
 
 	public long getDataLoadTimestamp() {
 		return dataLoadTimestamp;
@@ -54,7 +56,13 @@ public class PBMApplication extends Application {
 
 	private HashMap<TrackerName, Tracker> mTrackers = new HashMap<>();
 
-	private PBMDbHelper dbHelper = new PBMDbHelper(getBaseContext());
+	public void setDbHelper(Context context) {
+		this.dbHelper = new PBMDbHelper(context);
+	}
+
+	public PBMDbHelper getDbHelper() {
+		return this.dbHelper;
+	}
 
 	synchronized Tracker getTracker() {
 		if (!mTrackers.containsKey(TrackerName.APP_TRACKER)) {
@@ -70,8 +78,8 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 
 		Cursor cursor = db.query(
-				PBMContract.RegionContract.TABLE_NAME,
-				PBMContract.RegionContract.PROJECTION,
+				PBMContract.LocationContract.TABLE_NAME,
+				PBMContract.LocationContract.PROJECTION,
 				null,
 				null,
 				null,
@@ -310,6 +318,28 @@ public class PBMApplication extends Application {
 		);
 	}
 
+	public void updateMachine(Machine machine) {
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(PBMContract.MachineContract.COLUMN_NAME, machine.name);
+		values.put(PBMContract.MachineContract.COLUMN_YEAR, machine.year);
+		values.put(PBMContract.MachineContract.COLUMN_MANUFACTURER, machine.manufacturer);
+		values.put(PBMContract.MachineContract.COLUMN_EXISTS_IN_REGION, machine.existsInRegion);
+		values.put(PBMContract.MachineContract.COLUMN_GROUP_ID, machine.groupId);
+		values.put(PBMContract.MachineContract.COLUMN_NUM_LOCATIONS, machine.numLocations);
+
+		String selection = PBMContract.MachineContract.COLUMN_ID + "= ?";
+		String[] selectionArgs = { String.valueOf(machine.id) };
+
+		db.update(
+			PBMContract.MachineContract.TABLE_NAME,
+			values,
+			selection,
+			selectionArgs
+		);
+	}
+
 	public void updateLmx(LocationMachineXref lmx) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -335,23 +365,6 @@ public class PBMApplication extends Application {
 		return getRegion(getSharedPreferences(PinballMapActivity.PREFS_NAME, 0).getInt("region", -1));
 	}
 
-	public String[] getMachineNames() {
-		HashMap<Integer, com.pbm.Machine> machines = getMachines();
-
-		String names[] = new String[machines.size()];
-
-		int i = 0;
-		for (Machine machine : machines.values()) {
-			names[i] = machine.name;
-
-			i++;
-		}
-
-		Arrays.sort(names);
-
-		return names;
-	}
-
 	public String[] getMachineNamesWithMetadata() {
 		HashMap<Integer, com.pbm.Machine> machines = getMachines();
 
@@ -369,7 +382,7 @@ public class PBMApplication extends Application {
 		return names;
 	}
 
-	void addMachineCondition(Integer id, Condition machineCondition) {
+	void addMachineCondition(Condition machineCondition) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -456,7 +469,7 @@ public class PBMApplication extends Application {
 		db.insert(PBMContract.MachineContract.TABLE_NAME, null, values);
 	}
 
-	void addOperator(Integer id, Operator operator) {
+	void addOperator(Operator operator) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -576,14 +589,15 @@ public class PBMApplication extends Application {
 	}
 
 	public int numMachinesForLocation(Location location) throws ParseException {
-		int numMachines = 0;
-		for (LocationMachineXref lmx : getLmxes().values()) {
-			if (lmx.locationID == location.id) {
-				numMachines += 1;
-			}
-		}
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-		return numMachines;
+		Cursor cursor = db.rawQuery("select count(*) from " + PBMContract.LocationMachineXrefContract.TABLE_NAME +
+				" where location_id=" + String.valueOf(location.id), null);
+		cursor.moveToFirst();
+		int count= cursor.getInt(0);
+		cursor.close();
+
+		return count;
 	}
 
 	public Machine getMachine(Integer id) {
@@ -786,6 +800,9 @@ public class PBMApplication extends Application {
 	public void initializeData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
 		dataLoadTimestamp = System.currentTimeMillis();
 		Log.d("com.pbm", "initializing data");
+		getDbHelper().removeAll();
+
+		initializeRegions();
 		initializeAllMachines();
 		initializeLocations();
 		initializeLocationTypes();
@@ -861,7 +878,7 @@ public class PBMApplication extends Application {
 				String id = type.getString("id");
 
 				if ((id != null) && (name != null)) {
-					addOperator(Integer.parseInt(id), new Operator(Integer.parseInt(id), name));
+					addOperator(new Operator(Integer.parseInt(id), name));
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -1056,19 +1073,20 @@ public class PBMApplication extends Application {
 
 					if (machine != null) {
 						machine.setExistsInRegion(true);
+						updateMachine(machine);
 
 						addLocationMachineXref(
 							lmxID,
 							new com.pbm.LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate, username)
 						);
-						loadConditions(lmx, lmxID, lmxLocationID, machineID);
+						loadConditions(lmx, lmxID);
 					}
 				}
 			}
 		}
 	}
 
-	void loadConditions(JSONObject lmx, int lmxID, int lmxLocationID, int machineID) throws JSONException {
+	void loadConditions(JSONObject lmx, int lmxID) throws JSONException {
 		if (lmx.has("machine_conditions")) {
 			JSONArray conditions = lmx.getJSONArray("machine_conditions");
 			ArrayList<Condition> conditionList = new ArrayList<>();
@@ -1090,7 +1108,7 @@ public class PBMApplication extends Application {
 					lmxID,
 					pastConditionUsername
 				);
-				addMachineCondition(machineCondition.id, machineCondition);
+				addMachineCondition(machineCondition);
 			}
 		}
 	}

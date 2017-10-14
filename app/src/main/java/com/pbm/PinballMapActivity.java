@@ -127,7 +127,16 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	protected void onResume() {
 		super.onResume();
 		googleApiClient.connect();
-		if (System.currentTimeMillis() - getPBMApplication().getDataLoadTimestamp() >= BuildConfig.DATA_EXPIRY_TIME_IN_MS) {
+
+		long dataLoadTimestamp = System.currentTimeMillis();
+		if (getPBMApplication().getDataLoadTimestamp() > 0) {
+			dataLoadTimestamp = getPBMApplication().getDataLoadTimestamp();
+		}
+
+		Log.d("com.pbm ELAPSED TIME", Long.toString(System.currentTimeMillis() - dataLoadTimestamp));
+		Log.d("com.pbm DATA EXPIRY", Long.toString(BuildConfig.DATA_EXPIRY_TIME_IN_MS));
+
+		if (System.currentTimeMillis() - dataLoadTimestamp >= BuildConfig.DATA_EXPIRY_TIME_IN_MS) {
 			Log.d("com.pbm", "starting thread");
 			ReloadData reloadDataThread = new ReloadData();
 			reloadDataThread.run();
