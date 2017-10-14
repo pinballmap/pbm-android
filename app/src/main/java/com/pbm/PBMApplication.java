@@ -1,5 +1,6 @@
 package com.pbm;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
@@ -52,7 +53,7 @@ public class PBMApplication extends Application {
 		this.location = location;
 	}
 
-	public enum TrackerName { APP_TRACKER }
+	private enum TrackerName { APP_TRACKER }
 
 	private HashMap<TrackerName, Tracker> mTrackers = new HashMap<>();
 
@@ -74,7 +75,7 @@ public class PBMApplication extends Application {
 		return mTrackers.get(TrackerName.APP_TRACKER);
 	}
 
-	public HashMap<Integer, com.pbm.Location> getLocations() {
+	public HashMap<Integer, Location> getLocations() {
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 
 		Cursor cursor = db.query(
@@ -87,7 +88,7 @@ public class PBMApplication extends Application {
 				null
 		);
 
-		HashMap hashMap = new HashMap();
+		@SuppressLint("UseSparseArrays") HashMap<Integer, Location> hashMap = new HashMap<>();
 		while(cursor.moveToNext()) {
 			com.pbm.Location location = com.pbm.Location.newFromDBCursor(cursor);
 			hashMap.put(location.id, location);
@@ -110,7 +111,7 @@ public class PBMApplication extends Application {
 				null
 		);
 
-		HashMap hashMap = new HashMap();
+		@SuppressLint("UseSparseArrays") HashMap<Integer, Machine> hashMap = new HashMap<>();
 		while(cursor.moveToNext()) {
 			Machine machine = Machine.newFromDBCursor(cursor);
 			hashMap.put(machine.id, machine);
@@ -133,7 +134,7 @@ public class PBMApplication extends Application {
 				null
 		);
 
-		HashMap hashMap = new HashMap();
+		@SuppressLint("UseSparseArrays") HashMap<Integer, LocationMachineXref> hashMap = new HashMap<>();
 		while(cursor.moveToNext()) {
 			LocationMachineXref lmx = LocationMachineXref.newFromDBCursor(cursor);
 			hashMap.put(lmx.id, lmx);
@@ -205,7 +206,7 @@ public class PBMApplication extends Application {
 				null
 		);
 
-		HashMap hashMap = new HashMap();
+		@SuppressLint("UseSparseArrays") HashMap<Integer, Zone> hashMap = new HashMap<>();
 		while(cursor.moveToNext()) {
 			Zone zone = Zone.newFromDBCursor(cursor);
 			hashMap.put(zone.id, zone);
@@ -228,7 +229,7 @@ public class PBMApplication extends Application {
 				null
 		);
 
-		HashMap hashMap = new HashMap();
+		@SuppressLint("UseSparseArrays") HashMap<Integer, LocationType> hashMap = new HashMap<>();
 		while(cursor.moveToNext()) {
 			LocationType locationType = LocationType.newFromDBCursor(cursor);
 			hashMap.put(locationType.id, locationType);
@@ -251,7 +252,7 @@ public class PBMApplication extends Application {
 				null
 		);
 
-		HashMap hashMap = new HashMap();
+		@SuppressLint("UseSparseArrays") HashMap<Integer, Region> hashMap = new HashMap<>();
 		while(cursor.moveToNext()) {
 			Region region = Region.newFromDBCursor(cursor);
 			hashMap.put(region.id, region);
@@ -274,7 +275,7 @@ public class PBMApplication extends Application {
 				null
 		);
 
-		HashMap hashMap = new HashMap();
+		@SuppressLint("UseSparseArrays") HashMap<Integer, Operator> hashMap = new HashMap<>();
 		while (cursor.moveToNext()) {
 			Operator operator = Operator.newFromDBCursor(cursor);
 
@@ -395,7 +396,7 @@ public class PBMApplication extends Application {
 		db.insert(PBMContract.ConditionContract.TABLE_NAME, null, values);
 	}
 
-	void addMachineScore(Integer id, MachineScore machineScore) {
+	void addMachineScore(MachineScore machineScore) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -428,7 +429,7 @@ public class PBMApplication extends Application {
 		db.delete(PBMContract.LocationMachineXrefContract.TABLE_NAME, selection, selectionArgs);
 	}
 
-	void addLocation(Integer id, Location location) {
+	void addLocation(Location location) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -454,7 +455,7 @@ public class PBMApplication extends Application {
 		db.insert(PBMContract.LocationContract.TABLE_NAME, null, values);
 	}
 
-	public void addMachine(Integer id, Machine machine) {
+	public void addMachine(Machine machine) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -504,7 +505,7 @@ public class PBMApplication extends Application {
 		return operator;
 	}
 
-	void addLocationType(Integer id, LocationType locationType) {
+	void addLocationType(LocationType locationType) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -539,7 +540,7 @@ public class PBMApplication extends Application {
 		return locationType;
 	}
 
-	public void addLocationMachineXref(Integer id, LocationMachineXref lmx) {
+	public void addLocationMachineXref(LocationMachineXref lmx) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -702,7 +703,7 @@ public class PBMApplication extends Application {
 		return region;
 	}
 
-	void addZone(Integer id, Zone zone) {
+	void addZone(Zone zone) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -713,7 +714,7 @@ public class PBMApplication extends Application {
 		db.insert(PBMContract.ZoneContract.TABLE_NAME, null, values);
 	}
 
-	public void addRegion(Integer id, Region region) {
+	public void addRegion(Region region) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -794,7 +795,7 @@ public class PBMApplication extends Application {
 
 		String authDetails = "user_email=" + email + ";user_token=" + authToken;
 
-		return origRequest + (origRequest.indexOf("?") == -1 ? "?" : ";") + authDetails;
+		return origRequest + (!origRequest.contains("?") ? "?" : ";") + authDetails;
 	}
 
 	public void initializeData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
@@ -850,7 +851,7 @@ public class PBMApplication extends Application {
 				}
 
 				if ((id != null) && (lmxId != null) && (highScore != null)) {
-					addMachineScore(Integer.parseInt(id), new MachineScore(Integer.parseInt(id), Integer.parseInt(lmxId), dateCreated, username, Long.parseLong(highScore)));
+					addMachineScore(new MachineScore(Integer.parseInt(id), Integer.parseInt(lmxId), dateCreated, username, Long.parseLong(highScore)));
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -906,7 +907,7 @@ public class PBMApplication extends Application {
 				String id = type.getString("id");
 
 				if ((id != null) && (name != null)) {
-					addLocationType(Integer.parseInt(id), new LocationType(Integer.parseInt(id), name));
+					addLocationType(new LocationType(Integer.parseInt(id), name));
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -941,7 +942,7 @@ public class PBMApplication extends Application {
 				}
 
 				if ((id != null) && (name != null)) {
-					addMachine(Integer.parseInt(id), new Machine(Integer.parseInt(id), name, year, manufacturer, false, machineGroupId));
+					addMachine(new Machine(Integer.parseInt(id), name, year, manufacturer, false, machineGroupId));
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -969,7 +970,7 @@ public class PBMApplication extends Application {
 			Boolean isPrimary = zone.getBoolean("is_primary");
 
 			if ((id != null) && (name != null)) {
-				addZone(Integer.parseInt(id), new Zone(Integer.parseInt(id), name, isPrimary ? 1 : 0));
+				addZone(new Zone(Integer.parseInt(id), name, isPrimary ? 1 : 0));
 			}
 		}
 	}
@@ -1041,7 +1042,7 @@ public class PBMApplication extends Application {
 						new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip,
 								phone, locationTypeID, website, operatorID, dateLastUpdated,
 								lastUpdatedByUsername, description);
-				addLocation(id, newLocation);
+				addLocation(newLocation);
 			}
 
 			JSONArray lmxes = null;
@@ -1049,38 +1050,35 @@ public class PBMApplication extends Application {
 				lmxes = location.getJSONArray("location_machine_xrefs");
 			}
 
-			if (lmxes != null && lmxes.length() > 0) {
-				for (int x = 0; x < lmxes.length(); x++) {
-					JSONObject lmx = lmxes.getJSONObject(x);
+			if (lmxes != null && lmxes.length() > 0) for (int x = 0; x < lmxes.length(); x++) {
+				JSONObject lmx = lmxes.getJSONObject(x);
 
-					int lmxID = lmx.getInt("id");
-					int lmxLocationID = lmx.getInt("location_id");
-					int machineID = lmx.getInt("machine_id");
-					String condition = lmx.getString("condition");
-					String conditionDate = lmx.getString("condition_date");
-					if (conditionDate.equals("null")) {
-						conditionDate = null;
-					}
+				int lmxID = lmx.getInt("id");
+				int lmxLocationID = lmx.getInt("location_id");
+				int machineID = lmx.getInt("machine_id");
+				String condition = lmx.getString("condition");
+				String conditionDate = lmx.getString("condition_date");
+				if (conditionDate.equals("null")) {
+					conditionDate = null;
+				}
 
-					String username = "";
-					try {
-						username = lmx.getString("last_updated_by_username");
-					} catch (JSONException e) {
-						username = "";
-					}
+				String username;
+				try {
+					username = lmx.getString("last_updated_by_username");
+				} catch (JSONException e) {
+					username = "";
+				}
 
-					Machine machine = getMachine(machineID);
+				Machine machine = getMachine(machineID);
 
-					if (machine != null) {
-						machine.setExistsInRegion(true);
-						updateMachine(machine);
+				if (machine != null) {
+					machine.setExistsInRegion(true);
+					updateMachine(machine);
 
-						addLocationMachineXref(
-							lmxID,
-							new com.pbm.LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate, username)
-						);
-						loadConditions(lmx, lmxID);
-					}
+					addLocationMachineXref(
+							new LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate, username)
+					);
+					loadConditions(lmx, lmxID);
 				}
 			}
 		}
@@ -1089,12 +1087,11 @@ public class PBMApplication extends Application {
 	void loadConditions(JSONObject lmx, int lmxID) throws JSONException {
 		if (lmx.has("machine_conditions")) {
 			JSONArray conditions = lmx.getJSONArray("machine_conditions");
-			ArrayList<Condition> conditionList = new ArrayList<>();
 
 			for (int conditionIndex = 0; conditionIndex < conditions.length(); conditionIndex++) {
 				JSONObject pastCondition = conditions.getJSONObject(conditionIndex);
 
-				String pastConditionUsername = "";
+				String pastConditionUsername;
 				try {
 					pastConditionUsername = pastCondition.getString("username");
 				} catch (JSONException e) {
@@ -1142,7 +1139,7 @@ public class PBMApplication extends Application {
 					emailAddresses.add(jsonEmailAddresses.getString(x));
 				}
 			}
-			addRegion(Integer.parseInt(id), new Region(Integer.parseInt(id), name, formalName, motd, lat, lon, emailAddresses));
+			addRegion(new Region(Integer.parseInt(id), name, formalName, motd, lat, lon, emailAddresses));
 		}
 		return true;
 	}

@@ -43,7 +43,7 @@ public class LocationMachineXref implements Serializable {
 
 	public void addScore(Activity activity, MachineScore score) {
 		PBMApplication app = (PBMApplication) activity.getApplication();
-		app.addMachineScore(id, score);
+		app.addMachineScore(score);
 	}
 
 	public void setCondition(Activity activity, String condition, String lastUpdatedByUsername) {
