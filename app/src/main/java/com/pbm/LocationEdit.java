@@ -32,7 +32,7 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 		logAnalyticsHit("com.pbm.LocationEdit");
 
 		location = (Location) getIntent().getExtras().get("Location");
-		setTitle("Edit Data At " + location.name);
+		setTitle("Edit Data At " + location.getName());
 
 		initializeLocationTypes();
 		initializeOperators();
@@ -78,9 +78,9 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 			public void run() {
 			LocationEdit.super.runOnUiThread(new Runnable() {
 				public void run() {
-				phone.setText((location.phone.equals("null")) ? "" : location.phone);
-				website.setText((location.website.equals("null")) ? "" : location.website);
-				description.setText((location.description.equals(("null")) ? "" : location.description));
+				phone.setText((location.getPhone().equals("null")) ? "" : location.getPhone());
+				website.setText((location.getWebsite().equals("null")) ? "" : location.getWebsite());
+				description.setText((location.getDescription().equals(("null")) ? "" : location.getDescription()));
 
 				locationTypeSpinner = (Spinner) findViewById(R.id.locationTypeSpinner);
 				ArrayAdapter<String> locationTypeAdapter = new ArrayAdapter<>(
@@ -90,8 +90,8 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 				);
 				locationTypeSpinner.setAdapter(locationTypeAdapter);
 
-				if (location.locationTypeID != 0) {
-					int locationTypeIndex = Arrays.asList(locationTypeIDs).indexOf(location.locationTypeID);
+				if (location.getLocationTypeID() != 0) {
+					int locationTypeIndex = Arrays.asList(locationTypeIDs).indexOf(location.getLocationTypeID());
 					locationTypeSpinner.setSelection(locationTypeIndex);
 				}
 
@@ -103,8 +103,8 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 				);
 				operatorSpinner.setAdapter(operatorAdapter);
 
-				if (location.operatorID != 0) {
-					int operatorIndex = Arrays.asList(operatorIDs).indexOf(location.operatorID);
+				if (location.getOperatorID() != 0) {
+					int operatorIndex = Arrays.asList(operatorIDs).indexOf(location.getOperatorID());
 					operatorSpinner.setSelection(operatorIndex);
 				}
 				}
@@ -138,7 +138,7 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 				PBMApplication app = getPBMApplication();
 
 				new RetrieveJsonTask(LocationEdit.this).execute(
-					app.requestWithAuthDetails(regionlessBase + "locations/" + location.id + ".json?phone=" + phoneNumber + ";location_type=" + locationTypeString + ";operator_id=" + operatorString + ";website=" + URLDecoder.decode(locationWebsite, "UTF-8") + ";description=" + locationDescription),
+					app.requestWithAuthDetails(regionlessBase + "locations/" + location.getId() + ".json?phone=" + phoneNumber + ";location_type=" + locationTypeString + ";operator_id=" + operatorString + ";website=" + URLDecoder.decode(locationWebsite, "UTF-8") + ";description=" + locationDescription),
 					"PUT"
 				).get();
 			} catch (InterruptedException | ExecutionException | UnsupportedEncodingException e) {

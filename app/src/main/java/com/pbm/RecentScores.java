@@ -1,6 +1,5 @@
 package com.pbm;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -89,7 +88,7 @@ public class RecentScores extends PinballMapActivity {
 
 				String title = "<u>" + machine.name + "</u><br />" +
 					formatter.format(score) + " by <b>" + username + "</b>" + "<br />" +
-					"<small>at " + location.name + " on " + scoreDate + "</small>";
+					"<small>at " + location.getName() + " on " + scoreDate + "</small>";
 
                     recentScores.add(Html.fromHtml(title));
 			}

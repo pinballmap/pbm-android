@@ -12,6 +12,7 @@ import java.net.URLEncoder;
 import java.util.concurrent.ExecutionException;
 
 public class ContactAdmin extends PinballMapActivity {
+	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);

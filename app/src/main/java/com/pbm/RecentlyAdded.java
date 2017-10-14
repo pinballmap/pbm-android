@@ -1,7 +1,6 @@
 package com.pbm;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -85,7 +84,7 @@ public class RecentlyAdded extends PinballMapActivity {
 			Date dateCreatedAt = inputDF.parse(rawCreatedAt);
 			String createdAt = outputDF.format(dateCreatedAt);
 
-			String textToShow = "<b>" + lmx.getMachine(this).name + "</b> was added to <b>" + lmx.getLocation(this).name + "</b> (" + lmx.getLocation(this).city + ")";
+			String textToShow = "<b>" + lmx.getMachine(this).name + "</b> was added to <b>" + lmx.getLocation(this).getName() + "</b> (" + lmx.getLocation(this).getCity() + ")";
 			textToShow += "<br /><small>" + createdAt + "</small>";
 
                 recentAdds.add(Html.fromHtml(textToShow));

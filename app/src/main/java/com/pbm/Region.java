@@ -85,7 +85,7 @@ public class Region implements Serializable, JSONConverter<Region> {
 		ArrayList<Location> locations = app.getLocationValues();
 
 		for (Location location : locations) {
-			String city = location.city;
+			String city = location.getCity();
 
 			if (city != null && !cities.contains(city)) {
 				cities.add(city);

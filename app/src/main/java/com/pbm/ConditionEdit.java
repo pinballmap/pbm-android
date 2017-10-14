@@ -45,7 +45,7 @@ public class ConditionEdit extends PinballMapActivity implements OnTaskCompleted
 					PBMApplication app = getPBMApplication();
 
 					new RetrieveJsonTask(ConditionEdit.this).execute(
-						app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + lmx.id + ".json?condition=" + URLEncoder.encode(condition, "UTF8")),
+						app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + lmx.getId() + ".json?condition=" + URLEncoder.encode(condition, "UTF8")),
 						"PUT"
 					).get();
 				} catch (InterruptedException | ExecutionException | UnsupportedEncodingException e) {
@@ -91,8 +91,8 @@ public class ConditionEdit extends PinballMapActivity implements OnTaskCompleted
 
 		Location location = lmx.getLocation(this);
 		SharedPreferences settings = this.getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
-		location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
-		location.lastUpdatedByUsername = settings.getString("username", "");
+		location.setDateLastUpdated(new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date()));
+		location.setLastUpdatedByUsername(settings.getString("username", ""));
 		getPBMApplication().updateLocation(location);
 	}
 }

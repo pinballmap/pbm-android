@@ -31,8 +31,8 @@ public class About extends PinballMapActivity {
         rate.setText(Html.fromHtml("<a href=\"market://details?id=com.pbm\">Rate us on Google Play</a>"));
     }
 
+    @SuppressWarnings("deprecation")
     public void emailButton() {
-
         TextView email = (TextView) findViewById(R.id.aboutEmail);
 
         String deviceInfo="Device Info:";

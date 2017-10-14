@@ -2,7 +2,6 @@ package com.pbm;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.Window;
 
@@ -14,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 
 public class InitializingScreen extends PinballMapActivity {
 
+	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);

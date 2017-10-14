@@ -81,7 +81,7 @@ public class MachineLookupDetail extends PinballMapActivity {
 					try {
 						Collections.sort(locationsWithMachine, new Comparator<Location>() {
 							public int compare(Location l1, Location l2) {
-							return l1.name.compareTo(l2.name);
+							return l1.getName().compareTo(l2.getName());
 							}
 						});
 					} catch (java.lang.NullPointerException nep) {

@@ -100,29 +100,29 @@ public class LocationLookupDetail extends PinballMapActivity {
 				continue;
 			}
 
-			if (city != null && location.city.equals(city)) {
+			if (city != null && location.getCity().equals(city)) {
 				foundLocations.add(location);
 				continue;
 			}
 
-			if (locationType != null && location.locationTypeID == locationType.id) {
+			if (locationType != null && location.getLocationTypeID() == locationType.id) {
 				foundLocations.add(location);
 				continue;
 			}
 
-			if (operator != null && location.operatorID == operator.id) {
+			if (operator != null && location.getOperatorID() == operator.id) {
 				foundLocations.add(location);
 				continue;
 			}
 
-			if (zone != null && (zone.id == 0 || location.zoneID == zone.id)) {
+			if (zone != null && (zone.id == 0 || location.getZoneID() == zone.id)) {
 				foundLocations.add(location);
 			}
 		}
 
 		Collections.sort(foundLocations, new Comparator<Location>() {
 			public int compare(Location l1, Location l2) {
-			return l1.name.compareTo(l2.name);
+			return l1.getName().compareTo(l2.getName());
 			}
 		});
         locationLookupDetailTable.setAdapter(new LocationListAdapter(this, foundLocations));

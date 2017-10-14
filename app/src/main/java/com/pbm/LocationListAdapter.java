@@ -39,10 +39,10 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
             row = layoutInflater.inflate(R.layout.location_list_listview, parent, false);
 
 			holder = new ViewHolder();
-			holder.name = (TextView) row.findViewById(R.id.machine_info);
-			holder.distance = (TextView) row.findViewById(R.id.distance);
-			holder.numMachines = (TextView) row.findViewById(R.id.numMachines);
-			holder.city = (TextView) row.findViewById(R.id.locationCity);
+			holder.name = row.findViewById(R.id.machine_info);
+			holder.distance = row.findViewById(R.id.distance);
+			holder.numMachines = row.findViewById(R.id.numMachines);
+			holder.city = row.findViewById(R.id.locationCity);
 			row.setTag(holder);
 		} else {
 			holder = (ViewHolder) row.getTag();
@@ -50,8 +50,8 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 
 		if (filteredLocationList.size() > 0) {
 			Location location = filteredLocationList.get(position);
-                holder.name.setText(Html.fromHtml("<b>" + location.name + "</b> " + "<i>(" + location.city + ")</i>"));
-			holder.distance.setText(location.milesInfo);
+                holder.name.setText(Html.fromHtml("<b>" + location.getName() + "</b> " + "<i>(" + location.getCity() + ")</i>"));
+			holder.distance.setText(location.getMilesInfo());
 			try {
 				holder.numMachines.setText(Integer.toString(location.numMachines((PinballMapActivity) context)));
 			} catch (ParseException e) {
@@ -97,7 +97,7 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 			    ArrayList<com.pbm.Location> newValues = new ArrayList<>();
 			    for(int i = 0; i < locations.size(); i++) {
 			        com.pbm.Location item = locations.get(i);
-			        if (item.name.toLowerCase().contains(filter)) {
+			        if (item.getName().toLowerCase().contains(filter)) {
 			        	newValues.add(item);
 			        }
 			    }

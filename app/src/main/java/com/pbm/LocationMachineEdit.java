@@ -42,11 +42,11 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 		if (lmx != null) {
 			location = lmx.getLocation(this);
-			machine = getPBMApplication().getMachine(lmx.machineID);
+			machine = getPBMApplication().getMachine(lmx.getMachineID());
 		}
 
 		if (location != null && machine != null){
-			setTitle(machine.name + " @ " + location.name);
+			setTitle(machine.name + " @ " + location.getName());
 
 			initializeRemoveMachineButton();
 			initializeAddMachineConditionButton();
@@ -140,7 +140,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 	public void initializeOtherLocationsButton() {
 		Button otherLocations = (Button) findViewById(R.id.other_locations);
-		otherLocations.setText("Lookup Other Locations With " + machine.name);
+		otherLocations.setText(String.format("Lookup Other Locations With %s", machine.name));
 		otherLocations.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -165,13 +165,13 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 						location.removeMachine(LocationMachineEdit.this, lmx);
 						new RetrieveJsonTask().execute(
-							app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.id) + ".json"),
+							app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.getId()) + ".json"),
 							"DELETE"
 						).get();
 
 						SharedPreferences settings = getBaseContext().getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
-						location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
-						location.lastUpdatedByUsername = settings.getString("username", "");
+						location.setDateLastUpdated(new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date()));
+						location.setLastUpdatedByUsername(settings.getString("username", ""));
 						app.updateLocation(location);
 					} catch (InterruptedException | ExecutionException e) {
 						e.printStackTrace();
@@ -234,7 +234,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 		final LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 
-		ArrayList scores = getPBMApplication().getMachineScoresByLMXId(lmx.id);
+		ArrayList scores = getPBMApplication().getMachineScoresByLMXId(lmx.getId());
 
 		int scoreCount = scores.size() < NUMBER_OF_SCORES_TO_SHOW ? scores.size() : NUMBER_OF_SCORES_TO_SHOW;
 
@@ -258,7 +258,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 		final LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 
-		ArrayList conditions = getPBMApplication().getLmxConditionsByID(lmx.id).getConditions();
+		ArrayList conditions = getPBMApplication().getLmxConditionsByID(lmx.getId()).getConditions();
 
 		int conditionCount = conditions.size() < NUMBER_OF_CONDITIONS_TO_SHOW ? conditions.size() : NUMBER_OF_CONDITIONS_TO_SHOW;
 

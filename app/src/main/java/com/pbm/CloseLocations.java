@@ -107,7 +107,7 @@ public class CloseLocations extends PinballMapActivity {
 			if (getLocation() != null) {
 				pbmLocation.setDistance(getLocation());
 			}
-			if (pbmLocation.distanceFromYou < maxMilesFromYourLocation) {
+			if (pbmLocation.getDistanceFromYou() < maxMilesFromYourLocation) {
 				locationsForMap.add(pbmLocation);
 			}
 		}

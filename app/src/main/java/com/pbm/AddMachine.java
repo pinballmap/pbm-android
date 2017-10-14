@@ -33,7 +33,7 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 		location = (Location) getIntent().getExtras().get("Location");
 
 		if (location != null) {
-			setTitle(location.name);
+			setTitle(location.getName());
 			initializeAddMachineTable();
 			initializeManualNewMachineTextView();
 		}
@@ -62,7 +62,7 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 
 				try {
 					new RetrieveJsonTask(AddMachine.this).execute(
-						getPBMApplication().requestWithAuthDetails(regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + machine.id),
+						getPBMApplication().requestWithAuthDetails(regionlessBase + "location_machine_xrefs.json?location_id=" + location.getId() + ";machine_id=" + machine.id),
 						"POST"
 					).get();
 				} catch (InterruptedException | ExecutionException e) {
@@ -99,12 +99,12 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 					int machineID = app.getMachineIDFromMachineMetadata(machineName.trim(), metadata[1].trim(), metadata[0].trim());
 					if (machineID != -1) {
 						new RetrieveJsonTask(AddMachine.this).execute(
-							app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + machineID),
+							app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs.json?location_id=" + location.getId() + ";machine_id=" + machineID),
 							"POST"
 						).get();
 					} else {
 						new RetrieveJsonTask(AddMachine.this).execute(
-							app.requestWithAuthDetails(regionlessBase + "machines.json?machine_name=" + URLEncoder.encode(manualMachineMetadata, "UTF8") + ";location_id=" + location.id),
+							app.requestWithAuthDetails(regionlessBase + "machines.json?machine_name=" + URLEncoder.encode(manualMachineMetadata, "UTF8") + ";location_id=" + location.getId()),
 							"POST"
 						).get();
 					}
@@ -133,7 +133,7 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 			app.addMachine(new Machine(jsonMachine.getInt("id"), jsonMachine.getString("name"), null, null, true, null));
 			
 			new RetrieveJsonTask(AddMachine.this).execute(
-				app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs.json?location_id=" + location.id + ";machine_id=" + jsonMachine.getString("id")),
+				app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs.json?location_id=" + location.getId() + ";machine_id=" + jsonMachine.getString("id")),
 				"POST"
 			).get();
 			
@@ -155,8 +155,8 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 		}
 
 		SharedPreferences settings = this.getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
-		location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
-		location.lastUpdatedByUsername = settings.getString("username", "");
+		location.setDateLastUpdated(new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date()));
+		location.setLastUpdatedByUsername(settings.getString("username", ""));
 		app.updateLocation(location);
 	}
 }
