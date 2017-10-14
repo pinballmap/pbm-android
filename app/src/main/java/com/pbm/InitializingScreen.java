@@ -1,12 +1,10 @@
 package com.pbm;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.Window;
-import android.widget.ImageView;
 
 import org.json.JSONException;
 
@@ -22,7 +20,6 @@ public class InitializingScreen extends PinballMapActivity {
 		setContentView(R.layout.initializing_screen);
 
 		setSupportProgressBarIndeterminateVisibility(true);
-
 	}
 
 	@Override

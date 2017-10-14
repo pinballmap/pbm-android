@@ -9,7 +9,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.TreeMap;
 
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -71,7 +70,6 @@ public class Location implements Serializable {
 
 		NumberFormat formatter = new DecimalFormat(".00");
 		setMilesInfo(formatter.format(this.distanceFromYou) + " miles");
-
 	}
 
 	public void setMilesInfo(String milesInfo) {
@@ -98,17 +96,6 @@ public class Location implements Serializable {
 		}
 
 		return locationLmxes;
-	}
-
-	public TreeMap<Integer, LocationMachineXref> getLMXMap(PinballMapActivity activity) throws ParseException {
-		TreeMap<Integer, LocationMachineXref> lmxes = new TreeMap<>();
-		PBMApplication app = activity.getPBMApplication();
-		for (LocationMachineXref lmx : app.getLmxes().values()) {
-			if (lmx.locationID == id) {
-				lmxes.put(lmx.machineID, lmx);
-			}
-		}
-		return lmxes;
 	}
 
 	public List<Machine> getMachines(PinballMapActivity activity) throws ParseException {

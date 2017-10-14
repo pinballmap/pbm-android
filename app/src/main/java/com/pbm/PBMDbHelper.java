@@ -21,6 +21,7 @@ public class PBMDbHelper extends SQLiteOpenHelper {
     public PBMDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(LocationContract.CREATE_TABLE);
         db.execSQL(LocationTypeContract.CREATE_TABLE);
@@ -32,6 +33,7 @@ public class PBMDbHelper extends SQLiteOpenHelper {
         db.execSQL(ZoneContract.CREATE_TABLE);
         db.execSQL(RegionContract.CREATE_TABLE);
     }
+
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(LocationContract.DELETE_TABLE);
         db.execSQL(LocationTypeContract.DELETE_TABLE);
@@ -45,7 +47,21 @@ public class PBMDbHelper extends SQLiteOpenHelper {
 
         onCreate(db);
     }
+
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
+    }
+
+    public void removeAll() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(LocationContract.TABLE_NAME, null, null);
+        db.delete(LocationTypeContract.TABLE_NAME, null, null);
+        db.delete(LocationMachineXrefContract.TABLE_NAME, null, null);
+        db.delete(ConditionContract.TABLE_NAME, null, null);
+        db.delete(MachineContract.TABLE_NAME, null, null);
+        db.delete(MachineScoreContract.TABLE_NAME, null, null);
+        db.delete(OperatorContract.TABLE_NAME, null, null);
+        db.delete(ZoneContract.TABLE_NAME, null, null);
+        db.delete(RegionContract.TABLE_NAME, null, null);
     }
 }

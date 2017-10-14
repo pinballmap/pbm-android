@@ -151,7 +151,7 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			app.loadConditions(jsonLmx, id, locationID, machineID);
+			app.loadConditions(jsonLmx, id);
 		}
 
 		SharedPreferences settings = this.getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
