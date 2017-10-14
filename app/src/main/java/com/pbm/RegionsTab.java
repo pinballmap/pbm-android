@@ -58,7 +58,7 @@ public class RegionsTab extends Fragment implements LoaderManager.LoaderCallback
 		PBMApplication pbm = (PBMApplication) getActivity().getApplication();
 		if (data != null) {
 			for (Region region : data) {
-				pbm.addRegion(region.id, region);
+				pbm.addRegion(region);
 			}
 		}
 		ArrayList<Region> regionValues = new ArrayList<>(pbm.getRegionValues());
