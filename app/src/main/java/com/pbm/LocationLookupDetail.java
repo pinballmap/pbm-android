@@ -31,6 +31,7 @@ public class LocationLookupDetail extends PinballMapActivity {
 			listState = savedInstanceState.getParcelable("listState");
 		}
 		setContentView(R.layout.location_lookup_detail);
+		//noinspection ConstantConditions
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Bundle extras = getIntent().getExtras();
@@ -62,13 +63,19 @@ public class LocationLookupDetail extends PinballMapActivity {
 	public void initializeExtras(Bundle extras) {
 		if (extras.containsKey("LocationType")) {
 			locationType = (LocationType) extras.get("LocationType");
-			setTitle(locationType.name);
+			if (locationType != null) {
+				setTitle(locationType.name);
+			}
 		} else if (extras.containsKey("Operator")) {
 			operator = (Operator) extras.get("Operator");
-			setTitle(operator.name);
+			if (operator != null) {
+				setTitle(operator.getName());
+			}
 		} else if (extras.containsKey("Zone")) {
 			zone = (Zone) extras.get("Zone");
-			setTitle(zone.name);
+			if (zone != null) {
+				setTitle(zone.getName());
+			}
 		} else if (extras.containsKey("City")) {
 			city = (String) extras.get("City");
 			setTitle(city);
@@ -110,12 +117,12 @@ public class LocationLookupDetail extends PinballMapActivity {
 				continue;
 			}
 
-			if (operator != null && location.getOperatorID() == operator.id) {
+			if (operator != null && location.getOperatorID() == operator.getId()) {
 				foundLocations.add(location);
 				continue;
 			}
 
-			if (zone != null && (zone.id == 0 || location.getZoneID() == zone.id)) {
+			if (zone != null && (zone.getId() == 0 || location.getZoneID() == zone.getId())) {
 				foundLocations.add(location);
 			}
 		}

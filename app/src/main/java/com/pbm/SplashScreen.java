@@ -2,7 +2,6 @@ package com.pbm;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -16,12 +15,11 @@ import org.json.JSONException;
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.ExecutionException;
 
-import static java.security.AccessController.getContext;
-
 public class SplashScreen extends PinballMapActivity {
 	private RegionsTab regionsTab;
 
 	public void onCreate(Bundle savedInstanceState) {
+		//noinspection deprecation
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.region_tab_container);
@@ -47,7 +45,7 @@ public class SplashScreen extends PinballMapActivity {
 			e.printStackTrace();
 		}
 
-		if (!app.userIsAuthenticated() && prefRegion == -1 && (getIntent().getBooleanExtra("isGuestLogin", false) == false)) {
+		if (!app.userIsAuthenticated() && prefRegion == -1 && (!getIntent().getBooleanExtra("isGuestLogin", false))) {
 			Intent myIntent = new Intent();
 			myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			myIntent.setClassName("com.pbm", "com.pbm.Login");
@@ -55,7 +53,7 @@ public class SplashScreen extends PinballMapActivity {
 		} else if (prefRegion != -1) {
 			if (app.getRegion(prefRegion) != null) {
 				Region region = app.getRegion(prefRegion);
-				setRegionBase(httpBase + apiPath + "region/" + region.name + "/");
+				setRegionBase(httpBase + apiPath + "region/" + region.getName() + "/");
 
 				Intent myIntent = new Intent();
 				myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

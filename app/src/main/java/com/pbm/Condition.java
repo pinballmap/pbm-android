@@ -7,11 +7,9 @@ import java.io.Serializable;
 public class Condition implements Serializable {
 	private static final long serialVersionUID = 2470212492505135031L;
 
-	private final String date;
-	private final String description;
+	private final String date, description, username;
 	private int lmxId;
 	private final int id;
-	private final String username;
 
 	public Condition(int id, String date, String description, int lmxId, String username) {
 		this.id = id;

@@ -36,9 +36,7 @@ public class RecentScores extends PinballMapActivity {
 	        public void run() {
 			try {
 				getLocationData();
-			} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException e) {
-				e.printStackTrace();
-			} catch (ParseException e) {
+			} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException | ParseException e) {
 				e.printStackTrace();
 			}
 				RecentScores.super.runOnUiThread(new Runnable() {
@@ -86,7 +84,7 @@ public class RecentScores extends PinballMapActivity {
 				String scoreDate = outputDF.format(dateCreatedAt);
 
 
-				String title = "<u>" + machine.name + "</u><br />" +
+				String title = "<u>" + machine.getName() + "</u><br />" +
 					formatter.format(score) + " by <b>" + username + "</b>" + "<br />" +
 					"<small>at " + location.getName() + " on " + scoreDate + "</small>";
 

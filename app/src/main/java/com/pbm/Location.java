@@ -13,54 +13,20 @@ import java.util.List;
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id, zoneID, locationTypeID, operatorID;
+	private String name, street, city, state, zip, phone, lat, lon, website, milesInfo, lastUpdatedByUsername, dateLastUpdated, description;
+	private float distanceFromYou;
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	private String name;
-
-	public static long getSerialVersionUID() {
-		return serialVersionUID;
-	}
-
-	private String street;
-	private String city;
-	private String state;
-	private String zip;
-	private String phone;
-
-	public String getLat() {
+	String getLat() {
 		return lat;
 	}
-
-	private String lat;
-
-	public String getLon() {
+	String getLon() {
 		return lon;
 	}
-
-	private String lon;
-	private String website;
-
-	public String getMilesInfo() {
+	String getMilesInfo() {
 		return milesInfo;
 	}
 
-	private String milesInfo;
-	private String lastUpdatedByUsername;
-	private String dateLastUpdated;
-	private String description;
-
-	public float getDistanceFromYou() {
-		return distanceFromYou;
-	}
-
-	private float distanceFromYou;
+	float getDistanceFromYou() { return distanceFromYou; }
 
 	public Location(int id, String name, String lat, String lon, int zoneID, String street,
 					String city, String state, String zip, String phone, int locationTypeID,
@@ -200,19 +166,22 @@ public class Location implements Serializable {
 		);
 	}
 
-	public int getZoneID() {
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	int getZoneID() {
 		return zoneID;
 	}
 
-	public void setZoneID(int zoneID) {
-		this.zoneID = zoneID;
-	}
-
-	public int getOperatorID() {
+	int getOperatorID() {
 		return operatorID;
 	}
 
-	public int getLocationTypeID() {
+	int getLocationTypeID() {
 		return locationTypeID;
 	}
 
@@ -224,12 +193,8 @@ public class Location implements Serializable {
 		this.id = id;
 	}
 
-	public String getStreet() {
+	String getStreet() {
 		return street;
-	}
-
-	public void setStreet(String street) {
-		this.street = street;
 	}
 
 	public String getCity() {
@@ -240,20 +205,12 @@ public class Location implements Serializable {
 		this.city = city;
 	}
 
-	public String getState() {
+	String getState() {
 		return state;
 	}
 
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getZip() {
+	String getZip() {
 		return zip;
-	}
-
-	public void setZip(String zip) {
-		this.zip = zip;
 	}
 
 	public String getPhone() {
@@ -264,19 +221,19 @@ public class Location implements Serializable {
 		return website;
 	}
 
-	public String getLastUpdatedByUsername() {
+	String getLastUpdatedByUsername() {
 		return lastUpdatedByUsername;
 	}
 
-	public void setLastUpdatedByUsername(String lastUpdatedByUsername) {
+	void setLastUpdatedByUsername(String lastUpdatedByUsername) {
 		this.lastUpdatedByUsername = lastUpdatedByUsername;
 	}
 
-	public String getDateLastUpdated() {
+	String getDateLastUpdated() {
 		return dateLastUpdated;
 	}
 
-	public void setDateLastUpdated(String dateLastUpdated) {
+	void setDateLastUpdated(String dateLastUpdated) {
 		this.dateLastUpdated = dateLastUpdated;
 	}
 

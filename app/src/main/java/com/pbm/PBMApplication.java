@@ -114,7 +114,7 @@ public class PBMApplication extends Application {
 		@SuppressLint("UseSparseArrays") HashMap<Integer, Machine> hashMap = new HashMap<>();
 		while(cursor.moveToNext()) {
 			Machine machine = Machine.newFromDBCursor(cursor);
-			hashMap.put(machine.id, machine);
+			hashMap.put(machine.getId(), machine);
 		}
 		cursor.close();
 
@@ -209,7 +209,7 @@ public class PBMApplication extends Application {
 		@SuppressLint("UseSparseArrays") HashMap<Integer, Zone> hashMap = new HashMap<>();
 		while(cursor.moveToNext()) {
 			Zone zone = Zone.newFromDBCursor(cursor);
-			hashMap.put(zone.id, zone);
+			hashMap.put(zone.getId(), zone);
 		}
 		cursor.close();
 
@@ -255,7 +255,7 @@ public class PBMApplication extends Application {
 		@SuppressLint("UseSparseArrays") HashMap<Integer, Region> hashMap = new HashMap<>();
 		while(cursor.moveToNext()) {
 			Region region = Region.newFromDBCursor(cursor);
-			hashMap.put(region.id, region);
+			hashMap.put(region.getId(), region);
 		}
 		cursor.close();
 
@@ -279,7 +279,7 @@ public class PBMApplication extends Application {
 		while (cursor.moveToNext()) {
 			Operator operator = Operator.newFromDBCursor(cursor);
 
-			hashMap.put(operator.id, operator);
+			hashMap.put(operator.getId(), operator);
 		}
 		cursor.close();
 
@@ -323,15 +323,15 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(PBMContract.MachineContract.COLUMN_NAME, machine.name);
-		values.put(PBMContract.MachineContract.COLUMN_YEAR, machine.year);
-		values.put(PBMContract.MachineContract.COLUMN_MANUFACTURER, machine.manufacturer);
-		values.put(PBMContract.MachineContract.COLUMN_EXISTS_IN_REGION, machine.existsInRegion);
-		values.put(PBMContract.MachineContract.COLUMN_GROUP_ID, machine.groupId);
-		values.put(PBMContract.MachineContract.COLUMN_NUM_LOCATIONS, machine.numLocations);
+		values.put(PBMContract.MachineContract.COLUMN_NAME, machine.getName());
+		values.put(PBMContract.MachineContract.COLUMN_YEAR, machine.getYear());
+		values.put(PBMContract.MachineContract.COLUMN_MANUFACTURER, machine.getManufacturer());
+		values.put(PBMContract.MachineContract.COLUMN_EXISTS_IN_REGION, machine.getExistsInRegion());
+		values.put(PBMContract.MachineContract.COLUMN_GROUP_ID, machine.getGroupId());
+		values.put(PBMContract.MachineContract.COLUMN_NUM_LOCATIONS, machine.getNumLocations());
 
 		String selection = PBMContract.MachineContract.COLUMN_ID + "= ?";
-		String[] selectionArgs = { String.valueOf(machine.id) };
+		String[] selectionArgs = { String.valueOf(machine.getId()) };
 
 		db.update(
 			PBMContract.MachineContract.TABLE_NAME,
@@ -373,7 +373,7 @@ public class PBMApplication extends Application {
 
 		int i = 0;
 		for (Machine machine : machines.values()) {
-			names[i] = machine.name + " [" + machine.manufacturer + " - " + machine.year + "]";
+			names[i] = machine.getName() + " [" + machine.getManufacturer() + " - " + machine.getYear() + "]";
 
 			i++;
 		}
@@ -459,13 +459,13 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(PBMContract.MachineContract.COLUMN_ID, machine.id);
-		values.put(PBMContract.MachineContract.COLUMN_NAME, machine.name);
-		values.put(PBMContract.MachineContract.COLUMN_YEAR, machine.year);
-		values.put(PBMContract.MachineContract.COLUMN_MANUFACTURER, machine.manufacturer);
-		values.put(PBMContract.MachineContract.COLUMN_GROUP_ID, machine.groupId);
-		values.put(PBMContract.MachineContract.COLUMN_NUM_LOCATIONS, machine.numLocations);
-		values.put(PBMContract.MachineContract.COLUMN_EXISTS_IN_REGION, machine.existsInRegion);
+		values.put(PBMContract.MachineContract.COLUMN_ID, machine.getId());
+		values.put(PBMContract.MachineContract.COLUMN_NAME, machine.getName());
+		values.put(PBMContract.MachineContract.COLUMN_YEAR, machine.getYear());
+		values.put(PBMContract.MachineContract.COLUMN_MANUFACTURER, machine.getManufacturer());
+		values.put(PBMContract.MachineContract.COLUMN_GROUP_ID, machine.getGroupId());
+		values.put(PBMContract.MachineContract.COLUMN_NUM_LOCATIONS, machine.getNumLocations());
+		values.put(PBMContract.MachineContract.COLUMN_EXISTS_IN_REGION, machine.getExistsInRegion());
 
 		db.insert(PBMContract.MachineContract.TABLE_NAME, null, values);
 	}
@@ -474,8 +474,8 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(PBMContract.OperatorContract.COLUMN_ID, operator.id);
-		values.put(PBMContract.OperatorContract.COLUMN_NAME, operator.name);
+		values.put(PBMContract.OperatorContract.COLUMN_ID, operator.getId());
+		values.put(PBMContract.OperatorContract.COLUMN_NAME, operator.getName());
 
 		db.insert(PBMContract.OperatorContract.TABLE_NAME, null, values);
 	}
@@ -556,7 +556,7 @@ public class PBMApplication extends Application {
 
 	public LocationMachineXref getLmxFromMachine(Machine machine, List<LocationMachineXref> lmxes) {
 		for (LocationMachineXref lmx : lmxes) {
-			if (lmx.getMachineID() == machine.id) {
+			if (lmx.getMachineID() == machine.getId()) {
 				return lmx;
 			}
 		}
@@ -632,9 +632,9 @@ public class PBMApplication extends Application {
 			Machine machine = (Machine) baseMachine;
 
 			if (
-				machine.name.equalsIgnoreCase(name) &&
-				(!year.isEmpty() && machine.year.equalsIgnoreCase(year)) &&
-				(!manufacturer.isEmpty() && machine.manufacturer.equalsIgnoreCase(manufacturer))
+				machine.getName().equalsIgnoreCase(name) &&
+				(!year.isEmpty() && machine.getYear().equalsIgnoreCase(year)) &&
+				(!manufacturer.isEmpty() && machine.getManufacturer().equalsIgnoreCase(manufacturer))
 			) {
 				return machine;
 			}
@@ -707,9 +707,9 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(PBMContract.ZoneContract.COLUMN_ID, zone.id);
-		values.put(PBMContract.ZoneContract.COLUMN_NAME, zone.name);
-		values.put(PBMContract.ZoneContract.COLUMN_IS_PRIMARY, zone.isPrimary);
+		values.put(PBMContract.ZoneContract.COLUMN_ID, zone.getId());
+		values.put(PBMContract.ZoneContract.COLUMN_NAME, zone.getName());
+		values.put(PBMContract.ZoneContract.COLUMN_IS_PRIMARY, zone.getIsPrimary());
 
 		db.insert(PBMContract.ZoneContract.TABLE_NAME, null, values);
 	}
@@ -718,13 +718,13 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(PBMContract.RegionContract.COLUMN_ID, region.id);
-		values.put(PBMContract.RegionContract.COLUMN_NAME, region.name);
-		values.put(PBMContract.RegionContract.COLUMN_FORMAL_NAME, region.formalName);
-		values.put(PBMContract.RegionContract.COLUMN_MOTD, region.motd);
-		values.put(PBMContract.RegionContract.COLUMN_LAT, region.lat);
-		values.put(PBMContract.RegionContract.COLUMN_LON, region.lon);
-		values.put(PBMContract.RegionContract.COLUMN_DISTANCE_FROM_YOU, region.distanceFromYou);
+		values.put(PBMContract.RegionContract.COLUMN_ID, region.getId());
+		values.put(PBMContract.RegionContract.COLUMN_NAME, region.getName());
+		values.put(PBMContract.RegionContract.COLUMN_FORMAL_NAME, region.getFormalName());
+		values.put(PBMContract.RegionContract.COLUMN_MOTD, region.getMotd());
+		values.put(PBMContract.RegionContract.COLUMN_LAT, region.getLat());
+		values.put(PBMContract.RegionContract.COLUMN_LON, region.getLon());
+		values.put(PBMContract.RegionContract.COLUMN_DISTANCE_FROM_YOU, region.getDistanceFromYou());
 
 		db.insert(PBMContract.RegionContract.TABLE_NAME, null, values);
 	}
@@ -734,7 +734,7 @@ public class PBMApplication extends Application {
 
 		Collections.sort(regionValues, new Comparator<Region>() {
 			public int compare(Region r1, Region r2) {
-			return r1.formalName.compareTo(r2.formalName);
+			return r1.getFormalName().compareTo(r2.getFormalName());
 			}
 		});
 
@@ -757,7 +757,7 @@ public class PBMApplication extends Application {
 		ArrayList<Machine> machineValues = new ArrayList<>();
 
 		for (Machine machine : getMachines().values()) {
-			if (displayAllMachines || machine.existsInRegion) {
+			if (displayAllMachines || machine.getExistsInRegion()) {
 				machineValues.add(machine);
 			}
 		}
@@ -767,7 +767,7 @@ public class PBMApplication extends Application {
 			Machine m1 = (Machine) lhs;
 			Machine m2 = (Machine) rhs;
 
-			return m1.name.replaceAll("^(?i)The ", "").compareTo(m2.name.replaceAll("^(?i)The ", ""));
+			return m1.getName().replaceAll("^(?i)The ", "").compareTo(m2.getName().replaceAll("^(?i)The ", ""));
 			}
 		});
 
@@ -781,7 +781,7 @@ public class PBMApplication extends Application {
 		if (machine != null) {
 			machine.setExistsInRegion(true);
 
-			machineID = machine.id;
+			machineID = machine.getId();
 		}
 
 		return machineID;

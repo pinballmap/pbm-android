@@ -11,12 +11,8 @@ import java.util.Locale;
 
 public class LocationMachineXref implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private int id;
-	private int machineID;
-	private int locationID;
-	private String condition;
-	private String conditionDate;
-	private String lastUpdatedByUsername;
+	private int id, machineID, locationID;
+	private String condition, conditionDate, lastUpdatedByUsername;
 
 	public LocationMachineXref(int id, int locationID, int machineID, String condition, String conditionDate, String lastUpdatedByUsername) throws ParseException {
 		this.id = id;
@@ -76,20 +72,12 @@ public class LocationMachineXref implements Serializable {
 		this.condition = condition;
 	}
 
-	public String getConditionDate() {
+	String getConditionDate() {
 		return conditionDate;
 	}
 
-	public void setConditionDate(String conditionDate) {
-		this.conditionDate = conditionDate;
-	}
-
-	public String getLastUpdatedByUsername() {
+	String getLastUpdatedByUsername() {
 		return lastUpdatedByUsername;
-	}
-
-	public void setLastUpdatedByUsername(String lastUpdatedByUsername) {
-		this.lastUpdatedByUsername = lastUpdatedByUsername;
 	}
 
 	public int getId() {
@@ -100,19 +88,11 @@ public class LocationMachineXref implements Serializable {
 		this.id = id;
 	}
 
-	public int getMachineID() {
+	int getMachineID() {
 		return machineID;
 	}
 
-	public void setMachineID(int machineID) {
-		this.machineID = machineID;
-	}
-
-	public int getLocationID() {
+	int getLocationID() {
 		return locationID;
-	}
-
-	public void setLocationID(int locationID) {
-		this.locationID = locationID;
 	}
 }

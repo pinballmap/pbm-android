@@ -28,9 +28,6 @@ public class LocationMachineEdit extends PinballMapActivity {
 	private Location location;
 	private Machine machine;
 	private LocationMachineXref lmx;
-	private ConditionsArrayAdapter conditionsAdapter;
-	private final int NUMBER_OF_CONDITIONS_TO_SHOW = 5;
-	private final int NUMBER_OF_SCORES_TO_SHOW = 5;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,7 +43,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 		}
 
 		if (location != null && machine != null){
-			setTitle(machine.name + " @ " + location.getName());
+			setTitle(machine.getName() + " @ " + location.getName());
 
 			initializeRemoveMachineButton();
 			initializeAddMachineConditionButton();
@@ -107,11 +104,11 @@ public class LocationMachineEdit extends PinballMapActivity {
 		Button pintips = (Button) findViewById(R.id.pintips);
 		pintips.setMovementMethod(LinkMovementMethod.getInstance());
 
-		String urlLookupTypeData = "";
-		if (!machine.groupId.equals("")) {
-			urlLookupTypeData = "group/" + machine.groupId;
+		String urlLookupTypeData;
+		if (!machine.getGroupId().equals("")) {
+			urlLookupTypeData = "group/" + machine.getGroupId();
 		} else {
-			urlLookupTypeData = "machine/" + Integer.toString(machine.id);
+			urlLookupTypeData = "machine/" + Integer.toString(machine.getId());
 		}
             pintips.setText(Html.fromHtml("<a href=\"http://pintips.net/pinmap/" + urlLookupTypeData + "\">View playing tips on pintips.net</a>"));
 	}
@@ -140,7 +137,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 	public void initializeOtherLocationsButton() {
 		Button otherLocations = (Button) findViewById(R.id.other_locations);
-		otherLocations.setText(String.format("Lookup Other Locations With %s", machine.name));
+		otherLocations.setText(String.format("Lookup Other Locations With %s", machine.getName()));
 		otherLocations.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -236,6 +233,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 		ArrayList scores = getPBMApplication().getMachineScoresByLMXId(lmx.getId());
 
+		int NUMBER_OF_SCORES_TO_SHOW = 5;
 		int scoreCount = scores.size() < NUMBER_OF_SCORES_TO_SHOW ? scores.size() : NUMBER_OF_SCORES_TO_SHOW;
 
 		ScoresArrayAdapter scoresAdapter;
@@ -260,9 +258,10 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 		ArrayList conditions = getPBMApplication().getLmxConditionsByID(lmx.getId()).getConditions();
 
+		int NUMBER_OF_CONDITIONS_TO_SHOW = 5;
 		int conditionCount = conditions.size() < NUMBER_OF_CONDITIONS_TO_SHOW ? conditions.size() : NUMBER_OF_CONDITIONS_TO_SHOW;
 
-		conditionsAdapter = new ConditionsArrayAdapter(this, inflater, new ArrayList(conditions.subList(conditions.size() - conditionCount, conditions.size())));
+		ConditionsArrayAdapter conditionsAdapter = new ConditionsArrayAdapter(this, inflater, new ArrayList(conditions.subList(conditions.size() - conditionCount, conditions.size())));
 		listView.setAdapter(conditionsAdapter);
 		conditionsAdapter.sort(new Comparator<Condition>() {
 			@Override

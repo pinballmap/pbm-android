@@ -1,6 +1,7 @@
 package com.pbm;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +16,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
+class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 	private List<com.pbm.Location> locations;
 	private List<com.pbm.Location> filteredLocationList;
 	private Context context;
 	private Filter filter;
 
-	public LocationListAdapter(Context context, List<com.pbm.Location> locations) {
+	LocationListAdapter(Context context, List<com.pbm.Location> locations) {
 		super(context, R.layout.location_list_listview, locations);
 
 		this.context = context;
@@ -29,8 +30,9 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 		this.filteredLocationList = new ArrayList<>(locations);
 	}
 
-    @SuppressWarnings("deprecation")
-	public View getView(final int position, View convertView, ViewGroup parent) {
+    @NonNull
+	@SuppressWarnings("deprecation")
+	public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
 		ViewHolder holder;
 		View row = convertView;
 
@@ -53,7 +55,7 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
                 holder.name.setText(Html.fromHtml("<b>" + location.getName() + "</b> " + "<i>(" + location.getCity() + ")</i>"));
 			holder.distance.setText(location.getMilesInfo());
 			try {
-				holder.numMachines.setText(Integer.toString(location.numMachines((PinballMapActivity) context)));
+				holder.numMachines.setText(String.format("%d", location.numMachines((PinballMapActivity) context)));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -63,19 +65,20 @@ public class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 	}
 
 	@Override
-	public void sort(Comparator<? super Location> comparator) {
+	public void sort(@NonNull Comparator<? super Location> comparator) {
 		super.sort(comparator);
 		Collections.sort(this.locations, comparator);
 		Collections.sort(this.filteredLocationList, comparator);
 	}
 
-	class ViewHolder {
+	private class ViewHolder {
 		TextView name;
 		TextView distance;
 		TextView numMachines;
 		TextView city;
 	}
 
+	@NonNull
 	public Filter getFilter() {
 	    if (filter == null) {
 	        filter = new LocationFilter();

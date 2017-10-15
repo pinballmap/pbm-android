@@ -189,7 +189,7 @@ public class LocationDetail extends PinballMapActivity {
 				Operator operator = location.getOperator(getPBMActivity());
 				if (operator != null) {
 					locationOperator.setVisibility(View.VISIBLE);
-                        locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.name));
+                        locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.getName()));
 				} else {
 					locationOperator.setVisibility(View.GONE);
 				}
@@ -217,7 +217,7 @@ public class LocationDetail extends PinballMapActivity {
 		try {
 			Collections.sort(machines, new Comparator<Machine>() {
 				public int compare(Machine m1, Machine m2) {
-				return m1.name.replaceAll("^(?i)The ", "").compareTo(m2.name.replaceAll("^(?i)The ", ""));
+				return m1.getName().replaceAll("^(?i)The ", "").compareTo(m2.getName().replaceAll("^(?i)The ", ""));
 				}
 			});
 		} catch (java.lang.NullPointerException nep) {
@@ -295,7 +295,7 @@ public class LocationDetail extends PinballMapActivity {
 
 		Machine machine = lmx.getMachine(this);
 
-            holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>"));
+            holder.name.setText(Html.fromHtml("<b>" + machine.getName() + "</b>" + " " + "<i>" + machine.metaData() + "</i>"));
 
 		String conditionText = "";
 		String conditionTextMeta = "";

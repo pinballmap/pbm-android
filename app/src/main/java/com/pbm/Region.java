@@ -11,13 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Region implements Serializable, JSONConverter<Region> {
-	public int id;
-	public String name;
-	public String formalName;
-	public String motd;
-	public String lat;
-	public String lon;
-	public float distanceFromYou;
+	private int id;
+	private String name, formalName, motd, lat, lon;
+	private float distanceFromYou;
 	private List<String> emailAddresses = new ArrayList<>();
 
 	public Region(int id, String name, String formalName, String motd, String lat, String lon, List<String> emailAddresses) {
@@ -64,7 +60,7 @@ public class Region implements Serializable, JSONConverter<Region> {
 		this.distanceFromYou = distance;
 	}
 
-	public android.location.Location toAndroidLocation() {
+	android.location.Location toAndroidLocation() {
 		android.location.Location mockLocation = new android.location.Location("");
 
 		try {
@@ -77,7 +73,7 @@ public class Region implements Serializable, JSONConverter<Region> {
 		return mockLocation;
 	}
 
-	public List<String> cities(PinballMapActivity activity) {
+	List<String> cities(PinballMapActivity activity) {
 		PBMApplication app = activity.getPBMApplication();
 
 		List<String> cities = new ArrayList<>();
@@ -95,7 +91,7 @@ public class Region implements Serializable, JSONConverter<Region> {
 		return cities;
 	}
 
-	public List<Operator> operators(PinballMapActivity activity) {
+	List<Operator> operators(PinballMapActivity activity) {
 		PBMApplication app = activity.getPBMApplication();
 
 		List<Operator> operators = new ArrayList<>();
@@ -113,7 +109,7 @@ public class Region implements Serializable, JSONConverter<Region> {
 		return operators;
 	}
 
-	public List<LocationType> locationTypes(PinballMapActivity activity) {
+	List<LocationType> locationTypes(PinballMapActivity activity) {
 		PBMApplication app = activity.getPBMApplication();
 
 		List<LocationType> locationTypes = new ArrayList<>();
@@ -131,7 +127,7 @@ public class Region implements Serializable, JSONConverter<Region> {
 		return locationTypes;
 	}
 
-	public static Region newFromDBCursor(Cursor cursor) {
+	static Region newFromDBCursor(Cursor cursor) {
 		return new Region(
 				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.RegionContract.COLUMN_ID)),
 				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.RegionContract.COLUMN_NAME)),
@@ -141,5 +137,41 @@ public class Region implements Serializable, JSONConverter<Region> {
 				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.RegionContract.COLUMN_LON)),
 				null
 		);
+	}
+
+	String getFormalName() {
+		return formalName;
+	}
+
+	String getLat() {
+		return lat;
+	}
+
+	String getLon() {
+		return lon;
+	}
+
+	float getDistanceFromYou() {
+		return distanceFromYou;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	String getMotd() {
+		return motd;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

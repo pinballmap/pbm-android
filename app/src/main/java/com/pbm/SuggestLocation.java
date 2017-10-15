@@ -14,12 +14,13 @@ import java.net.URLEncoder;
 import java.util.concurrent.ExecutionException;
 
 public class SuggestLocation extends PinballMapActivity {
+	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.suggest_location);
 		TextView suggestLocationText = (TextView) findViewById(R.id.submitLocationId);
-		suggestLocationText.setText("Submit a location to the " + getPBMApplication().getRegion().formalName + " Pinball Map");
+		suggestLocationText.setText("Submit a location to the " + getPBMApplication().getRegion().getFormalName() + " Pinball Map");
 		logAnalyticsHit("com.pbm.SuggestLocation");
 
 		PBMApplication app = getPBMApplication();
@@ -38,16 +39,7 @@ public class SuggestLocation extends PinballMapActivity {
 			PBMApplication app = getPBMApplication();
 			Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 
-			String url = regionlessBase + "locations/suggest.json?region_id=" + region.id
-					+ ";location_name=" + URLEncoder.encode(locationName, "UTF-8")
-					+ ";location_street=" + URLEncoder.encode(((EditText) findViewById(R.id.streetField)).getText().toString(), "UTF-8")
-					+ ";location_city=" + URLEncoder.encode(((EditText) findViewById(R.id.cityField)).getText().toString(), "UTF-8")
-					+ ";location_state=" + URLEncoder.encode(((EditText) findViewById(R.id.stateField)).getText().toString(), "UTF-8")
-					+ ";location_zip=" + URLEncoder.encode(((EditText) findViewById(R.id.zipField)).getText().toString(), "UTF-8")
-					+ ";location_phone=" + URLEncoder.encode(((EditText) findViewById(R.id.phoneField)).getText().toString(), "UTF-8")
-					+ ";location_website=" + URLEncoder.encode(((EditText) findViewById(R.id.websiteField)).getText().toString(), "UTF-8")
-					+ ";location_operator=" + URLEncoder.encode(((EditText) findViewById(R.id.operatorField)).getText().toString(), "UTF-8")
-					+ ";location_machines=" + URLEncoder.encode(machineNames, "UTF-8");
+			String url = String.format("%slocations/suggest.json?region_id=%d;location_name=%s;location_street=%s;location_city=%s;location_state=%s;location_zip=%s;location_phone=%s;location_website=%s;location_operator=%s;location_machines=%s", regionlessBase, region.getId(), URLEncoder.encode(locationName, "UTF-8"), URLEncoder.encode(((EditText) findViewById(R.id.streetField)).getText().toString(), "UTF-8"), URLEncoder.encode(((EditText) findViewById(R.id.cityField)).getText().toString(), "UTF-8"), URLEncoder.encode(((EditText) findViewById(R.id.stateField)).getText().toString(), "UTF-8"), URLEncoder.encode(((EditText) findViewById(R.id.zipField)).getText().toString(), "UTF-8"), URLEncoder.encode(((EditText) findViewById(R.id.phoneField)).getText().toString(), "UTF-8"), URLEncoder.encode(((EditText) findViewById(R.id.websiteField)).getText().toString(), "UTF-8"), URLEncoder.encode(((EditText) findViewById(R.id.operatorField)).getText().toString(), "UTF-8"), URLEncoder.encode(machineNames, "UTF-8"));
 			try {
 				new RetrieveJsonTask().execute(app.requestWithAuthDetails(url), "POST").get();
 			} catch (InterruptedException | ExecutionException e) {

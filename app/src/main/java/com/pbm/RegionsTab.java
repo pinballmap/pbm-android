@@ -41,10 +41,10 @@ public class RegionsTab extends Fragment implements LoaderManager.LoaderCallback
 		super.onActivityCreated(savedInstanceState);
 		regionsPagerAdapter = new RegionsPagerAdapter(getChildFragmentManager());
 
-		ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.region_pager);
+		ViewPager viewPager = getActivity().findViewById(R.id.region_pager);
 		viewPager.setAdapter(regionsPagerAdapter);
 
-		TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tab_layout);
+		TabLayout tabLayout = getActivity().findViewById(R.id.tab_layout);
 		tabLayout.setupWithViewPager(viewPager);
 	}
 
@@ -65,7 +65,7 @@ public class RegionsTab extends Fragment implements LoaderManager.LoaderCallback
 		Collections.sort(regionValues, new Comparator<Region>() {
 			@Override
 			public int compare(Region lhs, Region rhs) {
-			return lhs.formalName.compareTo(rhs.formalName);
+			return lhs.getFormalName().compareTo(rhs.getFormalName());
 			}
 		}); //TODO consider saving & restoring this to/from savedInstanceState
 		((RegionsFragment) this.regionsPagerAdapter.getItem(0)).setRegionValues(regionValues);
@@ -79,14 +79,14 @@ public class RegionsTab extends Fragment implements LoaderManager.LoaderCallback
 		((RegionsFragment) regionsPagerAdapter.getItem(1)).updateLocation();
 	}
 
-	public static class RegionsPagerAdapter extends FragmentPagerAdapter {
+	private static class RegionsPagerAdapter extends FragmentPagerAdapter {
 
 		private final RegionsFragment alphaRegions;
 		private final RegionsFragment geoRegions;
 		private final Bundle alphaBundle;
 		private final Bundle geoBundle;
 
-		public RegionsPagerAdapter(FragmentManager fragmentManager) {
+		RegionsPagerAdapter(FragmentManager fragmentManager) {
 			super(fragmentManager);
 			alphaRegions = new RegionsFragment();
 			alphaBundle = new Bundle();
@@ -169,10 +169,10 @@ public class RegionsTab extends Fragment implements LoaderManager.LoaderCallback
 				adapter.sort(new Comparator<Region>() {
 					@Override
 					public int compare(Region r1, Region r2) {
-					if (r1.distanceFromYou < r2.distanceFromYou) {
+					if (r1.getDistanceFromYou() < r2.getDistanceFromYou()) {
 						return -1;
 					}
-					if (r1.distanceFromYou > r2.distanceFromYou) {
+					if (r1.getDistanceFromYou() > r2.getDistanceFromYou()) {
 						return 1;
 					}
 					return 0;
@@ -187,14 +187,14 @@ public class RegionsTab extends Fragment implements LoaderManager.LoaderCallback
 		public void onListItemClick(ListView l, View v, int position, long id) {
 			super.onListItemClick(l, v, position, id);
 			Region region = (Region) l.getItemAtPosition(position);
-			if (!(region.name.equals(""))) {
-				PinballMapActivity.setRegionBase(PinballMapActivity.httpBase + PinballMapActivity.apiPath + "region/" + region.name + "/");
+			if (!(region.getName().equals(""))) {
+				PinballMapActivity.setRegionBase(PinballMapActivity.httpBase + PinballMapActivity.apiPath + "region/" + region.getName() + "/");
 			}
 
 			SharedPreferences settings = getActivity().getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 			SharedPreferences.Editor editor = settings.edit();
-			editor.putInt("region", region.id);
-			editor.commit();
+			editor.putInt("region", region.getId());
+			editor.apply();
 
 			Intent myIntent = new Intent();
 			myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

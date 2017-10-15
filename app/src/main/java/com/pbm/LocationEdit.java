@@ -32,7 +32,9 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 		logAnalyticsHit("com.pbm.LocationEdit");
 
 		location = (Location) getIntent().getExtras().get("Location");
-		setTitle("Edit Data At " + location.getName());
+		if (location != null) {
+			setTitle("Edit Data At " + location.getName());
+		}
 
 		initializeLocationTypes();
 		initializeOperators();
@@ -47,11 +49,11 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 		operators = new TreeMap<>();
 
 		Operator blankOperator = Operator.blankOperator();
-		operators.put(blankOperator.name, blankOperator.id);
+		operators.put(blankOperator.getName(), blankOperator.getId());
 		for (Object element : getPBMApplication().getOperators().values()) {
 			Operator operator = (Operator) element;
 
-			operators.put(operator.name, operator.id);
+			operators.put(operator.getName(), operator.getId());
 		}
 
 		operatorNames = operators.keySet().toArray(new String[operators.size()]);
@@ -180,7 +182,7 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 			if (!jsonLocation.getString("operator_id").equals("null")) {
 				location.setOperatorID(jsonLocation.getInt("operator_id"));
 			} else {
-				location.setOperatorID(Operator.blankOperator().id);
+				location.setOperatorID(Operator.blankOperator().getId());
 			}
 
 			app.updateLocation(location);

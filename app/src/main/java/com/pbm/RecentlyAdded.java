@@ -30,6 +30,7 @@ public class RecentlyAdded extends PinballMapActivity {
 	private List<Spanned> recentAdds = new ArrayList<>();
 
 	public void onCreate(Bundle savedInstanceState) {
+		//noinspection deprecation
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.recently_added);
@@ -40,12 +41,10 @@ public class RecentlyAdded extends PinballMapActivity {
 			public void run() {
 			try {
 				getLocationData();
-			} catch (UnsupportedEncodingException | InterruptedException | ExecutionException | JSONException e) {
-				e.printStackTrace();
-			} catch (ParseException e) {
+			} catch (UnsupportedEncodingException | InterruptedException | ExecutionException | JSONException | ParseException e) {
 				e.printStackTrace();
 			}
-				RecentlyAdded.super.runOnUiThread(new Runnable() {
+			RecentlyAdded.super.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
 					showTable(recentAdds);
@@ -84,7 +83,7 @@ public class RecentlyAdded extends PinballMapActivity {
 			Date dateCreatedAt = inputDF.parse(rawCreatedAt);
 			String createdAt = outputDF.format(dateCreatedAt);
 
-			String textToShow = "<b>" + lmx.getMachine(this).name + "</b> was added to <b>" + lmx.getLocation(this).getName() + "</b> (" + lmx.getLocation(this).getCity() + ")";
+			String textToShow = "<b>" + lmx.getMachine(this).getName() + "</b> was added to <b>" + lmx.getLocation(this).getName() + "</b> (" + lmx.getLocation(this).getCity() + ")";
 			textToShow += "<br /><small>" + createdAt + "</small>";
 
                 recentAdds.add(Html.fromHtml(textToShow));

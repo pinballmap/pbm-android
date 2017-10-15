@@ -6,13 +6,9 @@ import java.io.Serializable;
 
 public class Machine implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public int id;
-	public String name;
-	public String year;
-	public String manufacturer;
-	public String groupId;
-	public int numLocations;
-	public boolean existsInRegion;
+	private int id, numLocations;
+	private String name, year, manufacturer, groupId;
+	private boolean existsInRegion;
 
 	public Machine(int id, String name) {
 		this.id = id;
@@ -33,12 +29,8 @@ public class Machine implements Serializable {
 		this.name = name;
 		this.numLocations = numLocations;
 	}
-	
-	public void setNumLocations(int numLocations) {
-		this.numLocations = numLocations;
-	}
-	
-	public void setExistsInRegion(boolean existsInRegion) {
+
+	void setExistsInRegion(boolean existsInRegion) {
 		this.existsInRegion = existsInRegion;
 	}
 	
@@ -46,11 +38,11 @@ public class Machine implements Serializable {
 		return name;
 	}
 
-	public String metaData() {
+	String metaData() {
 		return "(" + manufacturer + ", " + year + ")";
 	}
 
-	public static Machine newFromDBCursor(Cursor cursor) {
+	static Machine newFromDBCursor(Cursor cursor) {
 		return new Machine(
 				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_ID)),
 				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_NAME)),
@@ -59,5 +51,41 @@ public class Machine implements Serializable {
 				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_EXISTS_IN_REGION)) > 0,
 				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_GROUP_ID))
 		);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	String getManufacturer() {
+		return manufacturer;
+	}
+
+	String getYear() {
+		return year;
+	}
+
+	String getGroupId() {
+		return groupId;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	int getNumLocations() {
+		return numLocations;
+	}
+
+	boolean getExistsInRegion() {
+		return existsInRegion;
 	}
 }
