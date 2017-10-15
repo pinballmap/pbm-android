@@ -36,6 +36,7 @@ public class LocationDetail extends PinballMapActivity {
 	private List<LocationMachineXref> lmxes = new ArrayList<>();
 	private List<Machine> machines = new ArrayList<>();
 
+	@SuppressWarnings("ConstantConditions")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.location_detail);
@@ -73,19 +74,19 @@ public class LocationDetail extends PinballMapActivity {
 					startActivityForResult(intent, QUIT_RESULT);
 				} else {
 					new RetrieveJsonTask().execute(
-						getPBMApplication().requestWithAuthDetails(PinballMapActivity.regionlessBase + "locations/" + location.id + "/confirm.json"),
+						getPBMApplication().requestWithAuthDetails(PinballMapActivity.regionlessBase + "locations/" + location.getId() + "/confirm.json"),
 						"PUT"
 					).get();
 					Toast.makeText(getBaseContext(), "Thanks for confirming this spot!", Toast.LENGTH_LONG).show();
 
-					location.dateLastUpdated = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date());
-					location.lastUpdatedByUsername = settings.getString("username", "");
+					location.setDateLastUpdated(new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(new Date()));
+					location.setLastUpdatedByUsername(settings.getString("username", ""));
 
-					String lastUpdatedInfo = location.dateLastUpdated + " by ";
+					String lastUpdatedInfo = location.getDateLastUpdated() + " by ";
 
 					TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
 					locationLastUpdated.setVisibility(View.VISIBLE);
-                    locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</> " + lastUpdatedInfo + "<b>" + location.lastUpdatedByUsername + "</b>"));
+                    locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</> " + lastUpdatedInfo + "<b>" + location.getLastUpdatedByUsername() + "</b>"));
 				}
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
@@ -130,11 +131,11 @@ public class LocationDetail extends PinballMapActivity {
 				TextView locationDescription = (TextView) findViewById(R.id.description);
                 TextView locationDistance = (TextView) findViewById(R.id.distance);
 
-				if (location.dateLastUpdated != null && !location.dateLastUpdated.equals("") && !location.dateLastUpdated.equals("null")) {
-					String lastUpdatedInfo = location.dateLastUpdated;
+				if (location.getDateLastUpdated() != null && !location.getDateLastUpdated().equals("") && !location.getDateLastUpdated().equals("null")) {
+					String lastUpdatedInfo = location.getDateLastUpdated();
 
-					if (location.lastUpdatedByUsername != null && !location.lastUpdatedByUsername.equals("") && !location.lastUpdatedByUsername.equals("null")) {
-						lastUpdatedInfo = lastUpdatedInfo + " by <b>" + location.lastUpdatedByUsername + "</b>";
+					if (location.getDateLastUpdated() != null && !location.getLastUpdatedByUsername().equals("") && !location.getLastUpdatedByUsername().equals("null")) {
+						lastUpdatedInfo = lastUpdatedInfo + " by <b>" + location.getLastUpdatedByUsername() + "</b>";
 					}
 
 					locationLastUpdated.setVisibility(View.VISIBLE);
@@ -149,14 +150,14 @@ public class LocationDetail extends PinballMapActivity {
 					locationTypeName = type.name;
 				}
 
-				locationName.setText(location.name);
+				locationName.setText(location.getName());
 				locationMetadata.setText(
-					TextUtils.join(", ", new String[]{location.street, location.city, location.state, location.zip})
+					TextUtils.join(", ", new String[]{location.getStreet(), location.getCity(), location.getState(), location.getZip()})
 				);
 
-				if (location.phone != null && !location.phone.equals("") && !location.phone.equals("null")) {
+				if (location.getPhone() != null && !location.getPhone().equals("") && !location.getPhone().equals("null")) {
 					locationPhone.setVisibility(View.VISIBLE);
-					locationPhone.setText(location.phone);
+					locationPhone.setText(location.getPhone());
 				} else {
 					locationPhone.setVisibility(View.GONE);
 				}
@@ -168,18 +169,18 @@ public class LocationDetail extends PinballMapActivity {
 					locationType.setVisibility(View.GONE);
 				}
 
-				if (location.website != null && !location.website.equals("") && !location.website.equals("null")) {
+				if (location.getWebsite() != null && !location.getWebsite().equals("") && !location.getWebsite().equals("null")) {
 					locationWebsite.setVisibility(View.VISIBLE);
 					locationWebsite.setMovementMethod(LinkMovementMethod.getInstance());
-					locationWebsite.setText(Html.fromHtml("<a href=\""+ location.website +"\">Website</a>"));
+					locationWebsite.setText(Html.fromHtml("<a href=\""+ location.getWebsite() +"\">Website</a>"));
 					locationWebsite.setClickable(true);
 				} else {
 					locationWebsite.setVisibility(View.GONE);
 				}
 
-				if (location.description != null && !location.description.equals("") && !location.description.equals("null")) {
+				if (location.getDescription() != null && !location.getDescription().equals("") && !location.getDescription().equals("null")) {
 					locationDescription.setVisibility(View.VISIBLE);
-                        locationDescription.setText(Html.fromHtml("<i>Description:</i> " + location.description));
+                        locationDescription.setText(Html.fromHtml("<i>Description:</i> " + location.getDescription()));
 
 				} else {
 					locationDescription.setVisibility(View.GONE);
@@ -188,17 +189,17 @@ public class LocationDetail extends PinballMapActivity {
 				Operator operator = location.getOperator(getPBMActivity());
 				if (operator != null) {
 					locationOperator.setVisibility(View.VISIBLE);
-                        locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.name));
+                        locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.getName()));
 				} else {
 					locationOperator.setVisibility(View.GONE);
 				}
 
 				if (ActivityCompat.checkSelfPermission(LocationDetail.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(LocationDetail.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 					if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-							locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo));
+							locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.getMilesInfo()));
 					} else {
 						if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-								locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.milesInfo)); // or for older api
+								locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.getMilesInfo())); // or for older api
 						}
 					}
 				} else {
@@ -216,7 +217,7 @@ public class LocationDetail extends PinballMapActivity {
 		try {
 			Collections.sort(machines, new Comparator<Machine>() {
 				public int compare(Machine m1, Machine m2) {
-				return m1.name.replaceAll("^(?i)The ", "").compareTo(m2.name.replaceAll("^(?i)The ", ""));
+				return m1.getName().replaceAll("^(?i)The ", "").compareTo(m2.getName().replaceAll("^(?i)The ", ""));
 				}
 			});
 		} catch (java.lang.NullPointerException nep) {
@@ -265,7 +266,7 @@ public class LocationDetail extends PinballMapActivity {
 		new Thread(new Runnable() {
 			public void run() {
 			PBMApplication app = getPBMApplication();
-			location = app.getLocation(location.id);
+			location = app.getLocation(location.getId());
 				try {
 					lmxes = location.getLmxes(LocationDetail.this);
 					machines = location.getMachines(LocationDetail.this);
@@ -285,26 +286,26 @@ public class LocationDetail extends PinballMapActivity {
 
 		View row = layoutInflater.inflate(R.layout.machine_condition_view, lmxTable, false);
 		holder = new MachineViewHolder();
-		holder.name = (TextView) row.findViewById(R.id.machine_info);
-		holder.machineSelectButton = (ImageView) row.findViewById(R.id.machineSelectButton);
-		holder.condition = (TextView) row.findViewById(R.id.machine_condition);
-		holder.conditionMeta = (TextView) row.findViewById(R.id.machine_condition_meta);
+		holder.name = row.findViewById(R.id.machine_info);
+		holder.machineSelectButton = row.findViewById(R.id.machineSelectButton);
+		holder.condition = row.findViewById(R.id.machine_condition);
+		holder.conditionMeta = row.findViewById(R.id.machine_condition_meta);
 
 		row.setTag(holder);
 
 		Machine machine = lmx.getMachine(this);
 
-            holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>"));
+            holder.name.setText(Html.fromHtml("<b>" + machine.getName() + "</b>" + " " + "<i>" + machine.metaData() + "</i>"));
 
 		String conditionText = "";
 		String conditionTextMeta = "";
-		if (!lmx.condition.equals("null") && !lmx.condition.equals("")) {
-			conditionText += lmx.condition;
-			if (!lmx.conditionDate.equals("null") && !lmx.condition.equals("")) {
-				conditionTextMeta += "<i>" + getBaseContext().getString(R.string.updated_on) + "</i> " + lmx.conditionDate;
+		if (!lmx.getCondition().equals("null") && !lmx.getCondition().equals("")) {
+			conditionText += lmx.getCondition();
+			if (!lmx.getConditionDate().equals("null") && !lmx.getCondition().equals("")) {
+				conditionTextMeta += "<i>" + getBaseContext().getString(R.string.updated_on) + "</i> " + lmx.getConditionDate();
 			}
 
-			String lastUpdatedByUsername = lmx.lastUpdatedByUsername;
+			String lastUpdatedByUsername = lmx.getLastUpdatedByUsername();
 			if(lastUpdatedByUsername != null && !lastUpdatedByUsername.isEmpty()) {
 				conditionTextMeta += " by<b> " + lastUpdatedByUsername + "</b>";
 			}
@@ -320,7 +321,6 @@ public class LocationDetail extends PinballMapActivity {
 		row.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 			Intent myIntent = new Intent();
-			PBMApplication app = getPBMApplication();
 			myIntent.putExtra("lmx", lmx);
 			myIntent.setClassName("com.pbm", "com.pbm.LocationMachineEdit");
 
@@ -331,7 +331,7 @@ public class LocationDetail extends PinballMapActivity {
 		return row;
 	}
 
-	class MachineViewHolder {
+	private class MachineViewHolder {
 		TextView name;
 		ImageView machineSelectButton;
 		TextView condition;

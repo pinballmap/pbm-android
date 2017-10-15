@@ -1,6 +1,5 @@
 package com.pbm;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -10,10 +9,8 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -109,9 +106,7 @@ public class Login extends PinballMapActivity implements ActivityCompat.OnReques
                 TextInputLayout passwordWrapper = (TextInputLayout) findViewById(R.id.passwordWrapper);
 
                 String json = new RetrieveJsonTask().execute(
-                    PinballMapActivity.regionlessBase +
-                        "users/auth_details.json?password=" + passwordWrapper.getEditText().getText().toString() +
-                        ";login=" + usernameWrapper.getEditText().getText().toString(),
+                        String.format("%susers/auth_details.json?password=%s;login=%s", PinballMapActivity.regionlessBase, passwordWrapper.getEditText().getText().toString(), usernameWrapper.getEditText().getText().toString()),
                     "GET"
                 ).get();
 
@@ -138,7 +133,7 @@ public class Login extends PinballMapActivity implements ActivityCompat.OnReques
                     editor.putString("username", userObject.getString("username"));
                     editor.putString("email", userObject.getString("email"));
                     editor.putString("id", userObject.getString("id"));
-                    editor.commit();
+                    editor.apply();
 
                     Intent splashIntent = new Intent();
                     splashIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
@@ -149,14 +144,6 @@ public class Login extends PinballMapActivity implements ActivityCompat.OnReques
             }
             }
         });
-    }
-
-    private void hideKeyboard() {
-        View view = getCurrentFocus();
-        if (view != null) {
-            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
-                hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
     }
 
     public boolean onPrepareOptionsMenu (Menu menu) {

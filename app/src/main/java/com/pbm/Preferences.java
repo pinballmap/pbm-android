@@ -16,7 +16,7 @@ public class Preferences extends PinballMapActivity {
 		final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putInt("region", -1);
-		editor.commit();
+		editor.apply();
 
 		Intent myIntent = new Intent();
 		myIntent.setClassName("com.pbm", "com.pbm.SplashScreen");

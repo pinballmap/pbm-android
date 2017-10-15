@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutionException;
 
 public class SuggestRegion extends PinballMapActivity {
 	public void onCreate(Bundle savedInstanceState) {
+		//noinspection deprecation
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.suggest_region);

@@ -37,6 +37,7 @@ public class CloseLocations extends PinballMapActivity {
 
 		Tracker tracker = getPBMApplication().getTracker();
 		tracker.setScreenName("com.pbm.CloseLocations");
+		//noinspection deprecation
 		tracker.send(new HitBuilders.AppViewBuilder().build());
 
 		closeLocationsTable = (ListView) findViewById(R.id.closeLocationsTable);
@@ -107,7 +108,7 @@ public class CloseLocations extends PinballMapActivity {
 			if (getLocation() != null) {
 				pbmLocation.setDistance(getLocation());
 			}
-			if (pbmLocation.distanceFromYou < maxMilesFromYourLocation) {
+			if (pbmLocation.getDistanceFromYou() < maxMilesFromYourLocation) {
 				locationsForMap.add(pbmLocation);
 			}
 		}

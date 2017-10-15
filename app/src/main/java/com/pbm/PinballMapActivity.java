@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -205,7 +206,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 				editor.putString("username", "");
 				editor.putString("email", "");
 				editor.putString("id", "");
-				editor.commit();
+				editor.apply();
 
 				Intent loginIntent = new Intent();
 				loginIntent.setClassName("com.pbm", "com.pbm.Login");
@@ -286,6 +287,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	public void logAnalyticsHit(String page) {
 		Tracker tracker = getPBMApplication().getTracker();
 		tracker.setScreenName(page);
+		//noinspection deprecation
 		tracker.send(new HitBuilders.AppViewBuilder().build());
 	}
 
@@ -385,9 +387,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 			locationRequest.setInterval(60000 * 60);
 			locationRequest.setFastestInterval(60000);
 		}
-		if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			// TODO refactor into something more useful
-		} else {
+		if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 			setLocation(LocationServices.FusedLocationApi.getLastLocation(googleApiClient));
 			LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
 		}
@@ -400,7 +400,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	}
 
 	@Override
-	public void onConnectionFailed(ConnectionResult connectionResult) {
+	public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 		Toast.makeText(getBaseContext(), "I couldn't get a fix on your position. Try again, please.", Toast.LENGTH_LONG).show();
 		Log.d("com.pbm.location", "PBM onConnectionFailed");
 	}

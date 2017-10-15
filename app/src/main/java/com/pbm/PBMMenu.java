@@ -33,11 +33,13 @@ public class PBMMenu extends PinballMapActivity {
 
 
 	public void onCreate(Bundle savedInstanceState) {
+		//noinspection deprecation
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		rootPID = this.getTaskId();
-		setTitle(getPBMApplication().getRegion().formalName + " " + getString(R.string.app_name));
+		setTitle(getPBMApplication().getRegion().getFormalName() + " " + getString(R.string.app_name));
 		setContentView(R.layout.main);
+		//noinspection ConstantConditions
 		getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
 	}
@@ -81,8 +83,8 @@ public class PBMMenu extends PinballMapActivity {
 		mainMenuItems.add(RECENT_HIGH_SCORES);
 		mainMenuItems.add(EVENTS);
 
-		if (region != null && region.motd != null && !(region.motd.equals(""))) {
-			Toast.makeText(getBaseContext(), region.motd, Toast.LENGTH_LONG).show();
+		if (region != null && region.getMotd() != null && !(region.getMotd().equals(""))) {
+			Toast.makeText(getBaseContext(), region.getMotd(), Toast.LENGTH_LONG).show();
 		}
 
 		ListView table = (ListView) findViewById(R.id.maintable);
@@ -92,43 +94,43 @@ public class PBMMenu extends PinballMapActivity {
 			public void onItemClick(AdapterView<?> parentView, View selectedView, int position, long id) {
 			Intent intent = new Intent();
 			String menuItem = adapter.getItem(position);
-
-			switch (menuItem) {
-				case LOOKUP_BY_LOCATION:
-					intent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
-					break;
-				case LOOKUP_BY_MACHINE:
-					intent.setClassName("com.pbm", "com.pbm.LookupByMachineList");
-					break;
-				case LOOKUP_BY_CITY:
-					intent.setClassName("com.pbm", "com.pbm.LookupByCity");
-					break;
-				case LOOKUP_BY_ZONE:
-					intent.setClassName("com.pbm", "com.pbm.LookupByZoneList");
-					break;
-				case LOOKUP_BY_OPERATOR:
-					intent.setClassName("com.pbm", "com.pbm.LookupByOperator");
-					break;
-				case RECENTLY_ADDED:
-					intent.setClassName("com.pbm", "com.pbm.RecentlyAdded");
-					break;
-				case RECENT_HIGH_SCORES:
-					intent.setClassName("com.pbm", "com.pbm.RecentScores");
-					break;
-				case EVENTS:
-					intent.setClassName("com.pbm", "com.pbm.Events");
-					break;
-				case CLOSEST_LOCATIONS:
-					intent.setClassName("com.pbm", "com.pbm.CloseLocations");
-					break;
-				case LOOKUP_BY_LOCATION_TYPE:
-					intent.setClassName("com.pbm", "com.pbm.LookupByLocationType");
-					break;
-				default:
-					intent.setClassName("com.pbm", "com.pbm.PBMMenu");
-					break;
+			if (menuItem != null) {
+				switch (menuItem) {
+					case LOOKUP_BY_LOCATION:
+						intent.setClassName("com.pbm", "com.pbm.LocationLookupDetail");
+						break;
+					case LOOKUP_BY_MACHINE:
+						intent.setClassName("com.pbm", "com.pbm.LookupByMachineList");
+						break;
+					case LOOKUP_BY_CITY:
+						intent.setClassName("com.pbm", "com.pbm.LookupByCity");
+						break;
+					case LOOKUP_BY_ZONE:
+						intent.setClassName("com.pbm", "com.pbm.LookupByZoneList");
+						break;
+					case LOOKUP_BY_OPERATOR:
+						intent.setClassName("com.pbm", "com.pbm.LookupByOperator");
+						break;
+					case RECENTLY_ADDED:
+						intent.setClassName("com.pbm", "com.pbm.RecentlyAdded");
+						break;
+					case RECENT_HIGH_SCORES:
+						intent.setClassName("com.pbm", "com.pbm.RecentScores");
+						break;
+					case EVENTS:
+						intent.setClassName("com.pbm", "com.pbm.Events");
+						break;
+					case CLOSEST_LOCATIONS:
+						intent.setClassName("com.pbm", "com.pbm.CloseLocations");
+						break;
+					case LOOKUP_BY_LOCATION_TYPE:
+						intent.setClassName("com.pbm", "com.pbm.LookupByLocationType");
+						break;
+					default:
+						intent.setClassName("com.pbm", "com.pbm.PBMMenu");
+						break;
+				}
 			}
-
 			startActivityForResult(intent, MENU_RESULT);
 			}
 		});

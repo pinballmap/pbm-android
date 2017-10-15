@@ -14,11 +14,11 @@ import static com.pbm.PBMContract.OperatorContract;
 import static com.pbm.PBMContract.ZoneContract;
 import static com.pbm.PBMContract.RegionContract;
 
-public class PBMDbHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "pbm.db";
+class PBMDbHelper extends SQLiteOpenHelper {
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "pbm.db";
 
-    public PBMDbHelper(Context context) {
+    PBMDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -52,7 +52,7 @@ public class PBMDbHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public void removeAll() {
+    void removeAll() {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(LocationContract.TABLE_NAME, null, null);
         db.delete(LocationTypeContract.TABLE_NAME, null, null);

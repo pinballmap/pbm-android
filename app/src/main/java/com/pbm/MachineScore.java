@@ -4,7 +4,7 @@ import android.database.Cursor;
 
 import java.io.Serializable;
 
-public class MachineScore implements Serializable {
+class MachineScore implements Serializable {
 	private static final long serialVersionUID = 2470212492505135031L;
 	private final String dateCreated;
 
@@ -13,7 +13,7 @@ public class MachineScore implements Serializable {
 	private final String username;
 	private final long score;
 
-	public MachineScore(int id, int lmxId, String dateCreated, String username, long score) {
+	MachineScore(int id, int lmxId, String dateCreated, String username, long score) {
 		this.id = id;
 		this.dateCreated = dateCreated;
 		this.username = username;
@@ -33,13 +33,13 @@ public class MachineScore implements Serializable {
 		return id;
 	}
 
-	public int getLmxId() {
+	int getLmxId() {
 		return lmxId;
 	}
 
 	public long getScore() { return score; }
 
-	public static MachineScore newDBFromCursor(Cursor cursor) {
+	static MachineScore newDBFromCursor(Cursor cursor) {
 		return new MachineScore(
 				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.MachineScoreContract.COLUMN_ID)),
 				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.MachineScoreContract.COLUMN_LOCATION_MACHINE_XREF_ID)),

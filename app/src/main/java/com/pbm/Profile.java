@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.text.Html;
@@ -29,13 +28,6 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class Profile extends PinballMapActivity {
-	private final int LOCATION_ID_INDEX = 0;
-	private final int LOCATION_REGION_ID_INDEX = 2;
-	private final int MACHINE_NAME_INDEX = 1;
-	private final int SCORE_INDEX = 2;
-	private final int LOCATION_NAME_INDEX = 0;
-	private final int SCORE_DATE_INDEX = 3;
-
 	NonScrollListView locationsEditedTable, highScoresTable;
 	TextView numMachinesAddedTextView, numMachinesRemovedTextView, numLocationsEditedTextView, numLocationsSuggestedTextView,
 		numLmxCommentsLeftTextView, createdAtTextView, usernameTextView;
@@ -74,11 +66,10 @@ public class Profile extends PinballMapActivity {
 			public void run() {
 				try {
 					getProfileData();
-				} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException e) {
-					e.printStackTrace();
-				} catch (ParseException e) {
+				} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException | ParseException e) {
 					e.printStackTrace();
 				}
+
 				Profile.super.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -124,7 +115,7 @@ public class Profile extends PinballMapActivity {
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		PBMApplication app = getPBMApplication();
 		TextView locationsEditedText = (TextView) findViewById(R.id.locationsEditedLabel);
-        locationsEditedText.setText("Locations Edited in " + getPBMApplication().getRegion().formalName + ":");
+        locationsEditedText.setText("Locations Edited in " + getPBMApplication().getRegion().getFormalName() + ":");
 
 		final SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 		String id = settings.getString("id", "");
@@ -155,7 +146,9 @@ public class Profile extends PinballMapActivity {
 		JSONArray jsonLocationsEdited = jsonProfile.getJSONArray("profile_list_of_edited_locations");
 		for (int i = 0; i < jsonLocationsEdited.length(); i++) {
 			JSONArray jsonLocation = jsonLocationsEdited.getJSONArray(i);
+			int LOCATION_ID_INDEX = 0;
 			int locationId = jsonLocation.getInt(LOCATION_ID_INDEX);
+			int LOCATION_REGION_ID_INDEX = 2;
 			int locationRegionId = jsonLocation.getInt(LOCATION_REGION_ID_INDEX);
 			int currentRegionId = getSharedPreferences(PREFS_NAME, 0).getInt("region", -1);
 
@@ -177,6 +170,10 @@ public class Profile extends PinballMapActivity {
 		for (int i = 0; i < jsonHighScores.length(); i++) {
 			JSONArray jsonScore = jsonHighScores.getJSONArray(i);
 
+			int MACHINE_NAME_INDEX = 1;
+			int SCORE_INDEX = 2;
+			int LOCATION_NAME_INDEX = 0;
+			int SCORE_DATE_INDEX = 3;
 			String scoreText = "<u>" + jsonScore.getString(MACHINE_NAME_INDEX) + "</u><br /><b>" +
 					jsonScore.getString(SCORE_INDEX) + "</b><br /> at " + jsonScore.getString(LOCATION_NAME_INDEX) +
 					" on " + jsonScore.getString(SCORE_DATE_INDEX);

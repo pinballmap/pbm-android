@@ -4,7 +4,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -35,7 +34,7 @@ public class Donate extends PinballMapActivity {
 
 		paypalButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				String dataUri = "";
+				String dataUri;
 				try {
 					dataUri = "data:text/html," + URLEncoder.encode(html, "UTF-8").replaceAll("\\+", "%20");
 				} catch (UnsupportedEncodingException e) {

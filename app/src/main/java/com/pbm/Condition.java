@@ -7,11 +7,9 @@ import java.io.Serializable;
 public class Condition implements Serializable {
 	private static final long serialVersionUID = 2470212492505135031L;
 
-	private final String date;
-	public final String description;
-	public int lmxId;
-	public final int id;
-	public final String username;
+	private final String date, description, username;
+	private int lmxId;
+	private final int id;
 
 	public Condition(int id, String date, String description, int lmxId, String username) {
 		this.id = id;
@@ -33,11 +31,11 @@ public class Condition implements Serializable {
 		return id;
 	}
 
-	public int getLmxId() { return lmxId; }
+	int getLmxId() { return lmxId; }
 
 	public String getUsername() { return username; }
 
-	public static Condition newFromDBCursor(Cursor cursor) {
+	static Condition newFromDBCursor(Cursor cursor) {
 		return new Condition(
 				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_ID)),
 				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_DATE)),

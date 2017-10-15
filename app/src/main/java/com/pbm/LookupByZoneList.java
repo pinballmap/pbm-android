@@ -45,7 +45,7 @@ public class LookupByZoneList extends PinballMapActivity {
 		for(Integer key : zones.keySet()) {
 			Zone zone = zones.get(key);
 
-			if(zone.isPrimary == 1) {
+			if(zone.getIsPrimary() == 1) {
 				primaryZones.add(zone);
 			} else {
 				secondaryZones.add(zone);
@@ -69,7 +69,7 @@ public class LookupByZoneList extends PinballMapActivity {
 	private void sort(List<Zone> zones) {
 		Collections.sort(zones, new Comparator<Zone>() {
 			public int compare(Zone z1, Zone z2) {
-				return z1.name.compareTo(z2.name);
+				return z1.getName().compareTo(z2.getName());
 			}
 		});
 	}

@@ -49,7 +49,7 @@ public class EnterScore extends PinballMapActivity implements OnTaskCompleted {
 			public void run() {
 			try {
 				new RetrieveJsonTask(EnterScore.this).execute(
-					getPBMApplication().requestWithAuthDetails(regionlessBase + "machine_score_xrefs.json?location_machine_xref_id=" + lmx.id + ";score=" + URLEncoder.encode(score, "UTF8")),
+					getPBMApplication().requestWithAuthDetails(regionlessBase + "machine_score_xrefs.json?location_machine_xref_id=" + lmx.getId() + ";score=" + URLEncoder.encode(score, "UTF8")),
 					"POST"
 				).get();
 			} catch (InterruptedException | ExecutionException | UnsupportedEncodingException e) {
@@ -82,7 +82,7 @@ public class EnterScore extends PinballMapActivity implements OnTaskCompleted {
 
 			lmx.addScore(
 				EnterScore.this,
-				new MachineScore(id, lmx.id, df.format(new Date()), username, score)
+				new MachineScore(id, lmx.getId(), df.format(new Date()), username, score)
 			);
 		}
 	}

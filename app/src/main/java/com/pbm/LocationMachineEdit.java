@@ -28,9 +28,6 @@ public class LocationMachineEdit extends PinballMapActivity {
 	private Location location;
 	private Machine machine;
 	private LocationMachineXref lmx;
-	private ConditionsArrayAdapter conditionsAdapter;
-	private final int NUMBER_OF_CONDITIONS_TO_SHOW = 5;
-	private final int NUMBER_OF_SCORES_TO_SHOW = 5;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,11 +39,11 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 		if (lmx != null) {
 			location = lmx.getLocation(this);
-			machine = getPBMApplication().getMachine(lmx.machineID);
+			machine = getPBMApplication().getMachine(lmx.getMachineID());
 		}
 
 		if (location != null && machine != null){
-			setTitle(machine.name + " @ " + location.name);
+			setTitle(machine.getName() + " @ " + location.getName());
 
 			initializeRemoveMachineButton();
 			initializeAddMachineConditionButton();
@@ -107,11 +104,11 @@ public class LocationMachineEdit extends PinballMapActivity {
 		Button pintips = (Button) findViewById(R.id.pintips);
 		pintips.setMovementMethod(LinkMovementMethod.getInstance());
 
-		String urlLookupTypeData = "";
-		if (!machine.groupId.equals("")) {
-			urlLookupTypeData = "group/" + machine.groupId;
+		String urlLookupTypeData;
+		if (!machine.getGroupId().equals("")) {
+			urlLookupTypeData = "group/" + machine.getGroupId();
 		} else {
-			urlLookupTypeData = "machine/" + Integer.toString(machine.id);
+			urlLookupTypeData = "machine/" + Integer.toString(machine.getId());
 		}
             pintips.setText(Html.fromHtml("<a href=\"http://pintips.net/pinmap/" + urlLookupTypeData + "\">View playing tips on pintips.net</a>"));
 	}
@@ -140,7 +137,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 	public void initializeOtherLocationsButton() {
 		Button otherLocations = (Button) findViewById(R.id.other_locations);
-		otherLocations.setText("Lookup Other Locations With " + machine.name);
+		otherLocations.setText(String.format("Lookup Other Locations With %s", machine.getName()));
 		otherLocations.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -165,13 +162,13 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 						location.removeMachine(LocationMachineEdit.this, lmx);
 						new RetrieveJsonTask().execute(
-							app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.id) + ".json"),
+							app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.getId()) + ".json"),
 							"DELETE"
 						).get();
 
 						SharedPreferences settings = getBaseContext().getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
-						location.dateLastUpdated = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
-						location.lastUpdatedByUsername = settings.getString("username", "");
+						location.setDateLastUpdated(new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date()));
+						location.setLastUpdatedByUsername(settings.getString("username", ""));
 						app.updateLocation(location);
 					} catch (InterruptedException | ExecutionException e) {
 						e.printStackTrace();
@@ -234,8 +231,9 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 		final LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 
-		ArrayList scores = getPBMApplication().getMachineScoresByLMXId(lmx.id);
+		ArrayList scores = getPBMApplication().getMachineScoresByLMXId(lmx.getId());
 
+		int NUMBER_OF_SCORES_TO_SHOW = 5;
 		int scoreCount = scores.size() < NUMBER_OF_SCORES_TO_SHOW ? scores.size() : NUMBER_OF_SCORES_TO_SHOW;
 
 		ScoresArrayAdapter scoresAdapter;
@@ -258,11 +256,12 @@ public class LocationMachineEdit extends PinballMapActivity {
 
 		final LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 
-		ArrayList conditions = getPBMApplication().getLmxConditionsByID(lmx.id).getConditions();
+		ArrayList conditions = getPBMApplication().getLmxConditionsByID(lmx.getId()).getConditions();
 
+		int NUMBER_OF_CONDITIONS_TO_SHOW = 5;
 		int conditionCount = conditions.size() < NUMBER_OF_CONDITIONS_TO_SHOW ? conditions.size() : NUMBER_OF_CONDITIONS_TO_SHOW;
 
-		conditionsAdapter = new ConditionsArrayAdapter(this, inflater, new ArrayList(conditions.subList(conditions.size() - conditionCount, conditions.size())));
+		ConditionsArrayAdapter conditionsAdapter = new ConditionsArrayAdapter(this, inflater, new ArrayList(conditions.subList(conditions.size() - conditionCount, conditions.size())));
 		listView.setAdapter(conditionsAdapter);
 		conditionsAdapter.sort(new Comparator<Condition>() {
 			@Override

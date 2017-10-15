@@ -28,6 +28,7 @@ public class MachineLookupDetail extends PinballMapActivity {
 			listState = savedInstanceState.getParcelable("listState");
 		}
 		setContentView(R.layout.machine_lookup_detail);
+		//noinspection ConstantConditions
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		logAnalyticsHit("com.pbm.MachineLookupDetail");
@@ -36,7 +37,7 @@ public class MachineLookupDetail extends PinballMapActivity {
 		machine = (Machine) extras.get("Machine");
 
 		if (machine != null) {
-			setTitle(machine.name);
+			setTitle(machine.getName());
 
 			initializeMachineLookupDetailTable();
 			loadLocationData();
@@ -81,7 +82,7 @@ public class MachineLookupDetail extends PinballMapActivity {
 					try {
 						Collections.sort(locationsWithMachine, new Comparator<Location>() {
 							public int compare(Location l1, Location l2) {
-							return l1.name.compareTo(l2.name);
+							return l1.getName().compareTo(l2.getName());
 							}
 						});
 					} catch (java.lang.NullPointerException nep) {
@@ -119,7 +120,7 @@ public class MachineLookupDetail extends PinballMapActivity {
 
 		PBMApplication app = getPBMApplication();
 		for (LocationMachineXref lmx : app.getLmxes().values()) {
-			if (lmx.getMachine(this).id == machine.id) {
+			if (lmx.getMachine(this).getId() == machine.getId()) {
 				locations.add(lmx.getLocation(this));
 			}
 		}

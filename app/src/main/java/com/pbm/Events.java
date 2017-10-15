@@ -2,7 +2,6 @@ package com.pbm;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -102,7 +101,7 @@ public class Events extends PinballMapActivity {
 
 			String eventText = "<b>" + name + "</b> <br/>";
 			if (location != null) {
-				eventText += "At " + location.name + "<br/>";
+				eventText += "At " + location.getName() + "<br/>";
 			}
 			eventText += "<br />" + longDesc + "<br />";
 			eventText += "<small>" + startDate + "</small>";

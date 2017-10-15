@@ -54,10 +54,10 @@ public class DisplayOnMap extends PinballMapActivity implements
         Object[] arrayDataObject = (Object[]) serializedLocations;
         Location[] locations = Arrays.copyOf(arrayDataObject, arrayDataObject.length,Location[].class);
         for (Location location : locations) {
-            LatLng position = new LatLng(Float.valueOf(location.lat), Float.valueOf(location.lon));
+            LatLng position = new LatLng(Float.valueOf(location.getLat()), Float.valueOf(location.getLon()));
             Marker marker = null;
             try {
-                marker = mMap.addMarker(new MarkerOptions().title(location.name)
+                marker = mMap.addMarker(new MarkerOptions().title(location.getName())
                         .snippet(location.numMachines(this) + " machines").position(position));
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -100,7 +100,7 @@ public class DisplayOnMap extends PinballMapActivity implements
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission to access the location is missing.
             PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION, true);
+                    android.Manifest.permission.ACCESS_FINE_LOCATION);
         } else if (mMap != null) {
             // Access to the location has been granted to the app.
             mMap.setMyLocationEnabled(true);

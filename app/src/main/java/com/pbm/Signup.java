@@ -1,14 +1,11 @@
 package com.pbm;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -41,11 +38,7 @@ public class Signup extends AppCompatActivity {
             public void onClick(View v) {
             try{
                 String json = new RetrieveJsonTask().execute(
-                    PinballMapActivity.regionlessBase +
-                        "users/signup.json?password=" + passwordWrapper.getEditText().getText().toString() +
-                        ";confirm_password=" + confirmPasswordWrapper.getEditText().getText().toString() +
-                        ";username=" + usernameWrapper.getEditText().getText().toString() +
-                        ";email=" + emailWrapper.getEditText().getText().toString(),
+                        String.format("%susers/signup.json?password=%s;confirm_password=%s;username=%s;email=%s", PinballMapActivity.regionlessBase, passwordWrapper.getEditText().getText().toString(), confirmPasswordWrapper.getEditText().getText().toString(), usernameWrapper.getEditText().getText().toString(), emailWrapper.getEditText().getText().toString()),
                     "POST"
                 ).get();
 
@@ -77,14 +70,6 @@ public class Signup extends AppCompatActivity {
             }
             }
         });
-    }
-
-    private void hideKeyboard() {
-        View view = getCurrentFocus();
-        if (view != null) {
-            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
-                    hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
     }
 
     public boolean onPrepareOptionsMenu (Menu menu) {

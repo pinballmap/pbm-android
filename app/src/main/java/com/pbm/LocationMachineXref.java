@@ -11,12 +11,8 @@ import java.util.Locale;
 
 public class LocationMachineXref implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public int id;
-	public int machineID;
-	public int locationID;
-	public String condition;
-	public String conditionDate;
-	public String lastUpdatedByUsername;
+	private int id, machineID, locationID;
+	private String condition, conditionDate, lastUpdatedByUsername;
 
 	public LocationMachineXref(int id, int locationID, int machineID, String condition, String conditionDate, String lastUpdatedByUsername) throws ParseException {
 		this.id = id;
@@ -37,16 +33,16 @@ public class LocationMachineXref implements Serializable {
 		return app.getLocation(locationID);
 	}
 
-	public Machine getMachine(Activity activity) {
+	Machine getMachine(Activity activity) {
 		return ((PBMApplication) activity.getApplicationContext()).getMachine(machineID);
 	}
 
-	public void addScore(Activity activity, MachineScore score) {
+	void addScore(Activity activity, MachineScore score) {
 		PBMApplication app = (PBMApplication) activity.getApplication();
 		app.addMachineScore(score);
 	}
 
-	public void setCondition(Activity activity, String condition, String lastUpdatedByUsername) {
+	void setCondition(Activity activity, String condition, String lastUpdatedByUsername) {
 		this.condition = condition;
 		this.lastUpdatedByUsername = lastUpdatedByUsername;
 
@@ -57,7 +53,7 @@ public class LocationMachineXref implements Serializable {
 		app.updateLmx(this);
 	}
 
-	public static LocationMachineXref newFromDBCursor(Cursor cursor) throws ParseException {
+	static LocationMachineXref newFromDBCursor(Cursor cursor) throws ParseException {
 		return new LocationMachineXref(
 			cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_ID)),
 			cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_LOCATION_ID)),
@@ -66,5 +62,37 @@ public class LocationMachineXref implements Serializable {
 			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION_DATE)),
 			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationMachineXrefContract.COLUMN_LAST_UPDATED_BY_USERNAME))
 		);
+	}
+
+	public String getCondition() {
+		return condition;
+	}
+
+	public void setCondition(String condition) {
+		this.condition = condition;
+	}
+
+	String getConditionDate() {
+		return conditionDate;
+	}
+
+	String getLastUpdatedByUsername() {
+		return lastUpdatedByUsername;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	int getMachineID() {
+		return machineID;
+	}
+
+	int getLocationID() {
+		return locationID;
 	}
 }

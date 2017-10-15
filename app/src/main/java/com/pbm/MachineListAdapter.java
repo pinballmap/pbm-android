@@ -1,7 +1,7 @@
 package com.pbm;
 
 import android.content.Context;
-import android.os.Build;
+import android.support.annotation.NonNull;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +14,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
+class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 	private List<com.pbm.Machine> machines;
 	private List<com.pbm.Machine> filteredMachineList;
 	private boolean disableSelectImage;
 	private Filter filter;
 
-	public MachineListAdapter(Context context, List<com.pbm.Machine> machines, boolean disableSelectImage) {
+	MachineListAdapter(Context context, List<com.pbm.Machine> machines, boolean disableSelectImage) {
 		super(context, R.layout.machine_list_listview, machines);
 
 		this.machines = new ArrayList<>(machines);
@@ -29,8 +29,10 @@ public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 		this.disableSelectImage = disableSelectImage;
 	}
 
-    @SuppressWarnings("deprecation")
-	public View getView(final int position, View convertView, ViewGroup parent) {
+    @NonNull
+	@Override
+	@SuppressWarnings("deprecation")
+	public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
 		MachineViewHolder holder;
 		View row = convertView;
 
@@ -39,7 +41,7 @@ public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 			row = layoutInflater.inflate(R.layout.machine_list_listview, parent, false);
 
 			holder = new MachineViewHolder();
-			holder.name = (TextView) row.findViewById(R.id.machine_info);
+			holder.name = row.findViewById(R.id.machine_info);
 			holder.machineSelectButton = (ImageView) row.findViewById(R.id.machineSelectButton);
 
 			row.setTag(holder);
@@ -48,7 +50,7 @@ public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 		}
 
 		Machine machine = filteredMachineList.get(position);
-            holder.name.setText(Html.fromHtml("<b>" + machine.name + "</b>" + " " + "<i>" + machine.metaData() + "</i>")); // or for older api
+            holder.name.setText(Html.fromHtml("<b>" + machine.getName() + "</b>" + " " + "<i>" + machine.metaData() + "</i>")); // or for older api
 
 		if (disableSelectImage) {
 			holder.machineSelectButton.setVisibility(View.INVISIBLE);
@@ -57,12 +59,12 @@ public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 		return row;
 	}
 
-	class MachineViewHolder {
+	private class MachineViewHolder {
 		TextView name;
-		TextView metaData;
 		ImageView machineSelectButton;
 	}
 
+	@NonNull
 	public Filter getFilter() {
 		if (filter == null) {
 			filter = new MachineFilter();
@@ -76,7 +78,7 @@ public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 			FilterResults results = new FilterResults();
 			String filter = constraint.toString().toLowerCase();
 
-			if (constraint == null || constraint.length() == 0) {
+			if (constraint.length() == 0) {
 				ArrayList<com.pbm.Machine> list = new ArrayList<>(machines);
 				results.values = list;
 				results.count = list.size();
@@ -84,7 +86,7 @@ public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 				ArrayList<com.pbm.Machine> newValues = new ArrayList<>();
 				for (int i = 0; i < machines.size(); i++) {
 					com.pbm.Machine item = machines.get(i);
-					if (item.name.toLowerCase().contains(filter)) {
+					if (item.getName().toLowerCase().contains(filter)) {
 						newValues.add(item);
 					}
 				}
@@ -96,7 +98,7 @@ public class MachineListAdapter extends ArrayAdapter<com.pbm.Machine> {
 		}
 
 		protected void publishResults(CharSequence constraint, FilterResults results) {
-			filteredMachineList = (ArrayList<com.pbm.Machine>) results.values;
+			filteredMachineList = (ArrayList<Machine>) results.values;
 
 			clear();
 

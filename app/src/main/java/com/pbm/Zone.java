@@ -6,8 +6,8 @@ import java.io.Serializable;
 
 public class Zone implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public int id, isPrimary;
-	public String name;
+	private int id, isPrimary;
+	private String name;
 
 	public Zone(int id, String name, int isPrimary) {
 	    this.id = id;
@@ -18,16 +18,32 @@ public class Zone implements Serializable {
 	public String toString() {
 		return name;
 	}
-	
-	public static Zone allZone() {
-		return new Zone(0, "All", 0);
-	}
 
-	public static Zone newFromDBCursor(Cursor cursor) {
+	static Zone newFromDBCursor(Cursor cursor) {
 		return new Zone(
 				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.ZoneContract.COLUMN_ID)),
 				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.ZoneContract.COLUMN_NAME)),
 				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.ZoneContract.COLUMN_IS_PRIMARY))
 		);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	int getIsPrimary() {
+		return isPrimary;
 	}
 }

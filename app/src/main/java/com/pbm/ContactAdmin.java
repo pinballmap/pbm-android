@@ -12,12 +12,13 @@ import java.net.URLEncoder;
 import java.util.concurrent.ExecutionException;
 
 public class ContactAdmin extends PinballMapActivity {
+	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contact_admin);
 		TextView contactAdmin = (TextView) findViewById(R.id.contact_admin_id);
-		contactAdmin.setText("Send a message to the " + getPBMApplication().getRegion().formalName + " admin");
+		contactAdmin.setText("Send a message to the " + getPBMApplication().getRegion().getFormalName() + " admin");
 		logAnalyticsHit("com.pbm.ContactAdmin");
 	}
 
@@ -28,7 +29,7 @@ public class ContactAdmin extends PinballMapActivity {
 			PBMApplication app = getPBMApplication();
 			Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 
-			String url = regionlessBase + "regions/contact.json?region_id=" + region.id
+			String url = regionlessBase + "regions/contact.json?region_id=" + region.getId()
 					+ ";message=" + URLEncoder.encode(message, "UTF-8");
 
 			try {

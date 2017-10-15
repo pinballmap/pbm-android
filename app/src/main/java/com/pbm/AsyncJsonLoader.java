@@ -18,7 +18,7 @@ class AsyncJsonLoader<T> extends AsyncTaskLoader<ArrayList<T>> {
 	private ArrayList<T> data = null;
 	private final JSONConverter<T> type;
 
-	public AsyncJsonLoader(Context context, String url, JSONConverter<T> type) {
+	AsyncJsonLoader(Context context, String url, JSONConverter<T> type) {
 		super(context);
 		this.url = url;
 		this.requestType = "GET";
@@ -38,26 +38,28 @@ class AsyncJsonLoader<T> extends AsyncTaskLoader<ArrayList<T>> {
 	@Override
 	public ArrayList<T> loadInBackground() {
 		String result;
-		ArrayList<T> arrayList = new ArrayList<T>();
+		ArrayList<T> arrayList = new ArrayList<>();
 		InputStream inputStream;
 		try {
 			inputStream = PinballMapActivity.openHttpConnection(this.url, this.requestType);
 
-			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
-			StringBuilder stringBuilder = new StringBuilder();
+			if (inputStream != null) {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
+				StringBuilder stringBuilder = new StringBuilder();
 
-			String line;
-			while ((line = reader.readLine()) != null) {
-				stringBuilder.append(line).append("\n");
+				String line;
+				while ((line = reader.readLine()) != null) {
+					stringBuilder.append(line).append("\n");
+				}
+				result = stringBuilder.toString();
+				JSONObject jsonObject = new JSONObject(result);
+				Log.i("com.pbm", result);
+				JSONArray objs = jsonObject.getJSONArray(type.getJsonLabel());
+				for (int i = 0; i < objs.length(); i++) {
+					arrayList.add(this.type.fromJSON(objs.getJSONObject(i)));
+				}
+				return arrayList;
 			}
-			result = stringBuilder.toString();
-			JSONObject jsonObject = new JSONObject(result);
-			Log.i("com.pbm", result);
-			JSONArray objs = jsonObject.getJSONArray(type.getJsonLabel());
-			for (int i = 0; i < objs.length(); i++) {
-				arrayList.add(this.type.fromJSON(objs.getJSONObject(i)));
-			}
-			return arrayList;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

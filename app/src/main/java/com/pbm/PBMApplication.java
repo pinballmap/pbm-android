@@ -91,7 +91,7 @@ public class PBMApplication extends Application {
 		@SuppressLint("UseSparseArrays") HashMap<Integer, Location> hashMap = new HashMap<>();
 		while(cursor.moveToNext()) {
 			com.pbm.Location location = com.pbm.Location.newFromDBCursor(cursor);
-			hashMap.put(location.id, location);
+			hashMap.put(location.getId(), location);
 		}
 		cursor.close();
 
@@ -114,7 +114,7 @@ public class PBMApplication extends Application {
 		@SuppressLint("UseSparseArrays") HashMap<Integer, Machine> hashMap = new HashMap<>();
 		while(cursor.moveToNext()) {
 			Machine machine = Machine.newFromDBCursor(cursor);
-			hashMap.put(machine.id, machine);
+			hashMap.put(machine.getId(), machine);
 		}
 		cursor.close();
 
@@ -137,7 +137,7 @@ public class PBMApplication extends Application {
 		@SuppressLint("UseSparseArrays") HashMap<Integer, LocationMachineXref> hashMap = new HashMap<>();
 		while(cursor.moveToNext()) {
 			LocationMachineXref lmx = LocationMachineXref.newFromDBCursor(cursor);
-			hashMap.put(lmx.id, lmx);
+			hashMap.put(lmx.getId(), lmx);
 		}
 		cursor.close();
 
@@ -190,7 +190,7 @@ public class PBMApplication extends Application {
 		}
 		cursor.close();
 
-		return new LocationMachineConditions(lmx.id, lmx.machineID, lmx.locationID, conditions);
+		return new LocationMachineConditions(lmx.getId(), lmx.getMachineID(), lmx.getLocationID(), conditions);
 	}
 
 	public HashMap<Integer, com.pbm.Zone> getZones() {
@@ -209,7 +209,7 @@ public class PBMApplication extends Application {
 		@SuppressLint("UseSparseArrays") HashMap<Integer, Zone> hashMap = new HashMap<>();
 		while(cursor.moveToNext()) {
 			Zone zone = Zone.newFromDBCursor(cursor);
-			hashMap.put(zone.id, zone);
+			hashMap.put(zone.getId(), zone);
 		}
 		cursor.close();
 
@@ -255,7 +255,7 @@ public class PBMApplication extends Application {
 		@SuppressLint("UseSparseArrays") HashMap<Integer, Region> hashMap = new HashMap<>();
 		while(cursor.moveToNext()) {
 			Region region = Region.newFromDBCursor(cursor);
-			hashMap.put(region.id, region);
+			hashMap.put(region.getId(), region);
 		}
 		cursor.close();
 
@@ -279,7 +279,7 @@ public class PBMApplication extends Application {
 		while (cursor.moveToNext()) {
 			Operator operator = Operator.newFromDBCursor(cursor);
 
-			hashMap.put(operator.id, operator);
+			hashMap.put(operator.getId(), operator);
 		}
 		cursor.close();
 
@@ -290,26 +290,26 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(PBMContract.LocationContract.COLUMN_ZONE_ID, location.zoneID);
-		values.put(PBMContract.LocationContract.COLUMN_LOCATION_TYPE_ID, location.locationTypeID);
-		values.put(PBMContract.LocationContract.COLUMN_OPERATOR_ID, location.operatorID);
-		values.put(PBMContract.LocationContract.COLUMN_NAME, location.name);
-		values.put(PBMContract.LocationContract.COLUMN_STREET, location.street);
-		values.put(PBMContract.LocationContract.COLUMN_CITY, location.city);
-		values.put(PBMContract.LocationContract.COLUMN_STATE, location.state);
-		values.put(PBMContract.LocationContract.COLUMN_ZIP, location.zip);
-		values.put(PBMContract.LocationContract.COLUMN_PHONE, location.phone);
-		values.put(PBMContract.LocationContract.COLUMN_LAT, location.lat);
-		values.put(PBMContract.LocationContract.COLUMN_LON, location.lon);
-		values.put(PBMContract.LocationContract.COLUMN_WEBSITE, location.website);
-		values.put(PBMContract.LocationContract.COLUMN_MILES_INFO, location.milesInfo);
-		values.put(PBMContract.LocationContract.COLUMN_LAST_UPDATED_BY_USERNAME, location.lastUpdatedByUsername);
-		values.put(PBMContract.LocationContract.COLUMN_DATE_LAST_UPDATED, location.dateLastUpdated);
-		values.put(PBMContract.LocationContract.COLUMN_DESCRIPTION, location.description);
-		values.put(PBMContract.LocationContract.COLUMN_DISTANCE_FROM_YOU, location.distanceFromYou);
+		values.put(PBMContract.LocationContract.COLUMN_ZONE_ID, location.getZoneID());
+		values.put(PBMContract.LocationContract.COLUMN_LOCATION_TYPE_ID, location.getLocationTypeID());
+		values.put(PBMContract.LocationContract.COLUMN_OPERATOR_ID, location.getOperatorID());
+		values.put(PBMContract.LocationContract.COLUMN_NAME, location.getName());
+		values.put(PBMContract.LocationContract.COLUMN_STREET, location.getStreet());
+		values.put(PBMContract.LocationContract.COLUMN_CITY, location.getCity());
+		values.put(PBMContract.LocationContract.COLUMN_STATE, location.getState());
+		values.put(PBMContract.LocationContract.COLUMN_ZIP, location.getZip());
+		values.put(PBMContract.LocationContract.COLUMN_PHONE, location.getPhone());
+		values.put(PBMContract.LocationContract.COLUMN_LAT, location.getLat());
+		values.put(PBMContract.LocationContract.COLUMN_LON, location.getLon());
+		values.put(PBMContract.LocationContract.COLUMN_WEBSITE, location.getWebsite());
+		values.put(PBMContract.LocationContract.COLUMN_MILES_INFO, location.getMilesInfo());
+		values.put(PBMContract.LocationContract.COLUMN_LAST_UPDATED_BY_USERNAME, location.getLastUpdatedByUsername());
+		values.put(PBMContract.LocationContract.COLUMN_DATE_LAST_UPDATED, location.getDateLastUpdated());
+		values.put(PBMContract.LocationContract.COLUMN_DESCRIPTION, location.getDescription());
+		values.put(PBMContract.LocationContract.COLUMN_DISTANCE_FROM_YOU, location.getDistanceFromYou());
 
 		String selection = PBMContract.LocationContract.COLUMN_ID + "= ?";
-		String[] selectionArgs = { String.valueOf(location.id) };
+		String[] selectionArgs = { String.valueOf(location.getId()) };
 
 		db.update(
 				PBMContract.LocationContract.TABLE_NAME,
@@ -323,15 +323,15 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(PBMContract.MachineContract.COLUMN_NAME, machine.name);
-		values.put(PBMContract.MachineContract.COLUMN_YEAR, machine.year);
-		values.put(PBMContract.MachineContract.COLUMN_MANUFACTURER, machine.manufacturer);
-		values.put(PBMContract.MachineContract.COLUMN_EXISTS_IN_REGION, machine.existsInRegion);
-		values.put(PBMContract.MachineContract.COLUMN_GROUP_ID, machine.groupId);
-		values.put(PBMContract.MachineContract.COLUMN_NUM_LOCATIONS, machine.numLocations);
+		values.put(PBMContract.MachineContract.COLUMN_NAME, machine.getName());
+		values.put(PBMContract.MachineContract.COLUMN_YEAR, machine.getYear());
+		values.put(PBMContract.MachineContract.COLUMN_MANUFACTURER, machine.getManufacturer());
+		values.put(PBMContract.MachineContract.COLUMN_EXISTS_IN_REGION, machine.getExistsInRegion());
+		values.put(PBMContract.MachineContract.COLUMN_GROUP_ID, machine.getGroupId());
+		values.put(PBMContract.MachineContract.COLUMN_NUM_LOCATIONS, machine.getNumLocations());
 
 		String selection = PBMContract.MachineContract.COLUMN_ID + "= ?";
-		String[] selectionArgs = { String.valueOf(machine.id) };
+		String[] selectionArgs = { String.valueOf(machine.getId()) };
 
 		db.update(
 			PBMContract.MachineContract.TABLE_NAME,
@@ -345,14 +345,14 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(PBMContract.LocationMachineXrefContract.COLUMN_MACHINE_ID, lmx.machineID);
-		values.put(PBMContract.LocationMachineXrefContract.COLUMN_LOCATION_ID, lmx.locationID);
-		values.put(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION, lmx.condition);
-		values.put(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION_DATE, lmx.conditionDate);
-		values.put(PBMContract.LocationMachineXrefContract.COLUMN_LAST_UPDATED_BY_USERNAME, lmx.lastUpdatedByUsername);
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_MACHINE_ID, lmx.getMachineID());
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_LOCATION_ID, lmx.getLocationID());
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION, lmx.getCondition());
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION_DATE, lmx.getConditionDate());
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_LAST_UPDATED_BY_USERNAME, lmx.getLastUpdatedByUsername());
 
 		String selection = PBMContract.LocationMachineXrefContract.COLUMN_ID + "= ?";
-		String[] selectionArgs = { String.valueOf(lmx.id) };
+		String[] selectionArgs = { String.valueOf(lmx.getId()) };
 
 		db.update(
 				PBMContract.LocationMachineXrefContract.TABLE_NAME,
@@ -373,7 +373,7 @@ public class PBMApplication extends Application {
 
 		int i = 0;
 		for (Machine machine : machines.values()) {
-			names[i] = machine.name + " [" + machine.manufacturer + " - " + machine.year + "]";
+			names[i] = machine.getName() + " [" + machine.getManufacturer() + " - " + machine.getYear() + "]";
 
 			i++;
 		}
@@ -425,7 +425,7 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		String selection = PBMContract.LocationMachineXrefContract.COLUMN_ID + " = ?";
-		String[] selectionArgs = { Integer.toString(lmx.id) };
+		String[] selectionArgs = { Integer.toString(lmx.getId()) };
 		db.delete(PBMContract.LocationMachineXrefContract.TABLE_NAME, selection, selectionArgs);
 	}
 
@@ -433,24 +433,24 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(PBMContract.LocationContract.COLUMN_ID, location.id);
-		values.put(PBMContract.LocationContract.COLUMN_ZONE_ID, location.zoneID);
-		values.put(PBMContract.LocationContract.COLUMN_LOCATION_TYPE_ID, location.locationTypeID);
-		values.put(PBMContract.LocationContract.COLUMN_OPERATOR_ID, location.operatorID);
-		values.put(PBMContract.LocationContract.COLUMN_NAME, location.name);
-		values.put(PBMContract.LocationContract.COLUMN_STREET, location.street);
-		values.put(PBMContract.LocationContract.COLUMN_CITY, location.city);
-		values.put(PBMContract.LocationContract.COLUMN_STATE, location.state);
-		values.put(PBMContract.LocationContract.COLUMN_ZIP, location.zip);
-		values.put(PBMContract.LocationContract.COLUMN_PHONE, location.phone);
-		values.put(PBMContract.LocationContract.COLUMN_LAT, location.lat);
-		values.put(PBMContract.LocationContract.COLUMN_LON, location.lon);
-		values.put(PBMContract.LocationContract.COLUMN_WEBSITE, location.website);
-		values.put(PBMContract.LocationContract.COLUMN_MILES_INFO, location.milesInfo);
-		values.put(PBMContract.LocationContract.COLUMN_LAST_UPDATED_BY_USERNAME, location.lastUpdatedByUsername);
-		values.put(PBMContract.LocationContract.COLUMN_DATE_LAST_UPDATED, location.dateLastUpdated);
-		values.put(PBMContract.LocationContract.COLUMN_DESCRIPTION, location.description);
-		values.put(PBMContract.LocationContract.COLUMN_DISTANCE_FROM_YOU, location.distanceFromYou);
+		values.put(PBMContract.LocationContract.COLUMN_ID, location.getId());
+		values.put(PBMContract.LocationContract.COLUMN_ZONE_ID, location.getZoneID());
+		values.put(PBMContract.LocationContract.COLUMN_LOCATION_TYPE_ID, location.getLocationTypeID());
+		values.put(PBMContract.LocationContract.COLUMN_OPERATOR_ID, location.getOperatorID());
+		values.put(PBMContract.LocationContract.COLUMN_NAME, location.getName());
+		values.put(PBMContract.LocationContract.COLUMN_STREET, location.getStreet());
+		values.put(PBMContract.LocationContract.COLUMN_CITY, location.getCity());
+		values.put(PBMContract.LocationContract.COLUMN_STATE, location.getState());
+		values.put(PBMContract.LocationContract.COLUMN_ZIP, location.getZip());
+		values.put(PBMContract.LocationContract.COLUMN_PHONE, location.getPhone());
+		values.put(PBMContract.LocationContract.COLUMN_LAT, location.getLat());
+		values.put(PBMContract.LocationContract.COLUMN_LON, location.getLon());
+		values.put(PBMContract.LocationContract.COLUMN_WEBSITE, location.getWebsite());
+		values.put(PBMContract.LocationContract.COLUMN_MILES_INFO, location.getMilesInfo());
+		values.put(PBMContract.LocationContract.COLUMN_LAST_UPDATED_BY_USERNAME, location.getLastUpdatedByUsername());
+		values.put(PBMContract.LocationContract.COLUMN_DATE_LAST_UPDATED, location.getDateLastUpdated());
+		values.put(PBMContract.LocationContract.COLUMN_DESCRIPTION, location.getDescription());
+		values.put(PBMContract.LocationContract.COLUMN_DISTANCE_FROM_YOU, location.getDistanceFromYou());
 
 		db.insert(PBMContract.LocationContract.TABLE_NAME, null, values);
 	}
@@ -459,13 +459,13 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(PBMContract.MachineContract.COLUMN_ID, machine.id);
-		values.put(PBMContract.MachineContract.COLUMN_NAME, machine.name);
-		values.put(PBMContract.MachineContract.COLUMN_YEAR, machine.year);
-		values.put(PBMContract.MachineContract.COLUMN_MANUFACTURER, machine.manufacturer);
-		values.put(PBMContract.MachineContract.COLUMN_GROUP_ID, machine.groupId);
-		values.put(PBMContract.MachineContract.COLUMN_NUM_LOCATIONS, machine.numLocations);
-		values.put(PBMContract.MachineContract.COLUMN_EXISTS_IN_REGION, machine.existsInRegion);
+		values.put(PBMContract.MachineContract.COLUMN_ID, machine.getId());
+		values.put(PBMContract.MachineContract.COLUMN_NAME, machine.getName());
+		values.put(PBMContract.MachineContract.COLUMN_YEAR, machine.getYear());
+		values.put(PBMContract.MachineContract.COLUMN_MANUFACTURER, machine.getManufacturer());
+		values.put(PBMContract.MachineContract.COLUMN_GROUP_ID, machine.getGroupId());
+		values.put(PBMContract.MachineContract.COLUMN_NUM_LOCATIONS, machine.getNumLocations());
+		values.put(PBMContract.MachineContract.COLUMN_EXISTS_IN_REGION, machine.getExistsInRegion());
 
 		db.insert(PBMContract.MachineContract.TABLE_NAME, null, values);
 	}
@@ -474,8 +474,8 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(PBMContract.OperatorContract.COLUMN_ID, operator.id);
-		values.put(PBMContract.OperatorContract.COLUMN_NAME, operator.name);
+		values.put(PBMContract.OperatorContract.COLUMN_ID, operator.getId());
+		values.put(PBMContract.OperatorContract.COLUMN_NAME, operator.getName());
 
 		db.insert(PBMContract.OperatorContract.TABLE_NAME, null, values);
 	}
@@ -544,19 +544,19 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(PBMContract.LocationMachineXrefContract.COLUMN_ID, lmx.id);
-		values.put(PBMContract.LocationMachineXrefContract.COLUMN_MACHINE_ID, lmx.machineID);
-		values.put(PBMContract.LocationMachineXrefContract.COLUMN_LOCATION_ID, lmx.locationID);
-		values.put(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION, lmx.condition);
-		values.put(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION_DATE, lmx.conditionDate);
-		values.put(PBMContract.LocationMachineXrefContract.COLUMN_LAST_UPDATED_BY_USERNAME, lmx.lastUpdatedByUsername);
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_ID, lmx.getId());
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_MACHINE_ID, lmx.getMachineID());
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_LOCATION_ID, lmx.getLocationID());
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION, lmx.getCondition());
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION_DATE, lmx.getConditionDate());
+		values.put(PBMContract.LocationMachineXrefContract.COLUMN_LAST_UPDATED_BY_USERNAME, lmx.getLastUpdatedByUsername());
 
 		db.insert(PBMContract.LocationMachineXrefContract.TABLE_NAME, null, values);
 	}
 
 	public LocationMachineXref getLmxFromMachine(Machine machine, List<LocationMachineXref> lmxes) {
 		for (LocationMachineXref lmx : lmxes) {
-			if (lmx.machineID == machine.id) {
+			if (lmx.getMachineID() == machine.getId()) {
 				return lmx;
 			}
 		}
@@ -593,7 +593,7 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 
 		Cursor cursor = db.rawQuery("select count(*) from " + PBMContract.LocationMachineXrefContract.TABLE_NAME +
-				" where location_id=" + String.valueOf(location.id), null);
+				" where location_id=" + String.valueOf(location.getId()), null);
 		cursor.moveToFirst();
 		int count= cursor.getInt(0);
 		cursor.close();
@@ -632,9 +632,9 @@ public class PBMApplication extends Application {
 			Machine machine = (Machine) baseMachine;
 
 			if (
-				machine.name.equalsIgnoreCase(name) &&
-				(!year.isEmpty() && machine.year.equalsIgnoreCase(year)) &&
-				(!manufacturer.isEmpty() && machine.manufacturer.equalsIgnoreCase(manufacturer))
+				machine.getName().equalsIgnoreCase(name) &&
+				(!year.isEmpty() && machine.getYear().equalsIgnoreCase(year)) &&
+				(!manufacturer.isEmpty() && machine.getManufacturer().equalsIgnoreCase(manufacturer))
 			) {
 				return machine;
 			}
@@ -646,7 +646,7 @@ public class PBMApplication extends Application {
 	public Location getLocationByName(String name) {
 		List<Location> locations = getLocationValues();
 		for (Location location : locations) {
-			if (location.name.equals(name)) {
+			if (location.getName().equals(name)) {
 				return location;
 			}
 		}
@@ -707,9 +707,9 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(PBMContract.ZoneContract.COLUMN_ID, zone.id);
-		values.put(PBMContract.ZoneContract.COLUMN_NAME, zone.name);
-		values.put(PBMContract.ZoneContract.COLUMN_IS_PRIMARY, zone.isPrimary);
+		values.put(PBMContract.ZoneContract.COLUMN_ID, zone.getId());
+		values.put(PBMContract.ZoneContract.COLUMN_NAME, zone.getName());
+		values.put(PBMContract.ZoneContract.COLUMN_IS_PRIMARY, zone.getIsPrimary());
 
 		db.insert(PBMContract.ZoneContract.TABLE_NAME, null, values);
 	}
@@ -718,13 +718,13 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(PBMContract.RegionContract.COLUMN_ID, region.id);
-		values.put(PBMContract.RegionContract.COLUMN_NAME, region.name);
-		values.put(PBMContract.RegionContract.COLUMN_FORMAL_NAME, region.formalName);
-		values.put(PBMContract.RegionContract.COLUMN_MOTD, region.motd);
-		values.put(PBMContract.RegionContract.COLUMN_LAT, region.lat);
-		values.put(PBMContract.RegionContract.COLUMN_LON, region.lon);
-		values.put(PBMContract.RegionContract.COLUMN_DISTANCE_FROM_YOU, region.distanceFromYou);
+		values.put(PBMContract.RegionContract.COLUMN_ID, region.getId());
+		values.put(PBMContract.RegionContract.COLUMN_NAME, region.getName());
+		values.put(PBMContract.RegionContract.COLUMN_FORMAL_NAME, region.getFormalName());
+		values.put(PBMContract.RegionContract.COLUMN_MOTD, region.getMotd());
+		values.put(PBMContract.RegionContract.COLUMN_LAT, region.getLat());
+		values.put(PBMContract.RegionContract.COLUMN_LON, region.getLon());
+		values.put(PBMContract.RegionContract.COLUMN_DISTANCE_FROM_YOU, region.getDistanceFromYou());
 
 		db.insert(PBMContract.RegionContract.TABLE_NAME, null, values);
 	}
@@ -734,7 +734,7 @@ public class PBMApplication extends Application {
 
 		Collections.sort(regionValues, new Comparator<Region>() {
 			public int compare(Region r1, Region r2) {
-			return r1.formalName.compareTo(r2.formalName);
+			return r1.getFormalName().compareTo(r2.getFormalName());
 			}
 		});
 
@@ -746,7 +746,7 @@ public class PBMApplication extends Application {
 
 		Collections.sort(locationValues, new Comparator<Location>() {
 			public int compare(Location l1, Location l2) {
-			return l1.name.compareTo(l2.name);
+			return l1.getName().compareTo(l2.getName());
 			}
 		});
 
@@ -757,7 +757,7 @@ public class PBMApplication extends Application {
 		ArrayList<Machine> machineValues = new ArrayList<>();
 
 		for (Machine machine : getMachines().values()) {
-			if (displayAllMachines || machine.existsInRegion) {
+			if (displayAllMachines || machine.getExistsInRegion()) {
 				machineValues.add(machine);
 			}
 		}
@@ -767,7 +767,7 @@ public class PBMApplication extends Application {
 			Machine m1 = (Machine) lhs;
 			Machine m2 = (Machine) rhs;
 
-			return m1.name.replaceAll("^(?i)The ", "").compareTo(m2.name.replaceAll("^(?i)The ", ""));
+			return m1.getName().replaceAll("^(?i)The ", "").compareTo(m2.getName().replaceAll("^(?i)The ", ""));
 			}
 		});
 
@@ -781,7 +781,7 @@ public class PBMApplication extends Application {
 		if (machine != null) {
 			machine.setExistsInRegion(true);
 
-			machineID = machine.id;
+			machineID = machine.getId();
 		}
 
 		return machineID;

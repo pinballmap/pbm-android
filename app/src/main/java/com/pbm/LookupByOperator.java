@@ -56,7 +56,7 @@ public class LookupByOperator extends PinballMapActivity {
 	private void sort(List<Operator> operators) {
 		Collections.sort(operators, new Comparator<Operator>() {
 			public int compare(Operator t1, Operator t2) {
-				return t1.name.compareTo(t2.name);
+				return t1.getName().compareTo(t2.getName());
 			}
 		});
 	}
