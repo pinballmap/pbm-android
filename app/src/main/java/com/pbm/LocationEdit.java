@@ -64,11 +64,11 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 		locationTypes = new TreeMap<>();
 
 		LocationType blankLocationType = LocationType.blankLocationType();
-		locationTypes.put(blankLocationType.name, blankLocationType.id);
+		locationTypes.put(blankLocationType.getName(), blankLocationType.getId());
 		for (Object element : getPBMApplication().getLocationTypes().values()) {
 			LocationType locationType = (LocationType) element;
 
-			locationTypes.put(locationType.name, locationType.id);
+			locationTypes.put(locationType.getName(), locationType.getId());
 		}
 
 		locationTypeNames = locationTypes.keySet().toArray(new String[locationTypes.size()]);
@@ -176,7 +176,7 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 			if (!jsonLocation.getString("location_type_id").equals("null")) {
 				location.setLocationTypeID(jsonLocation.getInt("location_type_id"));
 			} else {
-				location.setLocationTypeID(LocationType.blankLocationType().id);
+				location.setLocationTypeID(LocationType.blankLocationType().getId());
 			}
 
 			if (!jsonLocation.getString("operator_id").equals("null")) {

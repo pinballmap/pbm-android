@@ -6,8 +6,9 @@ import java.io.Serializable;
 
 class LocationType implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public int id;
-	public String name;
+
+	private int id;
+	private String name;
 
 	LocationType(int id, String name) {
 		this.id = id;
@@ -27,5 +28,21 @@ class LocationType implements Serializable {
 				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationTypeContract.COLUMN_ID)),
 				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationTypeContract.COLUMN_NAME))
 		);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

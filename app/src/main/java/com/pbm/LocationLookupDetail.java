@@ -64,7 +64,7 @@ public class LocationLookupDetail extends PinballMapActivity {
 		if (extras.containsKey("LocationType")) {
 			locationType = (LocationType) extras.get("LocationType");
 			if (locationType != null) {
-				setTitle(locationType.name);
+				setTitle(locationType.getName());
 			}
 		} else if (extras.containsKey("Operator")) {
 			operator = (Operator) extras.get("Operator");
@@ -112,7 +112,7 @@ public class LocationLookupDetail extends PinballMapActivity {
 				continue;
 			}
 
-			if (locationType != null && location.getLocationTypeID() == locationType.id) {
+			if (locationType != null && location.getLocationTypeID() == locationType.getId()) {
 				foundLocations.add(location);
 				continue;
 			}

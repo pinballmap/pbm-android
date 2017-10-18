@@ -147,7 +147,7 @@ public class LocationDetail extends PinballMapActivity {
 				String locationTypeName = "";
 				LocationType type = location.getLocationType(LocationDetail.this);
 				if (type != null) {
-					locationTypeName = type.name;
+					locationTypeName = type.getName();
 				}
 
 				locationName.setText(location.getName());
