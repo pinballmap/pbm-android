@@ -38,7 +38,7 @@ public class InitializingScreen extends PinballMapActivity {
 			} finally {
 				Intent myIntent = new Intent();
 				myIntent.setClassName("com.pbm", "com.pbm.PBMMenu");
-				startActivity(myIntent);
+				startActivityForResult(myIntent, QUIT_RESULT);
 
 				finish();
 				interrupt();

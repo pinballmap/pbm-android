@@ -3,7 +3,6 @@ package com.pbm;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -112,7 +111,6 @@ public class MachineLookupDetail extends PinballMapActivity {
 		super.onResume();
 		loadLocationData();
 		listState = null;
-		Log.d("com.pbm", "done");
 	}
 
 	ArrayList<Location> getLocationsWithMachine(Machine machine) throws ParseException {

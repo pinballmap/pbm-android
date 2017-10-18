@@ -33,6 +33,10 @@ public class PBMMenu extends PinballMapActivity {
 
 
 	public void onCreate(Bundle savedInstanceState) {
+		if (getIntent().getBooleanExtra("EXIT", false)) {
+			finish();
+		}
+
 		//noinspection deprecation
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
@@ -131,7 +135,7 @@ public class PBMMenu extends PinballMapActivity {
 						break;
 				}
 			}
-			startActivityForResult(intent, MENU_RESULT);
+			startActivityForResult(intent, QUIT_RESULT);
 			}
 		});
 
