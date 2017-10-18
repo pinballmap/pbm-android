@@ -660,8 +660,8 @@ public class PBMApplication extends Application {
 		String[] selectionArgs = { id.toString() };
 
 		Cursor cursor = db.query(
-				PBMContract.RegionContract.TABLE_NAME,
-				PBMContract.RegionContract.PROJECTION,
+				PBMContract.LocationContract.TABLE_NAME,
+				PBMContract.LocationContract.PROJECTION,
 				selection,
 				selectionArgs,
 				null,
