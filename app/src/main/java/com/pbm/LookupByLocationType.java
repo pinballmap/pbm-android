@@ -56,7 +56,7 @@ public class LookupByLocationType extends PinballMapActivity {
 	private void sort(List<LocationType> types) {
 		Collections.sort(types, new Comparator<LocationType>() {
 			public int compare(LocationType t1, LocationType t2) {
-				return t1.name.compareTo(t2.name);
+				return t1.getName().compareTo(t2.getName());
 			}
 		});
 	}

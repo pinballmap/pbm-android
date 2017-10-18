@@ -232,7 +232,7 @@ public class PBMApplication extends Application {
 		@SuppressLint("UseSparseArrays") HashMap<Integer, LocationType> hashMap = new HashMap<>();
 		while(cursor.moveToNext()) {
 			LocationType locationType = LocationType.newFromDBCursor(cursor);
-			hashMap.put(locationType.id, locationType);
+			hashMap.put(locationType.getId(), locationType);
 		}
 		cursor.close();
 
@@ -509,8 +509,8 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(PBMContract.LocationTypeContract.COLUMN_ID, locationType.id);
-		values.put(PBMContract.LocationTypeContract.COLUMN_NAME, locationType.name);
+		values.put(PBMContract.LocationTypeContract.COLUMN_ID, locationType.getId());
+		values.put(PBMContract.LocationTypeContract.COLUMN_NAME, locationType.getName());
 
 		db.insert(PBMContract.LocationTypeContract.TABLE_NAME, null, values);
 	}
