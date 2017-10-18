@@ -13,9 +13,7 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 
@@ -43,11 +41,9 @@ class ConditionsArrayAdapter extends ArrayAdapter<Condition> implements OnTaskCo
 		}
 
 		TextView conditionDate = convertView.findViewById(R.id._condition_date);
-		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
-		format.setTimeZone(TimeZone.getDefault());
 
 		if (condition != null) {
-			conditionDate.setText(format.format(condition.getDate()));
+			conditionDate.setText(condition.getDate().split("T")[0]);
 		}
 
 		TextView usernameTextView = convertView.findViewById(R.id._username);
