@@ -220,9 +220,11 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 
 				return true;
 			case R.id.quit:
-				setResult(QUIT_RESULT);
-				android.os.Process.killProcess(android.os.Process.myPid());
-
+				Intent intent = new Intent(getApplicationContext(), PBMMenu.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				intent.putExtra("EXIT", true);
+				startActivity(intent);
+				
 				return true;
 		}
 		return false;

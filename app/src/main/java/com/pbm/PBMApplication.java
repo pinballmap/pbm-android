@@ -682,7 +682,7 @@ public class PBMApplication extends Application {
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 
 		String selection = PBMContract.RegionContract.COLUMN_ID + " = ?";
-		String[] selectionArgs = { id.toString() };
+		String[] selectionArgs = {id.toString()};
 
 		Cursor cursor = db.query(
 				PBMContract.RegionContract.TABLE_NAME,
@@ -695,7 +695,7 @@ public class PBMApplication extends Application {
 		);
 
 		Region region = null;
-		while(cursor.moveToNext()) {
+		while (cursor.moveToNext()) {
 			region = Region.newFromDBCursor(cursor);
 		}
 		cursor.close();

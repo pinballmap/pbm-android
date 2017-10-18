@@ -142,7 +142,6 @@ public class LocationLookupDetail extends PinballMapActivity {
 	public void onResume() {
 		super.onResume();
 		loadLocationData();
-		Log.d("com.pbm", "done");
 	}
 
 	@Override
