@@ -106,7 +106,21 @@ public class Region implements Serializable, JSONConverter<Region> {
 			}
 		}
 
-		return operators;
+		List<Operator> uniqueOperators = new ArrayList<>();
+		uniqueOperators.add(operators.get(0));
+		for (Operator operator : operators) {
+			boolean flag = false;
+			for (Operator uniqueOperator : uniqueOperators) {
+				if (uniqueOperator.getId() == operator.getId()) {
+					flag = true;
+				}
+			}
+			if(!flag)
+				uniqueOperators.add(operator);
+
+		}
+
+		return uniqueOperators;
 	}
 
 	List<LocationType> locationTypes(PinballMapActivity activity) {
@@ -124,7 +138,21 @@ public class Region implements Serializable, JSONConverter<Region> {
 			}
 		}
 
-		return locationTypes;
+		List<LocationType> uniqueLocationTypes = new ArrayList<>();
+		uniqueLocationTypes.add(locationTypes.get(0));
+		for (LocationType locationType : locationTypes) {
+			boolean flag = false;
+			for (LocationType locationTypeUnique : uniqueLocationTypes) {
+				if (locationTypeUnique.getId() == locationType.getId()) {
+					flag = true;
+				}
+			}
+			if(!flag)
+				uniqueLocationTypes.add(locationType);
+
+		}
+
+		return uniqueLocationTypes;
 	}
 
 	static Region newFromDBCursor(Cursor cursor) {
