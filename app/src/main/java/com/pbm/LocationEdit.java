@@ -1,5 +1,6 @@
 package com.pbm;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -13,7 +14,10 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 
@@ -185,6 +189,9 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 				location.setOperatorID(Operator.blankOperator().getId());
 			}
 
+			SharedPreferences settings = this.getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+			location.setDateLastUpdated(new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date()));
+			location.setLastUpdatedByUsername(settings.getString("username", ""));
 			app.updateLocation(location);
 
 			LocationEdit.super.runOnUiThread(new Runnable() {

@@ -107,17 +107,19 @@ public class Region implements Serializable, JSONConverter<Region> {
 		}
 
 		List<Operator> uniqueOperators = new ArrayList<>();
-		uniqueOperators.add(operators.get(0));
-		for (Operator operator : operators) {
-			boolean flag = false;
-			for (Operator uniqueOperator : uniqueOperators) {
-				if (uniqueOperator.getId() == operator.getId()) {
-					flag = true;
+		if (operators.size() > 0) {
+			uniqueOperators.add(operators.get(0));
+			for (Operator operator : operators) {
+				boolean flag = false;
+				for (Operator uniqueOperator : uniqueOperators) {
+					if (uniqueOperator.getId() == operator.getId()) {
+						flag = true;
+					}
 				}
-			}
-			if(!flag)
-				uniqueOperators.add(operator);
+				if (!flag)
+					uniqueOperators.add(operator);
 
+			}
 		}
 
 		return uniqueOperators;
@@ -139,17 +141,19 @@ public class Region implements Serializable, JSONConverter<Region> {
 		}
 
 		List<LocationType> uniqueLocationTypes = new ArrayList<>();
-		uniqueLocationTypes.add(locationTypes.get(0));
-		for (LocationType locationType : locationTypes) {
-			boolean flag = false;
-			for (LocationType locationTypeUnique : uniqueLocationTypes) {
-				if (locationTypeUnique.getId() == locationType.getId()) {
-					flag = true;
+		if (locationTypes.size() > 0) {
+			uniqueLocationTypes.add(locationTypes.get(0));
+			for (LocationType locationType : locationTypes) {
+				boolean flag = false;
+				for (LocationType locationTypeUnique : uniqueLocationTypes) {
+					if (locationTypeUnique.getId() == locationType.getId()) {
+						flag = true;
+					}
 				}
-			}
-			if(!flag)
-				uniqueLocationTypes.add(locationType);
+				if (!flag)
+					uniqueLocationTypes.add(locationType);
 
+			}
 		}
 
 		return uniqueLocationTypes;
