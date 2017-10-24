@@ -36,6 +36,8 @@ public class PBMApplication extends Application {
 	private long dataLoadTimestamp;
 	private android.location.Location location;
 	private PBMDbHelper dbHelper;
+	private SQLiteDatabase readableDB;
+	private SQLiteDatabase writeableDB;
 
 	public long getDataLoadTimestamp() {
 		return dataLoadTimestamp;
@@ -65,6 +67,14 @@ public class PBMApplication extends Application {
 		return this.dbHelper;
 	}
 
+	public void setReadableDB(PBMDbHelper dbHelper) { this.readableDB = dbHelper.getReadableDatabase(); }
+
+	public SQLiteDatabase getReadableDB() { return this.readableDB; }
+
+	public void setWriteableDB(PBMDbHelper dbHelper) { this.writeableDB = dbHelper.getWritableDatabase(); }
+
+	public SQLiteDatabase getWriteableDB() { return this.writeableDB; }
+
 	synchronized Tracker getTracker() {
 		if (!mTrackers.containsKey(TrackerName.APP_TRACKER)) {
 			GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
@@ -76,9 +86,7 @@ public class PBMApplication extends Application {
 	}
 
 	public HashMap<Integer, Location> getLocations() {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-		Cursor cursor = db.query(
+		Cursor cursor = getReadableDB().query(
 				PBMContract.LocationContract.TABLE_NAME,
 				PBMContract.LocationContract.PROJECTION,
 				null,
@@ -99,9 +107,7 @@ public class PBMApplication extends Application {
 	}
 
 	public HashMap<Integer, com.pbm.Machine> getMachines() {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-		Cursor cursor = db.query(
+		Cursor cursor = getReadableDB().query(
 				PBMContract.MachineContract.TABLE_NAME,
 				PBMContract.MachineContract.PROJECTION,
 				null,
@@ -122,9 +128,7 @@ public class PBMApplication extends Application {
 	}
 
 	public HashMap<Integer, com.pbm.LocationMachineXref> getLmxes() throws ParseException {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-		Cursor cursor = db.query(
+		Cursor cursor = getReadableDB().query(
 				PBMContract.LocationMachineXrefContract.TABLE_NAME,
 				PBMContract.LocationMachineXrefContract.PROJECTION,
 				null,
@@ -145,9 +149,7 @@ public class PBMApplication extends Application {
 	}
 
 	public ArrayList<MachineScore> getMachineScores() {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-		Cursor cursor = db.query(
+		Cursor cursor = getReadableDB().query(
 				PBMContract.MachineScoreContract.TABLE_NAME,
 				PBMContract.MachineScoreContract.PROJECTION,
 				null,
@@ -167,14 +169,12 @@ public class PBMApplication extends Application {
 	}
 
 	public LocationMachineConditions getLmxConditionsByID(Integer id) throws ParseException {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-
 		LocationMachineXref lmx = getLmx(id);
 
 		String selection = PBMContract.ConditionContract.COLUMN_LOCATION_MACHINE_XREF_ID + " = ?";
 		String[] selectionArgs = { id.toString() };
 
-		Cursor cursor = db.query(
+		Cursor cursor = getReadableDB().query(
 				PBMContract.ConditionContract.TABLE_NAME,
 				PBMContract.ConditionContract.PROJECTION,
 				selection,
@@ -194,9 +194,7 @@ public class PBMApplication extends Application {
 	}
 
 	public HashMap<Integer, com.pbm.Zone> getZones() {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-		Cursor cursor = db.query(
+		Cursor cursor = getReadableDB().query(
 				PBMContract.ZoneContract.TABLE_NAME,
 				PBMContract.ZoneContract.PROJECTION,
 				null,
@@ -217,9 +215,7 @@ public class PBMApplication extends Application {
 	}
 
 	public HashMap<Integer, com.pbm.LocationType> getLocationTypes() {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-		Cursor cursor = db.query(
+		Cursor cursor = getReadableDB().query(
 				PBMContract.LocationTypeContract.TABLE_NAME,
 				PBMContract.LocationTypeContract.PROJECTION,
 				null,
@@ -240,9 +236,7 @@ public class PBMApplication extends Application {
 	}
 
 	public HashMap<Integer, com.pbm.Region> getRegions() {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-		Cursor cursor = db.query(
+		Cursor cursor = getReadableDB().query(
 				PBMContract.RegionContract.TABLE_NAME,
 				PBMContract.RegionContract.PROJECTION,
 				null,
@@ -263,9 +257,7 @@ public class PBMApplication extends Application {
 	}
 
 	public HashMap<Integer, com.pbm.Operator> getOperators() {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-		Cursor cursor = db.query(
+		Cursor cursor = getReadableDB().query(
 				PBMContract.OperatorContract.TABLE_NAME,
 				PBMContract.OperatorContract.PROJECTION,
 				null,
@@ -287,8 +279,6 @@ public class PBMApplication extends Application {
 	}
 
 	public void updateLocation(com.pbm.Location location) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-
 		ContentValues values = new ContentValues();
 		values.put(PBMContract.LocationContract.COLUMN_ZONE_ID, location.getZoneID());
 		values.put(PBMContract.LocationContract.COLUMN_LOCATION_TYPE_ID, location.getLocationTypeID());
@@ -311,7 +301,7 @@ public class PBMApplication extends Application {
 		String selection = PBMContract.LocationContract.COLUMN_ID + "= ?";
 		String[] selectionArgs = { String.valueOf(location.getId()) };
 
-		db.update(
+		getWriteableDB().update(
 				PBMContract.LocationContract.TABLE_NAME,
 				values,
 				selection,
@@ -320,8 +310,6 @@ public class PBMApplication extends Application {
 	}
 
 	public void updateMachine(Machine machine) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-
 		ContentValues values = new ContentValues();
 		values.put(PBMContract.MachineContract.COLUMN_NAME, machine.getName());
 		values.put(PBMContract.MachineContract.COLUMN_YEAR, machine.getYear());
@@ -333,7 +321,7 @@ public class PBMApplication extends Application {
 		String selection = PBMContract.MachineContract.COLUMN_ID + "= ?";
 		String[] selectionArgs = { String.valueOf(machine.getId()) };
 
-		db.update(
+		getWriteableDB().update(
 			PBMContract.MachineContract.TABLE_NAME,
 			values,
 			selection,
@@ -342,8 +330,6 @@ public class PBMApplication extends Application {
 	}
 
 	public void updateLmx(LocationMachineXref lmx) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-
 		ContentValues values = new ContentValues();
 		values.put(PBMContract.LocationMachineXrefContract.COLUMN_MACHINE_ID, lmx.getMachineID());
 		values.put(PBMContract.LocationMachineXrefContract.COLUMN_LOCATION_ID, lmx.getLocationID());
@@ -354,7 +340,7 @@ public class PBMApplication extends Application {
 		String selection = PBMContract.LocationMachineXrefContract.COLUMN_ID + "= ?";
 		String[] selectionArgs = { String.valueOf(lmx.getId()) };
 
-		db.update(
+		getWriteableDB().update(
 				PBMContract.LocationMachineXrefContract.TABLE_NAME,
 				values,
 				selection,
@@ -384,8 +370,6 @@ public class PBMApplication extends Application {
 	}
 
 	void addMachineCondition(Condition machineCondition) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-
 		ContentValues values = new ContentValues();
 		values.put(PBMContract.ConditionContract.COLUMN_ID, machineCondition.getId());
 		values.put(PBMContract.ConditionContract.COLUMN_DATE, machineCondition.getDate());
@@ -393,12 +377,10 @@ public class PBMApplication extends Application {
 		values.put(PBMContract.ConditionContract.COLUMN_LOCATION_MACHINE_XREF_ID, machineCondition.getLmxId());
 		values.put(PBMContract.ConditionContract.COLUMN_USERNAME, machineCondition.getUsername());
 
-		db.insert(PBMContract.ConditionContract.TABLE_NAME, null, values);
+		getWriteableDB().insert(PBMContract.ConditionContract.TABLE_NAME, null, values);
 	}
 
 	void addMachineScore(MachineScore machineScore) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-
 		ContentValues values = new ContentValues();
 		values.put(PBMContract.MachineScoreContract.COLUMN_ID, machineScore.getId());
 		values.put(PBMContract.MachineScoreContract.COLUMN_LOCATION_MACHINE_XREF_ID, machineScore.getLmxId());
@@ -406,7 +388,7 @@ public class PBMApplication extends Application {
 		values.put(PBMContract.MachineScoreContract.COLUMN_SCORE, machineScore.getScore());
 		values.put(PBMContract.MachineScoreContract.COLUMN_DATE_CREATED, machineScore.getDate());
 
-		db.insert(PBMContract.MachineScoreContract.TABLE_NAME, null, values);
+		getWriteableDB().insert(PBMContract.MachineScoreContract.TABLE_NAME, null, values);
 	}
 
 	public ArrayList<MachineScore> getMachineScoresByLMXId(Integer id) {
@@ -422,16 +404,12 @@ public class PBMApplication extends Application {
 	}
 
 	public void removeLmx(LocationMachineXref lmx) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-
 		String selection = PBMContract.LocationMachineXrefContract.COLUMN_ID + " = ?";
 		String[] selectionArgs = { Integer.toString(lmx.getId()) };
-		db.delete(PBMContract.LocationMachineXrefContract.TABLE_NAME, selection, selectionArgs);
+		getWriteableDB().delete(PBMContract.LocationMachineXrefContract.TABLE_NAME, selection, selectionArgs);
 	}
 
 	void addLocation(Location location) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-
 		ContentValues values = new ContentValues();
 		values.put(PBMContract.LocationContract.COLUMN_ID, location.getId());
 		values.put(PBMContract.LocationContract.COLUMN_ZONE_ID, location.getZoneID());
@@ -452,12 +430,10 @@ public class PBMApplication extends Application {
 		values.put(PBMContract.LocationContract.COLUMN_DESCRIPTION, location.getDescription());
 		values.put(PBMContract.LocationContract.COLUMN_DISTANCE_FROM_YOU, location.getDistanceFromYou());
 
-		db.insert(PBMContract.LocationContract.TABLE_NAME, null, values);
+		getWriteableDB().insert(PBMContract.LocationContract.TABLE_NAME, null, values);
 	}
 
 	public void addMachine(Machine machine) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-
 		ContentValues values = new ContentValues();
 		values.put(PBMContract.MachineContract.COLUMN_ID, machine.getId());
 		values.put(PBMContract.MachineContract.COLUMN_NAME, machine.getName());
@@ -467,26 +443,22 @@ public class PBMApplication extends Application {
 		values.put(PBMContract.MachineContract.COLUMN_NUM_LOCATIONS, machine.getNumLocations());
 		values.put(PBMContract.MachineContract.COLUMN_EXISTS_IN_REGION, machine.getExistsInRegion());
 
-		db.insert(PBMContract.MachineContract.TABLE_NAME, null, values);
+		getWriteableDB().insert(PBMContract.MachineContract.TABLE_NAME, null, values);
 	}
 
 	void addOperator(Operator operator) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-
 		ContentValues values = new ContentValues();
 		values.put(PBMContract.OperatorContract.COLUMN_ID, operator.getId());
 		values.put(PBMContract.OperatorContract.COLUMN_NAME, operator.getName());
 
-		db.insert(PBMContract.OperatorContract.TABLE_NAME, null, values);
+		getWriteableDB().insert(PBMContract.OperatorContract.TABLE_NAME, null, values);
 	}
 
 	public Operator getOperator(Integer id) {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-
 		String selection = PBMContract.OperatorContract.COLUMN_ID + " = ?";
 		String[] selectionArgs = { id.toString() };
 
-		Cursor cursor = db.query(
+		Cursor cursor = getReadableDB().query(
 				PBMContract.OperatorContract.TABLE_NAME,
 				PBMContract.OperatorContract.PROJECTION,
 				selection,
@@ -506,22 +478,18 @@ public class PBMApplication extends Application {
 	}
 
 	void addLocationType(LocationType locationType) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-
 		ContentValues values = new ContentValues();
 		values.put(PBMContract.LocationTypeContract.COLUMN_ID, locationType.getId());
 		values.put(PBMContract.LocationTypeContract.COLUMN_NAME, locationType.getName());
 
-		db.insert(PBMContract.LocationTypeContract.TABLE_NAME, null, values);
+		getWriteableDB().insert(PBMContract.LocationTypeContract.TABLE_NAME, null, values);
 	}
 
 	public LocationType getLocationType(Integer id) {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-
 		String selection = PBMContract.LocationTypeContract.COLUMN_ID + " = ?";
 		String[] selectionArgs = { id.toString() };
 
-		Cursor cursor = db.query(
+		Cursor cursor = getReadableDB().query(
 				PBMContract.LocationTypeContract.TABLE_NAME,
 				PBMContract.LocationTypeContract.PROJECTION,
 				selection,
@@ -541,8 +509,6 @@ public class PBMApplication extends Application {
 	}
 
 	public void addLocationMachineXref(LocationMachineXref lmx) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-
 		ContentValues values = new ContentValues();
 		values.put(PBMContract.LocationMachineXrefContract.COLUMN_ID, lmx.getId());
 		values.put(PBMContract.LocationMachineXrefContract.COLUMN_MACHINE_ID, lmx.getMachineID());
@@ -551,7 +517,7 @@ public class PBMApplication extends Application {
 		values.put(PBMContract.LocationMachineXrefContract.COLUMN_CONDITION_DATE, lmx.getConditionDate());
 		values.put(PBMContract.LocationMachineXrefContract.COLUMN_LAST_UPDATED_BY_USERNAME, lmx.getLastUpdatedByUsername());
 
-		db.insert(PBMContract.LocationMachineXrefContract.TABLE_NAME, null, values);
+		getWriteableDB().insert(PBMContract.LocationMachineXrefContract.TABLE_NAME, null, values);
 	}
 
 	public LocationMachineXref getLmxFromMachine(Machine machine, List<LocationMachineXref> lmxes) {
@@ -565,12 +531,10 @@ public class PBMApplication extends Application {
 	}
 
 	public LocationMachineXref getLmx(Integer id) throws ParseException {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-
 		String selection = PBMContract.LocationMachineXrefContract.COLUMN_ID + " = ?";
 		String[] selectionArgs = { id.toString() };
 
-		Cursor cursor = db.query(
+		Cursor cursor = getReadableDB().query(
 				PBMContract.LocationMachineXrefContract.TABLE_NAME,
 				PBMContract.LocationMachineXrefContract.PROJECTION,
 				selection,
@@ -590,9 +554,7 @@ public class PBMApplication extends Application {
 	}
 
 	public int numMachinesForLocation(Location location) throws ParseException {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-		Cursor cursor = db.rawQuery("select count(*) from " + PBMContract.LocationMachineXrefContract.TABLE_NAME +
+		Cursor cursor = getReadableDB().rawQuery("select count(*) from " + PBMContract.LocationMachineXrefContract.TABLE_NAME +
 				" where location_id=" + String.valueOf(location.getId()), null);
 		cursor.moveToFirst();
 		int count= cursor.getInt(0);
@@ -602,12 +564,10 @@ public class PBMApplication extends Application {
 	}
 
 	public Machine getMachine(Integer id) {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-
 		String selection = PBMContract.MachineContract.COLUMN_ID + " = ?";
 		String[] selectionArgs = { id.toString() };
 
-		Cursor cursor = db.query(
+		Cursor cursor = getReadableDB().query(
 				PBMContract.MachineContract.TABLE_NAME,
 				PBMContract.MachineContract.PROJECTION,
 				selection,
@@ -654,12 +614,10 @@ public class PBMApplication extends Application {
 	}
 
 	public com.pbm.Location getLocation(Integer id) {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-
 		String selection = PBMContract.LocationContract.COLUMN_ID + " = ?";
 		String[] selectionArgs = { id.toString() };
 
-		Cursor cursor = db.query(
+		Cursor cursor = getReadableDB().query(
 				PBMContract.LocationContract.TABLE_NAME,
 				PBMContract.LocationContract.PROJECTION,
 				selection,
@@ -679,12 +637,10 @@ public class PBMApplication extends Application {
 	}
 
 	public Region getRegion(Integer id) {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-
 		String selection = PBMContract.RegionContract.COLUMN_ID + " = ?";
 		String[] selectionArgs = {id.toString()};
 
-		Cursor cursor = db.query(
+		Cursor cursor = getReadableDB().query(
 				PBMContract.RegionContract.TABLE_NAME,
 				PBMContract.RegionContract.PROJECTION,
 				selection,
@@ -704,19 +660,15 @@ public class PBMApplication extends Application {
 	}
 
 	void addZone(Zone zone) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-
 		ContentValues values = new ContentValues();
 		values.put(PBMContract.ZoneContract.COLUMN_ID, zone.getId());
 		values.put(PBMContract.ZoneContract.COLUMN_NAME, zone.getName());
 		values.put(PBMContract.ZoneContract.COLUMN_IS_PRIMARY, zone.getIsPrimary());
 
-		db.insert(PBMContract.ZoneContract.TABLE_NAME, null, values);
+		getWriteableDB().insert(PBMContract.ZoneContract.TABLE_NAME, null, values);
 	}
 
 	public void addRegion(Region region) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-
 		ContentValues values = new ContentValues();
 		values.put(PBMContract.RegionContract.COLUMN_ID, region.getId());
 		values.put(PBMContract.RegionContract.COLUMN_NAME, region.getName());
@@ -726,7 +678,7 @@ public class PBMApplication extends Application {
 		values.put(PBMContract.RegionContract.COLUMN_LON, region.getLon());
 		values.put(PBMContract.RegionContract.COLUMN_DISTANCE_FROM_YOU, region.getDistanceFromYou());
 
-		db.insert(PBMContract.RegionContract.TABLE_NAME, null, values);
+		getWriteableDB().insert(PBMContract.RegionContract.TABLE_NAME, null, values);
 	}
 
 	public ArrayList<Region> getRegionValues() {
@@ -803,12 +755,19 @@ public class PBMApplication extends Application {
 		Log.d("com.pbm", "initializing data");
 		getDbHelper().removeAll();
 
+		Log.d("com.pbm", "TIMING STARTING REGION");
 		initializeRegions();
+		Log.d("com.pbm", "TIMING STARTING MACHINES");
 		initializeAllMachines();
+		Log.d("com.pbm", "TIMING STARTING LOCATIONS");
 		initializeLocations();
+		Log.d("com.pbm", "TIMING STARTING LOCATION TYPES");
 		initializeLocationTypes();
+		Log.d("com.pbm", "TIMING STARTING ZONES");
 		initializeZones();
+		Log.d("com.pbm", "TIMING STARTING OPERATORS");
 		initializeOperators();
+		Log.d("com.pbm", "TIMING STARTING MACHINE SCORES");
 		initializeMachineScores();
 	}
 
@@ -1076,7 +1035,7 @@ public class PBMApplication extends Application {
 					updateMachine(machine);
 
 					addLocationMachineXref(
-							new LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate, username)
+						new LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate, username)
 					);
 					loadConditions(lmx, lmxID);
 				}

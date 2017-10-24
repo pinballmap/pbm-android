@@ -44,7 +44,6 @@ import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 
 public class PinballMapActivity extends AppCompatActivity implements OnQueryTextListener, LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-	static final int MENU_RESULT = 8;
 	public static final int QUIT_RESULT = 42;
 	static final int RESET_RESULT = 23;
 	static final int REFRESH_RESULT = 30;
