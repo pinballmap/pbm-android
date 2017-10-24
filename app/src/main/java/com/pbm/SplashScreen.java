@@ -19,6 +19,8 @@ public class SplashScreen extends PinballMapActivity {
 	private RegionsTab regionsTab;
 
 	public void onCreate(Bundle savedInstanceState) {
+		Log.d("com.pbm", "STARTING APP???????????");
+
 		//noinspection deprecation
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
@@ -30,6 +32,8 @@ public class SplashScreen extends PinballMapActivity {
 
 		PBMApplication app = getPBMApplication();
 		app.setDbHelper(getBaseContext());
+		app.setReadableDB(app.getDbHelper());
+		app.setWriteableDB(app.getDbHelper());
 
 		if (!haveInternet(getBaseContext())) {
 			closeWithNoInternet();

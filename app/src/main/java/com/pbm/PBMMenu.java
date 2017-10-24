@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -46,6 +47,8 @@ public class PBMMenu extends PinballMapActivity {
 		//noinspection ConstantConditions
 		getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+		Log.d("com.pbm", "LOADED MENU!!!!!!!!!!!!!");
 	}
 
 	@Override
