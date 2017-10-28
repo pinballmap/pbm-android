@@ -936,7 +936,7 @@ public class PBMApplication extends Application {
 
 	void initializeLocations() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
 		String json = new RetrieveJsonTask().execute(
-			requestWithAuthDetails(PinballMapActivity.regionBase + "locations.json"),
+			requestWithAuthDetails(PinballMapActivity.regionBase + "locations.json?no_details=1"),
 			"GET"
 		).get();
 
@@ -1004,6 +1004,7 @@ public class PBMApplication extends Application {
 				addLocation(newLocation);
 			}
 
+			/*
 			JSONArray lmxes = null;
 			if (location.has("location_machine_xrefs")) {
 				lmxes = location.getJSONArray("location_machine_xrefs");
@@ -1039,7 +1040,7 @@ public class PBMApplication extends Application {
 					);
 					loadConditions(lmx, lmxID);
 				}
-			}
+			}*/
 		}
 	}
 
