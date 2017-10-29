@@ -81,12 +81,7 @@ public class ConditionEdit extends PinballMapActivity implements OnTaskCompleted
 		Log.d("com.pbm.condition", results);
 		final JSONObject jsonObject = new JSONObject(results);
 		if (jsonObject.has("location_machine")) {
-			JSONObject jsonLmx = jsonObject.getJSONObject("location_machine");
-
-			getPBMApplication().loadConditions(
-				jsonObject.getJSONObject("location_machine"),
-				jsonLmx.getInt("id")
-			);
+			getPBMApplication().loadConditions(jsonObject.getJSONObject("location_machine"));
 		}
 
 		Location location = lmx.getLocation(this);
