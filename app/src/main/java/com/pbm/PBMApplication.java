@@ -767,8 +767,6 @@ public class PBMApplication extends Application {
 		initializeZones();
 		Log.d("com.pbm", "TIMING STARTING OPERATORS");
 		initializeOperators();
-		Log.d("com.pbm", "TIMING STARTING MACHINE SCORES");
-		initializeMachineScores();
 	}
 
 	void initializeMachineScores() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
