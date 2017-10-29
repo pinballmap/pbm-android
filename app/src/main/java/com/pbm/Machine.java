@@ -44,12 +44,12 @@ public class Machine implements Serializable {
 
 	static Machine newFromDBCursor(Cursor cursor) {
 		return new Machine(
-				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_ID)),
-				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_NAME)),
-				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_YEAR)),
-				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_MANUFACTURER)),
-				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_EXISTS_IN_REGION)) > 0,
-				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_GROUP_ID))
+			cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_ID)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_NAME)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_YEAR)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_MANUFACTURER)),
+			cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_EXISTS_IN_REGION)) > 0,
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineContract.COLUMN_GROUP_ID))
 		);
 	}
 
