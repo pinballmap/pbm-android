@@ -13,7 +13,7 @@ import java.util.List;
 public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id, zoneID, locationTypeID, operatorID;
-	private String name, street, city, state, zip, phone, lat, lon, website, milesInfo, lastUpdatedByUsername, dateLastUpdated, description;
+	private String name, street, city, state, zip, phone, lat, lon, website, milesInfo, lastUpdatedByUsername, dateLastUpdated, description, numMachines;
 	private float distanceFromYou;
 
 	String getLat() {
@@ -25,13 +25,14 @@ public class Location implements Serializable {
 	String getMilesInfo() {
 		return milesInfo;
 	}
+	String getNumMachines() { return numMachines; }
 
 	float getDistanceFromYou() { return distanceFromYou; }
 
 	public Location(int id, String name, String lat, String lon, int zoneID, String street,
 					String city, String state, String zip, String phone, int locationTypeID,
 					String website, int operatorID, String dateLastUpdated,
-					String lastUpdatedByUsername, String description
+					String lastUpdatedByUsername, String description, String numMachines
 	) {
 		this.id = id;
 		this.name = name;
@@ -49,6 +50,7 @@ public class Location implements Serializable {
 		this.dateLastUpdated = dateLastUpdated;
 		this.lastUpdatedByUsername = lastUpdatedByUsername;
 		this.description = description;
+		this.numMachines = numMachines;
 	}
 
 	static Comparator<Location> byNearestDistance = new Comparator<com.pbm.Location>() {
@@ -69,6 +71,8 @@ public class Location implements Serializable {
 		this.phone = phone;
 	}
 
+	public void setNumMachines(String numMachines) { this.numMachines = numMachines; }
+
 	void setLocationTypeID(int locationTypeID) {
 		this.locationTypeID = locationTypeID;
 	}
@@ -85,11 +89,6 @@ public class Location implements Serializable {
 
 	private void setMilesInfo(String milesInfo) {
 		this.milesInfo = milesInfo;
-	}
-
-	int numMachines(PinballMapActivity activity) throws ParseException {
-		PBMApplication app = activity.getPBMApplication();
-		return app.numMachinesForLocation(this);
 	}
 
 	public String toString() {
@@ -147,22 +146,23 @@ public class Location implements Serializable {
 
 	static com.pbm.Location newFromDBCursor(Cursor cursor) {
 		return new com.pbm.Location(
-					cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_ID)),
-					cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_NAME)),
-					cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_LAT)),
-					cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_LON)),
-					cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_ZONE_ID)),
-					cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_STREET)),
-					cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_CITY)),
-					cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_STATE)),
-					cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_ZIP)),
-					cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_PHONE)),
-					cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_LOCATION_TYPE_ID)),
-					cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_WEBSITE)),
-					cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_OPERATOR_ID)),
-					cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_DATE_LAST_UPDATED)),
-					cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_LAST_UPDATED_BY_USERNAME)),
-					cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_DESCRIPTION))
+			cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_ID)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_NAME)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_LAT)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_LON)),
+			cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_ZONE_ID)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_STREET)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_CITY)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_STATE)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_ZIP)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_PHONE)),
+			cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_LOCATION_TYPE_ID)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_WEBSITE)),
+			cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_OPERATOR_ID)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_DATE_LAST_UPDATED)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_LAST_UPDATED_BY_USERNAME)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_DESCRIPTION)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationContract.COLUMN_NUM_MACHINES))
 		);
 	}
 

@@ -59,6 +59,7 @@ public final class PBMContract {
         static final String COLUMN_DATE_LAST_UPDATED = "date_last_updated";
         static final String COLUMN_DESCRIPTION = "description";
         static final String COLUMN_DISTANCE_FROM_YOU = "distance_from_you";
+        static final String COLUMN_NUM_MACHINES = "num_machines";
 
         static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " +
                 TABLE_NAME + " (" +
@@ -80,6 +81,7 @@ public final class PBMContract {
                 COLUMN_LAST_UPDATED_BY_USERNAME + " TEXT, " +
                 COLUMN_DESCRIPTION + " TEXT, " +
                 COLUMN_DATE_LAST_UPDATED + " DATE, " +
+                COLUMN_NUM_MACHINES + " TEXT, " +
                 COLUMN_DISTANCE_FROM_YOU + " FLOAT" + ")";
 
         static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -102,6 +104,7 @@ public final class PBMContract {
             COLUMN_LAST_UPDATED_BY_USERNAME,
             COLUMN_DESCRIPTION,
             COLUMN_DATE_LAST_UPDATED,
+            COLUMN_NUM_MACHINES,
             COLUMN_DISTANCE_FROM_YOU
         };
     }

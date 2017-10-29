@@ -429,6 +429,7 @@ public class PBMApplication extends Application {
 		values.put(PBMContract.LocationContract.COLUMN_DATE_LAST_UPDATED, location.getDateLastUpdated());
 		values.put(PBMContract.LocationContract.COLUMN_DESCRIPTION, location.getDescription());
 		values.put(PBMContract.LocationContract.COLUMN_DISTANCE_FROM_YOU, location.getDistanceFromYou());
+		values.put(PBMContract.LocationContract.COLUMN_NUM_MACHINES, location.getNumMachines());
 
 		getWriteableDB().insert(PBMContract.LocationContract.TABLE_NAME, null, values);
 	}
@@ -932,6 +933,57 @@ public class PBMApplication extends Application {
 		}
 	}
 
+	void loadLmxesForLocation(Location location) throws ExecutionException, InterruptedException, JSONException, ParseException {
+		String json = new RetrieveJsonTask().execute(
+			requestWithAuthDetails(PinballMapActivity.regionBase + "locations/" + Integer.toString(location.getId()) + ".json"),
+			"GET"
+		).get();
+
+		if (json == null) {
+			return;
+		}
+
+		JSONObject jsonObject = new JSONObject(json);
+
+		JSONArray lmxes = null;
+		if (jsonObject.has("location_machine_xrefs")) {
+			lmxes = jsonObject.getJSONArray("location_machine_xrefs");
+		}
+
+		if (lmxes != null && lmxes.length() > 0) for (int x = 0; x < lmxes.length(); x++) {
+			JSONObject lmx = lmxes.getJSONObject(x);
+
+			int lmxID = lmx.getInt("id");
+			int lmxLocationID = lmx.getInt("location_id");
+			int machineID = lmx.getInt("machine_id");
+			String condition = lmx.getString("condition");
+			String conditionDate = lmx.getString("condition_date");
+			if (conditionDate.equals("null")) {
+				conditionDate = null;
+			}
+
+			String username;
+			try {
+				username = lmx.getString("last_updated_by_username");
+			} catch (JSONException e) {
+				username = "";
+			}
+
+			Machine machine = getMachine(machineID);
+
+			if (machine != null) {
+				machine.setExistsInRegion(true);
+				updateMachine(machine);
+
+				addLocationMachineXref(
+					new LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate, username)
+				);
+				loadConditions(lmx);
+				loadScores(lmx);
+			}
+		}
+	}
+
 	void initializeLocations() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
 		String json = new RetrieveJsonTask().execute(
 			requestWithAuthDetails(PinballMapActivity.regionBase + "locations.json?no_details=1"),
@@ -960,6 +1012,7 @@ public class PBMApplication extends Application {
 			String website = location.getString("website");
 			String lastUpdatedByUsername = location.getString("last_updated_by_username");
 			String description = location.getString("description");
+			String numMachines = location.getString("num_machines");
 
 			String dateLastUpdated = null;
 			if (location.has("date_last_updated") && !location.getString("date_last_updated").equals("null")) {
@@ -998,51 +1051,13 @@ public class PBMApplication extends Application {
 				Location newLocation =
 						new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip,
 								phone, locationTypeID, website, operatorID, dateLastUpdated,
-								lastUpdatedByUsername, description);
+								lastUpdatedByUsername, description, numMachines);
 				addLocation(newLocation);
 			}
-
-			/*
-			JSONArray lmxes = null;
-			if (location.has("location_machine_xrefs")) {
-				lmxes = location.getJSONArray("location_machine_xrefs");
-			}
-
-			if (lmxes != null && lmxes.length() > 0) for (int x = 0; x < lmxes.length(); x++) {
-				JSONObject lmx = lmxes.getJSONObject(x);
-
-				int lmxID = lmx.getInt("id");
-				int lmxLocationID = lmx.getInt("location_id");
-				int machineID = lmx.getInt("machine_id");
-				String condition = lmx.getString("condition");
-				String conditionDate = lmx.getString("condition_date");
-				if (conditionDate.equals("null")) {
-					conditionDate = null;
-				}
-
-				String username;
-				try {
-					username = lmx.getString("last_updated_by_username");
-				} catch (JSONException e) {
-					username = "";
-				}
-
-				Machine machine = getMachine(machineID);
-
-				if (machine != null) {
-					machine.setExistsInRegion(true);
-					updateMachine(machine);
-
-					addLocationMachineXref(
-						new LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate, username)
-					);
-					loadConditions(lmx, lmxID);
-				}
-			}*/
 		}
 	}
 
-	void loadConditions(JSONObject lmx, int lmxID) throws JSONException {
+	void loadConditions(JSONObject lmx) throws JSONException {
 		if (lmx.has("machine_conditions")) {
 			JSONArray conditions = lmx.getJSONArray("machine_conditions");
 
@@ -1060,11 +1075,53 @@ public class PBMApplication extends Application {
 					pastCondition.getInt("id"),
 					pastCondition.getString("updated_at"),
 					pastCondition.getString("comment"),
-					lmxID,
+					lmx.getInt("id"),
 					pastConditionUsername
 				);
 				addMachineCondition(machineCondition);
 			}
+		}
+	}
+
+	void loadScores(JSONObject lmx) throws JSONException {
+		if (lmx.has("machine_score_xrefs")) {
+			JSONArray scores = lmx.getJSONArray("machine_score_xrefs");
+
+			for (int i = 0; i < scores.length(); i++) {
+				try {
+					JSONObject score = scores.getJSONObject(i);
+
+					String id = score.getString("id");
+					String lmxId = score.getString("location_machine_xref_id");
+					String username = score.getString("username");
+					String highScore = score.getString("score");
+
+					String dateCreated = null;
+					if (score.has("created_at") && !score.getString("created_at").equals("null")) {
+						dateCreated = score.getString("created_at");
+
+						DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+						DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+
+						String formattedDateCreated = "";
+						try {
+							Date startDate = inputDF.parse(dateCreated);
+							formattedDateCreated = outputDF.format(startDate);
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+
+						dateCreated = formattedDateCreated;
+					}
+
+					if ((id != null) && (lmxId != null) && (highScore != null)) {
+						addMachineScore(new MachineScore(Integer.parseInt(id), Integer.parseInt(lmxId), dateCreated, username, Long.parseLong(highScore)));
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
 		}
 	}
 
