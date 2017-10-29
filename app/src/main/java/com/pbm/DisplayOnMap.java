@@ -21,9 +21,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.Serializable;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import static com.pbm.R.id.map;
 
 public class DisplayOnMap extends PinballMapActivity implements
         GoogleMap.OnMyLocationButtonClickListener,
@@ -39,7 +40,7 @@ public class DisplayOnMap extends PinballMapActivity implements
 		setContentView(R.layout.display_on_map);
 		logAnalyticsHit("com.pbm.DisplayOnMap");
         MapFragment mapFragment =
-                (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+                (MapFragment) getFragmentManager().findFragmentById(map);
         mapFragment.getMapAsync(this);
 	}
 
@@ -55,13 +56,8 @@ public class DisplayOnMap extends PinballMapActivity implements
         Location[] locations = Arrays.copyOf(arrayDataObject, arrayDataObject.length,Location[].class);
         for (Location location : locations) {
             LatLng position = new LatLng(Float.valueOf(location.getLat()), Float.valueOf(location.getLon()));
-            Marker marker = null;
-            try {
-                marker = mMap.addMarker(new MarkerOptions().title(location.getName())
-                        .snippet(location.numMachines(this) + " machines").position(position));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            Marker marker = mMap.addMarker(new MarkerOptions().title(location.getName())
+                .snippet(location.getNumMachines() + " machines").position(position));
             markers.add(marker);
         }
 

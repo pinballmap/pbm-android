@@ -429,6 +429,7 @@ public class PBMApplication extends Application {
 		values.put(PBMContract.LocationContract.COLUMN_DATE_LAST_UPDATED, location.getDateLastUpdated());
 		values.put(PBMContract.LocationContract.COLUMN_DESCRIPTION, location.getDescription());
 		values.put(PBMContract.LocationContract.COLUMN_DISTANCE_FROM_YOU, location.getDistanceFromYou());
+		values.put(PBMContract.LocationContract.COLUMN_NUM_MACHINES, location.getNumMachines());
 
 		getWriteableDB().insert(PBMContract.LocationContract.TABLE_NAME, null, values);
 	}
@@ -960,6 +961,7 @@ public class PBMApplication extends Application {
 			String website = location.getString("website");
 			String lastUpdatedByUsername = location.getString("last_updated_by_username");
 			String description = location.getString("description");
+			String numMachines = location.getString("num_machines");
 
 			String dateLastUpdated = null;
 			if (location.has("date_last_updated") && !location.getString("date_last_updated").equals("null")) {
@@ -998,7 +1000,7 @@ public class PBMApplication extends Application {
 				Location newLocation =
 						new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip,
 								phone, locationTypeID, website, operatorID, dateLastUpdated,
-								lastUpdatedByUsername, description);
+								lastUpdatedByUsername, description, numMachines);
 				addLocation(newLocation);
 			}
 

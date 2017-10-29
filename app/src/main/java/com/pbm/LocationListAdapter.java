@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -54,11 +53,7 @@ class LocationListAdapter extends ArrayAdapter<com.pbm.Location> {
 			Location location = filteredLocationList.get(position);
                 holder.name.setText(Html.fromHtml("<b>" + location.getName() + "</b> " + "<i>(" + location.getCity() + ")</i>"));
 			holder.distance.setText(location.getMilesInfo());
-			try {
-				holder.numMachines.setText(String.format("%d", location.numMachines((PinballMapActivity) context)));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+			holder.numMachines.setText(String.format("%s", location.getNumMachines(), context));
 		}
 
 		return row;
