@@ -3,8 +3,11 @@ package com.pbm;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +25,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class RecentScores extends PinballMapActivity {
+	private ProgressBar progressBar;
 	private List<Spanned> recentScores = new ArrayList<>();
 	final private static int NUM_RECENT_SCORES_TO_SHOW = 20;
 
@@ -32,6 +36,20 @@ public class RecentScores extends PinballMapActivity {
 
 		logAnalyticsHit("com.pbm.RecentScores");
 
+		progressBar = new ProgressBar(getPBMActivity(),null,android.R.attr.progressBarStyleLarge);
+		progressBar.setIndeterminate(true);
+		progressBar.setVisibility(View.VISIBLE);
+
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+			RelativeLayout.LayoutParams.WRAP_CONTENT,
+			RelativeLayout.LayoutParams.WRAP_CONTENT
+		);
+		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+		progressBar.setLayoutParams(layoutParams);
+
+		RelativeLayout layout = (RelativeLayout)findViewById(R.id.scoreRelativeLayout);
+		layout.addView(progressBar);
+
 		new Thread(new Runnable() {
 	        public void run() {
 			try {
@@ -39,11 +57,12 @@ public class RecentScores extends PinballMapActivity {
 			} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException | ParseException e) {
 				e.printStackTrace();
 			}
-				RecentScores.super.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					ListView recentScoresTable = (ListView)findViewById(R.id.recentscorestable);
-					recentScoresTable.setAdapter(new ArrayAdapter<>(RecentScores.this, R.layout.custom_list_item_1, recentScores));
+			RecentScores.super.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				ListView recentScoresTable = (ListView)findViewById(R.id.recentscorestable);
+				recentScoresTable.setAdapter(new ArrayAdapter<>(RecentScores.this, R.layout.custom_list_item_1, recentScores));
+				progressBar.setVisibility(View.INVISIBLE);
 				}
 			});
 	        }
@@ -70,6 +89,7 @@ public class RecentScores extends PinballMapActivity {
 			JSONObject msx = scores.getJSONObject(i);
 			
 			int lmxID = msx.getInt("location_machine_xref_id");
+			app.loadLmx(lmxID);
 			if (msx.get("score") != null) {
 				LocationMachineXref lmx = app.getLmx(lmxID);
 				long score = msx.getLong("score");
@@ -83,12 +103,11 @@ public class RecentScores extends PinballMapActivity {
 				Date dateCreatedAt = inputDF.parse(rawScoreDate);
 				String scoreDate = outputDF.format(dateCreatedAt);
 
-
 				String title = "<u>" + machine.getName() + "</u><br />" +
 					formatter.format(score) + " by <b>" + username + "</b>" + "<br />" +
 					"<small>at " + location.getName() + " on " + scoreDate + "</small>";
 
-                    recentScores.add(Html.fromHtml(title));
+				recentScores.add(Html.fromHtml(title));
 			}
 		}
 	}
