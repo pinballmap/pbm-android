@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -27,6 +29,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class RecentlyAdded extends PinballMapActivity {
+	private ProgressBar progressBar;
 	private List<Spanned> recentAdds = new ArrayList<>();
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,20 @@ public class RecentlyAdded extends PinballMapActivity {
 		setContentView(R.layout.recently_added);
 
 		logAnalyticsHit("com.pbm.RecentlyAdded");
+
+		progressBar = new ProgressBar(getPBMActivity(),null,android.R.attr.progressBarStyleLarge);
+		progressBar.setIndeterminate(true);
+		progressBar.setVisibility(View.VISIBLE);
+
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT
+		);
+		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+		progressBar.setLayoutParams(layoutParams);
+
+		RelativeLayout layout = (RelativeLayout)findViewById(R.id.recentRelativeLayout);
+		layout.addView(progressBar);
 
 		new Thread(new Runnable() {
 			public void run() {
@@ -47,7 +64,8 @@ public class RecentlyAdded extends PinballMapActivity {
 			RecentlyAdded.super.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					showTable(recentAdds);
+				showTable(recentAdds);
+				progressBar.setVisibility(View.INVISIBLE);
 				}
 			});
 			}
