@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -60,8 +61,10 @@ public class RecentlyAdded extends PinballMapActivity {
 				getLocationData();
 			} catch (UnsupportedEncodingException | InterruptedException | ExecutionException | JSONException | ParseException e) {
 				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			RecentlyAdded.super.runOnUiThread(new Runnable() {
+				RecentlyAdded.super.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
 				showTable(recentAdds);
@@ -73,7 +76,7 @@ public class RecentlyAdded extends PinballMapActivity {
 	}
 
     @SuppressWarnings("deprecation")
-	public void getLocationData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
+	public void getLocationData() throws IOException, InterruptedException, ExecutionException, JSONException, ParseException {
 		int NUM_ADDED_TO_SHOW = 20;
 		PBMApplication app = getPBMApplication();
 

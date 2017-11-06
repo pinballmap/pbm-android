@@ -11,14 +11,14 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -752,7 +753,7 @@ public class PBMApplication extends Application {
 		return origRequest + (!origRequest.contains("?") ? "?" : ";") + authDetails;
 	}
 
-	public void initializeData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
+	public void initializeData() throws IOException, InterruptedException, ExecutionException, JSONException, ParseException {
 		dataLoadTimestamp = System.currentTimeMillis();
 		Log.d("com.pbm", "initializing data");
 		getDbHelper().removeAll();
@@ -773,7 +774,7 @@ public class PBMApplication extends Application {
 		initializeOperators();
 	}
 
-	void initializeRegionMachines() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+	void initializeRegionMachines() throws IOException, InterruptedException, ExecutionException, JSONException {
 		Region region = getRegion();
 		String json = new RetrieveJsonTask().execute(
 				requestWithAuthDetails(PinballMapActivity.regionlessBase + "machines.json?no_details=1;region_id=" + region.getId()),
@@ -784,17 +785,15 @@ public class PBMApplication extends Application {
 			return;
 		}
 
-		JSONObject jsonObject = new JSONObject(json);
-		JSONArray machines = jsonObject.getJSONArray("machines");
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode rootNode = objectMapper.readTree(json);
+		JsonNode locations = rootNode.path("machines");
+		Iterator<JsonNode> elements = locations.elements();
 
 		List<String> machineIds = new ArrayList<>();
-		for (int i = 0; i < machines.length(); i++) {
-			try {
-				JSONObject machine = machines.getJSONObject(i);
-				machineIds.add(machine.getString("id"));
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+		while(elements.hasNext()){
+			JsonNode machine = elements.next();
+			machineIds.add(machine.path("id").asText());
 		}
 
 		Cursor cursor = getWriteableDB().rawQuery("update machines set exists_in_region = 1 where id in (" + TextUtils.join(", ", machineIds) + ")", null);
@@ -802,29 +801,304 @@ public class PBMApplication extends Application {
 		cursor.close();
 	}
 
-	void initializeMachineScores() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+	void initializeOperators() throws IOException, InterruptedException, ExecutionException, JSONException {
 		String json = new RetrieveJsonTask().execute(
-			requestWithAuthDetails(PinballMapActivity.regionBase + "machine_score_xrefs.json"), "GET"
+			requestWithAuthDetails(PinballMapActivity.regionBase + "operators.json"),
+			"GET"
 		).get();
+
 		if (json == null) {
 			return;
 		}
 
-		JSONObject jsonObject = new JSONObject(json);
-		JSONArray scores = jsonObject.getJSONArray("machine_score_xrefs");
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode rootNode = objectMapper.readTree(json);
+		JsonNode locations = rootNode.path("operators");
+		Iterator<JsonNode> elements = locations.elements();
+		while(elements.hasNext()){
+			JsonNode type = elements.next();
+			String name = type.path("name").asText();
+			String id = type.path("id").asText();
 
-		for (int i = 0; i < scores.length(); i++) {
-			try {
-				JSONObject score = scores.getJSONObject(i);
+			if ((id != null) && (name != null)) {
+				addOperator(new Operator(Integer.parseInt(id), name));
+			}
+		}
+	}
 
-				String id = score.getString("id");
-				String lmxId = score.getString("location_machine_xref_id");
-				String username = score.getString("username");
-				String highScore = score.getString("score");
+	void initializeLocationTypes() throws IOException, InterruptedException, ExecutionException, JSONException {
+		String json = new RetrieveJsonTask().execute(
+			requestWithAuthDetails(PinballMapActivity.regionlessBase + "location_types.json"),
+			"GET"
+		).get();
+
+		if (json == null) {
+			return;
+		}
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode rootNode = objectMapper.readTree(json);
+		JsonNode locations = rootNode.path("location_types");
+		Iterator<JsonNode> elements = locations.elements();
+		while(elements.hasNext()){
+			JsonNode type = elements.next();
+			String name = type.path("name").asText();
+			String id = type.path("id").asText();
+
+			if ((id != null) && (name != null)) {
+				addLocationType(new LocationType(Integer.parseInt(id), name));
+			}
+		}
+	}
+
+	void initializeAllMachines() throws IOException, InterruptedException, ExecutionException, JSONException {
+		String json = new RetrieveJsonTask().execute(
+			requestWithAuthDetails(PinballMapActivity.regionlessBase + "machines.json?no_details=1"),
+			"GET"
+		).get();
+
+		if (json == null) {
+			return;
+		}
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode rootNode = objectMapper.readTree(json);
+		JsonNode locations = rootNode.path("machines");
+		Iterator<JsonNode> elements = locations.elements();
+		while(elements.hasNext()){
+			JsonNode machine = elements.next();
+			String name = machine.path("name").asText();
+			String id = machine.path("id").asText();
+			String year = machine.path("year").asText();
+			String manufacturer = machine.path("manufacturer").asText();
+
+			String machineGroupId = machine.path("machine_group_id").asText();
+			if (machineGroupId.equals("null")) {
+				machineGroupId = "";
+			}
+
+			if ((id != null) && (name != null)) {
+				addMachine(new Machine(Integer.parseInt(id), name, year, manufacturer, false, machineGroupId));
+			}
+		}
+	}
+
+	void initializeZones() throws IOException, InterruptedException, ExecutionException, JSONException {
+		String json = new RetrieveJsonTask().execute(
+			requestWithAuthDetails(PinballMapActivity.regionBase + "zones.json"), "GET"
+		).get();
+
+		if (json == null) {
+			return;
+		}
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode rootNode = objectMapper.readTree(json);
+		JsonNode locations = rootNode.path("zones");
+		Iterator<JsonNode> elements = locations.elements();
+		while(elements.hasNext()){
+			JsonNode zone = elements.next();
+
+			String name = zone.path("name").asText();
+			String id = zone.path("id").asText();
+			Boolean isPrimary = zone.path("is_primary").asBoolean();
+
+			if ((id != null) && (name != null)) {
+				addZone(new Zone(Integer.parseInt(id), name, isPrimary ? 1 : 0));
+			}
+		}
+	}
+
+	void loadLmx(int lmxId) throws ExecutionException, InterruptedException, JSONException, ParseException, IOException {
+		String json = new RetrieveJsonTask().execute(
+			requestWithAuthDetails(PinballMapActivity.regionlessBase + "location_machine_xrefs/" + Integer.toString(lmxId) + ".json"),
+			"GET"
+		).get();
+
+		if (json == null) {
+			return;
+		}
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode rootNode = objectMapper.readTree(json);
+
+		if (rootNode.has("location_machine")) {
+			JsonNode lmx = rootNode.path("location_machine");
+
+			int lmxID = lmx.path("id").asInt();
+			int lmxLocationID = lmx.path("location_id").asInt();
+			int machineID = lmx.path("machine_id").asInt();
+			String condition = lmx.path("condition").asText();
+			String conditionDate = lmx.path("condition_date").asText();
+			if (conditionDate.equals("null")) {
+				conditionDate = null;
+			}
+
+			String username = lmx.path("last_updated_by_username").asText();
+
+			if (Integer.toString(machineID) != null) {
+				addLocationMachineXref(
+					new LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate, username)
+				);
+			}
+		}
+	}
+
+	void loadLmxesForLocation(Location location) throws ExecutionException, InterruptedException, JSONException, ParseException, IOException {
+		String json = new RetrieveJsonTask().execute(
+			requestWithAuthDetails(PinballMapActivity.regionBase + "locations/" + Integer.toString(location.getId()) + ".json"),
+			"GET"
+		).get();
+
+		if (json == null) {
+			return;
+		}
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode rootNode = objectMapper.readTree(json);
+		JsonNode locations = rootNode.path("location_machine_xrefs");
+		Iterator<JsonNode> elements = locations.elements();
+		while(elements.hasNext()){
+			JsonNode lmx = elements.next();
+
+			int lmxID = lmx.path("id").asInt();
+			int lmxLocationID = lmx.path("location_id").asInt();
+			int machineID = lmx.path("machine_id").asInt();
+			String condition = lmx.path("condition").asText();
+			String conditionDate = lmx.path("condition_date").asText();
+			if (conditionDate.equals("null")) {
+				conditionDate = null;
+			}
+
+			String username = lmx.path("last_updated_by_username").asText();
+
+			Machine machine = getMachine(machineID);
+
+			if (machine != null) {
+				machine.setExistsInRegion(true);
+				updateMachine(machine);
+
+				addLocationMachineXref(
+					new LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate, username)
+				);
+				loadConditions(lmx);
+				loadScores(lmx);
+			}
+		}
+	}
+
+	void initializeLocations() throws IOException, InterruptedException, ExecutionException, JSONException, ParseException {
+		String json = new RetrieveJsonTask().execute(
+			requestWithAuthDetails(PinballMapActivity.regionBase + "locations.json?no_details=1"),
+			"GET"
+		).get();
+
+		if (json == null) {
+			return;
+		}
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode rootNode = objectMapper.readTree(json);
+		JsonNode locations = rootNode.path("locations");
+		Iterator<JsonNode> elements = locations.elements();
+		while(elements.hasNext()){
+			JsonNode location = elements.next();
+
+			int id = location.path("id").asInt();
+			String name = location.path("name").asText();
+			String lat = location.path("lat").asText();
+			String lon = location.path("lon").asText();
+			String street = location.path("street").asText();
+			String city = location.path("city").asText();
+			String zip = location.path("zip").asText();
+			String phone = location.path("phone").asText();
+			String state = location.path("state").asText();
+			String website = location.path("website").asText();
+			String lastUpdatedByUsername = location.path("last_updated_by_username").asText();
+			String description = location.path("description").asText();
+			String numMachines = location.path("num_machines").asText();
+
+			String dateLastUpdated = null;
+			if (location.has("date_last_updated") && !location.path("date_last_updated").asText().equals("null")) {
+				dateLastUpdated = location.path("date_last_updated").asText();
+
+				DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+				DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+
+				String formattedDateLastUpdated = "";
+				try {
+					Date startDate = inputDF.parse(dateLastUpdated);
+					formattedDateLastUpdated = outputDF.format(startDate);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+
+				dateLastUpdated = formattedDateLastUpdated;
+			}
+
+			int zoneID = 0;
+			if (location.has("zone_id") && !location.path("zone_id").asText().equals("null")) {
+				zoneID = location.path("zone_id").asInt();
+			}
+
+			int locationTypeID = 0;
+			if (location.has("location_type_id") && !location.path("location_type_id").asText().equals("null")) {
+				locationTypeID = location.path("location_type_id").asInt();
+			}
+
+			int operatorID = 0;
+			if (location.has("operator_id") && !location.path("operator_id").asText().equals("null")) {
+				operatorID = location.path("operator_id").asInt();
+			}
+
+			if ((name != null) && (lat != null) && (lon != null)) {
+				Location newLocation =
+						new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip,
+								phone, locationTypeID, website, operatorID, dateLastUpdated,
+								lastUpdatedByUsername, description, numMachines);
+				addLocation(newLocation);
+			}
+		}
+	}
+
+	void loadConditions(JsonNode lmx) throws JSONException {
+		if (lmx.has("machine_conditions")) {
+			JsonNode conditions = lmx.path("machine_conditions");
+			Iterator<JsonNode> elements = conditions.elements();
+
+			while(elements.hasNext()){
+				JsonNode pastCondition = elements.next();
+
+				String pastConditionUsername = pastConditionUsername = pastCondition.path("username").asText();
+
+				Condition machineCondition = new Condition(
+					pastCondition.path("id").asInt(),
+					pastCondition.path("updated_at").asText(),
+					pastCondition.path("comment").asText(),
+					lmx.path("id").asInt(),
+					pastConditionUsername
+				);
+				addMachineCondition(machineCondition);
+			}
+		}
+	}
+
+	void loadScores(JsonNode lmx) throws JSONException {
+		if (lmx.has("machine_score_xrefs")) {
+			JsonNode scores = lmx.path("machine_score_xrefs");
+
+			Iterator<JsonNode> elements = scores.elements();
+			while(elements.hasNext()){
+				JsonNode score = elements.next();
+
+				String id = score.path("id").asText();
+				String lmxId = score.path("location_machine_xref_id").asText();
+				String username = score.path("username").asText();
+				String highScore = score.path("score").asText();
 
 				String dateCreated = null;
-				if (score.has("created_at") && !score.getString("created_at").equals("null")) {
-					dateCreated = score.getString("created_at");
+				if (score.has("created_at") && !score.path("created_at").asText().equals("null")) {
+					dateCreated = score.path("created_at").asText();
 
 					DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 					DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
@@ -843,360 +1117,11 @@ public class PBMApplication extends Application {
 				if ((id != null) && (lmxId != null) && (highScore != null)) {
 					addMachineScore(new MachineScore(Integer.parseInt(id), Integer.parseInt(lmxId), dateCreated, username, Long.parseLong(highScore)));
 				}
-			} catch (JSONException e) {
-				e.printStackTrace();
 			}
 		}
 	}
 
-	void initializeOperators() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		String json = new RetrieveJsonTask().execute(
-			requestWithAuthDetails(PinballMapActivity.regionBase + "operators.json"),
-			"GET"
-		).get();
-
-		if (json == null) {
-			return;
-		}
-
-		JSONObject jsonObject = new JSONObject(json);
-		JSONArray types = jsonObject.getJSONArray("operators");
-
-		for (int i = 0; i < types.length(); i++) {
-			try {
-				JSONObject type = types.getJSONObject(i);
-				String name = type.getString("name");
-				String id = type.getString("id");
-
-				if ((id != null) && (name != null)) {
-					addOperator(new Operator(Integer.parseInt(id), name));
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	void initializeLocationTypes() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		String json = new RetrieveJsonTask().execute(
-			requestWithAuthDetails(PinballMapActivity.regionlessBase + "location_types.json"),
-			"GET"
-		).get();
-
-		if (json == null) {
-			return;
-		}
-
-		JSONObject jsonObject = new JSONObject(json);
-		JSONArray types = jsonObject.getJSONArray("location_types");
-
-		for (int i = 0; i < types.length(); i++) {
-			try {
-				JSONObject type = types.getJSONObject(i);
-				String name = type.getString("name");
-				String id = type.getString("id");
-
-				if ((id != null) && (name != null)) {
-					addLocationType(new LocationType(Integer.parseInt(id), name));
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	void initializeAllMachines() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		String json = new RetrieveJsonTask().execute(
-			requestWithAuthDetails(PinballMapActivity.regionlessBase + "machines.json?no_details=1"),
-			"GET"
-		).get();
-
-		if (json == null) {
-			return;
-		}
-
-		JSONObject jsonObject = new JSONObject(json);
-		JSONArray machines = jsonObject.getJSONArray("machines");
-
-		for (int i = 0; i < machines.length(); i++) {
-			try {
-				JSONObject machine = machines.getJSONObject(i);
-				String name = machine.getString("name");
-				String id = machine.getString("id");
-				String year = machine.getString("year");
-				String manufacturer = machine.getString("manufacturer");
-
-				String machineGroupId = machine.getString("machine_group_id");
-				if (machineGroupId.equals("null")) {
-					machineGroupId = "";
-				}
-
-				if ((id != null) && (name != null)) {
-					addMachine(new Machine(Integer.parseInt(id), name, year, manufacturer, false, machineGroupId));
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	void initializeZones() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
-		String json = new RetrieveJsonTask().execute(
-			requestWithAuthDetails(PinballMapActivity.regionBase + "zones.json"), "GET"
-		).get();
-
-		if (json == null) {
-			return;
-		}
-
-		JSONObject jsonObject = new JSONObject(json);
-		JSONArray zones = jsonObject.getJSONArray("zones");
-
-		for (int i = 0; i < zones.length(); i++) {
-			JSONObject zone = zones.getJSONObject(i);
-
-			String name = zone.getString("name");
-			String id = zone.getString("id");
-			Boolean isPrimary = zone.getBoolean("is_primary");
-
-			if ((id != null) && (name != null)) {
-				addZone(new Zone(Integer.parseInt(id), name, isPrimary ? 1 : 0));
-			}
-		}
-	}
-
-	void loadLmx(int lmxId) throws ExecutionException, InterruptedException, JSONException, ParseException {
-		String json = new RetrieveJsonTask().execute(
-			requestWithAuthDetails(PinballMapActivity.regionlessBase + "location_machine_xrefs/" + Integer.toString(lmxId) + ".json"),
-			"GET"
-		).get();
-
-		if (json == null) {
-			return;
-		}
-
-		JSONObject jsonObject = new JSONObject(json);
-
-		if (jsonObject.has("location_machine")) {
-			JSONObject lmx = jsonObject.getJSONObject("location_machine");
-
-			int lmxID = lmx.getInt("id");
-			int lmxLocationID = lmx.getInt("location_id");
-			int machineID = lmx.getInt("machine_id");
-			String condition = lmx.getString("condition");
-			String conditionDate = lmx.getString("condition_date");
-			if (conditionDate.equals("null")) {
-				conditionDate = null;
-			}
-
-			String username;
-			try {
-				username = lmx.getString("last_updated_by_username");
-			} catch (JSONException e) {
-				username = "";
-			}
-
-			if (Integer.toString(machineID) != null) {
-				addLocationMachineXref(
-					new LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate, username)
-				);
-			}
-		}
-	}
-
-	void loadLmxesForLocation(Location location) throws ExecutionException, InterruptedException, JSONException, ParseException {
-		String json = new RetrieveJsonTask().execute(
-			requestWithAuthDetails(PinballMapActivity.regionBase + "locations/" + Integer.toString(location.getId()) + ".json"),
-			"GET"
-		).get();
-
-		if (json == null) {
-			return;
-		}
-
-		JSONObject jsonObject = new JSONObject(json);
-
-		JSONArray lmxes = null;
-		if (jsonObject.has("location_machine_xrefs")) {
-			lmxes = jsonObject.getJSONArray("location_machine_xrefs");
-		}
-
-		if (lmxes != null && lmxes.length() > 0) for (int x = 0; x < lmxes.length(); x++) {
-			JSONObject lmx = lmxes.getJSONObject(x);
-
-			int lmxID = lmx.getInt("id");
-			int lmxLocationID = lmx.getInt("location_id");
-			int machineID = lmx.getInt("machine_id");
-			String condition = lmx.getString("condition");
-			String conditionDate = lmx.getString("condition_date");
-			if (conditionDate.equals("null")) {
-				conditionDate = null;
-			}
-
-			String username;
-			try {
-				username = lmx.getString("last_updated_by_username");
-			} catch (JSONException e) {
-				username = "";
-			}
-
-			Machine machine = getMachine(machineID);
-
-			if (machine != null) {
-				machine.setExistsInRegion(true);
-				updateMachine(machine);
-
-				addLocationMachineXref(
-					new LocationMachineXref(lmxID, lmxLocationID, machineID, condition, conditionDate, username)
-				);
-				loadConditions(lmx);
-				loadScores(lmx);
-			}
-		}
-	}
-
-	void initializeLocations() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
-		String json = new RetrieveJsonTask().execute(
-			requestWithAuthDetails(PinballMapActivity.regionBase + "locations.json?no_details=1"),
-			"GET"
-		).get();
-
-		if (json == null) {
-			return;
-		}
-
-		JSONObject jsonObject = new JSONObject(json);
-		JSONArray locations = jsonObject.getJSONArray("locations");
-
-		for (int i = 0; i < locations.length(); i++) {
-			JSONObject location = locations.getJSONObject(i);
-
-			int id = location.getInt("id");
-			String name = location.getString("name");
-			String lat = location.getString("lat");
-			String lon = location.getString("lon");
-			String street = location.getString("street");
-			String city = location.getString("city");
-			String zip = location.getString("zip");
-			String phone = location.getString("phone");
-			String state = location.getString("state");
-			String website = location.getString("website");
-			String lastUpdatedByUsername = location.getString("last_updated_by_username");
-			String description = location.getString("description");
-			String numMachines = location.getString("num_machines");
-
-			String dateLastUpdated = null;
-			if (location.has("date_last_updated") && !location.getString("date_last_updated").equals("null")) {
-				dateLastUpdated = location.getString("date_last_updated");
-
-				DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-				DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
-
-				String formattedDateLastUpdated = "";
-				try {
-					Date startDate = inputDF.parse(dateLastUpdated);
-					formattedDateLastUpdated = outputDF.format(startDate);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-
-				dateLastUpdated = formattedDateLastUpdated;
-			}
-
-			int zoneID = 0;
-			if (location.has("zone_id") && !location.getString("zone_id").equals("null")) {
-				zoneID = location.getInt("zone_id");
-			}
-
-			int locationTypeID = 0;
-			if (location.has("location_type_id") && !location.getString("location_type_id").equals("null")) {
-				locationTypeID = location.getInt("location_type_id");
-			}
-
-			int operatorID = 0;
-			if (location.has("operator_id") && !location.getString("operator_id").equals("null")) {
-				operatorID = location.getInt("operator_id");
-			}
-
-			if ((name != null) && (lat != null) && (lon != null)) {
-				Location newLocation =
-						new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip,
-								phone, locationTypeID, website, operatorID, dateLastUpdated,
-								lastUpdatedByUsername, description, numMachines);
-				addLocation(newLocation);
-			}
-		}
-	}
-
-	void loadConditions(JSONObject lmx) throws JSONException {
-		if (lmx.has("machine_conditions")) {
-			JSONArray conditions = lmx.getJSONArray("machine_conditions");
-
-			for (int conditionIndex = 0; conditionIndex < conditions.length(); conditionIndex++) {
-				JSONObject pastCondition = conditions.getJSONObject(conditionIndex);
-
-				String pastConditionUsername;
-				try {
-					pastConditionUsername = pastCondition.getString("username");
-				} catch (JSONException e) {
-					pastConditionUsername = "";
-				}
-
-				Condition machineCondition = new Condition(
-					pastCondition.getInt("id"),
-					pastCondition.getString("updated_at"),
-					pastCondition.getString("comment"),
-					lmx.getInt("id"),
-					pastConditionUsername
-				);
-				addMachineCondition(machineCondition);
-			}
-		}
-	}
-
-	void loadScores(JSONObject lmx) throws JSONException {
-		if (lmx.has("machine_score_xrefs")) {
-			JSONArray scores = lmx.getJSONArray("machine_score_xrefs");
-
-			for (int i = 0; i < scores.length(); i++) {
-				try {
-					JSONObject score = scores.getJSONObject(i);
-
-					String id = score.getString("id");
-					String lmxId = score.getString("location_machine_xref_id");
-					String username = score.getString("username");
-					String highScore = score.getString("score");
-
-					String dateCreated = null;
-					if (score.has("created_at") && !score.getString("created_at").equals("null")) {
-						dateCreated = score.getString("created_at");
-
-						DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-						DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
-
-						String formattedDateCreated = "";
-						try {
-							Date startDate = inputDF.parse(dateCreated);
-							formattedDateCreated = outputDF.format(startDate);
-						} catch (ParseException e) {
-							e.printStackTrace();
-						}
-
-						dateCreated = formattedDateCreated;
-					}
-
-					if ((id != null) && (lmxId != null) && (highScore != null)) {
-						addMachineScore(new MachineScore(Integer.parseInt(id), Integer.parseInt(lmxId), dateCreated, username, Long.parseLong(highScore)));
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-
-		}
-	}
-
-	public boolean initializeRegions() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException {
+	public boolean initializeRegions() throws IOException, InterruptedException, ExecutionException, JSONException {
 		String json = new RetrieveJsonTask().execute(
 			PinballMapActivity.regionlessBase + "regions.json",
 			"GET"
@@ -1206,23 +1131,26 @@ public class PBMApplication extends Application {
 			return false;
 		}
 
-		JSONObject jsonObject = new JSONObject(json);
-		JSONArray regions = jsonObject.getJSONArray("regions");
-
-		for (int i = 0; i < regions.length(); i++) {
-			JSONObject region = regions.getJSONObject(i);
-			String id = region.getString("id");
-			String name = region.getString("name");
-			String formalName = region.getString("full_name");
-			String motd = region.getString("motd");
-			String lat = region.getString("lat");
-			String lon = region.getString("lon");
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode rootNode = objectMapper.readTree(json);
+		JsonNode locations = rootNode.path("regions");
+		Iterator<JsonNode> elements = locations.elements();
+		while(elements.hasNext()){
+			JsonNode region = elements.next();
+			String id = region.path("id").asText();
+			String name = region.path("name").asText();
+			String formalName = region.path("full_name").asText();
+			String motd = region.path("motd").asText();
+			String lat = region.path("lat").asText();
+			String lon = region.path("lon").asText();
 			List<String> emailAddresses = new ArrayList<>();
 
 			if (region.has("all_admin_email_address")) {
-				JSONArray jsonEmailAddresses = region.getJSONArray("all_admin_email_address");
-				for (int x = 0; x < jsonEmailAddresses.length(); x++) {
-					emailAddresses.add(jsonEmailAddresses.getString(x));
+				JsonNode jsonEmailAddresses = region.path("all_admin_email_address");
+				Iterator<JsonNode> emailElements = jsonEmailAddresses.elements();
+
+				while(emailElements.hasNext()) {
+					emailAddresses.add(emailElements.next().asText());
 				}
 			}
 			addRegion(new Region(Integer.parseInt(id), name, formalName, motd, lat, lon, emailAddresses));

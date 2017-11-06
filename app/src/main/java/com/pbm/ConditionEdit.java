@@ -8,9 +8,12 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -79,9 +82,17 @@ public class ConditionEdit extends PinballMapActivity implements OnTaskCompleted
 	@Override
 	public void onTaskCompleted(String results) throws JSONException, InterruptedException, ExecutionException {
 		Log.d("com.pbm.condition", results);
-		final JSONObject jsonObject = new JSONObject(results);
-		if (jsonObject.has("location_machine")) {
-			getPBMApplication().loadConditions(jsonObject.getJSONObject("location_machine"));
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode rootNode = null;
+		try {
+			rootNode = objectMapper.readTree(results);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (rootNode.has("location_machine")) {
+			getPBMApplication().loadConditions(rootNode.path("location_machine"));
 		}
 
 		Location location = lmx.getLocation(this);

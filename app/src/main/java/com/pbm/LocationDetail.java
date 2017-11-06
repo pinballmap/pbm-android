@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -126,6 +127,8 @@ public class LocationDetail extends PinballMapActivity {
 				} catch (ExecutionException e) {
 					e.printStackTrace();
 				} catch (JSONException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 					final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

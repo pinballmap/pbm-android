@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -56,8 +57,10 @@ public class RecentScores extends PinballMapActivity {
 				getLocationData();
 			} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException | ParseException e) {
 				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			RecentScores.super.runOnUiThread(new Runnable() {
+				RecentScores.super.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				ListView recentScoresTable = (ListView)findViewById(R.id.recentscorestable);
@@ -70,7 +73,7 @@ public class RecentScores extends PinballMapActivity {
 	}
 
     @SuppressWarnings("deprecation")
-	public void getLocationData() throws UnsupportedEncodingException, InterruptedException, ExecutionException, JSONException, ParseException {
+	public void getLocationData() throws IOException, InterruptedException, ExecutionException, JSONException, ParseException {
 		PBMApplication app = getPBMApplication();
 
 		String json = new RetrieveJsonTask().execute(
@@ -89,7 +92,19 @@ public class RecentScores extends PinballMapActivity {
 			JSONObject msx = scores.getJSONObject(i);
 			
 			int lmxID = msx.getInt("location_machine_xref_id");
-			app.loadLmx(lmxID);
+			try {
+				app.loadLmx(lmxID);
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			if (msx.get("score") != null) {
 				LocationMachineXref lmx = app.getLmx(lmxID);
 				long score = msx.getLong("score");

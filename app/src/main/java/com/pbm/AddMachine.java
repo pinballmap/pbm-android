@@ -9,9 +9,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
@@ -126,25 +129,31 @@ public class AddMachine extends PinballMapActivity implements OnTaskCompleted {
 	public void onTaskCompleted(String results) throws JSONException, InterruptedException, ExecutionException {
 		PBMApplication app = getPBMApplication();
 
-		JSONObject jsonObject = new JSONObject(results);
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode rootNode = null;
+		try {
+			rootNode = objectMapper.readTree(results);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
-		if (jsonObject.has("machine")) {
-			JSONObject jsonMachine = jsonObject.getJSONObject("machine");
-			app.addMachine(new Machine(jsonMachine.getInt("id"), jsonMachine.getString("name"), null, null, true, null));
+		if (rootNode.has("machine")) {
+			JsonNode jsonMachine = rootNode.path("machine");
+			app.addMachine(new Machine(jsonMachine.path("id").asInt(), jsonMachine.path("name").asText(), null, null, true, null));
 			
 			new RetrieveJsonTask(AddMachine.this).execute(
-				app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs.json?location_id=" + location.getId() + ";machine_id=" + jsonMachine.getString("id")),
+				app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs.json?location_id=" + location.getId() + ";machine_id=" + jsonMachine.path("id").asText()),
 				"POST"
 			).get();
 			
 			return;
 		}
 		
-		if (jsonObject.has("location_machine")) {
-			JSONObject jsonLmx = jsonObject.getJSONObject("location_machine");
-			int id = jsonLmx.getInt("id");
-			int locationID = jsonLmx.getInt("location_id");
-			int machineID = jsonLmx.getInt("machine_id");
+		if (rootNode.has("location_machine")) {
+			JsonNode jsonLmx = rootNode.path("location_machine");
+			int id = jsonLmx.path("id").asInt();
+			int locationID = jsonLmx.path("location_id").asInt();
+			int machineID = jsonLmx.path("machine_id").asInt();
 
 			try {
 				app.addLocationMachineXref(new LocationMachineXref(id, locationID, machineID, "", "", ""));
