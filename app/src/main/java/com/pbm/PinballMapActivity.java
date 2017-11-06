@@ -113,6 +113,8 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 				}
 			} catch (UnsupportedEncodingException | ParseException | InterruptedException | JSONException | ExecutionException e) {
 				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}

@@ -12,6 +12,7 @@ import android.view.Window;
 
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.ExecutionException;
 
@@ -46,6 +47,8 @@ public class SplashScreen extends PinballMapActivity {
                 return;
             }
 		} catch (UnsupportedEncodingException | InterruptedException | ExecutionException | JSONException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
