@@ -23,6 +23,14 @@ public class Preferences extends PinballMapActivity {
 		startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
 	}
 
+	public void onResume() {
+		super.onResume();
+		
+		Intent myIntent = new Intent();
+		myIntent.setClassName("com.pbm", "com.pbm.SplashScreen");
+		startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
+	}
+
 	public boolean onCreateOptionsMenu(Menu menu) {
 		return false;
 	}
