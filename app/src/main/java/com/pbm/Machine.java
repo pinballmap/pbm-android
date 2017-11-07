@@ -2,6 +2,8 @@ package com.pbm;
 
 import android.database.Cursor;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 public class Machine implements Serializable {
@@ -28,6 +30,18 @@ public class Machine implements Serializable {
 		this.id = id;
 		this.name = name;
 		this.numLocations = numLocations;
+	}
+
+	public Machine(
+		@JsonProperty("id") int id,
+	    @JsonProperty("name") String name,
+		@JsonProperty("year") String year,
+		@JsonProperty("manufacturer") String manufacturer
+	) {
+		this.id = id;
+		this.name = name;
+		this.year = year;
+		this.manufacturer = manufacturer;
 	}
 
 	void setExistsInRegion(boolean existsInRegion) {

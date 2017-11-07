@@ -866,19 +866,12 @@ public class PBMApplication extends Application {
 		JsonNode locations = rootNode.path("machines");
 		Iterator<JsonNode> elements = locations.elements();
 		while(elements.hasNext()){
-			JsonNode machine = elements.next();
-			String name = machine.path("name").asText();
-			String id = machine.path("id").asText();
-			String year = machine.path("year").asText();
-			String manufacturer = machine.path("manufacturer").asText();
+			JsonNode machineJson = elements.next();
 
-			String machineGroupId = machine.path("machine_group_id").asText();
-			if (machineGroupId.equals("null")) {
-				machineGroupId = "";
-			}
+			Machine machine = objectMapper.readValue(machineJson.toString(), Machine.class);
 
-			if ((id != null) && (name != null)) {
-				addMachine(new Machine(Integer.parseInt(id), name, year, manufacturer, false, machineGroupId));
+			if ((Integer.toString(machine.getId()) != null) && (machine.getName() != null)) {
+				addMachine(machine);
 			}
 		}
 	}
@@ -1002,61 +995,12 @@ public class PBMApplication extends Application {
 		JsonNode locations = rootNode.path("locations");
 		Iterator<JsonNode> elements = locations.elements();
 		while(elements.hasNext()){
-			JsonNode location = elements.next();
+			JsonNode locationJson = elements.next();
 
-			int id = location.path("id").asInt();
-			String name = location.path("name").asText();
-			String lat = location.path("lat").asText();
-			String lon = location.path("lon").asText();
-			String street = location.path("street").asText();
-			String city = location.path("city").asText();
-			String zip = location.path("zip").asText();
-			String phone = location.path("phone").asText();
-			String state = location.path("state").asText();
-			String website = location.path("website").asText();
-			String lastUpdatedByUsername = location.path("last_updated_by_username").asText();
-			String description = location.path("description").asText();
-			String numMachines = location.path("num_machines").asText();
+			Location location = objectMapper.readValue(locationJson.toString(), Location.class);
 
-			String dateLastUpdated = null;
-			if (location.has("date_last_updated") && !location.path("date_last_updated").asText().equals("null")) {
-				dateLastUpdated = location.path("date_last_updated").asText();
-
-				DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-				DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
-
-				String formattedDateLastUpdated = "";
-				try {
-					Date startDate = inputDF.parse(dateLastUpdated);
-					formattedDateLastUpdated = outputDF.format(startDate);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-
-				dateLastUpdated = formattedDateLastUpdated;
-			}
-
-			int zoneID = 0;
-			if (location.has("zone_id") && !location.path("zone_id").asText().equals("null")) {
-				zoneID = location.path("zone_id").asInt();
-			}
-
-			int locationTypeID = 0;
-			if (location.has("location_type_id") && !location.path("location_type_id").asText().equals("null")) {
-				locationTypeID = location.path("location_type_id").asInt();
-			}
-
-			int operatorID = 0;
-			if (location.has("operator_id") && !location.path("operator_id").asText().equals("null")) {
-				operatorID = location.path("operator_id").asInt();
-			}
-
-			if ((name != null) && (lat != null) && (lon != null)) {
-				Location newLocation =
-						new com.pbm.Location(id, name, lat, lon, zoneID, street, city, state, zip,
-								phone, locationTypeID, website, operatorID, dateLastUpdated,
-								lastUpdatedByUsername, description, numMachines);
-				addLocation(newLocation);
+			if ((location.getName() != null) && (location.getLat() != null) && (location.getLon() != null)) {
+				addLocation(location);
 			}
 		}
 	}
