@@ -2,6 +2,8 @@ package com.pbm;
 
 import android.database.Cursor;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -50,6 +52,30 @@ public class Location implements Serializable {
 		this.dateLastUpdated = dateLastUpdated;
 		this.lastUpdatedByUsername = lastUpdatedByUsername;
 		this.description = description;
+		this.numMachines = numMachines;
+	}
+
+	public Location(
+		@JsonProperty("id") int id,
+		@JsonProperty("name") String name,
+		@JsonProperty("lat") String lat,
+		@JsonProperty("lon") String lon,
+		@JsonProperty("city") String city,
+		@JsonProperty("last_updated_by_username") String lastUpdatedByUsername,
+		@JsonProperty("num_machines") String numMachines,
+		@JsonProperty("zone_id") String zoneId,
+		@JsonProperty("location_type_id") String locationTypeId,
+		@JsonProperty("operator_id") String operatorId
+	) {
+		this.id = id;
+		this.name = name;
+		this.lat = lat;
+		this.lon = lon;
+		this.zoneID = zoneID;
+		this.city = city;
+		this.locationTypeID = locationTypeID;
+		this.operatorID = operatorID;
+		this.lastUpdatedByUsername = lastUpdatedByUsername;
 		this.numMachines = numMachines;
 	}
 
