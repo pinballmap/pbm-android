@@ -2,6 +2,7 @@ package com.pbm;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.Window;
 
@@ -26,8 +27,38 @@ public class InitializingScreen extends PinballMapActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
+
+		BackgroundInitialize backgroundInitialize = new BackgroundInitialize();
+		backgroundInitialize.start();
+
 		SplashThread splashThread = new SplashThread();
 		splashThread.start();
+	}
+
+	private class BackgroundInitialize extends Thread {
+		public void run() {
+			try {
+				Log.d("com.pbm", "TIMING STARTING MACHINES");
+				getPBMApplication().initializeAllMachines();
+				Log.d("com.pbm", "TIMING STARTING TAG REGION MACHINES");
+				getPBMApplication().initializeRegionMachines();
+				Log.d("com.pbm", "TIMING STARTING LOCATIONS");
+				getPBMApplication().initializeLocations();
+
+				finish();
+				interrupt();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private class SplashThread extends Thread {

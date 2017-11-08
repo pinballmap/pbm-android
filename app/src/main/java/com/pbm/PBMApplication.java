@@ -760,12 +760,6 @@ public class PBMApplication extends Application {
 
 		Log.d("com.pbm", "TIMING STARTING REGION");
 		initializeRegions();
-		Log.d("com.pbm", "TIMING STARTING MACHINES");
-		initializeAllMachines();
-		Log.d("com.pbm", "TIMING STARTING TAG REGION MACHINES");
-		initializeRegionMachines();
-		Log.d("com.pbm", "TIMING STARTING LOCATIONS");
-		initializeLocations();
 		Log.d("com.pbm", "TIMING STARTING LOCATION TYPES");
 		initializeLocationTypes();
 		Log.d("com.pbm", "TIMING STARTING ZONES");
