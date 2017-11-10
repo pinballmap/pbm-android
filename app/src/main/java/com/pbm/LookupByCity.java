@@ -17,10 +17,12 @@ public class LookupByCity extends PinballMapActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lookup_by_city);
-		
-		logAnalyticsHit("com.pbm.LookupByCity");
 
-		initializeCityTable();
+		waitForInitializeAndLoad("com.pbm.LookupByCity", R.id.lookupByCityRelativeView, new Runnable() {
+			public void run() {
+				initializeCityTable();
+			}
+		});
 	}
 
 	public void initializeCityTable() {

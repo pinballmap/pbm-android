@@ -21,7 +21,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -36,7 +39,6 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -55,6 +57,8 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	public static String apiPath = "api/v1/";
 	public static String regionBase = "THIS IS SET DURING APP INIT";
 	public static String regionlessBase = httpBase + apiPath;
+
+	public ProgressBar progressBar;
 
 	public ListView table;
 	private GoogleApiClient googleApiClient;
@@ -111,9 +115,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 				if (!authToken.equals("") && region != -1) {
 					getPBMApplication().initializeData();
 				}
-			} catch (UnsupportedEncodingException | ParseException | InterruptedException | JSONException | ExecutionException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
+			} catch (ParseException | InterruptedException | JSONException | ExecutionException | IOException e) {
 				e.printStackTrace();
 			}
 		}
@@ -134,9 +136,6 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 		if (getPBMApplication().getDataLoadTimestamp() > 0) {
 			dataLoadTimestamp = getPBMApplication().getDataLoadTimestamp();
 		}
-
-		Log.d("com.pbm ELAPSED TIME", Long.toString(System.currentTimeMillis() - dataLoadTimestamp));
-		Log.d("com.pbm DATA EXPIRY", Long.toString(BuildConfig.DATA_EXPIRY_TIME_IN_MS));
 
 		if (System.currentTimeMillis() - dataLoadTimestamp >= BuildConfig.DATA_EXPIRY_TIME_IN_MS) {
 			Log.d("com.pbm", "starting thread");
@@ -202,8 +201,8 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 			case R.id.logout:
 				SharedPreferences settings = getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
 				SharedPreferences.Editor editor = settings.edit();
-                editor.putInt("region", -1);
-                editor.putString("authToken", "");
+				editor.putInt("region", -1);
+				editor.putString("authToken", "");
 				editor.putString("username", "");
 				editor.putString("email", "");
 				editor.putString("id", "");
@@ -225,7 +224,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				intent.putExtra("EXIT", true);
 				startActivity(intent);
-				
+
 				return true;
 		}
 		return false;
@@ -261,7 +260,8 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 		this.finish();
 	}
 
-	public void activityRefreshResult() {}
+	public void activityRefreshResult() {
+	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (resultCode) {
@@ -312,9 +312,9 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 				InputStream inputStream = httpConn.getInputStream();
 
 				if (
-					((httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) || (httpConn.getResponseCode() == HttpURLConnection.HTTP_CREATED))
-					&& (inputStream != null)
-				) {
+						((httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) || (httpConn.getResponseCode() == HttpURLConnection.HTTP_CREATED))
+								&& (inputStream != null)
+						) {
 					return inputStream;
 				} else {
 					Log.e("HTTP RESPONSE MESSAGE:", httpConn.getResponseMessage());
@@ -338,8 +338,8 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 
 	public void closeWithNoInternet() {
 		new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Get some Internet, dude")
-			.setMessage("This application requires an Internet connection, sorry.")
-			.setPositiveButton("Bummer", new DialogInterface.OnClickListener() {
+				.setMessage("This application requires an Internet connection, sorry.")
+				.setPositiveButton("Bummer", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						activityQuitResult();
 					}
@@ -348,8 +348,8 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 
 	public void closeOnMissingServer() {
 		new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Sorry")
-			.setMessage("The Pinball Map Server is missing! Please try later, thank you.")
-			.setPositiveButton("Bummer", new DialogInterface.OnClickListener() {
+				.setMessage("The Pinball Map Server is missing! Please try later, thank you.")
+				.setPositiveButton("Bummer", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						activityQuitResult();
 					}
@@ -417,5 +417,58 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 
 	public void processLocation() {
 		Log.d("com.pbm.location", "PBM processLocation " + getLocation());
+	}
+
+	public void enableLoadingSpinnerForView(int viewId) {
+		Log.d("com.pbm", "ENABLING SPINNER");
+
+		progressBar = new ProgressBar(getPBMActivity(), null, android.R.attr.progressBarStyleLarge);
+		progressBar.setIndeterminate(true);
+		progressBar.setVisibility(View.VISIBLE);
+
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT
+		);
+		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+		progressBar.setLayoutParams(layoutParams);
+
+		RelativeLayout layout = (RelativeLayout) findViewById(viewId);
+		layout.addView(progressBar);
+	}
+
+	public void disableLoadingSpinner() {
+		Log.d("com.pbm", "DISABLING SPINNER");
+		progressBar.setVisibility(View.INVISIBLE);
+	}
+
+	public void waitForInitializeAndLoad(String logName, int viewId, final Runnable initMethod) {
+		logAnalyticsHit(logName);
+
+		if (!getPBMApplication().getIsDataInitialized()) {
+			enableLoadingSpinnerForView(viewId);
+
+			new Thread(new Runnable() {
+				public void run() {
+					while (!getPBMApplication().getIsDataInitialized()) {
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+						disableLoadingSpinner();
+						initMethod.run();
+						}
+					});
+				}
+			}).start();
+		} else {
+			initMethod.run();
+		}
 	}
 }

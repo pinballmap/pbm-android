@@ -20,9 +20,11 @@ public class LookupByOperator extends PinballMapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lookup_by_operator);
 
-		logAnalyticsHit("com.pbm.LookupByOperator");
-
-		initializeOperatorTable();
+		waitForInitializeAndLoad("com.pbm.LookupByOperator", R.id.lookupByOperatorRelativeView, new Runnable() {
+			public void run() {
+				initializeOperatorTable();
+			}
+		});
 	}
 
 	public void initializeOperatorTable() {

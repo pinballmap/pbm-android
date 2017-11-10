@@ -40,6 +40,10 @@ public class PBMApplication extends Application {
 	private PBMDbHelper dbHelper;
 	private SQLiteDatabase readableDB;
 	private SQLiteDatabase writeableDB;
+	private boolean isDataInitialized;
+
+	public boolean getIsDataInitialized() { return isDataInitialized; }
+	public void setIsDataInitialized(boolean isDataInitialized) { this.isDataInitialized = isDataInitialized; }
 
 	public long getDataLoadTimestamp() {
 		return dataLoadTimestamp;
@@ -754,18 +758,21 @@ public class PBMApplication extends Application {
 	}
 
 	public void initializeData() throws IOException, InterruptedException, ExecutionException, JSONException, ParseException {
-		dataLoadTimestamp = System.currentTimeMillis();
 		Log.d("com.pbm", "initializing data");
+
+		setDataLoadTimestamp(System.currentTimeMillis());
 		getDbHelper().removeAll();
 
 		Log.d("com.pbm", "TIMING STARTING REGION");
-		initializeRegions();
-		Log.d("com.pbm", "TIMING STARTING LOCATION TYPES");
-		initializeLocationTypes();
-		Log.d("com.pbm", "TIMING STARTING ZONES");
-		initializeZones();
-		Log.d("com.pbm", "TIMING STARTING OPERATORS");
-		initializeOperators();
+		try {
+			initializeRegions();
+		} catch (IOException | JSONException | ExecutionException | InterruptedException e) {
+			e.printStackTrace();
+		}
+		Log.d("com.pbm", "TIMING ENDING REGION");
+
+		InitializeData initializeData = new InitializeData(this);
+		initializeData.start();
 	}
 
 	void initializeRegionMachines() throws IOException, InterruptedException, ExecutionException, JSONException {

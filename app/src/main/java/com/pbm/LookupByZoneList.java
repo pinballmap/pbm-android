@@ -21,9 +21,11 @@ public class LookupByZoneList extends PinballMapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lookup_by_zone_list);
 
-		logAnalyticsHit("com.pbm.LookupByZoneList");
-
-		initializeLocationLookupListTable();
+		waitForInitializeAndLoad("com.pbm.LookupByZoneList", R.id.lookupByZoneRelativeView	, new Runnable() {
+			public void run() {
+				initializeLocationLookupListTable();
+			}
+		});
 	}
 
 	public void initializeLocationLookupListTable() {

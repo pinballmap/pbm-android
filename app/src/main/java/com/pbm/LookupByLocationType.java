@@ -20,9 +20,11 @@ public class LookupByLocationType extends PinballMapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lookup_by_location_type);
 
-		logAnalyticsHit("com.pbm.LookupByLocationType");
-
-		initializeLocationTypeTable();
+		waitForInitializeAndLoad("com.pbm.LookupByLocationType", R.id.lookupByLocationTypeRelativeView, new Runnable() {
+			public void run() {
+				initializeLocationTypeTable();
+			}
+		});
 	}
 
 	public void initializeLocationTypeTable() {

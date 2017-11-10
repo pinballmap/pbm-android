@@ -6,14 +6,12 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,17 +36,14 @@ public class PBMMenu extends PinballMapActivity {
 			finish();
 		}
 
-		//noinspection deprecation
-		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		rootPID = this.getTaskId();
 		setTitle(getPBMApplication().getRegion().getFormalName() + " " + getString(R.string.app_name));
 		setContentView(R.layout.main);
+
 		//noinspection ConstantConditions
 		getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-		Log.d("com.pbm", "LOADED MENU!!!!!!!!!!!!!");
 	}
 
 	@Override
@@ -73,19 +68,9 @@ public class PBMMenu extends PinballMapActivity {
 		mainMenuItems.add(LOOKUP_BY_LOCATION);
 		mainMenuItems.add(LOOKUP_BY_MACHINE);
 		mainMenuItems.add(LOOKUP_BY_CITY);
-
-		if (app.getZones().values().size() > 0) {
-			mainMenuItems.add(LOOKUP_BY_ZONE);
-		}
-
-		if (app.getOperators().values().size() > 0) {
-			mainMenuItems.add(LOOKUP_BY_OPERATOR);
-		}
-
-		if (region != null && region.locationTypes(this) != null) {
-			mainMenuItems.add(LOOKUP_BY_LOCATION_TYPE);
-		}
-
+		mainMenuItems.add(LOOKUP_BY_ZONE);
+		mainMenuItems.add(LOOKUP_BY_OPERATOR);
+		mainMenuItems.add(LOOKUP_BY_LOCATION_TYPE);
 		mainMenuItems.add(RECENTLY_ADDED);
 		mainMenuItems.add(RECENT_HIGH_SCORES);
 		mainMenuItems.add(EVENTS);
