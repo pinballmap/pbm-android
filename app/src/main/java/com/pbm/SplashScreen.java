@@ -8,22 +8,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
-import android.view.Window;
 
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.concurrent.ExecutionException;
 
 public class SplashScreen extends PinballMapActivity {
 	private RegionsTab regionsTab;
 
 	public void onCreate(Bundle savedInstanceState) {
-		Log.d("com.pbm", "STARTING APP???????????");
-
-		//noinspection deprecation
-		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.region_tab_container);
 
@@ -46,9 +40,7 @@ public class SplashScreen extends PinballMapActivity {
                 closeOnMissingServer();
                 return;
             }
-		} catch (UnsupportedEncodingException | InterruptedException | ExecutionException | JSONException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (InterruptedException | ExecutionException | JSONException | IOException e) {
 			e.printStackTrace();
 		}
 

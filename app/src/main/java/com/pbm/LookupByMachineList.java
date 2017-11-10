@@ -15,9 +15,11 @@ public class LookupByMachineList extends PinballMapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lookup_by_machine_list);
 
-		logAnalyticsHit("com.pbm.LookupByMachineList");
-
-		initializeMachineLookupListTable();
+		waitForInitializeAndLoad("com.pbm.LookupByMachineList", R.id.lookupByMachineRelativeLayout, new Runnable() {
+			public void run() {
+				initializeMachineLookupListTable();
+			}
+		});
 	}
 
 	public void initializeMachineLookupListTable() {
