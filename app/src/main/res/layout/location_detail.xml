@@ -5,40 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true" >
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:background="@color/background">
+                  android:id="@+id/locationDetailLinearLayout"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:background="@color/background"
+                  android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/locationData"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/border_bg">
+            android:background="@drawable/border_bg"
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/locationName"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="@color/darkText"
+                android:paddingBottom="0dp"
                 android:paddingLeft="8dp"
-                android:paddingTop="5dp"
                 android:paddingRight="5dp"
-                android:paddingBottom="0dp" />
+                android:paddingTop="5dp"
+                android:textColor="@color/darkText"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/locationMetadata"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:paddingEnd="10dip"
+                android:paddingLeft="10dip"
                 android:paddingRight="10dip"
                 android:paddingStart="10dip"
-                android:paddingLeft="10dip"
-                android:textSize="18sp"
-                android:textColor="@color/darkText" />
+                android:textColor="@color/darkText"
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/locationPhone"
@@ -46,34 +49,34 @@
                 android:layout_height="wrap_content"
                 android:autoLink="phone"
                 android:paddingEnd="10dip"
+                android:paddingLeft="10dip"
                 android:paddingRight="10dip"
                 android:paddingStart="10dip"
-                android:paddingLeft="10dip"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/website"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawablePadding="5dip"
+                android:drawableRight="@drawable/ic_action_open_in_new_black"
                 android:linksClickable="true"
+                android:paddingBottom="4dip"
                 android:paddingEnd="10dip"
+                android:paddingLeft="10dip"
                 android:paddingRight="10dip"
                 android:paddingStart="10dip"
-                android:paddingLeft="10dip"
-                android:textSize="15sp"
-                android:paddingBottom="4dip"
                 android:text="@string/website_link"
-                android:drawableRight="@drawable/ic_action_open_in_new_black"
-                android:drawablePadding="5dip" />
+                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/locationType"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:paddingEnd="10dip"
+                android:paddingLeft="10dip"
                 android:paddingRight="10dip"
                 android:paddingStart="10dip"
-                android:paddingLeft="10dip"
                 android:textColor="@color/medText"
                 android:textSize="15sp"/>
 
@@ -85,6 +88,7 @@
                 android:paddingRight="10dip"
                 android:textColor="@color/medText"
                 android:textSize="15sp"/>
+
             <TextView
                 android:id="@+id/description"
                 android:layout_width="fill_parent"
@@ -93,7 +97,8 @@
                 android:paddingRight="10dip"
                 android:textColor="@color/medText"
                 android:textSize="15sp"
-                android:textStyle="italic" />
+                android:textStyle="italic"/>
+
             <TextView
                 android:id="@+id/distance"
                 android:layout_width="fill_parent"
@@ -101,42 +106,42 @@
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
                 android:textColor="@color/medText"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/locationLastUpdated"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:textStyle="italic"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/updated_on_bg"
                 android:gravity="center_horizontal"
-                android:textColor="#6b6b6b" />
+                android:textColor="#6b6b6b"
+                android:textSize="15sp"
+                android:textStyle="italic"/>
         </LinearLayout>
 
         <Button
             android:id="@+id/confirmLocationButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/location_confirm"
-            android:textStyle="italic"
-            android:background="@drawable/input_btn"
-            android:textSize="13sp"
-            android:minHeight="36dp"
-            android:textColor="@color/lightText"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="6dp"
+            android:background="@drawable/input_btn"
             android:elevation="2dp"
-            android:layout_gravity="center_horizontal" />
+            android:minHeight="36dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/location_confirm"
+            android:textColor="@color/lightText"
+            android:textSize="13sp"
+            android:textStyle="italic"/>
 
         <LinearLayout
             android:id="@+id/lmxTable"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/background" />
+            android:background="@color/background"
+            android:orientation="vertical"/>
     </LinearLayout>
 </ScrollView>

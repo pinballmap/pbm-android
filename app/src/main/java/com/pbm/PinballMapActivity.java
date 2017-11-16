@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -419,7 +420,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 		Log.d("com.pbm.location", "PBM processLocation " + getLocation());
 	}
 
-	public void enableLoadingSpinnerForView(int viewId) {
+	public void enableLoadingSpinnerForView(ViewGroup viewGroup) {
 		Log.d("com.pbm", "ENABLING SPINNER");
 
 		progressBar = new ProgressBar(getPBMActivity(), null, android.R.attr.progressBarStyleLarge);
@@ -433,8 +434,7 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 		progressBar.setLayoutParams(layoutParams);
 
-		RelativeLayout layout = (RelativeLayout) findViewById(viewId);
-		layout.addView(progressBar);
+		viewGroup.addView(progressBar);
 	}
 
 	public void disableLoadingSpinner() {
@@ -442,11 +442,11 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 		progressBar.setVisibility(View.INVISIBLE);
 	}
 
-	public void waitForInitializeAndLoad(String logName, int viewId, final Runnable initMethod) {
+	public void waitForInitializeAndLoad(String logName, ViewGroup viewGroup, final Runnable initMethod) {
 		logAnalyticsHit(logName);
 
 		if (!getPBMApplication().getIsDataInitialized()) {
-			enableLoadingSpinnerForView(viewId);
+			enableLoadingSpinnerForView(viewGroup);
 
 			new Thread(new Runnable() {
 				public void run() {
