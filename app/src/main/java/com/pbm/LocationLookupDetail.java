@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -40,20 +41,18 @@ public class LocationLookupDetail extends PinballMapActivity {
 		} else {
 			setTitle("Locations");
 		}
-		
-		logAnalyticsHit("com.pbm.LocationLookupDetail");
 
 		locationLookupDetailTable = (ListView)findViewById(R.id.locationLookupDetailTable);
 		locationLookupDetailTable.setFastScrollEnabled(true);
 		locationLookupDetailTable.setTextFilterEnabled(true);
 		locationLookupDetailTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			Intent myIntent = new Intent();
-			com.pbm.Location location = foundLocations.get(position);
+				Intent myIntent = new Intent();
+				com.pbm.Location location = foundLocations.get(position);
 
-			myIntent.putExtra("Location", location);
-			myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
-			startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
+				myIntent.putExtra("Location", location);
+				myIntent.setClassName("com.pbm", "com.pbm.LocationDetail");
+				startActivityForResult(myIntent, PinballMapActivity.QUIT_RESULT);
 			}
 		});
 
@@ -141,13 +140,23 @@ public class LocationLookupDetail extends PinballMapActivity {
 
 	public void onResume() {
 		super.onResume();
-		loadLocationData();
+
+		waitForInitializeAndLoad("com.pbm.LocationLookupDetail", (ViewGroup)findViewById(R.id.locationLookupDetailRelativeView).getParent(), new Runnable() {
+			public void run() {
+				loadLocationData();
+			}
+		});
 	}
 
 	@Override
 	public void processLocation() {
 		super.processLocation();
-		loadLocationData();
+
+		waitForInitializeAndLoad("com.pbm.LocationLookupDetail", (ViewGroup)findViewById(R.id.locationLookupDetailRelativeView).getParent(), new Runnable() {
+			public void run() {
+				loadLocationData();
+			}
+		});
 	}
 
 	@Override
