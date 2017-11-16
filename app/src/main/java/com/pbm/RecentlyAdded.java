@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -35,7 +36,7 @@ public class RecentlyAdded extends PinballMapActivity {
 
 		logAnalyticsHit("com.pbm.RecentlyAdded");
 
-		enableLoadingSpinnerForView(R.id.recentRelativeLayout);
+		enableLoadingSpinnerForView((ViewGroup)findViewById(R.id.recentRelativeLayout).getParent());
 
 		new Thread(new Runnable() {
 			public void run() {
@@ -80,7 +81,7 @@ public class RecentlyAdded extends PinballMapActivity {
 
 			int id = lmxJson.getInt("id");
 			Location location = app.getLocation(lmxJson.getInt("location_id"));
-			app.loadLmxesForLocation(location);
+			app.loadLocationDetail(location);
 			LocationMachineXref lmx = app.getLmx(id);
 
 			String rawCreatedAt = lmxJson.getString("created_at").split("T")[0];

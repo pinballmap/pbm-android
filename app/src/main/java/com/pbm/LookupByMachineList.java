@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -15,7 +16,7 @@ public class LookupByMachineList extends PinballMapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lookup_by_machine_list);
 
-		waitForInitializeAndLoad("com.pbm.LookupByMachineList", R.id.lookupByMachineRelativeLayout, new Runnable() {
+		waitForInitializeAndLoad("com.pbm.LookupByMachineList", (ViewGroup)findViewById(R.id.lookupByMachineRelativeLayout).getParent(), new Runnable() {
 			public void run() {
 				initializeMachineLookupListTable();
 			}

@@ -938,7 +938,7 @@ public class PBMApplication extends Application {
 		}
 	}
 
-	void loadLmxesForLocation(Location location) throws ExecutionException, InterruptedException, JSONException, ParseException, IOException {
+	void loadLocationDetail(Location location) throws ExecutionException, InterruptedException, JSONException, ParseException, IOException {
 		String json = new RetrieveJsonTask().execute(
 			requestWithAuthDetails(PinballMapActivity.regionBase + "locations/" + Integer.toString(location.getId()) + ".json"),
 			"GET"
@@ -950,6 +950,33 @@ public class PBMApplication extends Application {
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode rootNode = objectMapper.readTree(json);
+
+		String dateLastUpdated = null;
+		if (rootNode.has("date_last_updated") && !rootNode.path("date_last_updated").asText().equals("null")) {
+			dateLastUpdated = rootNode.path("date_last_updated").asText();
+
+			DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+			DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+
+			String formattedDateLastUpdated = "";
+			try {
+				Date startDate = inputDF.parse(dateLastUpdated);
+				formattedDateLastUpdated = outputDF.format(startDate);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+
+			dateLastUpdated = formattedDateLastUpdated;
+		}
+
+		String sql = "update locations set street=?, state=?, zip=?, phone=?, website=?, description=?, date_last_updated=? where id=?";
+		Cursor cursor = getWriteableDB().rawQuery(
+			sql,
+			new String[] {rootNode.path("street").asText(), rootNode.path("state").asText(), rootNode.path("zip").asText(), rootNode.path("phone").asText(), rootNode.path("website").asText(),rootNode.path("description").asText(), dateLastUpdated, Integer.toString(location.getId())}
+		);
+		cursor.moveToFirst();
+		cursor.close();
+
 		JsonNode locations = rootNode.path("location_machine_xrefs");
 		Iterator<JsonNode> elements = locations.elements();
 		while(elements.hasNext()){

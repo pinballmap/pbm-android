@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,17 +49,20 @@ public class LocationDetail extends PinballMapActivity {
 		logAnalyticsHit("com.pbm.LocationDetail");
 
 		lmxes.clear();
+		setTitle("");
 
 		location = (Location) getIntent().getExtras().get("Location");
 
 		if (location != null) {
-			setTitle("");
 			setupConfirmLocationButton();
-			loadLocationData();
+			try {
+				loadLocationData();
+			} catch (InterruptedException | ExecutionException | ParseException | JSONException | IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-    @SuppressWarnings("deprecation")
 	public void setupConfirmLocationButton() {
 		Button confirmLocationButton = (Button) findViewById(R.id.confirmLocationButton);
 
@@ -110,119 +114,103 @@ public class LocationDetail extends PinballMapActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-    @SuppressWarnings("deprecation")
-	private void loadLocationData() {
-		new Thread(new Runnable() {
-			public void run() {
-			LocationDetail.super.runOnUiThread(new Runnable() {
-				public void run() {
-				try {
-					getPBMApplication().loadLmxesForLocation(location);
-					lmxes = location.getLmxes(LocationDetail.this);
-					machines = location.getMachines(LocationDetail.this);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				} catch (JSONException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-					final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	private void loadLocationData() throws InterruptedException, ExecutionException, ParseException, JSONException, IOException {
+		enableLoadingSpinnerForView((ViewGroup)findViewById(R.id.locationDetailLinearLayout));
+		getPBMApplication().loadLocationDetail(location);
+		location = getPBMApplication().getLocation(location.getId());
 
-				TextView locationName = (TextView) findViewById(R.id.locationName);
-				TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
-				TextView locationType = (TextView) findViewById(R.id.locationType);
-				TextView locationMetadata = (TextView) findViewById(R.id.locationMetadata);
-				TextView locationWebsite = (TextView) findViewById(R.id.website);
-				TextView locationPhone = (TextView) findViewById(R.id.locationPhone);
-				TextView locationOperator = (TextView) findViewById(R.id.operator);
-				TextView locationDescription = (TextView) findViewById(R.id.description);
-                TextView locationDistance = (TextView) findViewById(R.id.distance);
+		lmxes = location.getLmxes(LocationDetail.this);
+		machines = location.getMachines(LocationDetail.this);
 
-				if (location.getDateLastUpdated() != null && !location.getDateLastUpdated().equals("") && !location.getDateLastUpdated().equals("null")) {
-					String lastUpdatedInfo = location.getDateLastUpdated();
+		final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-					if (location.getDateLastUpdated() != null && !location.getLastUpdatedByUsername().equals("") && !location.getLastUpdatedByUsername().equals("null")) {
-						lastUpdatedInfo = lastUpdatedInfo + " by <b>" + location.getLastUpdatedByUsername() + "</b>";
-					}
+		TextView locationName = (TextView) findViewById(R.id.locationName);
+		TextView locationLastUpdated = (TextView) findViewById(R.id.locationLastUpdated);
+		TextView locationType = (TextView) findViewById(R.id.locationType);
+		TextView locationMetadata = (TextView) findViewById(R.id.locationMetadata);
+		TextView locationWebsite = (TextView) findViewById(R.id.website);
+		TextView locationPhone = (TextView) findViewById(R.id.locationPhone);
+		TextView locationOperator = (TextView) findViewById(R.id.operator);
+		TextView locationDescription = (TextView) findViewById(R.id.description);
+		TextView locationDistance = (TextView) findViewById(R.id.distance);
 
-					locationLastUpdated.setVisibility(View.VISIBLE);
-					locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</b> " + lastUpdatedInfo));
-				} else {
-					locationLastUpdated.setVisibility(View.GONE);
-				}
+		if (location.getDateLastUpdated() != null && !location.getDateLastUpdated().equals("") && !location.getDateLastUpdated().equals("null")) {
+			String lastUpdatedInfo = location.getDateLastUpdated();
 
-				String locationTypeName = "";
-				LocationType type = location.getLocationType(LocationDetail.this);
-				if (type != null) {
-					locationTypeName = type.getName();
-				}
-
-				locationName.setText(location.getName());
-				locationMetadata.setText(
-					TextUtils.join(", ", new String[]{location.getStreet(), location.getCity(), location.getState(), location.getZip()})
-				);
-
-				if (location.getPhone() != null && !location.getPhone().equals("") && !location.getPhone().equals("null")) {
-					locationPhone.setVisibility(View.VISIBLE);
-					locationPhone.setText(location.getPhone());
-				} else {
-					locationPhone.setVisibility(View.GONE);
-				}
-
-				if (!locationTypeName.equals("") && !locationTypeName.equals("null")) {
-					locationType.setVisibility(View.VISIBLE);
-                        locationType.setText(Html.fromHtml("<i>Location Type:</i> " + locationTypeName));
-				} else {
-					locationType.setVisibility(View.GONE);
-				}
-
-				if (location.getWebsite() != null && !location.getWebsite().equals("") && !location.getWebsite().equals("null")) {
-					locationWebsite.setVisibility(View.VISIBLE);
-					locationWebsite.setMovementMethod(LinkMovementMethod.getInstance());
-					locationWebsite.setText(Html.fromHtml("<a href=\""+ location.getWebsite() +"\">Website</a>"));
-					locationWebsite.setClickable(true);
-				} else {
-					locationWebsite.setVisibility(View.GONE);
-				}
-
-				if (location.getDescription() != null && !location.getDescription().equals("") && !location.getDescription().equals("null")) {
-					locationDescription.setVisibility(View.VISIBLE);
-                        locationDescription.setText(Html.fromHtml("<i>Description:</i> " + location.getDescription()));
-
-				} else {
-					locationDescription.setVisibility(View.GONE);
-				}
-
-				Operator operator = location.getOperator(getPBMActivity());
-				if (operator != null) {
-					locationOperator.setVisibility(View.VISIBLE);
-                        locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.getName()));
-				} else {
-					locationOperator.setVisibility(View.GONE);
-				}
-
-				if (ActivityCompat.checkSelfPermission(LocationDetail.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(LocationDetail.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-					if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-							locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.getMilesInfo()));
-					} else {
-						if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-								locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.getMilesInfo())); // or for older api
-						}
-					}
-				} else {
-					locationDistance.setVisibility(View.GONE);
-				}
-
-				updateLMXTable();
-				}
-			});
+			if (location.getDateLastUpdated() != null && !location.getLastUpdatedByUsername().equals("") && !location.getLastUpdatedByUsername().equals("null")) {
+				lastUpdatedInfo = lastUpdatedInfo + " by <b>" + location.getLastUpdatedByUsername() + "</b>";
 			}
-		}).start();
+
+			locationLastUpdated.setVisibility(View.VISIBLE);
+			locationLastUpdated.setText(Html.fromHtml("<b>Last updated:</b> " + lastUpdatedInfo));
+		} else {
+			locationLastUpdated.setVisibility(View.GONE);
+		}
+
+		String locationTypeName = "";
+		LocationType type = location.getLocationType(LocationDetail.this);
+		if (type != null) {
+			locationTypeName = type.getName();
+		}
+
+		locationName.setText(location.getName());
+		locationMetadata.setText(
+			TextUtils.join(", ", new String[]{location.getStreet(), location.getCity(), location.getState(), location.getZip()})
+		);
+
+		if (location.getPhone() != null && !location.getPhone().equals("") && !location.getPhone().equals("null")) {
+			locationPhone.setVisibility(View.VISIBLE);
+			locationPhone.setText(location.getPhone());
+		} else {
+			locationPhone.setVisibility(View.GONE);
+		}
+
+		if (!locationTypeName.equals("") && !locationTypeName.equals("null")) {
+			locationType.setVisibility(View.VISIBLE);
+				locationType.setText(Html.fromHtml("<i>Location Type:</i> " + locationTypeName));
+		} else {
+			locationType.setVisibility(View.GONE);
+		}
+
+		if (location.getWebsite() != null && !location.getWebsite().equals("") && !location.getWebsite().equals("null")) {
+			locationWebsite.setVisibility(View.VISIBLE);
+			locationWebsite.setMovementMethod(LinkMovementMethod.getInstance());
+			locationWebsite.setText(Html.fromHtml("<a href=\""+ location.getWebsite() +"\">Website</a>"));
+			locationWebsite.setClickable(true);
+		} else {
+			locationWebsite.setVisibility(View.GONE);
+		}
+
+		if (location.getDescription() != null && !location.getDescription().equals("") && !location.getDescription().equals("null")) {
+			locationDescription.setVisibility(View.VISIBLE);
+				locationDescription.setText(Html.fromHtml("<i>Description:</i> " + location.getDescription()));
+
+		} else {
+			locationDescription.setVisibility(View.GONE);
+		}
+
+		Operator operator = location.getOperator(getPBMActivity());
+		if (operator != null) {
+			locationOperator.setVisibility(View.VISIBLE);
+				locationOperator.setText(Html.fromHtml("<i>Operated By:</i> " + operator.getName()));
+		} else {
+			locationOperator.setVisibility(View.GONE);
+		}
+
+		if (ActivityCompat.checkSelfPermission(LocationDetail.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(LocationDetail.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+			if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+					locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.getMilesInfo()));
+			} else {
+				if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+						locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.getMilesInfo())); // or for older api
+				}
+			}
+		} else {
+			locationDistance.setVisibility(View.GONE);
+		}
+
+		updateLMXTable();
+		disableLoadingSpinner();
 	}
 
 	private void updateLMXTable() {
@@ -275,23 +263,13 @@ public class LocationDetail extends PinballMapActivity {
 	public void activityRefreshResult() {
 		lmxes.clear();
 
-		new Thread(new Runnable() {
-			public void run() {
-			PBMApplication app = getPBMApplication();
-			location = app.getLocation(location.getId());
-				try {
-					lmxes = location.getLmxes(LocationDetail.this);
-					machines = location.getMachines(LocationDetail.this);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-
+		try {
 			loadLocationData();
-			}
-		}).start();
+		} catch (InterruptedException | ExecutionException | ParseException | JSONException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-    @SuppressWarnings("deprecation")
 	public View getLMXView(final LocationMachineXref lmx, LinearLayout lmxTable) {
 		MachineViewHolder holder;
 		LayoutInflater layoutInflater = LayoutInflater.from(getBaseContext());

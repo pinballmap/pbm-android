@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -21,7 +22,7 @@ public class LookupByZoneList extends PinballMapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lookup_by_zone_list);
 
-		waitForInitializeAndLoad("com.pbm.LookupByZoneList", R.id.lookupByZoneRelativeView	, new Runnable() {
+		waitForInitializeAndLoad("com.pbm.LookupByZoneList", (ViewGroup)findViewById(R.id.lookupByZoneRelativeView).getParent(), new Runnable() {
 			public void run() {
 				initializeLocationLookupListTable();
 			}

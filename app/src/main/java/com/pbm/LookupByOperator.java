@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -20,7 +21,7 @@ public class LookupByOperator extends PinballMapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lookup_by_operator);
 
-		waitForInitializeAndLoad("com.pbm.LookupByOperator", R.id.lookupByOperatorRelativeView, new Runnable() {
+		waitForInitializeAndLoad("com.pbm.LookupByOperator", (ViewGroup)findViewById(R.id.lookupByOperatorRelativeView).getParent(), new Runnable() {
 			public void run() {
 				initializeOperatorTable();
 			}
