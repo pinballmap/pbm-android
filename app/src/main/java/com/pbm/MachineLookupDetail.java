@@ -7,13 +7,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.text.ParseException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.concurrent.ExecutionException;
 
 public class MachineLookupDetail extends PinballMapActivity {
 	private Machine machine;
@@ -30,8 +32,6 @@ public class MachineLookupDetail extends PinballMapActivity {
 		//noinspection ConstantConditions
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		logAnalyticsHit("com.pbm.MachineLookupDetail");
-
 		Bundle extras = getIntent().getExtras();
 		machine = (Machine) extras.get("Machine");
 
@@ -39,8 +39,13 @@ public class MachineLookupDetail extends PinballMapActivity {
 			setTitle(machine.getName());
 
 			initializeMachineLookupDetailTable();
-			loadLocationData();
 		}
+
+		waitForInitializeAndLoad("com.pbm.MachineLookupDetail", (ViewGroup)findViewById(R.id.machineLookupDetailRelativeLayout).getParent(), new Runnable() {
+			public void run() {
+				loadLocationData();
+			}
+		});
 	}
 
 	public void initializeMachineLookupDetailTable() {
@@ -71,13 +76,13 @@ public class MachineLookupDetail extends PinballMapActivity {
 			public void run() {
 			MachineLookupDetail.super.runOnUiThread(new Runnable() {
 				public void run() {
-					try {
-						locationsWithMachine = getLocationsWithMachine(machine);
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
+				try {
+					locationsWithMachine = getPBMApplication().getLocationsWithMachine(machine);
+				} catch (InterruptedException | ExecutionException | IOException e) {
+					e.printStackTrace();
+				}
 
-					if (locationsWithMachine != null) {
+				if (locationsWithMachine != null) {
 					try {
 						Collections.sort(locationsWithMachine, new Comparator<Location>() {
 							public int compare(Location l1, Location l2) {
@@ -111,19 +116,6 @@ public class MachineLookupDetail extends PinballMapActivity {
 		super.onResume();
 		loadLocationData();
 		listState = null;
-	}
-
-	ArrayList<Location> getLocationsWithMachine(Machine machine) throws ParseException {
-		ArrayList<Location> locations = new ArrayList<>();
-
-		PBMApplication app = getPBMApplication();
-		for (LocationMachineXref lmx : app.getLmxes().values()) {
-			if (lmx.getMachine(this).getId() == machine.getId()) {
-				locations.add(lmx.getLocation(this));
-			}
-		}
-
-		return locations;
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {

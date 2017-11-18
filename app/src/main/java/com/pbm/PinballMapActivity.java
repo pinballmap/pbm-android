@@ -312,10 +312,12 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 				httpConn.connect();
 				InputStream inputStream = httpConn.getInputStream();
 
+				Log.d("com.pbm", urlString);
+
 				if (
-						((httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) || (httpConn.getResponseCode() == HttpURLConnection.HTTP_CREATED))
-								&& (inputStream != null)
-						) {
+					((httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) || (httpConn.getResponseCode() == HttpURLConnection.HTTP_CREATED))
+						&& (inputStream != null)
+				) {
 					return inputStream;
 				} else {
 					Log.e("HTTP RESPONSE MESSAGE:", httpConn.getResponseMessage());
