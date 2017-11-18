@@ -903,6 +903,29 @@ public class PBMApplication extends Application {
 		}
 	}
 
+	ArrayList<Location> getLocationsWithMachine(Machine machine) throws ExecutionException, InterruptedException, IOException {
+		ArrayList<Location> locations = new ArrayList<>();
+
+		String json = new RetrieveJsonTask().execute(
+				requestWithAuthDetails(PinballMapActivity.regionBase + "locations.json?by_machine_id=" + Integer.toString(machine.getId())),
+				"GET"
+		).get();
+
+		if (json == null) {
+			return null;
+		}
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode rootNode = objectMapper.readTree(json);
+		Iterator<JsonNode> elements = rootNode.path("locations").elements();
+		while(elements.hasNext()) {
+			JsonNode locationJson = elements.next();
+			locations.add(getLocation(locationJson.path("id").asInt()));
+		}
+
+		return locations;
+	}
+
 	void loadLmx(int lmxId) throws ExecutionException, InterruptedException, JSONException, ParseException, IOException {
 		String json = new RetrieveJsonTask().execute(
 			requestWithAuthDetails(PinballMapActivity.regionlessBase + "location_machine_xrefs/" + Integer.toString(lmxId) + ".json"),
@@ -951,7 +974,7 @@ public class PBMApplication extends Application {
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode rootNode = objectMapper.readTree(json);
 
-		String dateLastUpdated = null;
+		String dateLastUpdated = "";
 		if (rootNode.has("date_last_updated") && !rootNode.path("date_last_updated").asText().equals("null")) {
 			dateLastUpdated = rootNode.path("date_last_updated").asText();
 
