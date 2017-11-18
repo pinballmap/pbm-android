@@ -99,18 +99,12 @@ public class LocationMachineEdit extends PinballMapActivity {
 		});
 	}
 
-    @SuppressWarnings("deprecation")
 	public void initializePintipsButton() {
 		Button pintips = (Button) findViewById(R.id.pintips);
 		pintips.setMovementMethod(LinkMovementMethod.getInstance());
 
-		String urlLookupTypeData;
-		if (!machine.getGroupId().equals("")) {
-			urlLookupTypeData = "group/" + machine.getGroupId();
-		} else {
-			urlLookupTypeData = "machine/" + Integer.toString(machine.getId());
-		}
-            pintips.setText(Html.fromHtml("<a href=\"http://pintips.net/pinmap/" + urlLookupTypeData + "\">View playing tips on pintips.net</a>"));
+		String urlLookupTypeData = urlLookupTypeData = "machine/" + Integer.toString(machine.getId());
+		pintips.setText(Html.fromHtml("<a href=\"http://pintips.net/pinmap/" + urlLookupTypeData + "\">View playing tips on pintips.net</a>"));
 	}
 
 	public void initializeAddScoreButton() {
