@@ -33,7 +33,9 @@ public class MachineLookupDetail extends PinballMapActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Bundle extras = getIntent().getExtras();
-		machine = (Machine) extras.get("Machine");
+		if (extras != null) {
+			machine = (Machine) extras.get("Machine");
+		}
 
 		if (machine != null) {
 			setTitle(machine.getName());
@@ -43,7 +45,7 @@ public class MachineLookupDetail extends PinballMapActivity {
 
 		waitForInitializeAndLoad("com.pbm.MachineLookupDetail", (ViewGroup)findViewById(R.id.machineLookupDetailRelativeLayout).getParent(), new Runnable() {
 			public void run() {
-				loadLocationData();
+			loadLocationData();
 			}
 		});
 	}
@@ -72,50 +74,35 @@ public class MachineLookupDetail extends PinballMapActivity {
 	}
 
 	private void loadLocationData() {
-		new Thread(new Runnable() {
-			public void run() {
-			MachineLookupDetail.super.runOnUiThread(new Runnable() {
-				public void run() {
-				try {
-					locationsWithMachine = getPBMApplication().getLocationsWithMachine(machine);
-				} catch (InterruptedException | ExecutionException | IOException e) {
-					e.printStackTrace();
-				}
+		try {
+			locationsWithMachine = getPBMApplication().getLocationsWithMachine(machine);
+		} catch (InterruptedException | ExecutionException | IOException e) {
+			e.printStackTrace();
+		}
 
-				if (locationsWithMachine != null) {
-					try {
-						Collections.sort(locationsWithMachine, new Comparator<Location>() {
-							public int compare(Location l1, Location l2) {
-							return l1.getName().compareTo(l2.getName());
-							}
-						});
-					} catch (java.lang.NullPointerException nep) {
-						nep.printStackTrace();
+		if (locationsWithMachine != null) {
+			try {
+				Collections.sort(locationsWithMachine, new Comparator<Location>() {
+					public int compare(Location l1, Location l2) {
+					return l1.getName().compareTo(l2.getName());
 					}
-
-					machineLookupDetailTable.setAdapter(new LocationListAdapter(MachineLookupDetail.this, locationsWithMachine));
-					if (listState != null) {
-						machineLookupDetailTable.onRestoreInstanceState(listState);
-					}
-				}
-				}
-			});
+				});
+			} catch (java.lang.NullPointerException nep) {
+				nep.printStackTrace();
 			}
-		}).start();
-	}
 
+			machineLookupDetailTable.setAdapter(new LocationListAdapter(MachineLookupDetail.this, locationsWithMachine));
+			if (listState != null) {
+				machineLookupDetailTable.onRestoreInstanceState(listState);
+			}
+		}
+	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		listState = machineLookupDetailTable.onSaveInstanceState();
 		outState.putParcelable("listState", listState);
-	}
-
-	public void onResume() {
-		super.onResume();
-		loadLocationData();
-		listState = null;
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {

@@ -447,8 +447,8 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	public void waitForInitializeAndLoad(String logName, ViewGroup viewGroup, final Runnable initMethod) {
 		logAnalyticsHit(logName);
 
+		enableLoadingSpinnerForView(viewGroup);
 		if (!getPBMApplication().getIsDataInitialized()) {
-			enableLoadingSpinnerForView(viewGroup);
 
 			new Thread(new Runnable() {
 				public void run() {
@@ -463,14 +463,15 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-						disableLoadingSpinner();
-						initMethod.run();
+							initMethod.run();
+							disableLoadingSpinner();
 						}
 					});
 				}
 			}).start();
 		} else {
 			initMethod.run();
+			disableLoadingSpinner();
 		}
 	}
 }
