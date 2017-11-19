@@ -63,18 +63,18 @@ public class Location implements Serializable {
 		@JsonProperty("city") String city,
 		@JsonProperty("last_updated_by_username") String lastUpdatedByUsername,
 		@JsonProperty("num_machines") String numMachines,
-		@JsonProperty("zone_id") String zoneId,
-		@JsonProperty("location_type_id") String locationTypeId,
-		@JsonProperty("operator_id") String operatorId
+		@JsonProperty("zone_id") int zoneId,
+		@JsonProperty("location_type_id") int locationTypeId,
+		@JsonProperty("operator_id") int operatorId
 	) {
 		this.id = id;
 		this.name = name;
 		this.lat = lat;
 		this.lon = lon;
-		this.zoneID = zoneID;
+		this.zoneID = zoneId;
 		this.city = city;
-		this.locationTypeID = locationTypeID;
-		this.operatorID = operatorID;
+		this.locationTypeID = locationTypeId;
+		this.operatorID = operatorId;
 		this.lastUpdatedByUsername = lastUpdatedByUsername;
 		this.numMachines = numMachines;
 	}
