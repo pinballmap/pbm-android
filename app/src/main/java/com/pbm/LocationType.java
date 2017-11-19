@@ -25,8 +25,8 @@ class LocationType implements Serializable {
 
 	static LocationType newFromDBCursor(Cursor cursor) {
 		return new LocationType(
-				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationTypeContract.COLUMN_ID)),
-				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationTypeContract.COLUMN_NAME))
+			cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.LocationTypeContract.COLUMN_ID)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.LocationTypeContract.COLUMN_NAME))
 		);
 	}
 
