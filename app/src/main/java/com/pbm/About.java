@@ -42,6 +42,6 @@ public class About extends PinballMapActivity {
         deviceInfo += "\n Model (and Product): " + android.os.Build.MODEL + " ("+ android.os.Build.PRODUCT + ")";
 
         email.setMovementMethod(LinkMovementMethod.getInstance());
-        email.setText(Html.fromHtml("<a href=\"mailto:pinballmap@posteo.org?subject=PBM - Android App Feedback&body=" + deviceInfo + "\">pinballmap@posteo.org</a>"));
+        email.setText(Html.fromHtml("<a href=\"mailto:pinballmap@fastmail.com?subject=PBM - Android App Feedback&body=" + deviceInfo + "\">pinballmap@fastmail.com</a>"));
     }
 }

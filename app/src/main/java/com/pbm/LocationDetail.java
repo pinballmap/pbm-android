@@ -197,17 +197,18 @@ public class LocationDetail extends PinballMapActivity {
 			locationOperator.setVisibility(View.GONE);
 		}
 
-		if (ActivityCompat.checkSelfPermission(LocationDetail.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(LocationDetail.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-			if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-					locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.getMilesInfo()));
-			} else {
-				if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-						locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.getMilesInfo())); // or for older api
-				}
-			}
-		} else {
-			locationDistance.setVisibility(View.GONE);
-		}
+		location.setDistance(this.getLocation());
+        if (ActivityCompat.checkSelfPermission(LocationDetail.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(LocationDetail.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.getMilesInfo()));
+            } else {
+                if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                    locationDistance.setText(Html.fromHtml("<i>Distance:</i> " + location.getMilesInfo())); // or for older api
+                }
+            }
+        } else {
+            locationDistance.setVisibility(View.GONE);
+        }
 
 		updateLMXTable();
 		disableLoadingSpinner();

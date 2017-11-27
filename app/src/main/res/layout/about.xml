@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/lightText"
-        android:text="Feedback: pinballmap@posteo.org"
+        android:text="Feedback: pinballmap@fastmail.com"
         android:textSize="18sp"
         android:layout_margin="5dp"
         android:elevation="2dp"
