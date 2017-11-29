@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -43,7 +42,7 @@ public class MachineLookupDetail extends PinballMapActivity {
 			initializeMachineLookupDetailTable();
 		}
 
-		waitForInitializeAndLoad("com.pbm.MachineLookupDetail", (ViewGroup)findViewById(R.id.machineLookupDetailRelativeLayout).getParent(), new Runnable() {
+		waitForInitializeAndLoad("com.pbm.MachineLookupDetail", R.id.machineLookupDetailRelativeLayout, new Runnable() {
 			public void run() {
 			loadLocationData();
 			}

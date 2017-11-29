@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -141,7 +140,7 @@ public class LocationLookupDetail extends PinballMapActivity {
 	public void onResume() {
 		super.onResume();
 
-		waitForInitializeAndLoad("com.pbm.LocationLookupDetail", (ViewGroup)findViewById(R.id.locationLookupDetailRelativeView).getParent(), new Runnable() {
+		waitForInitializeAndLoad("com.pbm.LocationLookupDetail", R.id.locationLookupDetailRelativeView, new Runnable() {
 			public void run() {
 			loadLocationData();
 			}
@@ -152,7 +151,7 @@ public class LocationLookupDetail extends PinballMapActivity {
 	public void processLocation() {
 		super.processLocation();
 
-		waitForInitializeAndLoad("com.pbm.LocationLookupDetail", (ViewGroup)findViewById(R.id.locationLookupDetailRelativeView).getParent(), new Runnable() {
+		waitForInitializeAndLoad("com.pbm.LocationLookupDetail", R.id.locationLookupDetailRelativeView, new Runnable() {
 			public void run() {
 			loadLocationData();
 			}

@@ -41,11 +41,11 @@ class MachineScore implements Serializable {
 
 	static MachineScore newDBFromCursor(Cursor cursor) {
 		return new MachineScore(
-				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.MachineScoreContract.COLUMN_ID)),
-				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.MachineScoreContract.COLUMN_LOCATION_MACHINE_XREF_ID)),
-				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineScoreContract.COLUMN_DATE_CREATED)),
-				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineScoreContract.COLUMN_USERNAME)),
-				cursor.getLong(cursor.getColumnIndexOrThrow(PBMContract.MachineScoreContract.COLUMN_SCORE))
+			cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.MachineScoreContract.COLUMN_ID)),
+			cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.MachineScoreContract.COLUMN_LOCATION_MACHINE_XREF_ID)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineScoreContract.COLUMN_DATE_CREATED)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.MachineScoreContract.COLUMN_USERNAME)),
+			cursor.getLong(cursor.getColumnIndexOrThrow(PBMContract.MachineScoreContract.COLUMN_SCORE))
 		);
 	}
 }

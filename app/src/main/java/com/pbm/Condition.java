@@ -37,11 +37,11 @@ public class Condition implements Serializable {
 
 	static Condition newFromDBCursor(Cursor cursor) {
 		return new Condition(
-				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_ID)),
-				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_DATE)),
-				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_DESCRIPTION)),
-				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_LOCATION_MACHINE_XREF_ID)),
-				cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_USERNAME))
+			cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_ID)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_DATE)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_DESCRIPTION)),
+			cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_LOCATION_MACHINE_XREF_ID)),
+			cursor.getString(cursor.getColumnIndexOrThrow(PBMContract.ConditionContract.COLUMN_USERNAME))
 		);
 	}
 }

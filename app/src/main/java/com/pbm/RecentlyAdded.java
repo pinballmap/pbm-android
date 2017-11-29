@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -36,7 +35,7 @@ public class RecentlyAdded extends PinballMapActivity {
 
 		logAnalyticsHit("com.pbm.RecentlyAdded");
 
-		enableLoadingSpinnerForView((ViewGroup)findViewById(R.id.recentRelativeLayout).getParent());
+		enableLoadingSpinnerForView(R.id.recentRelativeLayout);
 
 		new Thread(new Runnable() {
 			public void run() {
@@ -50,9 +49,9 @@ public class RecentlyAdded extends PinballMapActivity {
 				RecentlyAdded.super.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-				showTable(recentAdds);
+					showTable(recentAdds);
 
-				disableLoadingSpinner();
+					disableLoadingSpinner();
 				}
 			});
 			}
