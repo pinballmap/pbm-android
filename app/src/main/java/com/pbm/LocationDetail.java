@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -115,7 +114,7 @@ public class LocationDetail extends PinballMapActivity {
 	}
 
 	private void loadLocationData() throws InterruptedException, ExecutionException, ParseException, JSONException, IOException {
-		enableLoadingSpinnerForView((ViewGroup)findViewById(R.id.locationDetailLinearLayout));
+		enableLoadingSpinnerForView(R.id.locationDetailLinearLayout);
 		getPBMApplication().loadLocationDetail(location);
 		location = getPBMApplication().getLocation(location.getId());
 

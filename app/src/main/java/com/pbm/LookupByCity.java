@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -19,7 +18,7 @@ public class LookupByCity extends PinballMapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lookup_by_city);
 
-		waitForInitializeAndLoad("com.pbm.LookupByCity", (ViewGroup)findViewById(R.id.lookupByCityRelativeView).getParent(), new Runnable() {
+		waitForInitializeAndLoad("com.pbm.LookupByCity", R.id.lookupByCityRelativeView, new Runnable() {
 			public void run() {
 				initializeCityTable();
 			}
