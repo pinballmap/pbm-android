@@ -82,7 +82,7 @@
         <p>If you like Pinball Map and want to help support it, you have our heartfelt thanks! - Scott and Ryan</p>
     ]]></string>
     <string name="store_head">Stuff for Sale</string>
-    <string name="store">Because it\'s quicker to update a website than an app, we kindly request that you visit the web store to see what we have on offer. Last we checked, we have t-shirts for sale!</string>
+    <string name="store">Because it\'s quicker to update a website than an app, we kindly request that you visit the web store to see what we have on offer.</string>
     <string name="none_yet">None yet</string>
     <string name="please_allow_location_permission">Please enable the Location permission inside Settings > App > Permissions</string>
     <string name="permission_required_toast">Permission is required to access this feature</string>
