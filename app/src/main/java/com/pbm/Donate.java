@@ -1,12 +1,11 @@
 package com.pbm;
 
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,8 +13,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 @SuppressWarnings("deprecation")
 public class Donate extends PinballMapActivity {
@@ -34,18 +31,11 @@ public class Donate extends PinballMapActivity {
 
 		paypalButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				String dataUri;
-				try {
-					dataUri = "data:text/html," + URLEncoder.encode(html, "UTF-8").replaceAll("\\+", "%20");
-				} catch (UnsupportedEncodingException e) {
-					return;
-				}
-
-				Intent intent = new Intent();
-				intent.setComponent(new ComponentName("com.android.browser", "com.android.browser.BrowserActivity"));
-				intent.setAction(Intent.ACTION_VIEW);
-				intent.setData(Uri.parse(dataUri));
-				startActivity(intent);
+				WebView browser = new WebView(getApplicationContext());
+				browser.getSettings().setJavaScriptEnabled(true);
+				browser.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+				browser.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
+				setContentView(browser);
 			}
 		});
 	}   
