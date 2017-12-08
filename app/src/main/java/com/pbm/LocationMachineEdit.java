@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -234,7 +235,12 @@ public class LocationMachineEdit extends PinballMapActivity {
 		listView.setAdapter(scoresAdapter);
 		scoresAdapter.sort(new Comparator<MachineScore>() {
 			public int compare(MachineScore lhs, MachineScore rhs) {
-			return rhs.getDate().compareTo(lhs.getDate());
+				DateFormat f = new SimpleDateFormat("MM/dd/yyyy");
+				try {
+					return f.parse(rhs.getDate()).compareTo(f.parse(lhs.getDate()));
+				} catch (ParseException e) {
+					throw new IllegalArgumentException(e);
+				}
 			}
 		});
 	}
@@ -257,7 +263,12 @@ public class LocationMachineEdit extends PinballMapActivity {
 		conditionsAdapter.sort(new Comparator<Condition>() {
 			@Override
 			public int compare(Condition lhs, Condition rhs) {
-			return rhs.getDate().compareTo(lhs.getDate());
+			DateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+			try {
+				return f.parse(rhs.getDate()).compareTo(f.parse(lhs.getDate()));
+			} catch (ParseException e) {
+				throw new IllegalArgumentException(e);
+			}
 			}
 		});
 	}
