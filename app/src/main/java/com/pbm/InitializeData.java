@@ -18,6 +18,10 @@ public class InitializeData extends Thread {
 	public void run() {
 		app.setIsDataInitialized(false);
 
+		for(Thread thread : app.getInitializationThreads()) {
+			thread.interrupt();
+		}
+
 		BackgroundInitializer machineInitialize = new BackgroundInitializer(
 				new Command() {
 					public void execute() {
@@ -32,6 +36,7 @@ public class InitializeData extends Thread {
 					}
 				}
 		);
+		app.addInitializationThread(machineInitialize);
 		machineInitialize.start();
 
 		BackgroundInitializer locationInitialize = new BackgroundInitializer(
@@ -49,6 +54,7 @@ public class InitializeData extends Thread {
 					}
 				}
 		);
+		app.addInitializationThread(locationInitialize);
 		locationInitialize.start();
 
 		BackgroundInitializer zonesInitialize = new BackgroundInitializer(
@@ -64,6 +70,7 @@ public class InitializeData extends Thread {
 					}
 				}
 		);
+		app.addInitializationThread(zonesInitialize);
 		zonesInitialize.start();
 
 		try {
