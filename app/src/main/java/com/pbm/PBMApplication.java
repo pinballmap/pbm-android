@@ -42,6 +42,8 @@ public class PBMApplication extends Application {
 	private SQLiteDatabase writeableDB;
 	private boolean isDataInitialized;
 
+	private ArrayList<Thread> initializationThreads = new ArrayList<Thread>();
+
 	public boolean getIsDataInitialized() { return isDataInitialized; }
 	public void setIsDataInitialized(boolean isDataInitialized) { this.isDataInitialized = isDataInitialized; }
 
@@ -89,6 +91,14 @@ public class PBMApplication extends Application {
 		}
 
 		return mTrackers.get(TrackerName.APP_TRACKER);
+	}
+
+	public ArrayList<Thread> getInitializationThreads() {
+		return initializationThreads;
+	}
+
+	public void addInitializationThread(Thread thread) {
+		initializationThreads.add(thread);
 	}
 
 	public HashMap<Integer, Location> getLocations() {
@@ -778,8 +788,8 @@ public class PBMApplication extends Application {
 	void initializeRegionMachines() throws IOException, InterruptedException, ExecutionException, JSONException {
 		Region region = getRegion();
 		String json = new RetrieveJsonTask().execute(
-				requestWithAuthDetails(PinballMapActivity.regionlessBase + "machines.json?no_details=1;region_id=" + region.getId()),
-				"GET"
+			requestWithAuthDetails(PinballMapActivity.regionlessBase + "machines.json?no_details=1;region_id=" + region.getId()),
+			"GET"
 		).get();
 
 		if (json == null) {
