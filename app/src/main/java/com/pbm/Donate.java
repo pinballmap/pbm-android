@@ -36,6 +36,7 @@ public class Donate extends PinballMapActivity {
 				browser.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 				browser.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
 				setContentView(browser);
+				finish();
 			}
 		});
 	}   
@@ -43,16 +44,15 @@ public class Donate extends PinballMapActivity {
 	private static String readTrimRawTextFile(Context ctx, int resId) {
 		InputStream inputStream = ctx.getResources().openRawResource(resId);
 
-		InputStreamReader inputreader = new InputStreamReader(inputStream);
-		BufferedReader buffreader = new BufferedReader(inputreader);
+		InputStreamReader inputReader = new InputStreamReader(inputStream);
+		BufferedReader buffReader = new BufferedReader(inputReader);
 		String line;
 		StringBuilder text = new StringBuilder();
 		try {
-			while ((line = buffreader.readLine()) != null) {
+			while ((line = buffReader.readLine()) != null) {
 				text.append(line.trim());
 			}
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			return null;
 		}
 		return text.toString();
