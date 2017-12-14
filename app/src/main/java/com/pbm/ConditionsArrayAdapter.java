@@ -43,7 +43,7 @@ class ConditionsArrayAdapter extends ArrayAdapter<Condition> implements OnTaskCo
 		TextView conditionDate = convertView.findViewById(R.id._condition_date);
 
 		if (condition != null) {
-			conditionDate.setText(condition.getDate().split("T")[0]);
+			conditionDate.setText(condition.getDate());
 		}
 
 		TextView usernameTextView = convertView.findViewById(R.id._username);

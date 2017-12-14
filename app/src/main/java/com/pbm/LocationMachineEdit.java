@@ -263,7 +263,7 @@ public class LocationMachineEdit extends PinballMapActivity {
 		conditionsAdapter.sort(new Comparator<Condition>() {
 			@Override
 			public int compare(Condition lhs, Condition rhs) {
-			DateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+			DateFormat f = new SimpleDateFormat("MM/dd/yyyy");
 			try {
 				return f.parse(rhs.getDate()).compareTo(f.parse(lhs.getDate()));
 			} catch (ParseException e) {

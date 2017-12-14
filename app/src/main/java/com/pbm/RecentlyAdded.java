@@ -85,7 +85,7 @@ public class RecentlyAdded extends PinballMapActivity {
 
 			String rawCreatedAt = lmxJson.getString("created_at").split("T")[0];
 			DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-			DateFormat outputDF = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
+			DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
 			Date dateCreatedAt = inputDF.parse(rawCreatedAt);
 			String createdAt = outputDF.format(dateCreatedAt);
 
