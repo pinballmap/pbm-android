@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.database.Cursor;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,7 +74,24 @@ public class LocationMachineXref implements Serializable {
 	}
 
 	String getConditionDate() {
-		return conditionDate;
+		if (
+			!conditionDate.equals("null") &&
+			!conditionDate.equals("") &&
+			conditionDate.matches("([0-9]{4})-([0-9]{2})-([0-9]{2})")
+		) {
+			DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd");
+			DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy");
+			Date dateCreatedAt = null;
+			try {
+				dateCreatedAt = inputDF.parse(conditionDate);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+
+			return outputDF.format(dateCreatedAt);
+		} else {
+			return conditionDate;
+		}
 	}
 
 	String getLastUpdatedByUsername() {

@@ -114,7 +114,7 @@ public class RecentScores extends PinballMapActivity {
 				Machine machine = lmx.getMachine(this);
 
 				DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-				DateFormat outputDF = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
+				DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
 				Date dateCreatedAt = inputDF.parse(rawScoreDate);
 				String scoreDate = outputDF.format(dateCreatedAt);
 

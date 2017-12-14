@@ -99,9 +99,9 @@ public class Profile extends PinballMapActivity {
 					locationsEditedTable.setAdapter(new LocationListAdapter(Profile.this, locationsEdited));
 
 					Spanned[] htmlHighScores = new Spanned[highScores.size()];
-						for(int i = 0 ; i < highScores.size(); i++) {
-							htmlHighScores[i] = Html.fromHtml(highScores.get(i));
-						}
+					for(int i = 0 ; i < highScores.size(); i++) {
+						htmlHighScores[i] = Html.fromHtml(highScores.get(i));
+					}
 
 					highScoresTable.setEmptyView(emptyScoresView);
 					highScoresTable.setAdapter(new ArrayAdapter<CharSequence>(Profile.this, R.layout.custom_list_item_1, htmlHighScores));
@@ -121,8 +121,8 @@ public class Profile extends PinballMapActivity {
 		String id = settings.getString("id", "");
 
 		String json = new RetrieveJsonTask().execute(
-				getPBMApplication().requestWithAuthDetails(regionlessBase + "users/" + id + "/profile_info.json"),
-				"GET"
+			getPBMApplication().requestWithAuthDetails(regionlessBase + "users/" + id + "/profile_info.json"),
+			"GET"
 		).get();
 
 		if (json == null) {
@@ -140,7 +140,7 @@ public class Profile extends PinballMapActivity {
 
 		String rawCreatedAt = jsonProfile.getString("created_at").split("T")[0];
 		DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-		DateFormat outputDF = new SimpleDateFormat("MMM-dd-yyyy", Locale.getDefault());
+		DateFormat outputDF = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
 		Date dateCreatedAt = inputDF.parse(rawCreatedAt);
 		createdAt = outputDF.format(dateCreatedAt);
 		JSONArray jsonLocationsEdited = jsonProfile.getJSONArray("profile_list_of_edited_locations");
@@ -152,17 +152,17 @@ public class Profile extends PinballMapActivity {
 			int locationRegionId = jsonLocation.getInt(LOCATION_REGION_ID_INDEX);
 			int currentRegionId = getSharedPreferences(PREFS_NAME, 0).getInt("region", -1);
 
-				if (locationRegionId == currentRegionId) {
-					Location location = app.getLocation(locationId);
-					if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-						if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-							location.setDistance(this.getLocation());
-						}
-						if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-							location.setDistance(this.getLocation());
-						}
+			if (locationRegionId == currentRegionId) {
+				Location location = app.getLocation(locationId);
+				if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+					if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+						location.setDistance(this.getLocation());
+					}
+					if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+						location.setDistance(this.getLocation());
+					}
 				}
-					locationsEdited.add(location);
+				locationsEdited.add(location);
 			}
 		}
 
@@ -174,9 +174,28 @@ public class Profile extends PinballMapActivity {
 			int SCORE_INDEX = 2;
 			int LOCATION_NAME_INDEX = 0;
 			int SCORE_DATE_INDEX = 3;
+
+			String date = jsonScore.getString(SCORE_DATE_INDEX);
+			if (
+				!date.equals("null") &&
+				!date.equals("") &&
+				date.matches("([a-zA-Z]{3})-([0-9]{2})-([0-9]{4})")
+			) {
+				inputDF = new SimpleDateFormat("MMM-dd-yyyy");
+				outputDF = new SimpleDateFormat("MM/dd/yyyy");
+				dateCreatedAt = null;
+				try {
+					dateCreatedAt = inputDF.parse(date);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+
+				date = outputDF.format(dateCreatedAt);
+			}
+
 			String scoreText = "<u>" + jsonScore.getString(MACHINE_NAME_INDEX) + "</u><br /><b>" +
 					jsonScore.getString(SCORE_INDEX) + "</b><br /> at " + jsonScore.getString(LOCATION_NAME_INDEX) +
-					" on " + jsonScore.getString(SCORE_DATE_INDEX);
+					" on " + date;
 			highScores.add(scoreText);
 		}
 	}
