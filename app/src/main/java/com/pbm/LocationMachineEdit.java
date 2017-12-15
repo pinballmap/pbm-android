@@ -51,6 +51,13 @@ public class LocationMachineEdit extends PinballMapActivity {
 			initializePintipsButton();
 			initializeAddScoreButton();
 			initializeOtherLocationsButton();
+
+			try {
+				loadConditions();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			loadScores();
 		}
 	}
 
@@ -204,17 +211,6 @@ public class LocationMachineEdit extends PinballMapActivity {
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		try {
-			loadConditions();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		loadScores();
 	}
 
 	private void loadScores() {
