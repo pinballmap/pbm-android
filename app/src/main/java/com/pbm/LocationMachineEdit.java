@@ -143,11 +143,11 @@ public class LocationMachineEdit extends PinballMapActivity {
 		otherLocations.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-			Intent myIntent = new Intent();
-			myIntent.putExtra("Machine", machine);
-			myIntent.setClassName("com.pbm", "com.pbm.MachineLookupDetail");
+				Intent myIntent = new Intent();
+				myIntent.putExtra("Machine", machine);
+				myIntent.setClassName("com.pbm", "com.pbm.MachineLookupDetail");
 
-			startActivityForResult(myIntent, QUIT_RESULT);
+				startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
 	}
@@ -159,31 +159,31 @@ public class LocationMachineEdit extends PinballMapActivity {
 				public void onClick(DialogInterface dialog, int which) {
 				new Thread(new Runnable() {
 					public void run() {
-					try {
-						PBMApplication app = getPBMApplication();
+						try {
+							PBMApplication app = getPBMApplication();
 
-						location.removeMachine(LocationMachineEdit.this, lmx);
-						new RetrieveJsonTask().execute(
-							app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.getId()) + ".json"),
-							"DELETE"
-						).get();
+							location.removeMachine(LocationMachineEdit.this, lmx);
+							new RetrieveJsonTask().execute(
+								app.requestWithAuthDetails(regionlessBase + "location_machine_xrefs/" + Integer.toString(lmx.getId()) + ".json"),
+								"DELETE"
+							).get();
 
-						SharedPreferences settings = getBaseContext().getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
-						location.setDateLastUpdated(new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date()));
-						location.setLastUpdatedByUsername(settings.getString("username", ""));
-						app.updateLocation(location);
-					} catch (InterruptedException | ExecutionException e) {
-						e.printStackTrace();
-					}
-
-					LocationMachineEdit.super.runOnUiThread(new Runnable() {
-						public void run() {
-						Toast.makeText(getBaseContext(), "OK, machine deleted.", Toast.LENGTH_LONG).show();
-
-						setResult(REFRESH_RESULT);
-						LocationMachineEdit.this.finish();
+							SharedPreferences settings = getBaseContext().getSharedPreferences(PinballMapActivity.PREFS_NAME, 0);
+							location.setDateLastUpdated(new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date()));
+							location.setLastUpdatedByUsername(settings.getString("username", ""));
+							app.updateLocation(location);
+						} catch (InterruptedException | ExecutionException e) {
+							e.printStackTrace();
 						}
-					});
+
+						LocationMachineEdit.super.runOnUiThread(new Runnable() {
+							public void run() {
+								Toast.makeText(getBaseContext(), "OK, machine deleted.", Toast.LENGTH_LONG).show();
+
+								setResult(REFRESH_RESULT);
+								LocationMachineEdit.this.finish();
+							}
+						});
 					}
 				}).start();
 				}
@@ -259,12 +259,12 @@ public class LocationMachineEdit extends PinballMapActivity {
 		conditionsAdapter.sort(new Comparator<Condition>() {
 			@Override
 			public int compare(Condition lhs, Condition rhs) {
-			DateFormat f = new SimpleDateFormat("MM/dd/yyyy");
-			try {
-				return f.parse(rhs.getDate()).compareTo(f.parse(lhs.getDate()));
-			} catch (ParseException e) {
-				throw new IllegalArgumentException(e);
-			}
+				DateFormat f = new SimpleDateFormat("MM/dd/yyyy");
+				try {
+					return f.parse(rhs.getDate()).compareTo(f.parse(lhs.getDate()));
+				} catch (ParseException e) {
+					throw new IllegalArgumentException(e);
+				}
 			}
 		});
 	}
@@ -272,10 +272,10 @@ public class LocationMachineEdit extends PinballMapActivity {
 	public void activityRefreshResult() {
 		LocationMachineEdit.super.runOnUiThread(new Runnable() {
 			public void run() {
-			Toast.makeText(getBaseContext(), "Thanks for updating that machine.", Toast.LENGTH_LONG).show();
+				Toast.makeText(getBaseContext(), "Thanks for updating that machine.", Toast.LENGTH_LONG).show();
 
-			setResult(REFRESH_RESULT);
-			LocationMachineEdit.this.finish();
+				setResult(REFRESH_RESULT);
+				LocationMachineEdit.this.finish();
 			}
 		});
 	}
