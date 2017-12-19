@@ -318,10 +318,10 @@ public class PBMApplication extends Application {
 		String[] selectionArgs = { String.valueOf(location.getId()) };
 
 		getWriteableDB().update(
-				PBMContract.LocationContract.TABLE_NAME,
-				values,
-				selection,
-				selectionArgs
+			PBMContract.LocationContract.TABLE_NAME,
+			values,
+			selection,
+			selectionArgs
 		);
 	}
 
@@ -1010,6 +1010,12 @@ public class PBMApplication extends Application {
 		cursor.moveToFirst();
 		cursor.close();
 
+		getWriteableDB().delete(
+			PBMContract.LocationMachineXrefContract.TABLE_NAME,
+			PBMContract.LocationMachineXrefContract.COLUMN_LOCATION_ID + "=" + Integer.toString(location.getId()),
+			null
+		);
+
 		JsonNode locations = rootNode.path("location_machine_xrefs");
 		Iterator<JsonNode> elements = locations.elements();
 		while(elements.hasNext()){
@@ -1068,9 +1074,14 @@ public class PBMApplication extends Application {
 
 	void loadConditions(JsonNode lmx) throws JSONException {
 		if (lmx.has("machine_conditions")) {
+			getWriteableDB().delete(
+				PBMContract.ConditionContract.TABLE_NAME,
+				PBMContract.ConditionContract.COLUMN_LOCATION_MACHINE_XREF_ID + "=" + lmx.path("id"),
+				null
+			);
+
 			JsonNode conditions = lmx.path("machine_conditions");
 			Iterator<JsonNode> elements = conditions.elements();
-
 			while(elements.hasNext()){
 				JsonNode pastCondition = elements.next();
 
@@ -1090,8 +1101,13 @@ public class PBMApplication extends Application {
 
 	void loadScores(JsonNode lmx) throws JSONException {
 		if (lmx.has("machine_score_xrefs")) {
-			JsonNode scores = lmx.path("machine_score_xrefs");
+			getWriteableDB().delete(
+				PBMContract.MachineScoreContract.TABLE_NAME,
+				PBMContract.MachineScoreContract.COLUMN_LOCATION_MACHINE_XREF_ID + "=" + lmx.path("id"),
+				null
+			);
 
+			JsonNode scores = lmx.path("machine_score_xrefs");
 			Iterator<JsonNode> elements = scores.elements();
 			while(elements.hasNext()){
 				JsonNode score = elements.next();
