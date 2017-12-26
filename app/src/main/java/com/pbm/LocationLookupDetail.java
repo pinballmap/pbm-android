@@ -56,6 +56,12 @@ public class LocationLookupDetail extends PinballMapActivity {
 		});
 
 		setTable(locationLookupDetailTable);
+
+		waitForInitializeAndLoad("com.pbm.LocationLookupDetail", R.id.locationLookupDetailRelativeView, new Runnable() {
+			public void run() {
+				loadLocationData();
+			}
+		});
 	}
 
 	public void initializeExtras(Bundle extras) {
@@ -135,27 +141,6 @@ public class LocationLookupDetail extends PinballMapActivity {
 		if (listState != null) {
 			locationLookupDetailTable.onRestoreInstanceState(listState);
 		}
-	}
-
-	public void onResume() {
-		super.onResume();
-
-		waitForInitializeAndLoad("com.pbm.LocationLookupDetail", R.id.locationLookupDetailRelativeView, new Runnable() {
-			public void run() {
-			loadLocationData();
-			}
-		});
-	}
-
-	@Override
-	public void processLocation() {
-		super.processLocation();
-
-		waitForInitializeAndLoad("com.pbm.LocationLookupDetail", R.id.locationLookupDetailRelativeView, new Runnable() {
-			public void run() {
-			loadLocationData();
-			}
-		});
 	}
 
 	@Override

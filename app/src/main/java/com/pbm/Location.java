@@ -2,6 +2,8 @@ package com.pbm;
 
 import android.database.Cursor;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
@@ -12,10 +14,20 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Location implements Serializable {
+	@JsonProperty("id") private int id;
+	@JsonProperty("name") private String name;
+	@JsonProperty("lat") private String lat;
+	@JsonProperty("lon") private String lon;
+	@JsonProperty("city") private String city;
+	@JsonProperty("last_updated_by_username") private String lastUpdatedByUsername;
+	@JsonProperty("num_machines") private String numMachines;
+	@JsonProperty("zone_id") private int zoneId;
+	@JsonProperty("location_type_id") private int locationTypeId;
+	@JsonProperty("operator_id") private int operatorId;
 	private static final long serialVersionUID = 1L;
-	private int id, zoneID, locationTypeID, operatorID;
-	private String name, street, city, state, zip, phone, lat, lon, website, milesInfo, lastUpdatedByUsername, dateLastUpdated, description, numMachines;
+	private String street, state, zip, phone, website, milesInfo, dateLastUpdated, description;
 	private float distanceFromYou;
 
 	String getLat() {
@@ -31,6 +43,8 @@ public class Location implements Serializable {
 
 	float getDistanceFromYou() { return distanceFromYou; }
 
+	public Location() {}
+
 	public Location(int id, String name, String lat, String lon, int zoneID, String street,
 					String city, String state, String zip, String phone, int locationTypeID,
 					String website, int operatorID, String dateLastUpdated,
@@ -40,21 +54,22 @@ public class Location implements Serializable {
 		this.name = name;
 		this.lat = lat;
 		this.lon = lon;
-		this.zoneID = zoneID;
+		this.zoneId = zoneID;
 		this.state = state;
 		this.street = street;
 		this.city = city;
 		this.zip = zip;
 		this.phone = phone;
 		this.website = website;
-		this.locationTypeID = locationTypeID;
-		this.operatorID = operatorID;
+		this.locationTypeId = locationTypeID;
+		this.operatorId = operatorID;
 		this.dateLastUpdated = dateLastUpdated;
 		this.lastUpdatedByUsername = lastUpdatedByUsername;
 		this.description = description;
 		this.numMachines = numMachines;
 	}
 
+	@JsonCreator
 	public Location(
 		@JsonProperty("id") int id,
 		@JsonProperty("name") String name,
@@ -71,10 +86,10 @@ public class Location implements Serializable {
 		this.name = name;
 		this.lat = lat;
 		this.lon = lon;
-		this.zoneID = zoneId;
+		this.zoneId = zoneId;
 		this.city = city;
-		this.locationTypeID = locationTypeId;
-		this.operatorID = operatorId;
+		this.locationTypeId = locationTypeId;
+		this.operatorId = operatorId;
 		this.lastUpdatedByUsername = lastUpdatedByUsername;
 		this.numMachines = numMachines;
 	}
@@ -100,10 +115,10 @@ public class Location implements Serializable {
 	public void setNumMachines(String numMachines) { this.numMachines = numMachines; }
 
 	void setLocationTypeID(int locationTypeID) {
-		this.locationTypeID = locationTypeID;
+		this.locationTypeId = locationTypeID;
 	}
 
-	void setOperatorID(int operatorID) { this.operatorID = operatorID; }
+	void setOperatorID(int operatorID) { this.operatorId = operatorID; }
 
 	public void setDistance(android.location.Location location) {
 		float distance = location.distanceTo(toAndroidLocation());
@@ -146,11 +161,11 @@ public class Location implements Serializable {
 	}
 
 	LocationType getLocationType(PinballMapActivity activity) {
-		return activity.getPBMApplication().getLocationType(locationTypeID);
+		return activity.getPBMApplication().getLocationType(locationTypeId);
 	}
 
 	Operator getOperator(PinballMapActivity activity) {
-		return activity.getPBMApplication().getOperator(operatorID);
+		return activity.getPBMApplication().getOperator(operatorId);
 	}
 
 	void removeMachine(PinballMapActivity activity, LocationMachineXref lmx) {
@@ -200,15 +215,15 @@ public class Location implements Serializable {
 	}
 
 	int getZoneID() {
-		return zoneID;
+		return zoneId;
 	}
 
 	int getOperatorID() {
-		return operatorID;
+		return operatorId;
 	}
 
 	int getLocationTypeID() {
-		return locationTypeID;
+		return locationTypeId;
 	}
 
 	public int getId() {

@@ -2,15 +2,24 @@ package com.pbm;
 
 import android.database.Cursor;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Machine implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private int id, numLocations;
-	private String name, year, manufacturer, groupId;
+	@JsonProperty("id") private int id;
+	@JsonProperty("name") private String name;
+	@JsonProperty("year") private String year;
+	@JsonProperty("manufacturer") private String manufacturer;
+	private int numLocations;
+	private String groupId;
 	private boolean existsInRegion;
+
+	public Machine() {}
 
 	public Machine(int id, String name) {
 		this.id = id;
@@ -32,6 +41,7 @@ public class Machine implements Serializable {
 		this.numLocations = numLocations;
 	}
 
+	@JsonCreator
 	public Machine(
 		@JsonProperty("id") int id,
 	    @JsonProperty("name") String name,
