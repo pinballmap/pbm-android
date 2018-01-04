@@ -16,7 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,26 +33,31 @@ public class RecentlyAdded extends PinballMapActivity {
 		setContentView(R.layout.recently_added);
 
 		logAnalyticsHit("com.pbm.RecentlyAdded");
-
 		enableLoadingSpinnerForView(R.id.recentRelativeLayout);
 
 		new Thread(new Runnable() {
 			public void run() {
-			try {
-				getLocationData();
-			} catch (UnsupportedEncodingException | InterruptedException | ExecutionException | JSONException | ParseException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-				RecentlyAdded.super.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					showTable(recentAdds);
-
-					disableLoadingSpinner();
+				while (!getPBMApplication().getIsDataInitialized()) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
-			});
+
+				try {
+					getLocationData();
+				} catch (InterruptedException | ExecutionException | JSONException | ParseException | IOException e) {
+					e.printStackTrace();
+				}
+
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						disableLoadingSpinner();
+						showTable(recentAdds);
+					}
+				});
 			}
 		}).start();
 	}
