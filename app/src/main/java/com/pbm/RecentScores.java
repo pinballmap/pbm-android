@@ -3,18 +3,15 @@ package com.pbm;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -37,39 +34,33 @@ public class RecentScores extends PinballMapActivity {
 
 		logAnalyticsHit("com.pbm.RecentScores");
 
-		progressBar = new ProgressBar(getPBMActivity(),null,android.R.attr.progressBarStyleLarge);
-		progressBar.setIndeterminate(true);
-		progressBar.setVisibility(View.VISIBLE);
-
-		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-			RelativeLayout.LayoutParams.WRAP_CONTENT,
-			RelativeLayout.LayoutParams.WRAP_CONTENT
-		);
-		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-		progressBar.setLayoutParams(layoutParams);
-
-		RelativeLayout layout = (RelativeLayout)findViewById(R.id.scoreRelativeLayout);
-		layout.addView(progressBar);
+		enableLoadingSpinnerForView(R.id.scoreRelativeLayout);
 
 		new Thread(new Runnable() {
-	        public void run() {
-			try {
-				getLocationData();
-			} catch (UnsupportedEncodingException | InterruptedException | JSONException | ExecutionException | ParseException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-				RecentScores.super.runOnUiThread(new Runnable() {
-			@Override
 			public void run() {
-				ListView recentScoresTable = (ListView)findViewById(R.id.recentscorestable);
-				recentScoresTable.setAdapter(new ArrayAdapter<>(RecentScores.this, R.layout.custom_list_item_1, recentScores));
-				progressBar.setVisibility(View.INVISIBLE);
+				while (!getPBMApplication().getIsDataInitialized()) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
-			});
-	        }
-	    }).start();
+
+				try {
+					getLocationData();
+				} catch (InterruptedException | ExecutionException | JSONException | ParseException | IOException e) {
+					e.printStackTrace();
+				}
+
+				RecentScores.super.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						disableLoadingSpinner();
+						ListView recentScoresTable = (ListView)findViewById(R.id.recentscorestable);
+						recentScoresTable.setAdapter(new ArrayAdapter<>(RecentScores.this, R.layout.custom_list_item_1, recentScores));					}
+				});
+			}
+		}).start();
 	}
 
     @SuppressWarnings("deprecation")
@@ -94,15 +85,7 @@ public class RecentScores extends PinballMapActivity {
 			int lmxID = msx.getInt("location_machine_xref_id");
 			try {
 				app.loadLmx(lmxID);
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (JSONException e) {
-				e.printStackTrace();
-			} catch (ParseException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
+			} catch (ExecutionException | InterruptedException | ParseException | JSONException | IOException e) {
 				e.printStackTrace();
 			}
 			if (msx.get("score") != null) {
