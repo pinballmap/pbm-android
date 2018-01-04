@@ -47,6 +47,7 @@
         <activity
             android:name=".InitializingScreen"
             android:label="@string/app_name"
+            android:theme="@style/LoadingTheme"
             android:noHistory="true"
             android:screenOrientation="portrait">
             <intent-filter>

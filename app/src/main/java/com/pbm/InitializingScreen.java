@@ -14,7 +14,6 @@ public class InitializingScreen extends PinballMapActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.initializing_screen);
 	}
 
 	@Override
