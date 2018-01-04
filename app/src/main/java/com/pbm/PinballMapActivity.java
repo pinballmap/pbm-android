@@ -149,6 +149,11 @@ public class PinballMapActivity extends AppCompatActivity implements OnQueryText
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.prefs:
+				if (!getPBMApplication().getIsDataInitialized()) {
+					Toast.makeText(getApplicationContext(), "Loading region data. Please try again momentarily.", Toast.LENGTH_LONG).show();
+					return true;
+				}
+
 				Intent myIntent = new Intent();
 				myIntent.setClassName("com.pbm", "com.pbm.Preferences");
 				startActivityForResult(myIntent, QUIT_RESULT);
