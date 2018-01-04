@@ -2,6 +2,7 @@
 <resources>
 
     <color name="splash_bg">#fee4e6</color>
+    <color name="loading_splash_bg">#A9A9A9</color>
     <color name="colorAccent">#666666</color>
     <color name="textColorLink">#666666</color>
     <color name="colorPrimary">#A9A9A9</color>
