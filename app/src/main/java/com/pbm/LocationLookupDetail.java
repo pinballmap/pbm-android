@@ -59,7 +59,7 @@ public class LocationLookupDetail extends PinballMapActivity {
 
 		waitForInitializeAndLoad("com.pbm.LocationLookupDetail", R.id.locationLookupDetailRelativeView, new Runnable() {
 			public void run() {
-				loadLocationData();
+			loadLocationData();
 			}
 		});
 	}

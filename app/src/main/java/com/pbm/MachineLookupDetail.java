@@ -3,6 +3,7 @@ package com.pbm;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -80,6 +81,13 @@ public class MachineLookupDetail extends PinballMapActivity {
 		}
 
 		if (locationsWithMachine != null) {
+			Log.d("com.pbm.location", "adjusting distance to locations");
+			for (Location location : locationsWithMachine) {
+				if (this.getLocation() != null) {
+					location.setDistance(this.getLocation());
+				}
+			}
+
 			try {
 				Collections.sort(locationsWithMachine, new Comparator<Location>() {
 					public int compare(Location l1, Location l2) {
