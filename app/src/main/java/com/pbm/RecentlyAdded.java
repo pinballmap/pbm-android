@@ -82,10 +82,8 @@ public class RecentlyAdded extends PinballMapActivity {
 		for (int i = 0; i < lmxes.length(); i++) {
 			JSONObject lmxJson = lmxes.getJSONObject(i);
 
-			int id = lmxJson.getInt("id");
-			Location location = app.getLocation(lmxJson.getInt("location_id"));
-			app.loadLocationDetail(location);
-			LocationMachineXref lmx = app.getLmx(id);
+			JSONObject locationJson = lmxJson.getJSONObject("location");
+			JSONObject machineJson = lmxJson.getJSONObject("machine");
 
 			String rawCreatedAt = lmxJson.getString("created_at").split("T")[0];
 			DateFormat inputDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -93,7 +91,7 @@ public class RecentlyAdded extends PinballMapActivity {
 			Date dateCreatedAt = inputDF.parse(rawCreatedAt);
 			String createdAt = outputDF.format(dateCreatedAt);
 
-			String textToShow = "<b>" + lmx.getMachine(this).getName() + "</b> was added to <b>" + lmx.getLocation(this).getName() + "</b> (" + lmx.getLocation(this).getCity() + ")";
+			String textToShow = "<b>" + machineJson.getString("name") + "</b> was added to <b>" + locationJson.getString("name") + "</b> (" + locationJson.getString("city") + ")";
 			textToShow += "<br /><small>" + createdAt + "</small>";
 
 			recentAdds.add(Html.fromHtml(textToShow));

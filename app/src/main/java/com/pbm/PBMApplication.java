@@ -552,13 +552,13 @@ public class PBMApplication extends Application {
 		String[] selectionArgs = { id.toString() };
 
 		Cursor cursor = getReadableDB().query(
-				PBMContract.LocationMachineXrefContract.TABLE_NAME,
-				PBMContract.LocationMachineXrefContract.PROJECTION,
-				selection,
-				selectionArgs,
-				null,
-				null,
-				null
+			PBMContract.LocationMachineXrefContract.TABLE_NAME,
+			PBMContract.LocationMachineXrefContract.PROJECTION,
+			selection,
+			selectionArgs,
+			null,
+			null,
+			null
 		);
 
 		LocationMachineXref lmx = null;
