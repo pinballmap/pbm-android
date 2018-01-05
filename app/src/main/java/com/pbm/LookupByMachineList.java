@@ -17,7 +17,7 @@ public class LookupByMachineList extends PinballMapActivity {
 
 		waitForInitializeAndLoad("com.pbm.LookupByMachineList", R.id.lookupByMachineRelativeLayout, new Runnable() {
 			public void run() {
-				initializeMachineLookupListTable();
+			initializeMachineLookupListTable();
 			}
 		});
 	}
@@ -30,12 +30,12 @@ public class LookupByMachineList extends PinballMapActivity {
 		
 		machineLookupListTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapterView, View arg1, int touchIndex, long arg3) {	
-				Intent myIntent = new Intent();
-				Machine machine = machines.get(touchIndex);
-				myIntent.putExtra("Machine", machine);
-				myIntent.setClassName("com.pbm", "com.pbm.MachineLookupDetail");
+			Intent myIntent = new Intent();
+			Machine machine = machines.get(touchIndex);
+			myIntent.putExtra("Machine", machine);
+			myIntent.setClassName("com.pbm", "com.pbm.MachineLookupDetail");
 
-				startActivityForResult(myIntent, QUIT_RESULT);
+			startActivityForResult(myIntent, QUIT_RESULT);
 			}
 		});
 
