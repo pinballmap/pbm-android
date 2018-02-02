@@ -151,6 +151,21 @@
             android:inputType="phone"/>
 
         <TextView
+            android:id="@+id/locationTypeTextView"
+            android:text="Location Type:"
+            android:labelFor="@+id/locationTypeSpinner"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/locationTypeSpinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/spinner_style" />
+
+        <TextView
             android:id="@+id/websiteTextView"
             android:text="@string/website"
             android:labelFor="@+id/websiteField"
@@ -174,23 +189,17 @@
         <TextView
             android:id="@+id/operatorTextView"
             android:text="@string/operator"
-            android:labelFor="@+id/operatorField"
+            android:labelFor="@+id/operatorSpinner"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/operatorField"
-            android:layout_marginStart="6dp"
-            android:layout_marginLeft="6dp"
-            android:inputType="text"
-            android:ems="10"
+        <Spinner
+            android:id="@+id/operatorSpinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/textbox_bg"
-            android:layout_marginRight="6dp"
-            android:layout_marginBottom="10dp" />
+            style="@style/spinner_style" />
         <TextView
             android:id="@+id/machinesTextView"
             android:layout_width="wrap_content"
