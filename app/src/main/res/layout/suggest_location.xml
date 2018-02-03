@@ -152,7 +152,7 @@
 
         <TextView
             android:id="@+id/locationTypeTextView"
-            android:text="Location Type:"
+            android:text="@string/location_type"
             android:labelFor="@+id/locationTypeSpinner"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_width="wrap_content"
@@ -163,7 +163,12 @@
             android:id="@+id/locationTypeSpinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            style="@style/spinner_style" />
+            style="@style/spinner_style"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
+            android:ems="10" />
 
         <TextView
             android:id="@+id/websiteTextView"
@@ -199,7 +204,12 @@
             android:id="@+id/operatorSpinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            style="@style/spinner_style" />
+            style="@style/spinner_style"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp" />
+
         <TextView
             android:id="@+id/machinesTextView"
             android:layout_width="wrap_content"
