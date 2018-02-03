@@ -228,7 +228,28 @@
             android:layout_marginLeft="6dp"
             android:ems="10"
             android:maxWidth="300dp"
-            android:width="300dp"/>
+            android:width="300dp" />
+
+        <TextView
+            android:id="@+id/commentsTextView"
+            android:text="@string/comments"
+            android:labelFor="@+id/commentsField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/commentsField"
+            android:inputType="text"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="10dp" />
 
         <Button
             android:id="@+id/submitButton"
