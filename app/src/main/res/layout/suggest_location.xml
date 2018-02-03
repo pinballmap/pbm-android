@@ -119,7 +119,7 @@
 
         <EditText
             android:id="@+id/zipField"
-            android:inputType="text"
+            android:inputType="number"
             android:layout_marginStart="6dp"
             android:layout_marginLeft="6dp"
             android:ems="10"
