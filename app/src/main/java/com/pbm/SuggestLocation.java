@@ -12,15 +12,14 @@ import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Arrays;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 
 public class SuggestLocation extends PinballMapActivity {
-	private TreeMap<String, Integer> operators, locationTypes;
-	private String[] operatorNames, locationTypeNames;
-	private Integer[] operatorIDs, locationTypeIDs;
-	private Spinner locationTypeSpinner, operatorSpinner;
+	private TreeMap<String, Integer> operators, locationTypes, zones;
+	private String[] operatorNames, locationTypeNames, zoneNames;
+	private Integer[] operatorIDs, locationTypeIDs, zoneIDs;
+	private Spinner locationTypeSpinner, operatorSpinner, zoneSpinner;
 	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -38,7 +37,23 @@ public class SuggestLocation extends PinballMapActivity {
 		autoCompleteMachinesTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 		initializeLocationTypes();
 		initializeOperators();
+		initializeZones();
 		loadSuggestLocationData();
+	}
+
+	public void initializeZones() {
+		zones = new TreeMap<>();
+
+		Zone blankZone = Zone.blankZone();
+		zones.put(blankZone.getName(), blankZone.getId());
+		for (Object element : getPBMApplication().getZones().values()) {
+			Zone zone = (Zone) element;
+
+			zones.put(zone.getName(), zone.getId());
+		}
+
+		zoneNames = zones.keySet().toArray(new String[zones.size()]);
+		zoneIDs = zones.values().toArray(new Integer[zones.size()]);
 	}
 
 	public void initializeOperators() {
@@ -93,6 +108,13 @@ public class SuggestLocation extends PinballMapActivity {
 						);
 						operatorSpinner.setAdapter(operatorAdapter);
 
+						zoneSpinner = (Spinner) findViewById(R.id.zoneSpinner);
+						ArrayAdapter<String> zoneAdapter = new ArrayAdapter<>(
+								SuggestLocation.this,
+								android.R.layout.simple_spinner_item,
+								zoneNames
+						);
+						zoneSpinner.setAdapter(zoneAdapter);
 					}
 				});
 			}

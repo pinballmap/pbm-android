@@ -211,6 +211,25 @@
             android:layout_marginLeft="6dp" />
 
         <TextView
+            android:id="@+id/zoneTextView"
+            android:text="@string/zone"
+            android:labelFor="@+id/zoneSpinner"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/zoneSpinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/spinner_style"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp" />
+
+        <TextView
             android:id="@+id/machinesTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
