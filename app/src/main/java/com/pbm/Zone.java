@@ -19,6 +19,10 @@ public class Zone implements Serializable {
 		return name;
 	}
 
+	static Zone blankZone() {
+		return new Zone(0, "", 0);
+	}
+
 	static Zone newFromDBCursor(Cursor cursor) {
 		return new Zone(
 				cursor.getInt(cursor.getColumnIndexOrThrow(PBMContract.ZoneContract.COLUMN_ID)),
