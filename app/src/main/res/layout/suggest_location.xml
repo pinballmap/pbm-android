@@ -119,7 +119,7 @@
 
         <EditText
             android:id="@+id/zipField"
-            android:inputType="text"
+            android:inputType="number"
             android:layout_marginStart="6dp"
             android:layout_marginLeft="6dp"
             android:ems="10"
@@ -151,6 +151,26 @@
             android:inputType="phone"/>
 
         <TextView
+            android:id="@+id/locationTypeTextView"
+            android:text="@string/location_type"
+            android:labelFor="@+id/locationTypeSpinner"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/locationTypeSpinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/spinner_style"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
+            android:ems="10" />
+
+        <TextView
             android:id="@+id/websiteTextView"
             android:text="@string/website"
             android:labelFor="@+id/websiteField"
@@ -174,23 +194,22 @@
         <TextView
             android:id="@+id/operatorTextView"
             android:text="@string/operator"
-            android:labelFor="@+id/operatorField"
+            android:labelFor="@+id/operatorSpinner"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/operatorField"
-            android:layout_marginStart="6dp"
-            android:layout_marginLeft="6dp"
-            android:inputType="text"
-            android:ems="10"
+        <Spinner
+            android:id="@+id/operatorSpinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/textbox_bg"
+            style="@style/spinner_style"
             android:layout_marginRight="6dp"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp" />
+
         <TextView
             android:id="@+id/machinesTextView"
             android:layout_width="wrap_content"
@@ -209,7 +228,28 @@
             android:layout_marginLeft="6dp"
             android:ems="10"
             android:maxWidth="300dp"
-            android:width="300dp"/>
+            android:width="300dp" />
+
+        <TextView
+            android:id="@+id/commentsTextView"
+            android:text="@string/comments"
+            android:labelFor="@+id/commentsField"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/commentsField"
+            android:inputType="text"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_bg"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="10dp" />
 
         <Button
             android:id="@+id/submitButton"
