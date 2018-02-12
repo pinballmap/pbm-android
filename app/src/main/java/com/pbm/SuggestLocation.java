@@ -36,8 +36,15 @@ public class SuggestLocation extends PinballMapActivity {
 		autoCompleteMachinesTextView.setAdapter(adapter);
 		autoCompleteMachinesTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 		initializeLocationTypes();
-		initializeOperators();
-		initializeZones();
+
+		if (!getPBMApplication().getOperators().isEmpty()) {
+			initializeOperators();
+		}
+
+		if (!getPBMApplication().getZones().isEmpty()) {
+			initializeZones();
+		}
+
 		loadSuggestLocationData();
 	}
 
@@ -100,21 +107,37 @@ public class SuggestLocation extends PinballMapActivity {
 						);
 						locationTypeSpinner.setAdapter(locationTypeAdapter);
 
-						operatorSpinner = (Spinner) findViewById(R.id.operatorSpinner);
-						ArrayAdapter<String> operatorAdapter = new ArrayAdapter<>(
-								SuggestLocation.this,
-								android.R.layout.simple_spinner_item,
-								operatorNames
-						);
-						operatorSpinner.setAdapter(operatorAdapter);
+						if (!getPBMApplication().getOperators().isEmpty()) {
+							operatorSpinner = (Spinner) findViewById(R.id.operatorSpinner);
+							ArrayAdapter<String> operatorAdapter = new ArrayAdapter<>(
+									SuggestLocation.this,
+									android.R.layout.simple_spinner_item,
+									operatorNames
+							);
+							operatorSpinner.setAdapter(operatorAdapter);
+						} else {
+							operatorSpinner = (Spinner) findViewById(R.id.operatorSpinner);
+							operatorSpinner.setVisibility(View.GONE);
 
-						zoneSpinner = (Spinner) findViewById(R.id.zoneSpinner);
-						ArrayAdapter<String> zoneAdapter = new ArrayAdapter<>(
-								SuggestLocation.this,
-								android.R.layout.simple_spinner_item,
-								zoneNames
-						);
-						zoneSpinner.setAdapter(zoneAdapter);
+							View operatorLabel = findViewById(R.id.operatorTextView);
+							operatorLabel.setVisibility(View.GONE);
+						}
+
+						if (!getPBMApplication().getZones().isEmpty()) {
+							zoneSpinner = (Spinner) findViewById(R.id.zoneSpinner);
+							ArrayAdapter<String> zoneAdapter = new ArrayAdapter<>(
+									SuggestLocation.this,
+									android.R.layout.simple_spinner_item,
+									zoneNames
+							);
+							zoneSpinner.setAdapter(zoneAdapter);
+						} else {
+							zoneSpinner = (Spinner) findViewById(R.id.zoneSpinner);
+							zoneSpinner.setVisibility(View.GONE);
+
+							View zoneLabel = findViewById(R.id.zoneTextView);
+							zoneLabel.setVisibility(View.GONE);
+						}
 					}
 				});
 			}
@@ -129,7 +152,26 @@ public class SuggestLocation extends PinballMapActivity {
 			PBMApplication app = getPBMApplication();
 			Region region = app.getRegion(getSharedPreferences(PREFS_NAME, 0).getInt("region", -1));
 
-			String url = String.format("%slocations/suggest.json?region_id=%d;location_name=%s;location_street=%s;location_city=%s;location_state=%s;location_zip=%s;location_phone=%s;location_website=%s;location_operator=%s;location_type=%s;location_machines=%s;location_comments=%s", regionlessBase, region.getId(), URLEncoder.encode(locationName, "UTF-8"), URLEncoder.encode(((EditText) findViewById(R.id.streetField)).getText().toString(), "UTF-8"), URLEncoder.encode(((EditText) findViewById(R.id.cityField)).getText().toString(), "UTF-8"), URLEncoder.encode(((EditText) findViewById(R.id.stateField)).getText().toString(), "UTF-8"), URLEncoder.encode(((EditText) findViewById(R.id.zipField)).getText().toString(), "UTF-8"), URLEncoder.encode(((EditText) findViewById(R.id.phoneField)).getText().toString(), "UTF-8"), URLEncoder.encode(((EditText) findViewById(R.id.websiteField)).getText().toString(), "UTF-8"), URLEncoder.encode(((Spinner) findViewById(R.id.operatorSpinner)).getSelectedItem().toString(), "UTF-8"), URLEncoder.encode(((Spinner) findViewById(R.id.locationTypeSpinner)).getSelectedItem().toString(), "UTF-8"), URLEncoder.encode(machineNames, "UTF-8"), URLEncoder.encode(((EditText) findViewById(R.id.commentsField)).getText().toString(), "UTF-8"));
+			String operatorValue = getPBMApplication().getOperators().isEmpty() ? "" : URLEncoder.encode(((Spinner) findViewById(R.id.operatorSpinner)).getSelectedItem().toString(), "UTF-8");
+			String zoneValue = getPBMApplication().getZones().isEmpty() ? "" : URLEncoder.encode(((Spinner) findViewById(R.id.zoneSpinner)).getSelectedItem().toString(), "UTF-8");
+
+			String url = String.format(
+				"%slocations/suggest.json?region_id=%d;location_name=%s;location_street=%s;location_city=%s;location_state=%s;location_zip=%s;location_phone=%s;location_website=%s;location_operator=%s;location_zone=%s;location_type=%s;location_machines=%s;location_comments=%s",
+				regionlessBase,
+				region.getId(),
+				URLEncoder.encode(locationName, "UTF-8"),
+				URLEncoder.encode(((EditText) findViewById(R.id.streetField)).getText().toString(), "UTF-8"),
+				URLEncoder.encode(((EditText) findViewById(R.id.cityField)).getText().toString(), "UTF-8"),
+				URLEncoder.encode(((EditText) findViewById(R.id.stateField)).getText().toString(), "UTF-8"),
+				URLEncoder.encode(((EditText) findViewById(R.id.zipField)).getText().toString(), "UTF-8"),
+				URLEncoder.encode(((EditText) findViewById(R.id.phoneField)).getText().toString(), "UTF-8"),
+				URLEncoder.encode(((EditText) findViewById(R.id.websiteField)).getText().toString(), "UTF-8"),
+				operatorValue,
+				zoneValue,
+				URLEncoder.encode(((Spinner) findViewById(R.id.locationTypeSpinner)).getSelectedItem().toString(), "UTF-8"),
+				URLEncoder.encode(machineNames, "UTF-8"),
+				URLEncoder.encode(((EditText) findViewById(R.id.commentsField)).getText().toString(), "UTF-8")
+			);
 			try {
 				new RetrieveJsonTask().execute(app.requestWithAuthDetails(url), "POST").get();
 			} catch (InterruptedException | ExecutionException e) {

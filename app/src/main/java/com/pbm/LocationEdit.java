@@ -41,7 +41,10 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 		}
 
 		initializeLocationTypes();
-		initializeOperators();
+		if (!getPBMApplication().getOperators().isEmpty()) {
+			initializeOperators();
+		}
+
 		phone = (EditText) findViewById(R.id.phoneNumber);
 		website = (EditText) findViewById(R.id.editWebsite);
 		description = (EditText) findViewById(R.id.editDescription);
@@ -101,17 +104,24 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 					locationTypeSpinner.setSelection(locationTypeIndex);
 				}
 
-				operatorSpinner = (Spinner) findViewById(R.id.operatorSpinner);
-				ArrayAdapter<String> operatorAdapter = new ArrayAdapter<>(
-					LocationEdit.this,
-					android.R.layout.simple_spinner_item,
-					operatorNames
-				);
-				operatorSpinner.setAdapter(operatorAdapter);
+				if (!getPBMApplication().getOperators().isEmpty()) {
+					operatorSpinner = (Spinner) findViewById(R.id.operatorSpinner);
+					ArrayAdapter<String> operatorAdapter = new ArrayAdapter<>(
+							LocationEdit.this,
+							android.R.layout.simple_spinner_item,
+							operatorNames
+					);
+					operatorSpinner.setAdapter(operatorAdapter);
 
-				if (location.getOperatorID() != 0) {
-					int operatorIndex = Arrays.asList(operatorIDs).indexOf(location.getOperatorID());
-					operatorSpinner.setSelection(operatorIndex);
+					if (location.getOperatorID() != 0) {
+						int operatorIndex = Arrays.asList(operatorIDs).indexOf(location.getOperatorID());
+						operatorSpinner.setSelection(operatorIndex);
+					}
+				} else {
+					operatorSpinner = (Spinner) findViewById(R.id.operatorSpinner);
+					operatorSpinner.setVisibility(View.GONE);
+					View operatorText = findViewById(R.id.enterOperator);
+					operatorText.setVisibility(View.GONE);
 				}
 				}
 			});
@@ -124,12 +134,10 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 			public void run() {
 			try {
 				String locationTypeName = (String) locationTypeSpinner.getSelectedItem();
-				String operatorName = (String) operatorSpinner.getSelectedItem();
 				String phoneNumber = URLEncoder.encode(phone.getText().toString(), "UTF-8");
 				String locationDescription = URLEncoder.encode(description.getText().toString(), "utf-8");
 				String locationWebsite = website.getText().toString();
 				int locationTypeID = locationTypes.get(locationTypeName);
-				int operatorID = operators.get(operatorName);
 
 				String locationTypeString = "";
 				if (locationTypeID != 0) {
@@ -137,8 +145,12 @@ public class LocationEdit extends PinballMapActivity implements OnTaskCompleted 
 				}
 
 				String operatorString = "";
-				if (operatorID != 0) {
-					operatorString = Integer.toString(operatorID);
+				if (!getPBMApplication().getOperators().isEmpty()) {
+					String operatorName = (String) operatorSpinner.getSelectedItem();
+					int operatorID = operators.get(operatorName);
+					if (operatorID != 0) {
+						operatorString = Integer.toString(operatorID);
+					}
 				}
 
 				PBMApplication app = getPBMApplication();
